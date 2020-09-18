@@ -26,7 +26,7 @@ export class PanelRequerimientoEquipoComponent implements OnInit {
   modeloFind: RequerimientoEquipoModel;
   listModelo: RequerimientoEquipoModel[];
 
-  //Columnas que se mostrara en la grilla
+  // Columnas que se mostrara en la grilla ...
   columnas: any[];
 
   // Opcion Editar
