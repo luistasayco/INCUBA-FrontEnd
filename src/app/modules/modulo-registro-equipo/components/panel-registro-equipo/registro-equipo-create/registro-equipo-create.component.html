@@ -1,0 +1,374 @@
+<div class="card card-w-title">
+    <h1><strong>{{titulo}}</strong></h1>
+
+    <!-- Filtros -->
+    <p-panel header="Opción de busqueda" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-md-4">
+                <p-dropdown id="dropdown" class="ui dropdown-item-text" [options]="listItemEmpresa" [(ngModel)]="selectedEmpresa" (onChange)="getOnChangeEmpresa()" placeholder="Select Compañia" optionLabel="label" [showClear]="true"></p-dropdown>
+            </div>
+            <div class="ui-g-12 ui-md-4">
+                <p-dropdown id="dropdown" class="ui dropdown-item-text" [options]="listItemPlanta" [(ngModel)]="selectedPlanta" (onChange)="getOnChangePlanta()" placeholder="Select Planta" optionLabel="label" [showClear]="true"></p-dropdown>
+            </div>
+            <div class="ui-g-12 ui-md-4">
+                <p-dropdown id="dropdown" class="ui dropdown-item-text" [options]="listItemModelo" [(ngModel)]="selectedModelo" (onChange)="getOnChangeModelo()" placeholder="Select Modelo" optionLabel="label" [showClear]="true"></p-dropdown>
+            </div>
+        </div>
+    </p-panel>
+
+    <p-panel header="Detalle" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
+        <p-accordion (onOpen)="onTabOpen($event)">
+            <p-accordionTab header="A .- Detalles de Mantenimiento y Funcionamiento de equipos">
+                <p-table [value]="modeloItem.txRegistroEquipoDetalle1" dataKey="descripcion">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width: 3em">
+                                ...
+                            </th>
+                            <th>Equipo</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex" let-expanded="expanded">
+                        <tr class="ui-widget-header" *ngIf="rowGroupMetadata[rowData.descripcion].index === rowIndex">
+                            <td colspan="2">
+                                <a href="#" [pRowToggler]="rowData">
+                                    <i [ngClass]="expanded ? 'pi pi-fw pi-chevron-circle-down' : 'pi pi-fw pi-chevron-circle-right'" style="vertical-align: middle;padding-bottom: .1em;"></i>
+                                    <span>{{rowData.descripcion}}</span>
+                                </a>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="rowexpansion" let-rowData>
+                        <tr>
+                            <td>
+                                <p-checkbox name="group1" value="{{rowData.idMantenimientoPorModelo}}" [(ngModel)]="rowData.flgValor" inputId="{{rowData.idMantenimientoPorModelo}}" binary="true"></p-checkbox>
+                            </td>
+                            <td>{{rowData.codigoEquipo}}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-accordionTab>
+
+            <p-accordionTab header="B .- Check list de componentes">
+                <p-table [value]="modeloItem.txRegistroEquipoDetalle2" dataKey="codigoRepuesto">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width: 3em">
+                                ...
+                            </th>
+                            <th>Equipo</th>
+                            <th>M/P</th>
+                            <th>R/F/C</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex" let-expanded="expanded">
+                        <tr class="ui-widget-header" *ngIf="rowGroupMetadataDetalle2[rowData.codigoRepuesto].index === rowIndex">
+                            <td colspan="4">
+                                <a href="#" [pRowToggler]="rowData">
+                                    <i [ngClass]="expanded ? 'pi pi-fw pi-chevron-circle-down' : 'pi pi-fw pi-chevron-circle-right'" style="vertical-align: middle;padding-bottom: .1em;"></i>
+                                    <span>{{rowData.codigoRepuesto + '-' + rowData.descripcion}}</span>
+                                </a>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="rowexpansion" let-rowData let-rowIndex="rowIndex">
+                        <tr>
+                            <td>
+                                <p-checkbox name="group1" value="{{rowData.idRepuestoPorModelo}}" [(ngModel)]="rowData.flgValor" inputId="{{rowData.idRepuestoPorModelo}}" binary="true"></p-checkbox>
+                            </td>
+                            <td>{{rowData.codigoEquipo}}</td>
+                            <td>
+                                <p-dropdown [options]="listMP" [(ngModel)]="rowData.itemMP" placeholder="Selecionar" optionLabel="label" [showClear]="true" (onChange)="rowData.mp = rowData.itemMP ? rowData.itemMP.value : '' " [disabled]="rowData.flgValor"></p-dropdown>
+                            </td>
+                            <td>
+                                <p-dropdown [options]="listRFC" [(ngModel)]="rowData.itemRFC" placeholder="Seleccionar" optionLabel="label" [showClear]="true" (onChange)="rowData.rfc = rowData.itemRFC ? rowData.itemRFC.value : '' " [disabled]="rowData.flgValor"></p-dropdown>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-accordionTab>
+
+            <p-accordionTab header="C .- Requerimientos para los equipos y condiciones de limpieza">
+                <div class="ui-g dashboard">
+                    <div class="ui-g-12 ui-md-6 ui-lg-6 task-list">
+                        <p-panel header="Requerimientos para los Equipos">
+                            <ul>
+                                <li *ngFor="let item of modeloItem.txRegistroEquipoDetalle3">
+                                    <p-toggleButton [(ngModel)]="item.flgValor" [style]="{'width':'100px'}"></p-toggleButton>
+                                    <span class="task-name">{{item.descripcion}}</span>
+                                    <i class="fa fa-briefcase"></i>
+                                </li>
+                            </ul>
+                        </p-panel>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-6 task-list">
+                        <p-panel header="Limpieza y esterilización">
+                            <ul>
+                                <li *ngFor="let item of modeloItem.txRegistroEquipoDetalle4">
+                                    <p-toggleButton [(ngModel)]="item.flgValor" [style]="{'width':'100px'}"></p-toggleButton>
+                                    <span class="task-name">{{item.descripcion}}</span>
+                                    <i class="fa fa-briefcase"></i>
+                                </li>
+                            </ul>
+                        </p-panel>
+                    </div>
+                </div>
+            </p-accordionTab>
+
+            <p-accordionTab header="D .- Resumen de Mantenimiento">
+                <p-panel header="Lista de {{titulo}}">
+                    <p-table [value]="modeloItem.txRegistroEquipoDetalle5" [columns]="columnasDetalle5" [paginator]="true" [rows]="globalConstants.sizePage" dataKey="idRepuestoPorModelo" editMode="row" autoLayout="true" [responsive]="true">
+                        <!-- Header -->
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <th *ngFor="let col of columns">
+                                    {{col.header}}
+                                </th>
+                                <th colspan="1">Acciones</th>
+                            </tr>
+                        </ng-template>
+                        <!-- body -->
+                        <ng-template pTemplate="body" let-modelo let-editing="editing" let-ri="rowIndex">
+                            <tr [pEditableRow]="modelo">
+                                <td class="action-td">
+                                    <span class="ui-column-title">Codigo</span> {{modelo.idRepuestoPorModelo}}
+                                </td>
+                                <td class="action-td-action">
+                                    <span class="ui-column-title">Repuesto</span>
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <span class="p-float-label">
+                                                {{modelo.codigoRepuesto}}
+                                            </span>
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{modelo.codigoRepuesto}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td class="action-td-action">
+                                    <span class="ui-column-title">Activo Fijo</span>
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <span class="p-float-label">
+                                                {{modelo.codigoEquipo}} 
+                                            </span>
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{modelo.codigoEquipo}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td class="ui-fluid">
+                                    <span class="ui-column-title">Observación</span>
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <span class="p-float-label">
+                                                <input id="float-input" type="text" pInputText [(ngModel)]="modelo.observacion" size="100"> 
+                                            </span>
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{modelo.observacion}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td class="action-td-action">
+                                    <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="{{globalConstants.icoEditar}}" (click)="onRowEditInitDetalle5(modelo)"></button>
+                                    <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="{{globalConstants.icoGrabar}}" class="ui-button-success" (click)="onRowEditSaveDetalle5(modelo)"></button>
+                                    <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="{{globalConstants.icoCancelar}}" class="ui-button-danger" style="margin-right: .5em" (click)="onRowEditCancelDetalle5(modelo, ri)"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+
+                    </p-table>
+                    <!-- <p-footer>
+                        <div class="ui-grid ui-fluid">
+                            <div class="ui-g-12 ui-md-3">
+                                <button pButton type="button" label="{{globalConstants.cNuevo}}" icon="{{globalConstants.icoNuevo}}"></button>
+                            </div>
+                        </div>
+                    </p-footer> -->
+                </p-panel>
+            </p-accordionTab>
+
+            <p-accordionTab header="E .-Inventario de consumibles">
+                <p-panel header="Lista de {{titulo}}">
+                    <p-table [value]="modeloItem.txRegistroEquipoDetalle6" [columns]="columnasDetalle6" [paginator]="true" [rows]="globalConstants.sizePage" dataKey="codigoRepuesto" editMode="row" autoLayout="true" [responsive]="true">
+                        <!-- Header -->
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <th *ngFor="let col of columns">
+                                    {{col.header}}
+                                </th>
+                                <th colspan="2">Acciones</th>
+                            </tr>
+                        </ng-template>
+                        <!-- body -->
+                        <ng-template pTemplate="body" let-modelo let-editing="editing" let-ri="rowIndex">
+                            <tr [pEditableRow]="modelo">
+                                <td class="action-td-action">
+                                    <span class="ui-column-title">Codigo</span> {{modelo.codigoRepuesto}}
+                                </td>
+                                <td class="ui-fluid">
+                                    <span class="ui-column-title">Repuesto</span>
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <span class="p-float-label">
+                                                {{modelo.descripcion}}
+                                            </span>
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{modelo.descripcion}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td class="action-td-action">
+                                    <span class="ui-column-title">Stock Actual</span>
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <span class="p-float-label">
+                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.stockActual" size="100"> 
+                                            </span>
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{modelo.stockActual}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td class="action-td-action">
+                                    <span class="ui-column-title">Cambio por mtto.</span>
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <span class="p-float-label">
+                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.cambioPorMantenimiento" size="100"> 
+                                            </span>
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{modelo.cambioPorMantenimiento}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td class="action-td-action">
+                                    <span class="ui-column-title">Entregado</span>
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <span class="p-float-label">
+                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.entregado" size="100"> 
+                                            </span>
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{modelo.entregado}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td class="action-td-action">
+                                    <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="{{globalConstants.icoEditar}}" (click)="onRowEditInitDetalle6(modelo)"></button>
+                                    <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="{{globalConstants.icoGrabar}}" class="ui-button-success" (click)="onRowEditSaveDetalle6(modelo)"></button>
+                                    <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="{{globalConstants.icoCancelar}}" class="ui-button-danger" style="margin-right: .5em" (click)="onRowEditCancelDetalle6(modelo, ri)"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </p-panel>
+            </p-accordionTab>
+
+            <p-accordionTab header="F .-Inventario de repuestos">
+                <p-panel header="Lista de {{titulo}}">
+                    <p-table [value]="modeloItem.txRegistroEquipoDetalle6Repuestos" [columns]="columnasDetalle6" [paginator]="true" [rows]="globalConstants.sizePage" dataKey="codigoRepuesto" editMode="row" autoLayout="true" [responsive]="true">
+                        <!-- Header -->
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <th *ngFor="let col of columns">
+                                    {{col.header}}
+                                </th>
+                                <th colspan="2">Acciones</th>
+                            </tr>
+                        </ng-template>
+                        <!-- body -->
+                        <ng-template pTemplate="body" let-modelo let-editing="editing" let-ri="rowIndex">
+                            <tr [pEditableRow]="modelo">
+                                <td class="action-td-action">
+                                    <span class="ui-column-title">Codigo</span> {{modelo.codigoRepuesto}}
+                                </td>
+                                <td class="ui-fluid">
+                                    <span class="ui-column-title">Repuesto</span>
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <span class="p-float-label">
+                                                {{modelo.descripcion}}
+                                            </span>
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{modelo.descripcion}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td class="action-td-action">
+                                    <span class="ui-column-title">Stock Actual</span>
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <span class="p-float-label">
+                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.stockActual" size="100"> 
+                                            </span>
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{modelo.stockActual}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td class="action-td-action">
+                                    <span class="ui-column-title">Cambio por mtto.</span>
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <span class="p-float-label">
+                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.cambioPorMantenimiento" size="100"> 
+                                            </span>
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{modelo.cambioPorMantenimiento}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td class="action-td-action">
+                                    <span class="ui-column-title">Entregado</span>
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <span class="p-float-label">
+                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.entregado" size="100"> 
+                                            </span>
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{modelo.entregado}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
+                                <td class="action-td-action">
+                                    <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="{{globalConstants.icoEditar}}" (click)="onRowEditInitDetalle6(modelo)"></button>
+                                    <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="{{globalConstants.icoGrabar}}" class="ui-button-success" (click)="onRowEditSaveDetalle6(modelo)"></button>
+                                    <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="{{globalConstants.icoCancelar}}" class="ui-button-danger" style="margin-right: .5em" (click)="onRowEditCancelDetalle6(modelo, ri)"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </p-panel>
+            </p-accordionTab>
+        </p-accordion>
+        <p-footer>
+            <div class="ui-grid ui-fluid">
+                <div class="ui-g-12 ui-md-6">
+                    <app-panel-firma-digital (vDataFirma)="modeloItem.firmaIncuba = $event" (vDataFirmaClear)="modeloItem.firmaIncuba = $event" [vFirmaOk]="globalConstants.cFirmaOk1" [vFirmaClear]="globalConstants.cFirmaClear"></app-panel-firma-digital>
+                </div>
+                <div class="ui-g-12 ui-md-6">
+                    <app-panel-firma-digital (vDataFirma)="modeloItem.firmaPlanta = $event" (vDataFirmaClear)="modeloItem.firmaPlanta = $event" [vFirmaOk]="globalConstants.cFirmaOk2" [vFirmaClear]="globalConstants.cFirmaClear"></app-panel-firma-digital>
+                </div>
+
+                <div class="ui-g-12">
+                    <button pButton type="button" label="{{globalConstants.cGrabar}}" icon="{{globalConstants.icoGrabar}}" (click)="onToGrabar()" [disabled]="modeloItem.firmaIncuba === null || modeloItem.firmaIncuba === '' || modeloItem.firmaPlanta === null || modeloItem.firmaPlanta === '' || modeloItem.codigoEmpresa === '' || modeloItem.codigoPlanta === '' || modeloItem.idModelo === 0"></button>
+                </div>
+            </div>
+        </p-footer>
+    </p-panel>
+
+    <p-messages [(value)]="mensajePrimeNgService.msgs"></p-messages>
+
+</div>
