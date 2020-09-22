@@ -12,10 +12,10 @@
         <i class="fa fa-angle-down"></i>
     </a>
 
-    <span class="topbar-search">
+    <!-- <span class="topbar-search">
         <input type="text" pInputText placeholder="Search"/>
         <span class="fa fa-search"></span>
-    </span>
+    </span> -->
 
     <span class="topbar-themeswitcher">
         <p-inputSwitch [(ngModel)]="app.darkTheme" (onChange)="app.changeTheme(app.selectedColor)"></p-inputSwitch>
@@ -34,7 +34,7 @@
                         <span>Profile</span>
                     </a>
                 </li>
-                <li role="menuitem">
+                <!-- <li role="menuitem">
                     <a href="#" (click)="app.onTopbarSubItemClick($event)">
                         <i class="fa fa-fw fa-user-secret"></i>
                         <span>Privacy</span>
@@ -45,7 +45,7 @@
                         <i class="fa fa-fw fa-cog"></i>
                         <span>Settings</span>
                     </a>
-                </li>
+                </li> -->
                 <li role="menuitem">
                     <a href="#" (click)="app.onTopbarSubItemClick($event)">
                         <i class="fa fa-fw fa-sign-out"></i>
@@ -67,7 +67,7 @@
                         <span class="topbar-badge">1</span>
                     </a>
                 </li>
-                <li role="menuitem">
+                <!-- <li role="menuitem">
                     <a href="#" (click)="app.onTopbarSubItemClick($event)">
                         <i class="fa fa-fw fa-star-o"></i>
                         <span>Favorites</span>
@@ -85,10 +85,10 @@
                         <i class="fa fa-fw fa-picture-o"></i>
                         <span>Wallpaper</span>
                     </a>
-                </li>
+                </li> -->
             </ul>
         </li>
-        <li #messages [ngClass]="{'menuitem-active':app.activeTopbarItem === messages}">
+        <!-- <li #messages [ngClass]="{'menuitem-active':app.activeTopbarItem === messages}">
             <a href="#" (click)="app.onTopbarItemClick($event, messages)">
                 <i class="topbar-icon fa fa-fw fa-envelope-o"></i>
                 <span class="topbar-item-name">Messages</span>
@@ -159,6 +159,6 @@
                     </a>
                 </li>
             </ul>
-        </li>
+        </li> -->
     </ul>
 </div>
