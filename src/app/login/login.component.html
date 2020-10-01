@@ -1,0 +1,50 @@
+<div class="login-body">
+    <div class="body-container">
+        <div class="ui-g">
+            <div class="ui-g-12 ui-lg-6 left-side">
+                <img src="../../assets/layout/images/logo-invetsa.png" alt="apollo-layout" class="logo" />
+                <!-- <h1>Bienvenido</h1>
+                <p>
+                    Regístrese para iniciar su sesión
+                </p> -->
+            </div>
+            <div class="ui-g-12 ui-lg-6 right-side">
+                <div class="login-wrapper">
+                    <div class="login-container">
+                        <span class="title">
+                            Iniciar sesión</span>
+
+                        <div class="ui-g ui-fluid">
+                            <div class="ui-g-12">
+                                <div class="ui-inputgroup">
+                                    <span class="ui-inputgroup-addon"><i class="pi pi-user" style="line-height: 1.25;"></i></span>
+                                    <input type="text" class="ui-inputtext ui-widget" placeholder="Username" [(ngModel)]="modeloLogin.usuario" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="ui-g-12">
+                                <div class="ui-inputgroup">
+                                    <span class="ui-inputgroup-addon"><i class="pi pi-key" style="line-height: 1.25;"></i></span>
+                                    <input type="password" class="ui-inputtext ui-widget" placeholder="Password" [(ngModel)]="modeloLogin.clave" autocomplete="off" feedback="false" />
+                                </div>
+                            </div>
+                            <div class="ui-g-12">
+                                <p-messages [(value)]="mensajePrimeNgService.msgs"></p-messages>
+                            </div>
+                            <div class="ui-g-12 ui-lg-6">
+                                <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only green-btn" (click)="onClickLogin()" pButton>
+                                  <span class="ui-button-text ui-c">
+                                    <img src="../../assets/layout/images/check.svg" alt="login" style="height: 13px;width: 16px;float: left;margin-top: 3px">
+                                    Login
+                                  </span>
+                                </button>
+                            </div>
+                            <div class="ui-g-12 ui-lg-6 password-container">
+                                <a href="#">¿Olvidaste tu contraseña?</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

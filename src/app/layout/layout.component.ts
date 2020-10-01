@@ -1,20 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MenuService } from '../services/menu.service';
+import { MenuDinamicoService } from '../services/menu-dinamico.service';
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.css']
 })
-export class LayoutComponent {
+export class LayoutComponent implements OnInit {
 
     darkTheme = false;
 
     menuMode = 'static';
 
-    theme = 'blue-light';
+    theme = 'green-dark';
 
-    selectedColor = 'blue';
+    selectedColor = 'green';
 
     topbarMenuActive: boolean;
 
@@ -38,7 +39,13 @@ export class LayoutComponent {
 
     configActive: boolean;
 
-    constructor(private menuService: MenuService) {}
+    model: any[];
+
+    constructor(private menuService: MenuService, public menuDinamicoService: MenuDinamicoService) {}
+
+    ngOnInit() {
+        this.model = this.menuDinamicoService.getObtieneMenuDinamico();
+    }
 
     changeTheme(theme) {
         this.selectedColor = theme;

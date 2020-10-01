@@ -22,6 +22,13 @@ import { ConfigComponent } from './layout/config/config.component';
 
 import localePy from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
+import { LoginComponent } from './login/login.component';
+
+
+import { MessageModule } from 'primeng/message';
+import { MessagesModule } from 'primeng/messages';
+import { MessageService } from 'primeng/api';
+import { DomSeguroImagenBase64Pipe } from './pipes/dom-seguro-imagen-base64.pipe';
 
 registerLocaleData(localePy, 'es');
 
@@ -34,7 +41,9 @@ registerLocaleData(localePy, 'es');
     HeaderBreadcrumbComponent,
     MenuComponent,
     MenuitemComponent,
-    ConfigComponent
+    ConfigComponent,
+    LoginComponent,
+    DomSeguroImagenBase64Pipe
   ],
   imports: [
     BrowserModule,
@@ -45,9 +54,11 @@ registerLocaleData(localePy, 'es');
     HttpClientModule,
     ProgressBarModule,
     InputSwitchModule,
-    TabViewModule
+    TabViewModule,
+    MessageModule,
+    MessagesModule
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'es' }],
+  providers: [{ provide: LOCALE_ID, useValue: 'es' }, MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -8,7 +8,7 @@ import { LayoutComponent } from '../layout.component';
 })
 export class ConfigComponent implements OnInit {
 
-  themes: any[];
+    themes: any[];
 
     lightThemes: any[];
 

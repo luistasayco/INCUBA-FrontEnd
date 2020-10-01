@@ -1276,7 +1276,7 @@ body .layout-wrapper.layout-slim .layout-footer {
 
 .login-body .left-side img {
     padding: 100px 0 100px 0;
-    width: 60px;
+    width: 420px;
 }
 
 .login-body .left-side h1 {
@@ -1357,6 +1357,7 @@ body .layout-wrapper.layout-slim .layout-footer {
     }
     .login-body .left-side img {
         padding: 20px 0 20px 0;
+        width: 220px;
     }
     .login-body .left-side p {
         display: none;
