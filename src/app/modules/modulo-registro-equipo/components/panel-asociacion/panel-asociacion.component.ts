@@ -59,8 +59,6 @@ export class PanelAsociacionComponent implements OnInit {
   constructor(private registroEquipoService: RegistroEquipoService,
               private compartidoService: CompartidoService,
               public mensajePrimeNgService: MensajePrimeNgService,
-              private router: Router,
-              private confirmationService: ConfirmationService,
               private breadcrumbService: BreadcrumbService) {
                 this.breadcrumbService.setItems([
                     { label: 'Modulo' },
@@ -77,8 +75,6 @@ export class PanelAsociacionComponent implements OnInit {
     this.getToObtieneEmpresa();
     this.getToObtieneModelo();
 
-    this.registroEquipoService.getCarsSmall().then(cars => this.sourceCars = cars);
-    this.targetCars = [];
     this.listEquipoPorSeleccionado = [];
   }
 
@@ -89,7 +85,7 @@ export class PanelAsociacionComponent implements OnInit {
       for (let item of data) {
         this.listItemEmpresa.push({ label: item.descripcion, value: item.codigoEmpresa });
       }
-      });
+    });
   }
 
   getOnChangeEmpresa() {
@@ -116,13 +112,14 @@ export class PanelAsociacionComponent implements OnInit {
     .subscribe((data: ModeloModel[]) => {
       this.listItemModelo = [];
       for (let item of data) {
-        this.listItemModelo.push({ label: item.descripcion, value: item.idModelo });
+        this.listItemModelo.push({ label: item.descripcion, value: item.codigoModelo });
       }
       });
   }
 
   getOnChangeModelo() {
     this.onListar();
+    this.onListarChangeModelo();
   }
 
   getOnChangePlanta(){
@@ -134,41 +131,12 @@ export class PanelAsociacionComponent implements OnInit {
     this.listEquipoPorSeleccionado = [];
     this.listEquipoSeleccionado = [];
 
-    this.listMantenimientoSeleccionado = [];
-    this.listMantenimientoPorSeleccionado = [];
-
-    this.listRepuestoSeleccionado = [];
-    this.listRepuestoPorSeleccionado = [];
-
     if (this.selectedEmpresa !== null && this.selectedPlanta !== null && (this.selectedModelo !== null) ) {
       this.modeloEquipoPorModelo =
       { codigoEmpresa: this.selectedEmpresa.value,
         codigoPlanta: this.selectedPlanta.value,
-        idModelo: this.selectedModelo.value
+        codigoModelo: this.selectedModelo.value
       };
-
-      this.modeloMantenimientoPorModelo =
-      { codigoEmpresa: this.selectedEmpresa.value,
-        codigoPlanta: this.selectedPlanta.value,
-        idModelo: this.selectedModelo.value
-      };
-
-      this.modeloRepuestoPorModelo =
-      { codigoEmpresa: this.selectedEmpresa.value,
-        codigoPlanta: this.selectedPlanta.value,
-        idModelo: this.selectedModelo.value
-      };
-
-      this.registroEquipoService.getEquipoPorSeleccionar(this.modeloEquipoPorModelo)
-      .subscribe(resp => {
-        if (resp) {
-            this.listEquipoPorSeleccionado = resp;
-          }
-        },
-        (error) => {
-          this.mensajePrimeNgService.onToErrorMsg(null, error);
-        }
-      );
 
       this.registroEquipoService.getEquipoSeleccionados(this.modeloEquipoPorModelo)
       .subscribe(resp => {
@@ -180,6 +148,22 @@ export class PanelAsociacionComponent implements OnInit {
           this.mensajePrimeNgService.onToErrorMsg(null, error);
         }
       );
+    }
+  }
+
+  onListarChangeModelo() {
+
+    this.listMantenimientoSeleccionado = [];
+    this.listMantenimientoPorSeleccionado = [];
+
+    this.listRepuestoSeleccionado = [];
+    this.listRepuestoPorSeleccionado = [];
+
+    if (this.selectedModelo !== null) {
+
+      this.modeloMantenimientoPorModelo = {codigoModelo: this.selectedModelo.value};
+
+      this.modeloRepuestoPorModelo = {codigoModelo: this.selectedModelo.value};
 
       this.registroEquipoService.getMantenimientoPorSeleccionar(this.modeloMantenimientoPorModelo)
       .subscribe(resp => {
@@ -227,78 +211,22 @@ export class PanelAsociacionComponent implements OnInit {
     }
   }
 
-  onToMoveToTarget(event: EquipoPorModeloModel[])
-  {
-    this.setCreateItem(event);
-  }
-
-  onToMoveToSource(event: any)
-  {
-    this.setDeleteItem(event);
-  }
-
-  onToMoveAllToTarget(event: any)
-  {
-    this.setCreateItem(event);
-  }
-
-  onToMoveAllToSource(event: any)
-  {
-    this.setDeleteItem(event);
-  }
-
-  setCreateItem(event: EquipoPorModeloModel[]) {
-
-    event.map(dato => {
-      dato.regUsuario = environment.usuario,
-      dato.regEstacion = environment.estacion
-
-      return dato;
-    });
-
-    this.registroEquipoService.setInsertEquipoPorModelo(event)
-    .subscribe(() =>  {
-      this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
-    },
-      (error) => {
-        this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, error);
-    });
-  }
-
-  setDeleteItem(event: EquipoPorModeloModel[]) {
-
-    event.map(dato => {
-      dato.regUsuario = environment.usuario,
-      dato.regEstacion = environment.estacion
-
-      return dato;
-    });
-
-    this.registroEquipoService.setDeleteEquipoPorModelo(event)
-    .subscribe(() =>  {
-      this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
-    },
-      (error) => {
-        this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, error);
-    });
-  }
-
-  onToMoveToTargetMantenimiento(event: EquipoPorModeloModel[])
+  onToMoveToTargetMantenimiento(event: MantenimientoPorModeloModel[])
   {
     this.setCreateItemMantenimiento(event);
   }
 
-  onToMoveToSourceMantenimiento(event: any)
+  onToMoveToSourceMantenimiento(event: MantenimientoPorModeloModel[])
   {
     this.setDeleteItemMantenimiento(event);
   }
 
-  onToMoveAllToTargetMantenimiento(event: any)
+  onToMoveAllToTargetMantenimiento(event: MantenimientoPorModeloModel[])
   {
     this.setCreateItemMantenimiento(event);
   }
 
-  onToMoveAllToSourceMantenimiento(event: any)
+  onToMoveAllToSourceMantenimiento(event: MantenimientoPorModeloModel[])
   {
     this.setDeleteItemMantenimiento(event);
   }
@@ -308,7 +236,6 @@ export class PanelAsociacionComponent implements OnInit {
     event.map(dato => {
       dato.regUsuario = environment.usuario,
       dato.regEstacion = environment.estacion
-
       return dato;
     });
 
@@ -326,7 +253,6 @@ export class PanelAsociacionComponent implements OnInit {
     event.map(dato => {
       dato.regUsuario = environment.usuario,
       dato.regEstacion = environment.estacion
-
       return dato;
     });
 
@@ -339,22 +265,22 @@ export class PanelAsociacionComponent implements OnInit {
     });
   }
 
-  onToMoveToTargetRepuesto(event: EquipoPorModeloModel[])
+  onToMoveToTargetRepuesto(event: RepuestoPorModeloModel[])
   {
     this.setCreateItemRepuesto(event);
   }
 
-  onToMoveToSourceRepuesto(event: any)
+  onToMoveToSourceRepuesto(event: RepuestoPorModeloModel[])
   {
     this.setDeleteItemRepuesto(event);
   }
 
-  onToMoveAllToTargetRepuesto(event: any)
+  onToMoveAllToTargetRepuesto(event: RepuestoPorModeloModel[])
   {
     this.setCreateItemRepuesto(event);
   }
 
-  onToMoveAllToSourceRepuesto(event: any)
+  onToMoveAllToSourceRepuesto(event: RepuestoPorModeloModel[])
   {
     this.setDeleteItemRepuesto(event);
   }
@@ -364,7 +290,6 @@ export class PanelAsociacionComponent implements OnInit {
     event.map(dato => {
       dato.regUsuario = environment.usuario,
       dato.regEstacion = environment.estacion
-
       return dato;
     });
 
@@ -382,11 +307,8 @@ export class PanelAsociacionComponent implements OnInit {
     event.map(dato => {
       dato.regUsuario = environment.usuario,
       dato.regEstacion = environment.estacion
-
       return dato;
     });
-
-    console.log(event);
 
     this.registroEquipoService.setDeleteRepuestoPorModelo(event)
     .subscribe(() =>  {
@@ -396,5 +318,4 @@ export class PanelAsociacionComponent implements OnInit {
         this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, error);
     });
   }
-
 }

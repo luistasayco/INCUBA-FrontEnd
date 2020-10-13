@@ -3,7 +3,7 @@ import { NgModule, LOCALE_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule} from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -29,6 +29,9 @@ import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
 import { MessageService } from 'primeng/api';
 import { DomSeguroImagenBase64Pipe } from './pipes/dom-seguro-imagen-base64.pipe';
+import { HeaderInterceptorService } from './interceptors/header-interceptor.service';
+import { ModuloEstadoInternetModule } from './modules/modulo-estado-internet/modulo-estado-internet.module';
+import { ModuloBaseDatosLocalModule } from './modules/modulo-base-datos-local/modulo-base-datos-local.module';
 
 registerLocaleData(localePy, 'es');
 
@@ -56,9 +59,14 @@ registerLocaleData(localePy, 'es');
     InputSwitchModule,
     TabViewModule,
     MessageModule,
-    MessagesModule
+    MessagesModule,
+    ModuloEstadoInternetModule,
+    ModuloBaseDatosLocalModule
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'es' }, MessageService],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'es' },
+    MessageService,
+    {provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptorService, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1774,7 +1774,7 @@ h2 {
 
 .dashboard .task-list .ui-panel-content {
     padding: 0px !important;
-    min-height: 200px;
+    min-height: 100px;
 }
 
 .dashboard .task-list ul {

@@ -14,7 +14,7 @@ export class TxRegistroEquipoModel {
     descripcionEmpresa?: string;
     codigoPlanta?: string;
     descripcionPlanta?: string;
-    idModelo: number;
+    codigoModelo: string;
     descripcionModelo?: string;
     firmaIncuba?: string;
     firmaPlanta?: string;
@@ -25,13 +25,14 @@ export class TxRegistroEquipoModel {
 
     txRegistroEquipoDetalle1: TxRegistroEquipoDetalle1Model[];
     txRegistroEquipoDetalle2: TxRegistroEquipoDetalle2Model[];
+    txRegistroEquipoDetalle2NoPredeterminado: TxRegistroEquipoDetalle2Model[];
     txRegistroEquipoDetalle3: TxRegistroEquipoDetalle3Model[];
     txRegistroEquipoDetalle4: TxRegistroEquipoDetalle4Model[];
     txRegistroEquipoDetalle5: TxRegistroEquipoDetalle5Model[];
     txRegistroEquipoDetalle6: TxRegistroEquipoDetalle6Model[];
     txRegistroEquipoDetalle6Repuestos: TxRegistroEquipoDetalle6Model[];
     txRegistroEquipoDetalle7: TxRegistroEquipoDetalle7Model[];
-
+    flgMigrado: boolean;
     // Auditoria
     regUsuario?: number;
     regEstacion?: string;
@@ -44,7 +45,7 @@ export class TxRegistroEquipoModel {
         this.descripcionEmpresa = '';
         this.codigoPlanta = '';
         this.descripcionEmpresa = '';
-        this.idModelo = 0;
+        this.codigoModelo = '';
         this.descripcionEmpresa = '';
         this.firmaIncuba = '';
         this.firmaPlanta = '';
@@ -53,13 +54,14 @@ export class TxRegistroEquipoModel {
 
         this.txRegistroEquipoDetalle1 = [];
         this.txRegistroEquipoDetalle2 = [];
+        this.txRegistroEquipoDetalle2NoPredeterminado = [];
         this.txRegistroEquipoDetalle3 = [];
         this.txRegistroEquipoDetalle4 = [];
         this.txRegistroEquipoDetalle5 = [];
         this.txRegistroEquipoDetalle6 = [];
         this.txRegistroEquipoDetalle6Repuestos = [];
         this.txRegistroEquipoDetalle7 = [];
-
+        this.flgMigrado = false;
         this.regUsuario = 0;
         this.regEstacion = '';
     }

@@ -95,7 +95,6 @@ export class PanelMenuComponent implements OnInit {
   nodeSelect(menu: any)
   {
     this.itemSelected = menu;
-    console.log(this.itemSelected);
     this.modelo = menu.data;
     this.goDataForm(this.modelo);
   }

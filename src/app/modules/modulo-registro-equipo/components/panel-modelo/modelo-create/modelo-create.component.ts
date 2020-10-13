@@ -25,7 +25,6 @@ export class ModeloCreateComponent implements OnInit {
   modelo: ModeloModel = new ModeloModel();
 
   constructor(private fb: FormBuilder,
-              private registroEquipoService: RegistroEquipoService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private router: Router,
               private breadcrumbService: BreadcrumbService) {
@@ -45,14 +44,6 @@ export class ModeloCreateComponent implements OnInit {
   }
 
   onClickSave() {
-    this.modelo.descripcion = this.maestroForm.controls['descripcion'].value;
-    this.registroEquipoService.setInsertModelo(this.modelo)
-    .subscribe(() =>  {
-      this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
-      this.back(); },
-      (error) => {
-        this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, error);
-    });
   }
 
   back() {

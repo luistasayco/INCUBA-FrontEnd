@@ -41,7 +41,8 @@ export class LayoutComponent implements OnInit {
 
     model: any[];
 
-    constructor(private menuService: MenuService, public menuDinamicoService: MenuDinamicoService) {}
+    constructor(private menuService: MenuService,
+                public menuDinamicoService: MenuDinamicoService) {}
 
     ngOnInit() {
         this.model = this.menuDinamicoService.getObtieneMenuDinamico();

@@ -46,7 +46,6 @@ export class ProcesoDetalleCreateComponent implements OnInit {
     this.modelo.descripcion = this.maestroForm.controls['descripcion'].value;
     this.modelo.factor = this.maestroForm.controls['factor'].value;
     this.modelo.orden = this.maestroForm.controls['orden'].value;
-    console.log(this.modelo);
     this.examenFisicoPollitoService.setInsertProcesoDetalle(this.modelo)
     .subscribe(() =>  {
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);

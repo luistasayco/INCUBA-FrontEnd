@@ -1,9 +1,9 @@
 export class ModeloModel {
-    idModelo?: number;
+    codigoModelo?: string;
     descripcion: string;
 
     constructor(){
-        this.idModelo =  0;
+        this.codigoModelo =  '';
         this.descripcion = '';
     }
 }

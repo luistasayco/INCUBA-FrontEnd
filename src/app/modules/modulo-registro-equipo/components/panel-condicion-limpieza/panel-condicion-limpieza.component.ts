@@ -48,7 +48,8 @@ export class PanelCondicionLimpiezaComponent implements OnInit {
   ngOnInit() {
     this.columnas = [
       { header: 'Codigo' },
-      { header: 'Descripcion' }
+      { header: 'Descripcion'},
+      { header: 'Orden'}
     ];
 
     this.onListar();

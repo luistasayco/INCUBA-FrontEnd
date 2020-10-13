@@ -21,7 +21,6 @@
 
     <p-messages [(value)]="mensajePrimeNgService.msgs"></p-messages>
 
-
     <p-panel header="Detalle" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
         <p-accordion>
             <p-accordionTab header="A .- Detalles de Mantenimiento y Funcionamiento de equipos">
@@ -118,230 +117,113 @@
             </p-accordionTab>
 
             <p-accordionTab header="D .- Resumen de Mantenimiento">
-                <p-panel header="Lista de {{titulo}}">
-                    <p-table [value]="modeloItem.txRegistroEquipoDetalle5" [columns]="columnasDetalle5" [paginator]="true" [rows]="globalConstants.sizePage" dataKey="idRepuestoPorModelo" editMode="row" autoLayout="true" [responsive]="true">
-                        <!-- Header -->
-                        <ng-template pTemplate="header" let-columns>
-                            <tr>
-                                <th *ngFor="let col of columns">
-                                    {{col.header}}
-                                </th>
-                            </tr>
-                        </ng-template>
-                        <!-- body -->
-                        <ng-template pTemplate="body" let-modelo let-editing="editing" let-ri="rowIndex">
-                            <tr [pEditableRow]="modelo">
-                                <td class="action-td">
-                                    <span class="ui-column-title">Codigo</span> {{modelo.idRepuestoPorModelo}}
-                                </td>
-                                <td class="ui-fluid">
-                                    <span class="ui-column-title">Repuesto</span>
-                                    <p-cellEditor>
-                                        <ng-template pTemplate="input">
-                                            <span class="p-float-label">
-                                                {{modelo.codigoRepuesto}}
-                                            </span>
-                                        </ng-template>
-                                        <ng-template pTemplate="output">
-                                            {{modelo.codigoRepuesto}}
-                                        </ng-template>
-                                    </p-cellEditor>
-                                </td>
-                                <td class="ui-fluid">
-                                    <span class="ui-column-title">Activo Fijo</span>
-                                    <p-cellEditor>
-                                        <ng-template pTemplate="input">
-                                            <span class="p-float-label">
-                                                {{modelo.codigoEquipo}} 
-                                            </span>
-                                        </ng-template>
-                                        <ng-template pTemplate="output">
-                                            {{modelo.codigoEquipo}}
-                                        </ng-template>
-                                    </p-cellEditor>
-                                </td>
-                                <td class="ui-fluid">
-                                    <span class="ui-column-title">Observación</span>
-                                    <p-cellEditor>
-                                        <ng-template pTemplate="input">
-                                            <span class="p-float-label">
-                                                <input id="float-input" type="text" pInputText [(ngModel)]="modelo.observacion" size="100"> 
-                                            </span>
-                                        </ng-template>
-                                        <ng-template pTemplate="output">
-                                            {{modelo.observacion}}
-                                        </ng-template>
-                                    </p-cellEditor>
-                                </td>
-                            </tr>
-                        </ng-template>
-
-                    </p-table>
-                </p-panel>
+                <p-table [value]="modeloItem.txRegistroEquipoDetalle5" [columns]="columnasDetalle5" [paginator]="true" [rows]="globalConstants.sizePage" dataKey="idRepuestoPorModelo" editMode="row" autoLayout="true" [responsive]="true">
+                    <!-- Header -->
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th *ngFor="let col of columns">
+                                {{col.header}}
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <!-- body -->
+                    <ng-template pTemplate="body" let-modelo let-editing="editing" let-ri="rowIndex">
+                        <tr>
+                            <td class="action-td">
+                                <span class="ui-column-title">Codigo</span> {{modelo.idRepuestoPorModelo}}
+                            </td>
+                            <td class="ui-fluid">
+                                <span class="ui-column-title">Repuesto</span> {{modelo.codigoRepuesto}}
+                            </td>
+                            <td class="ui-fluid">
+                                <span class="ui-column-title">Activo Fijo</span> {{modelo.codigoEquipo}}
+                            </td>
+                            <td class="ui-fluid">
+                                <span class="ui-column-title">Observación</span> {{modelo.observacion}}
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
             </p-accordionTab>
 
             <p-accordionTab header="E .-Inventario de consumibles">
-                <p-panel header="Lista de {{titulo}}">
-                    <p-table [value]="modeloItem.txRegistroEquipoDetalle6" [columns]="columnasDetalle6" [paginator]="true" [rows]="globalConstants.sizePage" dataKey="codigoRepuesto" editMode="row" autoLayout="true" [responsive]="true">
-                        <!-- Header -->
-                        <ng-template pTemplate="header" let-columns>
-                            <tr>
-                                <th *ngFor="let col of columns">
-                                    {{col.header}}
-                                </th>
-                            </tr>
-                        </ng-template>
-                        <!-- body -->
-                        <ng-template pTemplate="body" let-modelo let-editing="editing" let-ri="rowIndex">
-                            <tr [pEditableRow]="modelo">
-                                <td class="action-td-action">
-                                    <span class="ui-column-title">Codigo</span> {{modelo.codigoRepuesto}}
-                                </td>
-                                <td class="ui-fluid">
-                                    <span class="ui-column-title">Repuesto</span>
-                                    <p-cellEditor>
-                                        <ng-template pTemplate="input">
-                                            <span class="p-float-label">
-                                                {{modelo.descripcion}}
-                                            </span>
-                                        </ng-template>
-                                        <ng-template pTemplate="output">
-                                            {{modelo.descripcion}}
-                                        </ng-template>
-                                    </p-cellEditor>
-                                </td>
-                                <td class="action-td-action">
-                                    <span class="ui-column-title">Stock Actual</span>
-                                    <p-cellEditor>
-                                        <ng-template pTemplate="input">
-                                            <span class="p-float-label">
-                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.stockActual" size="100"> 
-                                            </span>
-                                        </ng-template>
-                                        <ng-template pTemplate="output">
-                                            {{modelo.stockActual}}
-                                        </ng-template>
-                                    </p-cellEditor>
-                                </td>
-                                <td class="action-td-action">
-                                    <span class="ui-column-title">Cambio por mtto.</span>
-                                    <p-cellEditor>
-                                        <ng-template pTemplate="input">
-                                            <span class="p-float-label">
-                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.cambioPorMantenimiento" size="100"> 
-                                            </span>
-                                        </ng-template>
-                                        <ng-template pTemplate="output">
-                                            {{modelo.cambioPorMantenimiento}}
-                                        </ng-template>
-                                    </p-cellEditor>
-                                </td>
-                                <td class="action-td-action">
-                                    <span class="ui-column-title">Entregado</span>
-                                    <p-cellEditor>
-                                        <ng-template pTemplate="input">
-                                            <span class="p-float-label">
-                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.entregado" size="100"> 
-                                            </span>
-                                        </ng-template>
-                                        <ng-template pTemplate="output">
-                                            {{modelo.entregado}}
-                                        </ng-template>
-                                    </p-cellEditor>
-                                </td>
-                            </tr>
-                        </ng-template>
-                    </p-table>
-                </p-panel>
+                <p-table [value]="modeloItem.txRegistroEquipoDetalle6" [columns]="columnasDetalle6" [paginator]="true" [rows]="globalConstants.sizePage" dataKey="codigoRepuesto" editMode="row" autoLayout="true" [responsive]="true">
+                    <!-- Header -->
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th *ngFor="let col of columns">
+                                {{col.header}}
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <!-- body -->
+                    <ng-template pTemplate="body" let-modelo let-editing="editing" let-ri="rowIndex">
+                        <tr [pEditableRow]="modelo">
+                            <td class="action-td-action">
+                                <span class="ui-column-title">Codigo</span> {{modelo.codigoRepuesto}}
+                            </td>
+                            <td class="ui-fluid">
+                                <span class="ui-column-title">Repuesto</span> {{modelo.descripcion}}
+                            </td>
+                            <td class="action-td-action">
+                                <span class="ui-column-title">Stock Actual</span> {{modelo.stockActual}}
+                            </td>
+                            <td class="action-td-action">
+                                <span class="ui-column-title">Cambio por mtto.</span> {{modelo.cambioPorMantenimiento}}
+                            </td>
+                            <td class="action-td-action">
+                                <span class="ui-column-title">Entregado</span> {{modelo.entregado}}
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
             </p-accordionTab>
 
             <p-accordionTab header="F .-Inventario de repuestos">
-                <p-panel header="Lista de {{titulo}}">
-                    <p-table [value]="modeloItem.txRegistroEquipoDetalle6Repuestos" [columns]="columnasDetalle6" [paginator]="true" [rows]="globalConstants.sizePage" dataKey="codigoRepuesto" editMode="row" autoLayout="true" [responsive]="true">
-                        <!-- Header -->
-                        <ng-template pTemplate="header" let-columns>
-                            <tr>
-                                <th *ngFor="let col of columns">
-                                    {{col.header}}
-                                </th>
-                            </tr>
-                        </ng-template>
-                        <!-- body -->
-                        <ng-template pTemplate="body" let-modelo let-editing="editing" let-ri="rowIndex">
-                            <tr [pEditableRow]="modelo">
-                                <td class="action-td-action">
-                                    <span class="ui-column-title">Codigo</span> {{modelo.codigoRepuesto}}
-                                </td>
-                                <td class="ui-fluid">
-                                    <span class="ui-column-title">Repuesto</span>
-                                    <p-cellEditor>
-                                        <ng-template pTemplate="input">
-                                            <span class="p-float-label">
-                                                {{modelo.descripcion}}
-                                            </span>
-                                        </ng-template>
-                                        <ng-template pTemplate="output">
-                                            {{modelo.descripcion}}
-                                        </ng-template>
-                                    </p-cellEditor>
-                                </td>
-                                <td class="action-td-action">
-                                    <span class="ui-column-title">Stock Actual</span>
-                                    <p-cellEditor>
-                                        <ng-template pTemplate="input">
-                                            <span class="p-float-label">
-                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.stockActual" size="100"> 
-                                            </span>
-                                        </ng-template>
-                                        <ng-template pTemplate="output">
-                                            {{modelo.stockActual}}
-                                        </ng-template>
-                                    </p-cellEditor>
-                                </td>
-                                <td class="action-td-action">
-                                    <span class="ui-column-title">Cambio por mtto.</span>
-                                    <p-cellEditor>
-                                        <ng-template pTemplate="input">
-                                            <span class="p-float-label">
-                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.cambioPorMantenimiento" size="100"> 
-                                            </span>
-                                        </ng-template>
-                                        <ng-template pTemplate="output">
-                                            {{modelo.cambioPorMantenimiento}}
-                                        </ng-template>
-                                    </p-cellEditor>
-                                </td>
-                                <td class="action-td-action">
-                                    <span class="ui-column-title">Entregado</span>
-                                    <p-cellEditor>
-                                        <ng-template pTemplate="input">
-                                            <span class="p-float-label">
-                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.entregado" size="100"> 
-                                            </span>
-                                        </ng-template>
-                                        <ng-template pTemplate="output">
-                                            {{modelo.entregado}}
-                                        </ng-template>
-                                    </p-cellEditor>
-                                </td>
-                            </tr>
-                        </ng-template>
-                    </p-table>
-                </p-panel>
+                <p-table [value]="modeloItem.txRegistroEquipoDetalle6Repuestos" [columns]="columnasDetalle6" [paginator]="true" [rows]="globalConstants.sizePage" dataKey="codigoRepuesto" editMode="row" autoLayout="true" [responsive]="true">
+                    <!-- Header -->
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th *ngFor="let col of columns">
+                                {{col.header}}
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <!-- body -->
+                    <ng-template pTemplate="body" let-modelo let-editing="editing" let-ri="rowIndex">
+                        <tr [pEditableRow]="modelo">
+                            <td class="action-td-action">
+                                <span class="ui-column-title">Codigo</span> {{modelo.codigoRepuesto}}
+                            </td>
+                            <td class="ui-fluid">
+                                <span class="ui-column-title">Repuesto</span> {{modelo.descripcion}}
+                            </td>
+                            <td class="action-td-action">
+                                <span class="ui-column-title">Stock Actual</span> {{modelo.stockActual}}
+                            </td>
+                            <td class="action-td-action">
+                                <span class="ui-column-title">Cambio por mtto.</span> {{modelo.cambioPorMantenimiento}}
+                            </td>
+                            <td class="action-td-action">
+                                <span class="ui-column-title">Entregado</span> {{modelo.entregado}}
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
             </p-accordionTab>
         </p-accordion>
         <p-footer>
             <div class="ui-grid ui-fluid">
                 <div class="ui-g-12 ui-md-6">
                     <div class="p-field" style="text-align: center;">
-                        <img id="firma1" [src]="modeloItem.firmaIncuba" *ngIf="modeloItem.firmaIncuba" />
+                        <img id="firma1" [src]="modeloItem.firmaIncuba" *ngIf="modeloItem.firmaIncuba" style="width: 100%; display: block;" />
                         <hr>
                         <label for="firma1">{{globalConstants.cFirma1}}</label>
                     </div>
                 </div>
                 <div class="ui-g-12 ui-md-6">
                     <div class="p-field" style="text-align: center;">
-                        <img [src]="modeloItem.firmaPlanta" *ngIf="modeloItem.firmaPlanta" />
+                        <img [src]="modeloItem.firmaPlanta" *ngIf="modeloItem.firmaPlanta" style="width: 100%; display: block;" />
                         <hr>
                         <label for="firma2">{{globalConstants.cFirma2}}</label>
                     </div>

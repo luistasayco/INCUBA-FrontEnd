@@ -1,9 +1,7 @@
 export class MantenimientoPorModeloModel {
     idMantenimientoPorModelo?: number;
     idEquipoPorModelo?: number;
-    codigoEmpresa: string;
-    codigoPlanta: string;
-    idModelo?: number;
+    codigoModelo?: string;
     codigoEquipo?: string;
     idMantenimiento?: number;
     descripcion?: string;
@@ -14,9 +12,7 @@ export class MantenimientoPorModeloModel {
     constructor(){
         this.idMantenimientoPorModelo = 0;
         this.idEquipoPorModelo = 0;
-        this.codigoEmpresa = '';
-        this.codigoPlanta = '';
-        this.idModelo = 0;
+        this.codigoModelo = '';
         this.codigoEquipo = '';
         this.idMantenimiento = 0;
         this.descripcion = '';

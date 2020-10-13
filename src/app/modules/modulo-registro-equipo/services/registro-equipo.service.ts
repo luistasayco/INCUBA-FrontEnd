@@ -17,14 +17,14 @@ import { TxRegistroEquipoDetalle1Model } from '../models/tx-registro-equipo-deta
 })
 export class RegistroEquipoService {
 
-  constructor(private http: HttpClient, private utils: UtilService) { }
+  constructor(private http: HttpClient, private utils: UtilService) {}
 
   // title:  Metodos para Mantenimiento
   // Author: Luis Tasayco
   // Date:   02/09/2020
-  getMantenimiento(value: MantenimientoModel) {
+  getMantenimiento(value?: MantenimientoModel) {
     let parametros = new HttpParams();
-    parametros = parametros.append('descripcion', value.descripcion);
+    parametros = parametros.append('descripcion', value ? value.descripcion : '');
 
     return this.http.get<MantenimientoModel[]>
     (`${environment.url_api}Mantenimiento/GetAll/`, { params: parametros });
@@ -34,13 +34,10 @@ export class RegistroEquipoService {
     value.regUsuario = environment.usuario;
     value.regEstacion = environment.estacion;
     const url = environment.url_api + 'Mantenimiento/Create';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
     const param: string = JSON.stringify(value);
     return this.http.post(
         url,
-        param,
-        { headers: myHeader }
+        param
     );
   }
 
@@ -48,13 +45,10 @@ export class RegistroEquipoService {
     value.regUsuario = environment.usuario;
     value.regEstacion = environment.estacion;
     const url = environment.url_api + 'Mantenimiento/Update';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
     const param: string = JSON.stringify(value);
     return this.http.put(
         url,
-        param,
-        { headers: myHeader }
+        param
     );
   }
 
@@ -62,22 +56,19 @@ export class RegistroEquipoService {
     value.regUsuario = environment.usuario;
     value.regEstacion = environment.estacion;
     const url = environment.url_api + 'Mantenimiento/Delete';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
     const param: string = JSON.stringify(value);
     return this.http.patch(
         url,
-        param,
-        { headers: myHeader }
+        param
     );
   }
 
   // title:  Metodos para Condicion de Limpieza
   // Author: Luis Tasayco
   // Date:   02/09/2020
-  getCondicionLimpieza(value: CondicionLimpiezaModel) {
+  getCondicionLimpieza(value?: CondicionLimpiezaModel) {
     let parametros = new HttpParams();
-    parametros = parametros.append('descripcion', value.descripcion);
+    parametros = parametros.append('descripcion', value ? value.descripcion : '');
 
     return this.http.get<CondicionLimpiezaModel[]>
     (`${environment.url_api}CondicionLimpieza/GetAll/`, { params: parametros });
@@ -87,13 +78,10 @@ export class RegistroEquipoService {
     value.regUsuario = environment.usuario;
     value.regEstacion = environment.estacion;
     const url = environment.url_api + 'CondicionLimpieza/Create';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
     const param: string = JSON.stringify(value);
     return this.http.post(
         url,
-        param,
-        { headers: myHeader }
+        param
     );
   }
 
@@ -101,13 +89,10 @@ export class RegistroEquipoService {
     value.regUsuario = environment.usuario;
     value.regEstacion = environment.estacion;
     const url = environment.url_api + 'CondicionLimpieza/Update';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
     const param: string = JSON.stringify(value);
     return this.http.put(
         url,
-        param,
-        { headers: myHeader }
+        param
     );
   }
 
@@ -115,22 +100,19 @@ export class RegistroEquipoService {
     value.regUsuario = environment.usuario;
     value.regEstacion = environment.estacion;
     const url = environment.url_api + 'CondicionLimpieza/Delete';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
     const param: string = JSON.stringify(value);
     return this.http.patch(
         url,
-        param,
-        { headers: myHeader }
+        param
     );
   }
 
  // title:  Metodos para Condicion de Limpieza
   // Author: Luis Tasayco
   // Date:   09/09/2020
-  getRequerimientoEquipo(value: RequerimientoEquipoModel) {
+  getRequerimientoEquipo(value?: RequerimientoEquipoModel) {
     let parametros = new HttpParams();
-    parametros = parametros.append('descripcion', value.descripcion);
+    parametros = parametros.append('descripcion', value ? value.descripcion : '');
 
     return this.http.get<RequerimientoEquipoModel[]>
     (`${environment.url_api}RequerimientoEquipo/GetAll/`, { params: parametros });
@@ -140,13 +122,10 @@ export class RegistroEquipoService {
     value.regUsuario = environment.usuario;
     value.regEstacion = environment.estacion;
     const url = environment.url_api + 'RequerimientoEquipo/Create';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
     const param: string = JSON.stringify(value);
     return this.http.post(
         url,
-        param,
-        { headers: myHeader }
+        param
     );
   }
 
@@ -154,13 +133,10 @@ export class RegistroEquipoService {
     value.regUsuario = environment.usuario;
     value.regEstacion = environment.estacion;
     const url = environment.url_api + 'RequerimientoEquipo/Update';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
     const param: string = JSON.stringify(value);
     return this.http.put(
         url,
-        param,
-        { headers: myHeader }
+        param
     );
   }
 
@@ -168,67 +144,22 @@ export class RegistroEquipoService {
     value.regUsuario = environment.usuario;
     value.regEstacion = environment.estacion;
     const url = environment.url_api + 'RequerimientoEquipo/Delete';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
     const param: string = JSON.stringify(value);
     return this.http.patch(
         url,
-        param,
-        { headers: myHeader }
+        param
     );
   }
 
   // title:  Metodos para Modelo
   // Author: Luis Tasayco
   // Date:   02/09/2020
-  getModelo(value: ModeloModel) {
+  getModelo(value?: ModeloModel) {
     let parametros = new HttpParams();
-    parametros = parametros.append('descripcion', value.descripcion);
+    parametros = parametros.append('descripcion', value ? value.descripcion : '');
 
     return this.http.get<ModeloModel[]>
     (`${environment.url_api}Modelo/GetAll/`, { params: parametros });
-  }
-
-  setInsertModelo(value: ModeloModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
-    const url = environment.url_api + 'Modelo/Create';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
-    const param: string = JSON.stringify(value);
-    return this.http.post(
-        url,
-        param,
-        { headers: myHeader }
-    );
-  }
-
-  setUpdateModelo(value: ModeloModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
-    const url = environment.url_api + 'Modelo/Update';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
-    const param: string = JSON.stringify(value);
-    return this.http.put(
-        url,
-        param,
-        { headers: myHeader }
-    );
-  }
-
-  setDeleteModelo(value: ModeloModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
-    const url = environment.url_api + 'Modelo/Delete';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
-    const param: string = JSON.stringify(value);
-    return this.http.patch(
-        url,
-        param,
-        { headers: myHeader }
-    );
   }
 
   // title:  Metodos de equipo
@@ -238,44 +169,10 @@ export class RegistroEquipoService {
     let parametros = new HttpParams();
     parametros = parametros.append('codigoEmpresa', value.codigoEmpresa);
     parametros = parametros.append('codigoPlanta', value.codigoPlanta);
-    parametros = parametros.append('idModelo', value.idModelo.toString());
+    parametros = parametros.append('codigoModelo', value.codigoModelo);
 
     return this.http.get<EquipoPorModeloModel[]>
     (`${environment.url_api}EquipoPorModelo/GetAllSeleccionado/`, { params: parametros });
-  }
-
-  getEquipoPorSeleccionar(value: EquipoPorModeloModel) {
-    let parametros = new HttpParams();
-    parametros = parametros.append('codigoEmpresa', value.codigoEmpresa);
-    parametros = parametros.append('codigoPlanta', value.codigoPlanta);
-    parametros = parametros.append('idModelo', value.idModelo.toString());
-
-    return this.http.get<EquipoPorModeloModel[]>
-    (`${environment.url_api}EquipoPorModelo/GetAllPorSeleccionar/`, { params: parametros });
-  }
-
-  setInsertEquipoPorModelo(value: EquipoPorModeloModel[]) {
-    const url = environment.url_api + 'EquipoPorModelo/Create';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
-    const param: string = JSON.stringify(value);
-    return this.http.post(
-        url,
-        param,
-        { headers: myHeader }
-    );
-  }
-
-  setDeleteEquipoPorModelo(value: EquipoPorModeloModel[]) {
-    const url = environment.url_api + 'EquipoPorModelo/Delete';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
-    const param: string = JSON.stringify(value);
-    return this.http.patch(
-        url,
-        param,
-        { headers: myHeader }
-    );
   }
 
   // title:  Metodos de mantenimiento
@@ -283,9 +180,7 @@ export class RegistroEquipoService {
   // Date:   08/09/2020
   getMantenimientoSeleccionados(value: MantenimientoPorModeloModel) {
     let parametros = new HttpParams();
-    parametros = parametros.append('codigoEmpresa', value.codigoEmpresa);
-    parametros = parametros.append('codigoPlanta', value.codigoPlanta);
-    parametros = parametros.append('idModelo', value.idModelo.toString());
+    parametros = parametros.append('codigoModelo', value.codigoModelo);
 
     return this.http.get<MantenimientoPorModeloModel[]>
     (`${environment.url_api}MantenimientoPorModelo/GetAllSeleccionado/`, { params: parametros });
@@ -293,9 +188,7 @@ export class RegistroEquipoService {
 
   getMantenimientoPorSeleccionar(value: MantenimientoPorModeloModel) {
     let parametros = new HttpParams();
-    parametros = parametros.append('codigoEmpresa', value.codigoEmpresa);
-    parametros = parametros.append('codigoPlanta', value.codigoPlanta);
-    parametros = parametros.append('idModelo', value.idModelo.toString());
+    parametros = parametros.append('codigoModelo', value.codigoModelo);
 
     return this.http.get<MantenimientoPorModeloModel[]>
     (`${environment.url_api}MantenimientoPorModelo/GetAllPorSeleccionar/`, { params: parametros });
@@ -303,25 +196,19 @@ export class RegistroEquipoService {
 
   setInsertMantenimientoPorModelo(value: MantenimientoPorModeloModel[]) {
     const url = environment.url_api + 'MantenimientoPorModelo/Create';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
     const param: string = JSON.stringify(value);
     return this.http.post(
         url,
-        param,
-        { headers: myHeader }
+        param
     );
   }
 
   setDeleteMantenimientoPorModelo(value: MantenimientoPorModeloModel[]) {
     const url = environment.url_api + 'MantenimientoPorModelo/Delete';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
     const param: string = JSON.stringify(value);
     return this.http.patch(
         url,
-        param,
-        { headers: myHeader }
+        param
     );
   }
 
@@ -330,9 +217,7 @@ export class RegistroEquipoService {
   // Date:   08/09/2020
   getRepuestoSeleccionados(value: RepuestoPorModeloModel) {
     let parametros = new HttpParams();
-    parametros = parametros.append('codigoEmpresa', value.codigoEmpresa);
-    parametros = parametros.append('codigoPlanta', value.codigoPlanta);
-    parametros = parametros.append('idModelo', value.idModelo.toString());
+    parametros = parametros.append('codigoModelo', value.codigoModelo);
 
     return this.http.get<RepuestoPorModeloModel[]>
     (`${environment.url_api}RepuestoPorModelo/GetAllSeleccionado/`, { params: parametros });
@@ -340,9 +225,7 @@ export class RegistroEquipoService {
 
   getRepuestoPorSeleccionar(value: RepuestoPorModeloModel) {
     let parametros = new HttpParams();
-    parametros = parametros.append('codigoEmpresa', value.codigoEmpresa);
-    parametros = parametros.append('codigoPlanta', value.codigoPlanta);
-    parametros = parametros.append('idModelo', value.idModelo.toString());
+    parametros = parametros.append('codigoModelo', value.codigoModelo);
 
     return this.http.get<RepuestoPorModeloModel[]>
     (`${environment.url_api}RepuestoPorModelo/GetAllPorSeleccionar/`, { params: parametros });
@@ -350,25 +233,19 @@ export class RegistroEquipoService {
 
   setInsertRepuestoPorModelo(value: RepuestoPorModeloModel[]) {
     const url = environment.url_api + 'RepuestoPorModelo/Create';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
     const param: string = JSON.stringify(value);
     return this.http.post(
         url,
-        param,
-        { headers: myHeader }
+        param
     );
   }
 
   setDeleteRepuestoPorModelo(value: RepuestoPorModeloModel[]) {
     const url = environment.url_api + 'RepuestoPorModelo/Delete';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
     const param: string = JSON.stringify(value);
     return this.http.patch(
         url,
-        param,
-        { headers: myHeader }
+        param
     );
   }
 
@@ -379,7 +256,7 @@ export class RegistroEquipoService {
     let parametros = new HttpParams();
     parametros = parametros.append('codigoEmpresa', value.codigoEmpresa);
     parametros = parametros.append('codigoPlanta', value.codigoPlanta);
-    parametros = parametros.append('idModelo', value.idModelo.toString());
+    parametros = parametros.append('codigoModelo', value.codigoModelo);
     parametros = parametros.append('fecRegistroInicio', this.utils.fecha_AAAAMMDD(value.fecRegistroInicio));
     parametros = parametros.append('fecRegistroFin', this.utils.fecha_AAAAMMDD(value.fecRegistroFin));
     parametros = parametros.append('idRegistroEquipo', value.idRegistroEquipo.toString());
@@ -388,11 +265,11 @@ export class RegistroEquipoService {
     (`${environment.url_api}TxRegistroEquipo/GetAll/`, { params: parametros });
   }
 
-  getTxRegistroEquipoNewItem(codigoEmpresa: string, codigoPlanta: string, idModelo: number) {
+  getTxRegistroEquipoNewItem(codigoEmpresa: string, codigoPlanta: string, codigoModelo: string) {
     let parametros = new HttpParams();
     parametros = parametros.append('codigoEmpresa', codigoEmpresa);
     parametros = parametros.append('codigoPlanta', codigoPlanta);
-    parametros = parametros.append('idModelo', idModelo.toString());
+    parametros = parametros.append('codigoModelo', codigoModelo);
 
     return this.http.get<TxRegistroEquipoModel>
     (`${environment.url_api}TxRegistroEquipo/GetNewObject/`, { params: parametros });
@@ -409,11 +286,6 @@ export class RegistroEquipoService {
   }
 
   getTxRegistroEquipoPorId(id: number) {
-    // let parametros = new HttpParams();
-    // parametros = parametros.append('codigoEidmpresa', codigoEmpresa);
-    // parametros = parametros.append('codigoPlanta', codigoPlanta);
-    // parametros = parametros.append('idModelo', idModelo.toString());
-
     return this.http.get<TxRegistroEquipoModel>
     (`${environment.url_api}TxRegistroEquipo/GetByIdTxRegistroEquipo/${id}`);
   }
@@ -421,17 +293,11 @@ export class RegistroEquipoService {
   setInsertTxRegistroEquipo(value: TxRegistroEquipoModel) {
     value.regUsuario = environment.usuario;
     value.regEstacion = environment.estacion;
-
-    console.log('this.modeloItem', value);
-
     const url = environment.url_api + 'TxRegistroEquipo/Create';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
     const param: string = JSON.stringify(value);
     return this.http.post(
         url,
-        param,
-        { headers: myHeader }
+        param
     );
   }
 
@@ -440,6 +306,6 @@ export class RegistroEquipoService {
                 .toPromise()
                 .then(res => res.data as any[])
                 .then(data => data);
-}
+  }
 
 }

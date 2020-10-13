@@ -1,10 +1,7 @@
 export class RepuestoPorModeloModel {
     idRepuestoPorModelo?: number;
     idEquipoPorModelo?: number;
-    codigoEmpresa: string;
-    codigoPlanta: string;
-    idModelo?: number;
-    codigoEquipo?: string;
+    codigoModelo?: string;
     codigoRepuesto?: string;
     descripcion?: string;
     flgPredeterminado?: boolean;
@@ -16,10 +13,7 @@ export class RepuestoPorModeloModel {
     constructor(){
         this.idRepuestoPorModelo = 0;
         this.idEquipoPorModelo = 0;
-        this.codigoEmpresa = '';
-        this.codigoPlanta = '';
-        this.idModelo = 0;
-        this.codigoEquipo = '';
+        this.codigoModelo = '';
         this.codigoRepuesto = '';
         this.descripcion = '';
         this.flgPredeterminado = false;

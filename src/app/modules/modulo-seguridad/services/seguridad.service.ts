@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { PerfilModel } from '../models/pefil.model';
-import { environment } from 'src/environments/environment';
 import { PersonaModel } from '../models/persona.model';
 import { MenuModel } from '../models/menu.model';
 import { OpcionModel } from '../models/opcion.model';
 import { OpcionPorPerfilModel } from '../models/opcion-por-perfil';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'

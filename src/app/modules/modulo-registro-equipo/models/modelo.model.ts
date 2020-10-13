@@ -1,15 +1,9 @@
 export class ModeloModel {
-    idModelo?: number;
+    codigoModelo?: string;
     descripcion: string;
 
-    // Auditoria
-    regUsuario?: number;
-    regEstacion?: string;
-
     constructor(){
-        this.idModelo = 0;
+        this.codigoModelo = '';
         this.descripcion = '';
-        this.regUsuario = 0;
-        this.regEstacion = '';
     }
 }

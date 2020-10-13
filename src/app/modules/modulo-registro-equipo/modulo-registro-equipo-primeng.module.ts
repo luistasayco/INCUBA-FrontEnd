@@ -17,6 +17,8 @@ import { PickListModule } from 'primeng/picklist';
 import { CheckboxModule } from 'primeng/checkbox';
 import { CalendarModule } from 'primeng/calendar';
 import { ToggleButtonModule } from 'primeng/togglebutton';
+import { DialogModule } from 'primeng/dialog';
+import { ListboxModule } from 'primeng/listbox';
 // Sevices
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
@@ -38,7 +40,9 @@ import { MessageService } from 'primeng/api';
             PickListModule,
             CheckboxModule,
             CalendarModule,
-            ToggleButtonModule],
+            ToggleButtonModule,
+            DialogModule,
+            ListboxModule],
     providers: [MessageService, ConfirmationService],
 })
 export class RegistroEquipoPrimeNgModule {}

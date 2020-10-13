@@ -134,7 +134,7 @@ export class RegistroEquipoUpdateComponent implements OnInit {
     .subscribe((data: ModeloModel[]) => {
       this.listItemModelo = [];
       for (let item of data) {
-        this.listItemModelo.push({ label: item.descripcion, value: item.idModelo });
+        this.listItemModelo.push({ label: item.descripcion, value: item.codigoModelo });
       }
       });
   }

@@ -184,7 +184,6 @@ export class PersonaUpdateComponent implements OnInit {
     this.modelo.entidadUsuario.typeMenu = this.modeloForm.controls['menu'].value;
     this.modelo.entidadUsuario.themeColor = this.modeloForm.controls['theme'].value;
 
-    console.log('modelo', this.modelo);
     this.seguridadService.setUpdatePersona(this.modelo)
     .subscribe(() =>  {
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);

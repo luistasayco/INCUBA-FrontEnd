@@ -18,10 +18,10 @@
     <div class="layout-breadcrumb-options">
         <!-- <a routerLink="/" title="Backup">
             <i class="fa fa-cloud-upload"></i>
+        </a>-->
+        <a title="Network">
+            <i class="fa fa-wifi" [ngStyle]="{'color':isNetwork ? 'green' : 'red' }"></i>
         </a>
-        <a routerLink="/" title="Bookmark">
-            <i class="fa fa-bookmark"></i>
-        </a> -->
         <a title="Logout" (click)="logout()">
             <i class="fa fa-sign-out"></i>
         </a>

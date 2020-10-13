@@ -100,7 +100,6 @@ export class PanelOpcionComponent implements OnInit {
   nodeSelect(menu: any)
   {
     this.itemSelected = menu;
-    console.log(this.itemSelected);
     this.modelo = menu.data;
 
     this.onListar(this.modelo.idMenu);

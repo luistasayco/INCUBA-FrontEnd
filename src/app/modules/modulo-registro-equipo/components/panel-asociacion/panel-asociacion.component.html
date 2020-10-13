@@ -18,13 +18,11 @@
 
     <p-messages [(value)]="mensajePrimeNgService.msgs"></p-messages>
 
-
     <p-panel header="Opción de {{titulo}}" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
         <p-accordion>
             <p-accordionTab header="Equipo">
-                <p-pickList [source]="listEquipoPorSeleccionado" [target]="listEquipoSeleccionado" sourceHeader="Lista" targetHeader="Seleccionado" [responsive]="true" filterBy="codigoEquipo" dragdrop="true" showSourceControls='false' sourceFilterPlaceholder="Search by Equipo"
-                    targetFilterPlaceholder="Search by Equipo" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}" [showSourceControls]="false" [showTargetControls]="false" (onMoveToTarget)="onToMoveToTarget($event.items)" (onMoveToSource)="onToMoveToSource($event.items)"
-                    (onMoveAllToTarget)="onToMoveAllToTarget($event.items)" (onToMoveAllToSource)="onToMoveToSource($event.items)">
+                <p-pickList [disabled]="true" [source]="listEquipoPorSeleccionado" [target]="listEquipoSeleccionado" sourceHeader="Lista" targetHeader="Seleccionado" [responsive]="true" filterBy="codigoEquipo" dragdrop="true" showSourceControls='false' sourceFilterPlaceholder="Search by Equipo"
+                    targetFilterPlaceholder="Search by Equipo" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}" [showSourceControls]="false" [showTargetControls]="false">
                     <ng-template let-equipo pTemplate="item">
                         <div class="ui-helper-clearfix">
                             <div style="font-size:14px;float:left;margin:5px 5px 0 0">{{equipo.codigoEquipo}}</div>
@@ -58,5 +56,4 @@
             </p-accordionTab>
         </p-accordion>
     </p-panel>
-
 </div>

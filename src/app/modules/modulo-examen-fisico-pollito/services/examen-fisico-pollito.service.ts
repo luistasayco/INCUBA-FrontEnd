@@ -18,7 +18,6 @@ export class ExamenFisicoPollitoService {
   getProceso(value: ProcesoModel) {
     let parametros = new HttpParams();
     parametros = parametros.append('descripcion', value.descripcion);
-
     return this.http.get<ProcesoModel[]>
     (`${environment.url_api}Proceso/GetAll/`, { params: parametros });
   }
@@ -27,13 +26,10 @@ export class ExamenFisicoPollitoService {
     value.regUsuario = environment.usuario;
     value.regEstacion = environment.estacion;
     const url = environment.url_api + 'Proceso/Create';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
     const param: string = JSON.stringify(value);
     return this.http.post(
         url,
-        param,
-        { headers: myHeader }
+        param
     );
   }
 
@@ -41,13 +37,10 @@ export class ExamenFisicoPollitoService {
     value.regUsuario = environment.usuario;
     value.regEstacion = environment.estacion;
     const url = environment.url_api + 'Proceso/Update';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
     const param: string = JSON.stringify(value);
     return this.http.put(
         url,
-        param,
-        { headers: myHeader }
+        param
     );
   }
 
@@ -55,13 +48,10 @@ export class ExamenFisicoPollitoService {
     value.regUsuario = environment.usuario;
     value.regEstacion = environment.estacion;
     const url = environment.url_api + 'Proceso/Delete';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
     const param: string = JSON.stringify(value);
     return this.http.patch(
         url,
-        param,
-        { headers: myHeader }
+        param
     );
   }
 
@@ -71,7 +61,6 @@ export class ExamenFisicoPollitoService {
   getProcesoDetalle(value: ProcesoDetalleModel) {
     let parametros = new HttpParams();
     parametros = parametros.append('idProceso', value.idProceso.toString());
-
     return this.http.get<ProcesoDetalleModel[]>
     (`${environment.url_api}ProcesoDetalle/GetAll/`, { params: parametros });
   }
@@ -80,13 +69,10 @@ export class ExamenFisicoPollitoService {
     value.regUsuario = environment.usuario;
     value.regEstacion = environment.estacion;
     const url = environment.url_api + 'ProcesoDetalle/Create';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
     const param: string = JSON.stringify(value);
     return this.http.post(
         url,
-        param,
-        { headers: myHeader }
+        param
     );
   }
 
@@ -94,13 +80,10 @@ export class ExamenFisicoPollitoService {
     value.regUsuario = environment.usuario;
     value.regEstacion = environment.estacion;
     const url = environment.url_api + 'ProcesoDetalle/Update';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
     const param: string = JSON.stringify(value);
     return this.http.put(
         url,
-        param,
-        { headers: myHeader }
+        param
     );
   }
 
@@ -108,13 +91,10 @@ export class ExamenFisicoPollitoService {
     value.regUsuario = environment.usuario;
     value.regEstacion = environment.estacion;
     const url = environment.url_api + 'ProcesoDetalle/Delete';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
     const param: string = JSON.stringify(value);
     return this.http.patch(
         url,
-        param,
-        { headers: myHeader }
+        param
     );
   }
 
@@ -124,7 +104,6 @@ export class ExamenFisicoPollitoService {
   getCalidad(value: CalidadModel) {
     let parametros = new HttpParams();
     parametros = parametros.append('descripcion', value.descripcion);
-
     return this.http.get<ProcesoModel[]>
     (`${environment.url_api}Calidad/GetAll/`, { params: parametros });
   }
@@ -133,13 +112,10 @@ export class ExamenFisicoPollitoService {
     value.regUsuario = environment.usuario;
     value.regEstacion = environment.estacion;
     const url = environment.url_api + 'Calidad/Create';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
     const param: string = JSON.stringify(value);
     return this.http.post(
         url,
-        param,
-        { headers: myHeader }
+        param
     );
   }
 
@@ -147,13 +123,10 @@ export class ExamenFisicoPollitoService {
     value.regUsuario = environment.usuario;
     value.regEstacion = environment.estacion;
     const url = environment.url_api + 'Calidad/Update';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
     const param: string = JSON.stringify(value);
     return this.http.put(
         url,
-        param,
-        { headers: myHeader }
+        param
     );
   }
 
@@ -161,13 +134,10 @@ export class ExamenFisicoPollitoService {
     value.regUsuario = environment.usuario;
     value.regEstacion = environment.estacion;
     const url = environment.url_api + 'Calidad/Delete';
-    let myHeader = new HttpHeaders();
-    myHeader = myHeader.set( 'Content-Type', 'application/json');
     const param: string = JSON.stringify(value);
     return this.http.patch(
         url,
-        param,
-        { headers: myHeader }
+        param
     );
   }
 }

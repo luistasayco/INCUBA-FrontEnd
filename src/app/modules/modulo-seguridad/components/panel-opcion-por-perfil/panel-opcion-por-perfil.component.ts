@@ -110,7 +110,6 @@ export class PanelOpcionPorPerfilComponent implements OnInit {
   nodeSelect(menu: any)
   {
     this.itemSelected = menu;
-    console.log(this.itemSelected);
     this.modelo = menu.data;
 
     this.onListar(this.modelo.idMenu);
@@ -168,8 +167,6 @@ export class PanelOpcionPorPerfilComponent implements OnInit {
 
       return dato;
     });
-
-    console.log(event);
 
     this.seguridadService.setInsertOpcionPorPerfil(event)
     .subscribe(() =>  {
