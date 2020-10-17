@@ -18,6 +18,7 @@ export class TxRegistroEquipoModel {
     descripcionModelo?: string;
     firmaIncuba?: string;
     firmaPlanta?: string;
+    flgCerrado?: boolean;
 
     //Varibles para el filtro
     fecRegistroInicio?: Date;
@@ -49,6 +50,7 @@ export class TxRegistroEquipoModel {
         this.descripcionEmpresa = '';
         this.firmaIncuba = '';
         this.firmaPlanta = '';
+        this.flgCerrado = false;
         this.fecRegistroInicio = null;
         this.fecRegistroFin = null;
 

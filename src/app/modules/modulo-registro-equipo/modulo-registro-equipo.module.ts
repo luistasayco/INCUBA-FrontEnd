@@ -17,6 +17,10 @@ import { RegistroEquipoCreateComponent } from './components/panel-registro-equip
 import { RegistroEquipoUpdateComponent } from './components/panel-registro-equipo/registro-equipo-update/registro-equipo-update.component';
 import { SignaturePadModule } from '@ng-plus/signature-pad';
 import { PanelFirmaDigitalComponent } from '../modulo-compartido/components/panel-firma-digital/panel-firma-digital.component';
+import { PanelRegistroEquipoOffLineComponent } from './components/panel-registro-equipo-off-line/panel-registro-equipo-off-line.component';
+import { RegistroEquipoUpdateOffLineComponent } from './components/panel-registro-equipo-off-line/registro-equipo-update-off-line/registro-equipo-update-off-line.component';
+import { RegistroEquipoCreateOffLineComponent } from './components/panel-registro-equipo-off-line/registro-equipo-create-off-line/registro-equipo-create-off-line.component';
+import { GaleriaImagenModule } from '../modulo-compartido/components/galeria-imagen/galeria-imagen.module';
 
 @NgModule({
     declarations: [PanelMantenimientoComponent,
@@ -31,13 +35,16 @@ import { PanelFirmaDigitalComponent } from '../modulo-compartido/components/pane
                 PanelRegistroEquipoComponent,
                 RegistroEquipoCreateComponent,
                 RegistroEquipoUpdateComponent,
-                PanelFirmaDigitalComponent],
+                PanelFirmaDigitalComponent,
+                PanelRegistroEquipoOffLineComponent,
+                RegistroEquipoUpdateOffLineComponent,
+                RegistroEquipoCreateOffLineComponent],
     imports: [ CommonModule,
         RegistroEquipoRoutingModule,
         FormsModule,
         ReactiveFormsModule,
         RegistroEquipoPrimeNgModule,
-        SignaturePadModule],
+        SignaturePadModule, GaleriaImagenModule],
     exports: [],
     providers: [],
 })

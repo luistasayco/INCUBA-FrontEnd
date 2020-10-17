@@ -1,0 +1,28 @@
+<div class="ui-grid ui-fluid">
+    <div class="ui-g-12">
+        <input class="ui-button" type="file" (change)="fileChangeEvent($event)" />
+    </div>
+    <div class="ui-g-12" style="text-align: center;">
+        <button type="button" pButton icon="fa fa-undo" (click)="rotateLeft()"></button>
+        <button type="button" pButton icon="fa fa-repeat" (click)="rotateRight()"></button>
+        <button type="button" pButton icon="fa fa-arrows-h" (click)="flipHorizontal()"></button>
+        <button type="button" pButton icon="fa fa-arrows-v" (click)="flipVertical()"></button>
+        <button type="button" pButton icon="fa fa-picture-o" (click)="resetImage()"></button>
+        <button type="button" pButton icon="fa fa-search-minus" (click)="zoomOut()"></button>
+        <button type="button" pButton icon="fa fa-search-plus" (click)="zoomIn()"></button>
+    </div>
+    <div class="ui-g-12" style="text-align: center;">
+        <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [containWithinAspectRatio]="containWithinAspectRatio" [aspectRatio]="4 / 3" [resizeToWidth]="256" [cropperMinWidth]="128" [onlyScaleDown]="true" [roundCropper]="false"
+            [canvasRotation]="canvasRotation" [transform]="transform" [alignImage]="'left'" [style.display]="showCropper ? null : 'none'" format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady($event)"
+            (loadImageFailed)="loadImageFailed()"></image-cropper>
+    </div>
+
+    <div class="ui-grid ui-fluid">
+        <div class="ui-g-12 ui-md-6">
+            <button [disabled]="!showCropper" pButton type="submit" label="Aceptar" icon="fa fa-check" (click)="showImage()"></button>
+        </div>
+        <div class="ui-g-12 ui-md-6">
+            <button pButton type="button" label="Regresar" icon="pi pi-sign-out" (click)="clearImage()"></button>
+        </div>
+    </div>
+</div>

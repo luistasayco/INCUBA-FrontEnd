@@ -12,13 +12,7 @@ import { environment } from 'src/environments/environment';
 })
 export class SeguridadService {
 
-  myHeader;
-
   constructor(private http: HttpClient) {
-     this.myHeader = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('token')}`
-    });
   }
 
   // title:  Metodos para perfil
@@ -28,7 +22,7 @@ export class SeguridadService {
     let parametros = new HttpParams();
     parametros = parametros.append('descripcionPerfil', value.descripcionPerfil);
     return this.http.get<PerfilModel[]>
-    (`${environment.url_api_seguridad}Perfil/GetAll/`, { params: parametros, headers: this.myHeader });
+    (`${environment.url_api_seguridad}Perfil/GetAll/`, { params: parametros });
   }
 
   setInsertPerfil(value: PerfilModel) {
@@ -38,8 +32,7 @@ export class SeguridadService {
     const param: string = JSON.stringify(value);
     return this.http.post(
         url,
-        param,
-        { headers: this.myHeader }
+        param
     );
   }
 
@@ -50,8 +43,7 @@ export class SeguridadService {
     const param: string = JSON.stringify(value);
     return this.http.put(
         url,
-        param,
-        { headers: this.myHeader }
+        param
     );
   }
 
@@ -62,8 +54,7 @@ export class SeguridadService {
     const param: string = JSON.stringify(value);
     return this.http.patch(
         url,
-        param,
-        { headers: this.myHeader }
+        param
     );
   }
 
@@ -75,11 +66,11 @@ export class SeguridadService {
     parametros = parametros.append('nombre', value.nombre);
 
     return this.http.get<PersonaModel[]>
-    (`${environment.url_api_seguridad}Persona/GetAll/`, { params: parametros, headers: this.myHeader });
+    (`${environment.url_api_seguridad}Persona/GetAll/`, { params: parametros });
   }
   getPersonaPorId(id: number) {
     return this.http.get<PersonaModel>
-    (`${environment.url_api_seguridad}Persona/GetbyIdPersona/${id}`, {headers: this.myHeader});
+    (`${environment.url_api_seguridad}Persona/GetbyIdPersona/${id}`);
   }
   setInsertPersona(value: PersonaModel) {
     value.regUsuario = environment.usuario;
@@ -88,8 +79,7 @@ export class SeguridadService {
     const param: string = JSON.stringify(value);
     return this.http.post(
         url,
-        param,
-        { headers: this.myHeader }
+        param
     );
   }
   setUpdatePersona(value: PersonaModel) {
@@ -99,8 +89,7 @@ export class SeguridadService {
     const param: string = JSON.stringify(value);
     return this.http.put(
         url,
-        param,
-        { headers: this.myHeader }
+        param
     );
   }
   setDeletePersona(value: PersonaModel) {
@@ -110,8 +99,7 @@ export class SeguridadService {
     const param: string = JSON.stringify(value);
     return this.http.patch(
         url,
-        param,
-        { headers: this.myHeader }
+        param
     );
   }
 
@@ -120,7 +108,7 @@ export class SeguridadService {
   // Date:   25/09/2020
   getMenuAll() {
     return this.http.get<MenuModel[]>
-    (`${environment.url_api_seguridad}Menu/GetAll/`, {headers: this.myHeader});
+    (`${environment.url_api_seguridad}Menu/GetAll/`);
   }
   setInsertMenu(value: MenuModel) {
     value.regUsuario = environment.usuario;
@@ -129,8 +117,7 @@ export class SeguridadService {
     const param: string = JSON.stringify(value);
     return this.http.post(
         url,
-        param,
-        { headers: this.myHeader }
+        param
     );
   }
   setUpdateMenu(value: MenuModel) {
@@ -140,8 +127,7 @@ export class SeguridadService {
     const param: string = JSON.stringify(value);
     return this.http.put(
         url,
-        param,
-        { headers: this.myHeader }
+        param
     );
   }
 
@@ -153,7 +139,7 @@ export class SeguridadService {
     parametros = parametros.append('idMenu', idMenu.toString());
 
     return this.http.get<OpcionModel[]>
-    (`${environment.url_api_seguridad}Opcion/GetAll/`, { params: parametros, headers: this.myHeader });
+    (`${environment.url_api_seguridad}Opcion/GetAll/`, { params: parametros });
   }
   setInsertOpcion(value: OpcionModel) {
     value.regUsuario = environment.usuario;
@@ -162,8 +148,7 @@ export class SeguridadService {
     const param: string = JSON.stringify(value);
     return this.http.post(
         url,
-        param,
-        { headers: this.myHeader }
+        param
     );
   }
   setUpdateOpcion(value: OpcionModel) {
@@ -173,8 +158,7 @@ export class SeguridadService {
     const param: string = JSON.stringify(value);
     return this.http.put(
         url,
-        param,
-        { headers: this.myHeader }
+        param
     );
   }
   setDeleteOpcion(value: OpcionModel) {
@@ -184,8 +168,7 @@ export class SeguridadService {
     const param: string = JSON.stringify(value);
     return this.http.patch(
         url,
-        param,
-        { headers: this.myHeader }
+        param
     );
   }
 
@@ -198,7 +181,7 @@ export class SeguridadService {
     parametros = parametros.append('idPerfil', idPerfil.toString());
 
     return this.http.get<OpcionPorPerfilModel[]>
-    (`${environment.url_api_seguridad}OpcionPorPerfil/GetAllSeleccionado/`, { params: parametros, headers: this.myHeader });
+    (`${environment.url_api_seguridad}OpcionPorPerfil/GetAllSeleccionado/`, { params: parametros });
   }
   getPorSeleccionarOpcionPorPerfil(idMenu: number, idPerfil: number) {
     let parametros = new HttpParams();
@@ -206,15 +189,14 @@ export class SeguridadService {
     parametros = parametros.append('idPerfil', idPerfil.toString());
 
     return this.http.get<OpcionPorPerfilModel[]>
-    (`${environment.url_api_seguridad}OpcionPorPerfil/GetAllPorSeleccionar/`, { params: parametros, headers: this.myHeader });
+    (`${environment.url_api_seguridad}OpcionPorPerfil/GetAllPorSeleccionar/`, { params: parametros });
   }
   setInsertOpcionPorPerfil(value: OpcionPorPerfilModel[]) {
     const url = environment.url_api_seguridad + 'OpcionPorPerfil/Create';
     const param: string = JSON.stringify(value);
     return this.http.post(
         url,
-        param,
-        { headers: this.myHeader }
+        param
     );
   }
   setDeleteOpcionPorPerfil(value: OpcionPorPerfilModel[]) {
@@ -222,8 +204,8 @@ export class SeguridadService {
     const param: string = JSON.stringify(value);
     return this.http.patch(
         url,
-        param,
-        { headers: this.myHeader }
+        param
     );
   }
+
 }

@@ -16,10 +16,14 @@
 
                         <div class="ui-g ui-fluid">
                             <div class="ui-g-12">
+                                <p-dropdown [options]="listItemDataBase" [(ngModel)]="selectedData" optionLabel="label" placeholder="Select a Sociedad" (onChange)="onChangeDataBase()"></p-dropdown>
+                            </div>
+                            <div class="ui-g-12">
                                 <div class="ui-inputgroup">
                                     <span class="ui-inputgroup-addon"><i class="pi pi-user" style="line-height: 1.25;"></i></span>
-                                    <input type="text" class="ui-inputtext ui-widget" placeholder="Username" [(ngModel)]="modeloLogin.usuario" autocomplete="off">
+                                    <input id="id-usuario" type="text" class="ui-inputtext ui-widget" placeholder="Username" [(ngModel)]="modeloLogin.usuario" autocomplete="off">
                                 </div>
+
                             </div>
                             <div class="ui-g-12">
                                 <div class="ui-inputgroup">

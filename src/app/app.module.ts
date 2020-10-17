@@ -22,16 +22,17 @@ import { ConfigComponent } from './layout/config/config.component';
 
 import localePy from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
-import { LoginComponent } from './login/login.component';
 
 
-import { MessageModule } from 'primeng/message';
-import { MessagesModule } from 'primeng/messages';
-import { MessageService } from 'primeng/api';
 import { DomSeguroImagenBase64Pipe } from './pipes/dom-seguro-imagen-base64.pipe';
 import { HeaderInterceptorService } from './interceptors/header-interceptor.service';
 import { ModuloEstadoInternetModule } from './modules/modulo-estado-internet/modulo-estado-internet.module';
 import { ModuloBaseDatosLocalModule } from './modules/modulo-base-datos-local/modulo-base-datos-local.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+
+
+import { LoginModule } from './login/login.module';
 
 registerLocaleData(localePy, 'es');
 
@@ -45,7 +46,6 @@ registerLocaleData(localePy, 'es');
     MenuComponent,
     MenuitemComponent,
     ConfigComponent,
-    LoginComponent,
     DomSeguroImagenBase64Pipe
   ],
   imports: [
@@ -58,14 +58,13 @@ registerLocaleData(localePy, 'es');
     ProgressBarModule,
     InputSwitchModule,
     TabViewModule,
-    MessageModule,
-    MessagesModule,
     ModuloEstadoInternetModule,
-    ModuloBaseDatosLocalModule
+    ModuloBaseDatosLocalModule,
+    LoginModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'es' },
-    MessageService,
     {provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptorService, multi: true}],
   bootstrap: [AppComponent]
 })

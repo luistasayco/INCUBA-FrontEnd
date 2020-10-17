@@ -1,3 +1,3 @@
-export const variable_global = {
-    ESTADO_INTERNET: false,
+export class variableGlobal {
+    public static ESTADO_INTERNET: boolean;
 }

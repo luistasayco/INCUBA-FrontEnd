@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalsConstants } from '../../../../modulo-compartido/models/globals-constants';
-import { SelectItem, ConfirmationService } from 'primeng';
+import { SelectItem } from 'primeng';
 import { EmpresaModel } from '../../../../modulo-compartido/models/empresa.model';
 import { PlantaModel } from '../../../../modulo-compartido/models/planta.model';
 import { ModeloModel } from '../../../../modulo-compartido/models/modelo.model';
@@ -8,10 +8,10 @@ import { TxRegistroEquipoModel } from '../../../models/tx-registro-equipo.model'
 import { TxRegistroEquipoDetalle5Model } from '../../../models/tx-registro-equipo-detalle5.model';
 import { TxRegistroEquipoDetalle6Model } from '../../../models/tx-registro-equipo-detalle6.model';
 import { RegistroEquipoService } from '../../../services/registro-equipo.service';
-import { CompartidoService } from '../../../../modulo-compartido/services/compartido.service';
 import { MensajePrimeNgService } from '../../../../modulo-compartido/services/mensaje-prime-ng.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { BreadcrumbService } from '../../../../../services/breadcrumb.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-registro-equipo-update',
@@ -52,14 +52,16 @@ export class RegistroEquipoUpdateComponent implements OnInit {
   modelocloned: { [s: string]: TxRegistroEquipoDetalle5Model; } = {};
   modeloclonedDetalle6: { [s: string]: TxRegistroEquipoDetalle6Model; } = {};
 
-
   // Obtenemos el ID si modificamos el registro
   idRegistroEquipo: number;
+
+  subscription$: Subscription;
+
+  listIma: any[];
+
   constructor(private registroEquipoService: RegistroEquipoService,
-              private compartidoService: CompartidoService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private router: Router,
-              private confirmationService: ConfirmationService,
               private readonly route: ActivatedRoute,
               private breadcrumbService: BreadcrumbService) {
     this.breadcrumbService.setItems([
@@ -70,11 +72,12 @@ export class RegistroEquipoUpdateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.route.params.subscribe((params: Params) => {
       this.idRegistroEquipo = params.id;
       this.onListar();
     });
+
+    this.listIma = [];
 
     this.columnasDetalle5 = [
       { header: 'Codigo' },
@@ -90,76 +93,27 @@ export class RegistroEquipoUpdateComponent implements OnInit {
       { header: 'Cambio por mtto.' },
       { header: 'Entrego' }
     ];
-
-    this.selectedEmpresa = null;
-    this.selectedPlanta = null;
-    this.selectedModelo = null;
-
-    this.getToObtieneEmpresa();
-    this.getToObtieneModelo();
-
-  }
-
-  getToObtieneEmpresa() {
-    this.compartidoService.getEmpresa(this.modeloEmpresa)
-    .subscribe((data: EmpresaModel[]) => {
-      this.listItemEmpresa = [];
-      for (let item of data) {
-        this.listItemEmpresa.push({ label: item.descripcion, value: item.codigoEmpresa });
-      }
-      });
-  }
-
-  getOnChangeEmpresa() {
-    if (this.selectedEmpresa !== null) {
-      this.getToObtienePlantaPorEmpresa(this.selectedEmpresa.value);
-    } else {
-      this.listItemPlanta = [];
-    }
-  }
-
-  getToObtienePlantaPorEmpresa(value: string) {
-    this.modeloPlanta.codigoEmpresa = value;
-    this.compartidoService.getPlantaPorEmpresa(this.modeloPlanta)
-    .subscribe((data: PlantaModel[]) => {
-      this.listItemPlanta = [];
-      for (let item of data) {
-        this.listItemPlanta.push({ label: item.descripcion, value: item.codigoPlanta });
-      }
-      });
-  }
-
-  getToObtieneModelo() {
-    this.registroEquipoService.getModelo(this.modeloModelo)
-    .subscribe((data: ModeloModel[]) => {
-      this.listItemModelo = [];
-      for (let item of data) {
-        this.listItemModelo.push({ label: item.descripcion, value: item.codigoModelo });
-      }
-      });
-  }
-
-  getOnChangeModelo() {
-    this.onListar();
-  }
-
-  getOnChangePlanta(){
-    this.onListar();
   }
 
   onListar() {
-    this.registroEquipoService.getTxRegistroEquipoPorId(this.idRegistroEquipo)
-      .subscribe(resp => {
-        if (resp) {
-          this.modeloItem  = resp;
-          this.updateRowGroupMetaData();
-          this.updateRowGroupMetaDataDetalle2();
-          }
-        },
-        (error) => {
-          this.mensajePrimeNgService.onToErrorMsg(null, error);
+    this.subscription$ = new Subscription();
+    this.subscription$ = this.registroEquipoService.getTxRegistroEquipoPorId(this.idRegistroEquipo)
+    .subscribe(resp => {
+      if (resp) {
+        this.modeloItem = resp;
+        this.onUpdateRow();
         }
-      );
+      },
+      (error) => {
+        this.mensajePrimeNgService.onToErrorMsg(null, error);
+      }
+    );
+  }
+
+  onUpdateRow() {
+    this.updateRowGroupMetaData();
+    this.updateRowGroupMetaDataDetalle2();
+    this.listImagen();
   }
 
   updateRowGroupMetaData() {
@@ -204,15 +158,39 @@ export class RegistroEquipoUpdateComponent implements OnInit {
     }
   }
 
+  listImagen() {
+    if (this.modeloItem.txRegistroEquipoDetalle7.length > 0 ) {
+      this.modeloItem.txRegistroEquipoDetalle7.forEach(x => {
+        this.listIma.push({imagen: x.foto});
+      });
+    }
+  }
+
+  listUpdate(event: any[]) {
+    this.modeloItem.txRegistroEquipoDetalle7 = [];
+    event.forEach(x => {
+      this.modeloItem.txRegistroEquipoDetalle7.push({
+        idRegistroEquipoDetalle: 0,
+        idRegistroEquipo: 0,
+        foto: x.imagen,
+        orden: 0
+      });
+    });
+  }
+
   onToGrabar() {
-    this.registroEquipoService.setInsertTxRegistroEquipo(this.modeloItem)
+    this.subscription$ = new Subscription();
+    this.subscription$ = this.registroEquipoService.setUpdateTxRegistroEquipo(this.modeloItem)
     .subscribe(() =>  {
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
-      // this.back();
+      this.back();
     },
       (error) => {
         this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, error);
     });
   }
 
+  back() {
+    this.router.navigate(['/main/module-re/panel-registro-equipo']);
+  }
 }

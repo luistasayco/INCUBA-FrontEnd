@@ -23,10 +23,17 @@ export class GlobalsConstants {
     icoEliminar: string;
     icoCancelar: string;
     icoRegresar: string;
+    icoPDF: string;
+    icoCerrado: string;
+    icoAbierto: string;
+    icoVisualizar: string;
 
     // Variables titulos
     titleEliminar: string;
     subTitleEliminar: string;
+
+    titleCierre: string;
+    subTitleCierre: string;
 
     // Variables mensaje
     msgExitoSummary: string;
@@ -66,10 +73,17 @@ export class GlobalsConstants {
         this.icoEliminar = 'pi pi-trash';
         this.icoCancelar = 'pi pi-times';
         this.icoRegresar = 'pi pi-sign-out';
+        this.icoPDF = 'fa fa-file-pdf-o';
+        this.icoCerrado = 'fa fa-lock';
+        this.icoAbierto = 'fa fa-unlock';
+        this.icoVisualizar = 'fa fa-eye';
 
         // Titulo
         this.titleEliminar = 'Confimación de Eliminación';
         this.subTitleEliminar = '¿Seguro de Eliminar el registro seleccionado?';
+
+        this.titleCierre = 'Confimación de Cierre';
+        this.subTitleCierre = '¿Seguro de Cerrar el registro seleccionado?';
 
         // Msg Prime Ng
         this.msgExitoSummary = 'Mensaje de Éxito : ';

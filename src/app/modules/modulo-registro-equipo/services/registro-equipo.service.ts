@@ -301,6 +301,39 @@ export class RegistroEquipoService {
     );
   }
 
+  setUpdateTxRegistroEquipo(value: TxRegistroEquipoModel) {
+    value.regUsuario = environment.usuario;
+    value.regEstacion = environment.estacion;
+    const url = environment.url_api + 'TxRegistroEquipo/Update';
+    const param: string = JSON.stringify(value);
+    return this.http.put(
+        url,
+        param
+    );
+  }
+
+  setUpdateStatusTxRegistroEquipo(value: TxRegistroEquipoModel) {
+    value.regUsuario = environment.usuario;
+    value.regEstacion = environment.estacion;
+    const url = environment.url_api + 'TxRegistroEquipo/UpdateStatus';
+    const param: string = JSON.stringify(value);
+    return this.http.put(
+        url,
+        param
+    );
+  }
+
+  setDeleteTxRegistroEquipo(value: TxRegistroEquipoModel) {
+    value.regUsuario = environment.usuario;
+    value.regEstacion = environment.estacion;
+    const url = environment.url_api + 'TxRegistroEquipo/Delete';
+    const param: string = JSON.stringify(value);
+    return this.http.patch(
+        url,
+        param
+    );
+  }
+
   getCarsSmall() {
     return this.http.get<any>('assets/demo/data/cars-small.json')
                 .toPromise()

@@ -1,0 +1,25 @@
+<div class="ui-g">
+    <div class="ui-g-12 ui-md-6">
+        <div class="card">
+            <p-carousel [value]="carouselCars" [numVisible]="3" [numScroll]="3" [circular]="false" [responsiveOptions]="responsiveOptions">
+                <ng-template let-data pTemplate="item">
+                    <div class="car-details">
+                        <div class="p-grid p-nogutter">
+                            <div class="p-col-12">
+                                <img [src]="data.imagen" style="width: 100%; display: block;" />
+                            </div>
+                            <div class="p-col-12 car-data">
+                                <div class="car-buttons">
+                                    <button pButton type="button" class="ui-button-secondary" (click)="deleteItem(data.imagen)" icon="pi pi-trash"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-carousel>
+        </div>
+    </div>
+    <div class="ui-g-12 ui-md-6">
+        <app-capturar-imagen (vImagenBase64)="newImg($event)"></app-capturar-imagen>
+    </div>
+</div>

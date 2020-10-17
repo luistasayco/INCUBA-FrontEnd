@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { LoginModel } from '../models/login.model';
-import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.prod';
+import { DataBaseModel } from '../modules/modulo-seguridad/models/data-base';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class LoginService {
 
   constructor(private http: HttpClient) { }
@@ -18,6 +19,11 @@ export class LoginService {
         url,
         param
     );
+  }
+
+  getDataBaseAll() {
+    return this.http.get<DataBaseModel[]>
+    (`${environment.url_api_seguridad}DataBase/GetAll/`);
   }
 
 }

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { SessionService } from './session.service';
+import { Router } from '@angular/router';
+import { ConstantesDataBase } from '../constants/constantes-db';
 
 const defaultUser = null;
 
@@ -11,7 +13,7 @@ export class UserContextService {
 
   public user$ = new BehaviorSubject(defaultUser);
 
-  constructor(private sessionService: SessionService) {
+  constructor(private sessionService: SessionService, private router: Router) {
     let data = this.sessionService.getItem('currentUser');
     if ( data != null)
     {
@@ -27,7 +29,19 @@ export class UserContextService {
 
   public logout()
   {
-    this.sessionService.removeItem('currentUser');
+    this.sessionService.clear();
+    localStorage.removeItem('token');
     this.user$.next(defaultUser);
+    this.redirecciona();
+    this.inicializaConstantesConexion();
+  }
+
+  private redirecciona() {
+    this.router.navigate(['/']);
+  }
+
+  private inicializaConstantesConexion() {
+    ConstantesDataBase._FLGDATABASESELECCIONADA = false;
+    ConstantesDataBase._DATABASESELECCIONADA = '';
   }
 }

@@ -35,7 +35,6 @@ export class RegistroEquipoLocalService implements OnDestroy {
 
   getTxRegistroEquipoNewItem(codigoEmpresa: string, codigoPlanta: string, codigoModelo: string) {
     this.newRegistroEquipo = new TxRegistroEquipoModel();
-    
 
     this.newRegistroEquipo.idRegistroEquipo = 0;
     this.newRegistroEquipo.codigoEmpresa = codigoEmpresa;
@@ -215,5 +214,24 @@ export class RegistroEquipoLocalService implements OnDestroy {
     }
 
     return txRegistroEquipoDetalle6;
+  }
+
+  getTxRegistroEquipo() {
+    return this.dbService.getAll('trxRegistroEquipo');
+  }
+
+  getTxRegistroEquipoPorId(id: number) {
+    return this.dbService.getByKey('trxRegistroEquipo', id);
+  }
+
+  setInsertTxRegistroEquipo( data: any) {
+    return this.dbService.add('trxRegistroEquipo', data);
+  }
+
+  setUpdateTxRegistroEquipo( data: any) {
+    return this.dbService.update('trxRegistroEquipo', data);
+  }
+  setDeleteTxRegistroEquipo( id: number) {
+    return this.dbService.delete('trxRegistroEquipo', id);
   }
 }

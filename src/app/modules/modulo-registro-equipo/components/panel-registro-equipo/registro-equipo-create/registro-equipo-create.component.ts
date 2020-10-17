@@ -4,8 +4,6 @@ import { SelectItem } from 'primeng';
 import { EmpresaModel } from '../../../../modulo-compartido/models/empresa.model';
 import { PlantaModel } from '../../../../modulo-compartido/models/planta.model';
 import { ModeloModel } from '../../../../modulo-compartido/models/modelo.model';
-import { RegistroEquipoService } from '../../../services/registro-equipo.service';
-import { CompartidoService } from '../../../../modulo-compartido/services/compartido.service';
 import { MensajePrimeNgService } from '../../../../modulo-compartido/services/mensaje-prime-ng.service';
 import { TxRegistroEquipoModel } from '../../../models/tx-registro-equipo.model';
 import { TxRegistroEquipoDetalle5Model } from '../../../models/tx-registro-equipo-detalle5.model';
@@ -17,6 +15,8 @@ import { EquipoModel } from '../../../../modulo-compartido/models/equipo.model';
 import { Subscription } from 'rxjs';
 import { FunctionDBLocalService } from '../../../../modulo-base-datos-local/services/function-dblocal.service';
 import { Router } from '@angular/router';
+import { CompartidoService } from '../../../../modulo-compartido/services/compartido.service';
+import { RegistroEquipoService } from '../../../services/registro-equipo.service';
 
 @Component({
   selector: 'app-registro-equipo-create',
@@ -74,8 +74,7 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
   selectedRepuesto: string[];
 
   constructor(private registroEquipoService: RegistroEquipoService,
-              private registroEquipoLocalService: RegistroEquipoLocalService,
-              private compartidoLocalService: CompartidoLocalService,
+              private compartidoService: CompartidoService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService,
               private functionDBLocalService: FunctionDBLocalService,
@@ -86,6 +85,7 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
                     { label: 'Nuevo registro de equipo'}
                 ]);
               }
+
   ngOnDestroy() {
     this.subscription$.unsubscribe();
   }
@@ -130,7 +130,7 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
   // Obtiene las empresas de forma local
   getToObtieneEmpresa() {
     this.subscription$ = new Subscription();
-    this.subscription$ = this.compartidoLocalService.getEmpresa()
+    this.subscription$ = this.compartidoService.getEmpresa()
     .subscribe((data: EmpresaModel[]) => {
       this.listItemEmpresa = [];
       for (let item of data) {
@@ -148,12 +148,12 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
   }
 
   getToObtienePlantaPorEmpresa(value: string) {
+    this.modeloPlanta.codigoEmpresa = value;
     this.subscription$ = new Subscription();
-    this.subscription$ = this.compartidoLocalService.getPlantaPorEmpresa()
+    this.subscription$ = this.compartidoService.getPlantaPorEmpresa(this.modeloPlanta)
     .subscribe((data: PlantaModel[]) => {
-      let dataFilter = [...data].filter(x => x.codigoEmpresa === value);
       this.listItemPlanta = [];
-      for (let item of dataFilter) {
+      for (let item of data) {
         this.listItemPlanta.push({ label: item.descripcion, value: item.codigoPlanta });
       }
     });
@@ -161,7 +161,7 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
 
   getToObtieneModelo() {
     this.subscription$ = new Subscription();
-    this.subscription$ = this.registroEquipoLocalService.getModeloLocal()
+    this.subscription$ = this.registroEquipoService.getModelo(this.modeloModelo)
     .subscribe((data: ModeloModel[]) => {
       this.listItemModelo = [];
       for (let item of data) {
@@ -180,67 +180,20 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
 
   onListar() {
     let codigoEmpresa: string = this.selectedEmpresa === null ? '' : this.selectedEmpresa.value;
-    let descripcionEmpresa: string = this.selectedEmpresa === null ? '' : this.selectedEmpresa.label;
     let codigoPlanta: string = this.selectedPlanta === null ? '' : this.selectedPlanta.value;
-    let descripcionPlanta: string = this.selectedPlanta === null ? '' : this.selectedPlanta.label;
     let codigoModelo: string = this.selectedModelo === null ? '' : this.selectedModelo.value;
-    let descripcionModelo: string = this.selectedModelo === null ? '' : this.selectedModelo.label;
 
     if ( codigoEmpresa !== '' && codigoPlanta !== '' && codigoModelo !== '')
     {
-      let i = 0;
-      let newEquipo: EquipoModel[] = [];
-      let newRegistroEquipo = new TxRegistroEquipoModel();
-      newRegistroEquipo.idRegistroEquipo = 0;
-      newRegistroEquipo.codigoEmpresa = codigoEmpresa;
-      newRegistroEquipo.descripcionEmpresa = descripcionEmpresa;
-      newRegistroEquipo.codigoPlanta = codigoPlanta;
-      newRegistroEquipo.descripcionPlanta = descripcionPlanta;
-      newRegistroEquipo.codigoModelo = codigoModelo;
-      newRegistroEquipo.descripcionModelo = descripcionModelo;
-
-      this.subscription$ = new Subscription();
-      this.subscription$ = this.registroEquipoLocalService.getTxRegistroEquipoNewItem(codigoEmpresa, codigoPlanta, codigoModelo)
+      this.registroEquipoService.getTxRegistroEquipoNewItem(codigoEmpresa, codigoPlanta, codigoModelo)
       .subscribe(resp => {
-        switch (i) {
-          case 0: {
-            newEquipo = resp;
-            break;
+        if (resp) {
+          this.modeloItem  = resp;
+          console.log(this.modeloItem );
+          this.updateRowGroupMetaData();
+          this.updateRowGroupMetaDataDetalle2();
+          this.onLlenarRepuestoNoPredeterminado();
           }
-          case 1: {
-            newRegistroEquipo.txRegistroEquipoDetalle1 =
-            this.registroEquipoLocalService.setMantenimientoPorModelo(newEquipo, resp, codigoModelo);
-            break;
-          }
-          case 2: {
-            newRegistroEquipo.txRegistroEquipoDetalle2 =
-            this.registroEquipoLocalService.setRepuestoPorModelo(newEquipo, resp, codigoModelo);
-            newRegistroEquipo.txRegistroEquipoDetalle2NoPredeterminado =
-            this.registroEquipoLocalService.setRepuestoPorModeloNoPredeterminado(newEquipo, resp, codigoModelo);
-            newRegistroEquipo.txRegistroEquipoDetalle6 =
-            this.registroEquipoLocalService.setAccesorios(resp);
-            break;
-          }
-          case 3: {
-            newRegistroEquipo.txRegistroEquipoDetalle3 =
-            this.registroEquipoLocalService.setCondicionLimpieza(resp);
-            break;
-          }
-          case 4: {
-            newRegistroEquipo.txRegistroEquipoDetalle4 =
-            this.registroEquipoLocalService.setRequerimientoEquipo(resp);
-
-            this.modeloItem  = newRegistroEquipo;
-            this.updateRowGroupMetaData();
-            this.updateRowGroupMetaDataDetalle2();
-            this.onLlenarRepuestoNoPredeterminado();
-            break;
-          }
-          default: {
-            break;
-          }
-        }
-        i =  i + 1;
         },
         (error) => {
           this.mensajePrimeNgService.onToErrorMsg(null, error);
@@ -421,6 +374,18 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
     delete this.modeloclonedDetalle6[modelo.codigoRepuesto];
   }
 
+  listUpdate(event: any[]) {
+    this.modeloItem.txRegistroEquipoDetalle7 = [];
+    event.forEach(x => {
+      this.modeloItem.txRegistroEquipoDetalle7.push({
+        idRegistroEquipoDetalle: 0,
+        idRegistroEquipo: 0,
+        foto: x.imagen,
+        orden: 0
+      });
+    });
+  }
+
   onToGrabar() {
 
     if (this.modeloItem.firmaIncuba === '') {
@@ -432,21 +397,19 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
       this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, `Ingresar ${this.globalConstants.cFirma2}`);
       return;
     }
-    this.modeloItem.flgMigrado = false;
-    this.modeloItem.fecHoraRegistro = new Date();
-    this.modeloItem.fecRegistro = new Date();
-    this.functionDBLocalService.setNewRegistro('trxRegistroEquipo', this.modeloItem)
+
+    this.subscription$ = new Subscription();
+    this.subscription$  = this.registroEquipoService.setInsertTxRegistroEquipo( this.modeloItem )
     .subscribe(() =>  {
       this.back();
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
     },
       (error) => {
-        console.log('error', error);
         this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, error);
     });
   }
 
   back() {
-    this.router.navigate(['module-re/panel-registro-equipo']);
+    this.router.navigate(['/main/module-re/panel-registro-equipo']);
   }
 }

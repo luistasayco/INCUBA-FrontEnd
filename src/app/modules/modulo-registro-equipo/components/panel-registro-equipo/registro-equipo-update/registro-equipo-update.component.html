@@ -2,7 +2,7 @@
     <h1><strong>{{titulo}} {{idRegistroEquipo}}</strong></h1>
 
     <!-- Filtros -->
-    <p-panel header="Principal" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
+    <p-panel *ngIf="modeloItem" header="Principal" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
         <div class="ui-g ui-fluid">
             <div class="ui-g-12 ui-md-4">
                 <label for="empresa">Empresa</label>
@@ -211,6 +211,14 @@
                     </ng-template>
                 </p-table>
             </p-accordionTab>
+
+            <p-accordionTab header="Galeria de Fotos">
+                <div class="ui-grid ui-fluid">
+                    <div class="ui-g-12">
+                        <app-galeria-imagen [(carouselCars)]="listIma" (listUpdate)="listUpdate($event)"></app-galeria-imagen>
+                    </div>
+                </div>
+            </p-accordionTab>
         </p-accordion>
         <p-footer>
             <div class="ui-grid ui-fluid">
@@ -229,8 +237,12 @@
                     </div>
                 </div>
 
-                <div class="ui-g-12">
-                    <button pButton type="button" label="{{globalConstants.cGrabar}}" icon="{{globalConstants.icoGrabar}}" (click)="onToGrabar()"></button>
+                <div class="ui-g-12 ui-md-6">
+                    <button [disabled]="modeloItem.flgCerrado" pButton type="button" label="{{globalConstants.cGrabar}}" icon="{{globalConstants.icoGrabar}}" (click)="onToGrabar()"></button>
+                </div>
+
+                <div class="ui-g-12 ui-md-6">
+                    <button pButton type="button" label="{{globalConstants.cRegresar}}" icon="{{globalConstants.icoRegresar}}" (click)="back()"></button>
                 </div>
             </div>
         </p-footer>

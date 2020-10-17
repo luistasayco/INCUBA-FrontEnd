@@ -12,6 +12,9 @@ import { RequerimientoEquipoCreateComponent } from './components/panel-requerimi
 import { PanelRegistroEquipoComponent } from './components/panel-registro-equipo/panel-registro-equipo.component';
 import { RegistroEquipoCreateComponent } from './components/panel-registro-equipo/registro-equipo-create/registro-equipo-create.component';
 import { RegistroEquipoUpdateComponent } from './components/panel-registro-equipo/registro-equipo-update/registro-equipo-update.component';
+import { PanelRegistroEquipoOffLineComponent } from './components/panel-registro-equipo-off-line/panel-registro-equipo-off-line.component';
+import { RegistroEquipoCreateOffLineComponent } from './components/panel-registro-equipo-off-line/registro-equipo-create-off-line/registro-equipo-create-off-line.component';
+import { RegistroEquipoUpdateOffLineComponent } from './components/panel-registro-equipo-off-line/registro-equipo-update-off-line/registro-equipo-update-off-line.component';
 
 const routes: Routes = [
     { path: 'panel-mantenimiento', component: PanelMantenimientoComponent},
@@ -25,7 +28,10 @@ const routes: Routes = [
     { path: 'create-requerimiento-equipo', component: RequerimientoEquipoCreateComponent},
     { path: 'panel-registro-equipo', component: PanelRegistroEquipoComponent},
     { path: 'create-registro-equipo', component: RegistroEquipoCreateComponent},
-    { path: 'update-registro-equipo/:id', component: RegistroEquipoUpdateComponent}
+    { path: 'update-registro-equipo/:id', component: RegistroEquipoUpdateComponent},
+    { path: 'panel-registro-equipo-offline', component: PanelRegistroEquipoOffLineComponent},
+    { path: 'create-registro-equipo-offline', component: RegistroEquipoCreateOffLineComponent},
+    { path: 'update-registro-equipo-offline/:id', component: RegistroEquipoUpdateOffLineComponent}
 ];
 
 @NgModule({
