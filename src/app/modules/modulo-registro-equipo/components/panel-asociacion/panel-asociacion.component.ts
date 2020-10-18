@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GlobalsConstants } from 'src/app/modules/modulo-compartido/models/globals-constants';
 import { RegistroEquipoService } from '../../services/registro-equipo.service';
 import { MensajePrimeNgService } from 'src/app/modules/modulo-compartido/services/mensaje-prime-ng.service';
-import { Router } from '@angular/router';
-import { ConfirmationService, SelectItem } from 'primeng';
 import { CompartidoService } from 'src/app/modules/modulo-compartido/services/compartido.service';
 import { EmpresaModel } from 'src/app/modules/modulo-compartido/models/empresa.model';
 import { PlantaModel } from 'src/app/modules/modulo-compartido/models/planta.model';
@@ -13,13 +11,15 @@ import { environment } from 'src/environments/environment';
 import { MantenimientoPorModeloModel } from '../../models/mantenimiento-por-modelo.model';
 import { RepuestoPorModeloModel } from '../../models/repuesto-por-modelo.model';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
+import { Subscription } from 'rxjs';
+import { SelectItem } from 'primeng';
 
 @Component({
   selector: 'app-panel-asociacion',
   templateUrl: './panel-asociacion.component.html',
   styleUrls: ['./panel-asociacion.component.css']
 })
-export class PanelAsociacionComponent implements OnInit {
+export class PanelAsociacionComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Asociación';
@@ -51,6 +51,7 @@ export class PanelAsociacionComponent implements OnInit {
   listRepuestoSeleccionado: RepuestoPorModeloModel[];
   listRepuestoPorSeleccionado: RepuestoPorModeloModel[];
 
+  subscription: Subscription;
 
   sourceCars: any[];
 
@@ -79,7 +80,8 @@ export class PanelAsociacionComponent implements OnInit {
   }
 
   getToObtieneEmpresa() {
-    this.compartidoService.getEmpresa(this.modeloEmpresa)
+    this.subscription = new Subscription();
+    this.subscription = this.compartidoService.getEmpresa(this.modeloEmpresa)
     .subscribe((data: EmpresaModel[]) => {
       this.listItemEmpresa = [];
       for (let item of data) {
@@ -98,7 +100,8 @@ export class PanelAsociacionComponent implements OnInit {
 
   getToObtienePlantaPorEmpresa(value: string) {
     this.modeloPlanta.codigoEmpresa = value;
-    this.compartidoService.getPlantaPorEmpresa(this.modeloPlanta)
+    this.subscription = new Subscription();
+    this.subscription = this.compartidoService.getPlantaPorEmpresa(this.modeloPlanta)
     .subscribe((data: PlantaModel[]) => {
       this.listItemPlanta = [];
       for (let item of data) {
@@ -108,7 +111,8 @@ export class PanelAsociacionComponent implements OnInit {
   }
 
   getToObtieneModelo() {
-    this.registroEquipoService.getModelo(this.modeloModelo)
+    this.subscription = new Subscription();
+    this.subscription = this.registroEquipoService.getModelo(this.modeloModelo)
     .subscribe((data: ModeloModel[]) => {
       this.listItemModelo = [];
       for (let item of data) {
@@ -138,7 +142,8 @@ export class PanelAsociacionComponent implements OnInit {
         codigoModelo: this.selectedModelo.value
       };
 
-      this.registroEquipoService.getEquipoSeleccionados(this.modeloEquipoPorModelo)
+      this.subscription = new Subscription();
+      this.subscription = this.registroEquipoService.getEquipoSeleccionados(this.modeloEquipoPorModelo)
       .subscribe(resp => {
         if (resp) {
             this.listEquipoSeleccionado = resp;
@@ -165,7 +170,8 @@ export class PanelAsociacionComponent implements OnInit {
 
       this.modeloRepuestoPorModelo = {codigoModelo: this.selectedModelo.value};
 
-      this.registroEquipoService.getMantenimientoPorSeleccionar(this.modeloMantenimientoPorModelo)
+      this.subscription = new Subscription();
+      this.subscription = this.registroEquipoService.getMantenimientoPorSeleccionar(this.modeloMantenimientoPorModelo)
       .subscribe(resp => {
         if (resp) {
             this.listMantenimientoPorSeleccionado = resp;
@@ -176,7 +182,8 @@ export class PanelAsociacionComponent implements OnInit {
         }
       );
 
-      this.registroEquipoService.getMantenimientoSeleccionados(this.modeloMantenimientoPorModelo)
+      this.subscription = new Subscription();
+      this.subscription = this.registroEquipoService.getMantenimientoSeleccionados(this.modeloMantenimientoPorModelo)
       .subscribe(resp => {
         if (resp) {
             this.listMantenimientoSeleccionado = resp;
@@ -187,7 +194,8 @@ export class PanelAsociacionComponent implements OnInit {
         }
       );
 
-      this.registroEquipoService.getRepuestoPorSeleccionar(this.modeloRepuestoPorModelo)
+      this.subscription = new Subscription();
+      this.subscription = this.registroEquipoService.getRepuestoPorSeleccionar(this.modeloRepuestoPorModelo)
       .subscribe(resp => {
         if (resp) {
             this.listRepuestoPorSeleccionado = resp;
@@ -198,7 +206,8 @@ export class PanelAsociacionComponent implements OnInit {
         }
       );
 
-      this.registroEquipoService.getRepuestoSeleccionados(this.modeloRepuestoPorModelo)
+      this.subscription = new Subscription();
+      this.subscription = this.registroEquipoService.getRepuestoSeleccionados(this.modeloRepuestoPorModelo)
       .subscribe(resp => {
         if (resp) {
             this.listRepuestoSeleccionado = resp;
@@ -239,7 +248,8 @@ export class PanelAsociacionComponent implements OnInit {
       return dato;
     });
 
-    this.registroEquipoService.setInsertMantenimientoPorModelo(event)
+    this.subscription = new Subscription();
+    this.subscription = this.registroEquipoService.setInsertMantenimientoPorModelo(event)
     .subscribe(() =>  {
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
     },
@@ -256,7 +266,8 @@ export class PanelAsociacionComponent implements OnInit {
       return dato;
     });
 
-    this.registroEquipoService.setDeleteMantenimientoPorModelo(event)
+    this.subscription = new Subscription();
+    this.subscription = this.registroEquipoService.setDeleteMantenimientoPorModelo(event)
     .subscribe(() =>  {
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
     },
@@ -293,7 +304,8 @@ export class PanelAsociacionComponent implements OnInit {
       return dato;
     });
 
-    this.registroEquipoService.setInsertRepuestoPorModelo(event)
+    this.subscription = new Subscription();
+    this.subscription = this.registroEquipoService.setInsertRepuestoPorModelo(event)
     .subscribe(() =>  {
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
     },
@@ -310,12 +322,19 @@ export class PanelAsociacionComponent implements OnInit {
       return dato;
     });
 
-    this.registroEquipoService.setDeleteRepuestoPorModelo(event)
+    this.subscription = new Subscription();
+    this.subscription = this.registroEquipoService.setDeleteRepuestoPorModelo(event)
     .subscribe(() =>  {
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
     },
       (error) => {
         this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, error);
     });
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

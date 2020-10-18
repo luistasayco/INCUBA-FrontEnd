@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
@@ -63,7 +63,7 @@ registerLocaleData(localePy, 'es');
     LoginModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
-  providers: [
+  providers: [ DatePipe,
     { provide: LOCALE_ID, useValue: 'es' },
     {provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptorService, multi: true}],
   bootstrap: [AppComponent]

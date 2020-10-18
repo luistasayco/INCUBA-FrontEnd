@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GlobalsConstants } from '../../../../modulo-compartido/models/globals-constants';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { PersonaModel } from '../../../models/persona.model';
@@ -10,13 +10,14 @@ import { LayoutComponent } from '../../../../../layout/layout.component';
 import { SelectItem } from 'primeng';
 import { PerfilModel } from '../../../models/pefil.model';
 import { UsuarioModel } from '../../../models/usuario.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-persona-create',
   templateUrl: './persona-create.component.html',
   styleUrls: ['./persona-create.component.css']
 })
-export class PersonaCreateComponent implements OnInit {
+export class PersonaCreateComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Usuario';
@@ -36,6 +37,8 @@ export class PersonaCreateComponent implements OnInit {
   // Imagen
   sellersPermitString: string;
   sellersPermitFile;
+
+  subscription: Subscription;
 
   constructor(private fb: FormBuilder,
               private seguridadService: SeguridadService,
@@ -82,7 +85,8 @@ export class PersonaCreateComponent implements OnInit {
   }
 
   getToObtienePerfil() {
-    this.seguridadService.getPerfil(this.modeloPerfil)
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.getPerfil(this.modeloPerfil)
     .subscribe((data: PerfilModel[]) => {
       this.listItemPerfil = [];
       for (let item of data) {
@@ -150,7 +154,8 @@ export class PersonaCreateComponent implements OnInit {
     this.modelo.entidadUsuario.themeDark = Boolean(this.modeloForm.controls['dark'].value);
     this.modelo.entidadUsuario.typeMenu = this.modeloForm.controls['menu'].value;
     this.modelo.entidadUsuario.themeColor = this.modeloForm.controls['theme'].value;
-    this.seguridadService.setInsertPersona(this.modelo)
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.setInsertPersona(this.modelo)
     .subscribe(() =>  {
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
       this.back(); },
@@ -161,6 +166,12 @@ export class PersonaCreateComponent implements OnInit {
 
   back() {
     this.router.navigate(['/main/module-se/panel-persona']);
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
 }

@@ -15,6 +15,7 @@ import { TxRegistroEquipoDetalle2Model } from '../models/tx-registro-equipo-deta
 import { TxRegistroEquipoDetalle6Model } from '../models/tx-registro-equipo-detalle6.model';
 import { TxRegistroEquipoDetalle3Model } from '../models/tx-registro-equipo-detalle3.model';
 import { TxRegistroEquipoDetalle4Model } from '../models/tx-registro-equipo-detalle4.model';
+import { ConstantesTablasIDB } from 'src/app/constants/constantes-tablas-indexdb';
 
 
 @Injectable({
@@ -24,9 +25,9 @@ export class RegistroEquipoLocalService implements OnDestroy {
   lis$ = Subscription;
   newRegistroEquipo: TxRegistroEquipoModel;
 
-  constructor(private dbService: NgxIndexedDBService) { }
-  ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
+  constructor(private dbService: NgxIndexedDBService) {
+  }
+  ngOnDestroy() {
   }
 
   getModeloLocal() {
@@ -217,21 +218,21 @@ export class RegistroEquipoLocalService implements OnDestroy {
   }
 
   getTxRegistroEquipo() {
-    return this.dbService.getAll('trxRegistroEquipo');
+    return this.dbService.getAll(ConstantesTablasIDB._TABLA_TXREGISTROEQUIPO);
   }
 
   getTxRegistroEquipoPorId(id: number) {
-    return this.dbService.getByKey('trxRegistroEquipo', id);
+    return this.dbService.getByKey(ConstantesTablasIDB._TABLA_TXREGISTROEQUIPO, id);
   }
 
   setInsertTxRegistroEquipo( data: any) {
-    return this.dbService.add('trxRegistroEquipo', data);
+    return this.dbService.add(ConstantesTablasIDB._TABLA_TXREGISTROEQUIPO, data);
   }
 
   setUpdateTxRegistroEquipo( data: any) {
-    return this.dbService.update('trxRegistroEquipo', data);
+    return this.dbService.update(ConstantesTablasIDB._TABLA_TXREGISTROEQUIPO, data);
   }
   setDeleteTxRegistroEquipo( id: number) {
-    return this.dbService.delete('trxRegistroEquipo', id);
+    return this.dbService.delete(ConstantesTablasIDB._TABLA_TXREGISTROEQUIPO, id);
   }
 }

@@ -1,17 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GlobalsConstants } from 'src/app/modules/modulo-compartido/models/globals-constants';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ProcesoDetalleModel } from '../../../models/proceso-detalle.model';
 import { ExamenFisicoPollitoService } from '../../../services/examen-fisico-pollito.service';
 import { MensajePrimeNgService } from 'src/app/modules/modulo-compartido/services/mensaje-prime-ng.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-proceso-detalle-create',
   templateUrl: './proceso-detalle-create.component.html',
   styleUrls: ['./proceso-detalle-create.component.css']
 })
-export class ProcesoDetalleCreateComponent implements OnInit {
+export class ProcesoDetalleCreateComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Detalle de Proceso';
@@ -22,6 +23,8 @@ export class ProcesoDetalleCreateComponent implements OnInit {
   maestroForm: FormGroup;
 
   modelo: ProcesoDetalleModel = new ProcesoDetalleModel();
+
+  subscription: Subscription;
 
   constructor(private fb: FormBuilder,
               private examenFisicoPollitoService: ExamenFisicoPollitoService,
@@ -46,7 +49,8 @@ export class ProcesoDetalleCreateComponent implements OnInit {
     this.modelo.descripcion = this.maestroForm.controls['descripcion'].value;
     this.modelo.factor = this.maestroForm.controls['factor'].value;
     this.modelo.orden = this.maestroForm.controls['orden'].value;
-    this.examenFisicoPollitoService.setInsertProcesoDetalle(this.modelo)
+    this.subscription = new Subscription();
+    this.subscription = this.examenFisicoPollitoService.setInsertProcesoDetalle(this.modelo)
     .subscribe(() =>  {
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
       this.back(); },
@@ -57,6 +61,12 @@ export class ProcesoDetalleCreateComponent implements OnInit {
 
   back() {
     this.router.navigate(['/main/module-ef/panel-proceso']);
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
 }

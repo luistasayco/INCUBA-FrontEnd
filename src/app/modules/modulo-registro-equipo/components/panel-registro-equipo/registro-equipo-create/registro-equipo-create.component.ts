@@ -9,9 +9,6 @@ import { TxRegistroEquipoModel } from '../../../models/tx-registro-equipo.model'
 import { TxRegistroEquipoDetalle5Model } from '../../../models/tx-registro-equipo-detalle5.model';
 import { TxRegistroEquipoDetalle6Model } from '../../../models/tx-registro-equipo-detalle6.model';
 import { BreadcrumbService } from '../../../../../services/breadcrumb.service';
-import { CompartidoLocalService } from '../../../../modulo-compartido/services/compartido-local.service';
-import { RegistroEquipoLocalService } from '../../../services/registro-equipo-local.service';
-import { EquipoModel } from '../../../../modulo-compartido/models/equipo.model';
 import { Subscription } from 'rxjs';
 import { FunctionDBLocalService } from '../../../../modulo-base-datos-local/services/function-dblocal.service';
 import { Router } from '@angular/router';
@@ -77,7 +74,6 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
               private compartidoService: CompartidoService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService,
-              private functionDBLocalService: FunctionDBLocalService,
               private router: Router) {
                 this.breadcrumbService.setItems([
                     { label: 'Modulo' },
@@ -87,7 +83,9 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
               }
 
   ngOnDestroy() {
-    this.subscription$.unsubscribe();
+    if (this.subscription$) {
+      this.subscription$.unsubscribe();
+    }
   }
 
   ngOnInit(): void {
@@ -185,7 +183,8 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
 
     if ( codigoEmpresa !== '' && codigoPlanta !== '' && codigoModelo !== '')
     {
-      this.registroEquipoService.getTxRegistroEquipoNewItem(codigoEmpresa, codigoPlanta, codigoModelo)
+      this.subscription$ = new Subscription();
+      this.subscription$ = this.registroEquipoService.getTxRegistroEquipoNewItem(codigoEmpresa, codigoPlanta, codigoModelo)
       .subscribe(resp => {
         if (resp) {
           this.modeloItem  = resp;

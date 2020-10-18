@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GlobalsConstants } from '../../../modulo-compartido/models/globals-constants';
 import { PerfilModel } from '../../models/pefil.model';
 import { SeguridadService } from '../../services/seguridad.service';
@@ -7,13 +7,14 @@ import { Router } from '@angular/router';
 import { ConfirmationService } from 'primeng';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
 import { IMensajeResultadoApi } from '../../../modulo-compartido/models/mensaje-resultado-api';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-panel-perfil',
   templateUrl: './panel-perfil.component.html',
   styleUrls: ['./panel-perfil.component.css']
 })
-export class PanelPerfilComponent implements OnInit {
+export class PanelPerfilComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Perfil';
@@ -33,6 +34,8 @@ export class PanelPerfilComponent implements OnInit {
 
   // Opcion Eliminar
   modeloEliminar: PerfilModel;
+
+  subscription: Subscription;
 
   constructor(private seguridadService: SeguridadService,
               public mensajePrimeNgService: MensajePrimeNgService,
@@ -62,7 +65,8 @@ export class PanelPerfilComponent implements OnInit {
   onListar() {
 
     this.modeloFind = {descripcionPerfil: this.descripcionFind};
-    this.seguridadService.getPerfil(this.modeloFind)
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.getPerfil(this.modeloFind)
     .subscribe(resp => {
       if (resp) {
           this.listModelo = resp;
@@ -79,7 +83,8 @@ export class PanelPerfilComponent implements OnInit {
   }
 
   onRowEditSave(modelo: PerfilModel) {
-    this.seguridadService.setUpdatePerfil(modelo)
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.setUpdatePerfil(modelo)
     .subscribe((resp: IMensajeResultadoApi) => {
       delete this.modelocloned[modelo.idPerfil];
       this.mensajePrimeNgService.onToExitoMsg(null, resp);
@@ -120,7 +125,8 @@ export class PanelPerfilComponent implements OnInit {
   }
 
   onToDelete() {
-    this.seguridadService.setDeletePerfil(this.modeloEliminar)
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.setDeletePerfil(this.modeloEliminar)
     .subscribe((resp: IMensajeResultadoApi) => {
       this.listModelo = this.listModelo.filter(datafilter => datafilter.idPerfil !== this.modeloEliminar.idPerfil );
       this.mensajePrimeNgService.onToExitoMsg(null, resp);
@@ -130,5 +136,10 @@ export class PanelPerfilComponent implements OnInit {
       });
   }
 
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
 
 }

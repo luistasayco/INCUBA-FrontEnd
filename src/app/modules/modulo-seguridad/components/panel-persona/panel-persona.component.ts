@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GlobalsConstants } from '../../../modulo-compartido/models/globals-constants';
 import { PersonaModel } from '../../models/persona.model';
 import { SeguridadService } from '../../services/seguridad.service';
@@ -7,13 +7,14 @@ import { Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
 import { IMensajeResultadoApi } from '../../../modulo-compartido/models/mensaje-resultado-api';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-panel-persona',
   templateUrl: './panel-persona.component.html',
   styleUrls: ['./panel-persona.component.css']
 })
-export class PanelPersonaComponent implements OnInit {
+export class PanelPersonaComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Usuario';
@@ -30,6 +31,8 @@ export class PanelPersonaComponent implements OnInit {
 
   // Opcion Eliminar
   modeloEliminar: PersonaModel;
+
+  subscription: Subscription;
 
   constructor(private seguridadService: SeguridadService,
               public mensajePrimeNgService: MensajePrimeNgService,
@@ -61,7 +64,8 @@ export class PanelPersonaComponent implements OnInit {
   onListar() {
 
     this.modeloFind = {nombre: this.descripcionFind};
-    this.seguridadService.getPersona(this.modeloFind)
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.getPersona(this.modeloFind)
     .subscribe((resp: PersonaModel[]) => {
       if (resp) {
           this.listModelo = resp;
@@ -104,7 +108,8 @@ export class PanelPersonaComponent implements OnInit {
   }
 
   onToDelete() {
-    this.seguridadService.setDeletePersona(this.modeloEliminar)
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.setDeletePersona(this.modeloEliminar)
     .subscribe((resp: IMensajeResultadoApi) => {
       this.listModelo = this.listModelo.filter(datafilter => datafilter.idPersona !== this.modeloEliminar.idPersona );
       this.mensajePrimeNgService.onToExitoMsg(null, resp);
@@ -114,5 +119,10 @@ export class PanelPersonaComponent implements OnInit {
       });
   }
 
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
 
 }

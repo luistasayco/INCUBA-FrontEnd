@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GlobalsConstants } from '../../../../modulo-compartido/models/globals-constants';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { PersonaModel } from '../../../models/persona.model';
@@ -9,14 +9,14 @@ import { MensajePrimeNgService } from '../../../../modulo-compartido/services/me
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { BreadcrumbService } from '../../../../../services/breadcrumb.service';
 import { LayoutComponent } from '../../../../../layout/layout.component';
-import { UsuarioModel } from '../../../models/usuario.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-persona-update',
   templateUrl: './persona-update.component.html',
   styleUrls: ['./persona-update.component.css']
 })
-export class PersonaUpdateComponent implements OnInit {
+export class PersonaUpdateComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Usuario';
@@ -38,6 +38,8 @@ export class PersonaUpdateComponent implements OnInit {
   // Imagen
   sellersPermitString: string;
   sellersPermitFile;
+
+  subscription: Subscription;
 
   constructor(private fb: FormBuilder,
               private seguridadService: SeguridadService,
@@ -77,7 +79,8 @@ export class PersonaUpdateComponent implements OnInit {
         'numeroDocumento' : new FormControl('', Validators.compose([Validators.required])),
         'numeroTelefono' : new FormControl(''),
         'flgEstado' : new FormControl(true, Validators.compose([Validators.required])),
-        'usuario' : new FormControl({value: '', disabled: true}, Validators.compose([Validators.required, Validators.maxLength(20), Validators.minLength(2)])),
+        'usuario' : new FormControl({value: '', disabled: true}, Validators.compose(
+          [Validators.required, Validators.maxLength(20), Validators.minLength(2)])),
         'password' : new FormControl('', Validators.compose([Validators.required, Validators.maxLength(15), Validators.minLength(6)])),
         'email' : new FormControl('', Validators.compose([Validators.required, Validators.email])),
         'perfil' : new FormControl('', Validators.compose([Validators.required])),
@@ -90,7 +93,8 @@ export class PersonaUpdateComponent implements OnInit {
   }
 
   getToObtienePersonaPorId() {
-    this.seguridadService.getPersonaPorId(this.idPersona)
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.getPersonaPorId(this.idPersona)
     .subscribe(data => {
       this.modelo = data;
       this.modeloForm.controls['apellidoPaterno'].setValue(this.modelo.apellidoPaterno);
@@ -115,7 +119,8 @@ export class PersonaUpdateComponent implements OnInit {
   }
 
   getToObtienePerfil() {
-    this.seguridadService.getPerfil(this.modeloPerfil)
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.getPerfil(this.modeloPerfil)
     .subscribe((data: PerfilModel[]) => {
       this.listItemPerfil = [];
       for (let item of data) {
@@ -184,7 +189,8 @@ export class PersonaUpdateComponent implements OnInit {
     this.modelo.entidadUsuario.typeMenu = this.modeloForm.controls['menu'].value;
     this.modelo.entidadUsuario.themeColor = this.modeloForm.controls['theme'].value;
 
-    this.seguridadService.setUpdatePersona(this.modelo)
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.setUpdatePersona(this.modelo)
     .subscribe(() =>  {
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
       this.back(); },
@@ -196,4 +202,11 @@ export class PersonaUpdateComponent implements OnInit {
   back() {
     this.router.navigate(['/main/module-se/panel-persona']);
   }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
 }

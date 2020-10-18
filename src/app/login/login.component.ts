@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LoginModel } from '../models/login.model';
 import { LoginService } from '../services/login.service';
 import { VARIABLES_GLOBALES } from '../shared/constants';
@@ -11,35 +11,52 @@ import { CifrarDataService } from '../services/cifrar-data.service';
 import { DataBaseModel } from '../modules/modulo-seguridad/models/data-base';
 import { SelectItem } from 'primeng';
 import { ConstantesDataBase } from '../constants/constantes-db';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { TraerDatosRemotosService } from '../modules/modulo-repository/services/traer-datos-remotos.service';
+import { estadoInternetService } from '../modules/modulo-estado-internet/estadoInternet.service';
+import { Subscription } from 'rxjs';
+import { variableGlobal } from '../interface/variable-global.interface';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   modeloLogin: LoginModel;
 
   listItemDataBase: SelectItem[];
 
-  selectedData: any;
+  formularioLogin: FormGroup;
 
-  constructor(private loginService: LoginService,
-              private router: Router,
-              public mensajePrimeNgService: MensajePrimeNgService,
-              private userContextService: UserContextService,
-              private menuDinamicoService: MenuDinamicoService,
-              private cifrarDataService: CifrarDataService,
-              private sessionService: SessionService) { }
+  displayTraeData: boolean;
+
+  displayMensaje: string;
+
+  subscripcionInternet: Subscription;
+  subscripcion: Subscription;
+
+  constructor(private readonly loginService: LoginService,
+              private readonly router: Router,
+              public readonly mensajePrimeNgService: MensajePrimeNgService,
+              private readonly userContextService: UserContextService,
+              private readonly menuDinamicoService: MenuDinamicoService,
+              private readonly cifrarDataService: CifrarDataService,
+              private readonly sessionService: SessionService,
+              private readonly fb: FormBuilder,
+              private readonly servicioTraerDatos: TraerDatosRemotosService,
+              private readonly servicioInternet: estadoInternetService) { }
 
   ngOnInit(): void {
-
-    ConstantesDataBase._FLGDATABASESELECCIONADA = false;
+    this.sessionService.setItem('FLGDATABASESELECCIONADA', this.cifrarDataService.encrypt(false));
 
     this.modeloLogin = new LoginModel();
+    this.iniciarObservableEstadoInternet();
+    this.instanciarFormulario();
 
-    this.loginService.getDataBaseAll()
+    this.subscripcion = new Subscription();
+    this.subscripcion = this.loginService.getDataBaseAll()
     .subscribe((resultado: DataBaseModel[]) => {
       this.listItemDataBase = [];
       for (let item of resultado) {
@@ -48,26 +65,61 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  iniciarObservableEstadoInternet() {
+    this.subscripcionInternet = this.servicioInternet._ESTADO_INTERNET$.subscribe(
+      estado => {
+        variableGlobal.ESTADO_INTERNET = estado;
+      }
+    );
+  }
+
+  instanciarFormulario() {
+    this.formularioLogin = this.fb.group({
+      dataBase: new FormControl('', [
+        Validators.required
+      ]),
+      login: new FormControl('', [
+        Validators.minLength(4),
+        Validators.required
+      ]),
+      password: new FormControl('', [
+        Validators.minLength(6),
+        Validators.required
+      ])
+    });
+  }
+
   onChangeDataBase() {
-    ConstantesDataBase._FLGDATABASESELECCIONADA = true;
-    ConstantesDataBase._DATABASESELECCIONADA = this.selectedData.value;
+    this.sessionService.setItem('FLGDATABASESELECCIONADA', this.cifrarDataService.encrypt(true));
+    this.sessionService.setItem('DATABASESELECCIONADA', this.cifrarDataService.encrypt(this.formularioLogin.value.dataBase.value));
   }
 
   onClickLogin()
   {
-    if (!this.selectedData) { return; }
-    this.loginService.autentica(this.modeloLogin)
+    this.displayTraeData = true;
+    this.modeloLogin.usuario = this.formularioLogin.value.login;
+    this.modeloLogin.clave = this.formularioLogin.value.password;
+
+    this.subscripcion = new Subscription();
+    this.subscripcion = this.loginService.autentica(this.modeloLogin)
     .subscribe((res: any) => {
         localStorage.setItem(VARIABLES_GLOBALES.valorToken, res.token);
+        this.displayMensaje = 'Inicio => Sincronizando Información';
         this.onEncriptaData(res);
         this.onGeneraMenu();
-        this.router.navigate(['/main/dashboard']);
+        this.onSetDataLocal(res);
       },
       (err) => {
         console.log('err', err);
-        this.mensajePrimeNgService.onToErrorMsg('Login', 'Credenciales Incorrectas');
+        this.displayTraeData = false;
+        this.mensajePrimeNgService.onToErrorMsg('Login', err.error);
       }
     );
+  }
+
+  onFinalizaProceso() {
+    this.displayMensaje = 'Datos obtenidos desde el Servidor. Completado';
+    this.router.navigate(['/main/dashboard']);
   }
 
   onEncriptaData(res: any) {
@@ -80,5 +132,35 @@ export class LoginComponent implements OnInit {
 
   onGeneraMenu() {
     this.menuDinamicoService.setArmaMenuDimamico();
+  }
+
+  onSetDataLocal(resp: any) {
+    this.servicioTraerDatos.obtenerDatosDesdeServidor(resp);
+    this.subscripcion = new Subscription();
+    this.subscripcion = this.servicioTraerDatos.datosCargadosTotalmente.subscribe(
+      resultado => {
+        if (resultado) {
+          this.displayTraeData = false;
+          this.onFinalizaProceso();
+          this.displayMensaje = 'Fin => Sincronizando Información';
+
+          console.log('Datos obtenidos desde el Servidor. Completado: ' );
+        } else {
+          console.log('AUN NO TERMINA LA SINCRONIZACION');
+        }
+      },
+      error => {
+        this.displayTraeData = false;
+        this.userContextService.logout();
+        console.log('Error en mostrarSiguienteVista()' + error);
+      }
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscripcionInternet.unsubscribe();
+    if (this.subscripcion) {
+      this.subscripcion.unsubscribe();
+  }
   }
 }

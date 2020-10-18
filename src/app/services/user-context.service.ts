@@ -33,15 +33,9 @@ export class UserContextService {
     localStorage.removeItem('token');
     this.user$.next(defaultUser);
     this.redirecciona();
-    this.inicializaConstantesConexion();
   }
 
   private redirecciona() {
-    this.router.navigate(['/']);
-  }
-
-  private inicializaConstantesConexion() {
-    ConstantesDataBase._FLGDATABASESELECCIONADA = false;
-    ConstantesDataBase._DATABASESELECCIONADA = '';
+    this.router.navigate(['/login']);
   }
 }

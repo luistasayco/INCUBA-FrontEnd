@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GlobalsConstants } from 'src/app/modules/modulo-compartido/models/globals-constants';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { CondicionLimpiezaModel } from '../../../models/condicion-limpieza.model';
@@ -6,13 +6,14 @@ import { RegistroEquipoService } from '../../../services/registro-equipo.service
 import { MensajePrimeNgService } from 'src/app/modules/modulo-compartido/services/mensaje-prime-ng.service';
 import { Router } from '@angular/router';
 import { BreadcrumbService } from '../../../../../services/breadcrumb.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-condicion-limpieza-create',
   templateUrl: './condicion-limpieza-create.component.html',
   styleUrls: ['./condicion-limpieza-create.component.css']
 })
-export class CondicionLimpiezaCreateComponent implements OnInit {
+export class CondicionLimpiezaCreateComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Condición de Limpieza';
@@ -23,6 +24,8 @@ export class CondicionLimpiezaCreateComponent implements OnInit {
   maestroForm: FormGroup;
 
   modelo: CondicionLimpiezaModel = new CondicionLimpiezaModel();
+
+  subscription: Subscription;
 
   constructor(private fb: FormBuilder,
               private registroEquipoService: RegistroEquipoService,
@@ -48,7 +51,8 @@ export class CondicionLimpiezaCreateComponent implements OnInit {
   onClickSave() {
     this.modelo.descripcion = this.maestroForm.controls['descripcion'].value;
     this.modelo.orden = this.maestroForm.controls['orden'].value;
-    this.registroEquipoService.setInsertCondicionLimpieza(this.modelo)
+    this.subscription = new Subscription();
+    this.subscription = this.registroEquipoService.setInsertCondicionLimpieza(this.modelo)
     .subscribe(() =>  {
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
       this.back(); },
@@ -61,4 +65,9 @@ export class CondicionLimpiezaCreateComponent implements OnInit {
     this.router.navigate(['/main/module-re/panel-condicion-limpieza']);
   }
 
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
 }

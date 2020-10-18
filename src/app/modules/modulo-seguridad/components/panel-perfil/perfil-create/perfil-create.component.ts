@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GlobalsConstants } from '../../../../modulo-compartido/models/globals-constants';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { PerfilModel } from '../../../models/pefil.model';
@@ -6,13 +6,14 @@ import { SeguridadService } from '../../../services/seguridad.service';
 import { MensajePrimeNgService } from '../../../../modulo-compartido/services/mensaje-prime-ng.service';
 import { Router } from '@angular/router';
 import { BreadcrumbService } from '../../../../../services/breadcrumb.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-perfil-create',
   templateUrl: './perfil-create.component.html',
   styleUrls: ['./perfil-create.component.css']
 })
-export class PerfilCreateComponent implements OnInit {
+export class PerfilCreateComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Perfil';
@@ -23,6 +24,8 @@ export class PerfilCreateComponent implements OnInit {
   maestroForm: FormGroup;
 
   modelo: PerfilModel = new PerfilModel();
+
+  subscription: Subscription;
 
   constructor(private fb: FormBuilder,
               private seguridadService: SeguridadService,
@@ -46,7 +49,8 @@ export class PerfilCreateComponent implements OnInit {
 
   onClickSave() {
     this.modelo.descripcionPerfil = this.maestroForm.controls['descripcion'].value;
-    this.seguridadService.setInsertPerfil(this.modelo)
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.setInsertPerfil(this.modelo)
     .subscribe(() =>  {
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
       this.back(); },
@@ -57,6 +61,12 @@ export class PerfilCreateComponent implements OnInit {
 
   back() {
     this.router.navigate(['/main/module-se/panel-perfil']);
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
 }

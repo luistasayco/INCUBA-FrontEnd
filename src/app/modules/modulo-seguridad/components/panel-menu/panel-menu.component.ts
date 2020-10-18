@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MenuItem, TreeNode } from 'primeng/api';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { TreeNode } from 'primeng/api';
 import { SeguridadService } from '../../services/seguridad.service';
 import { MenuModel } from '../../models/menu.model';
 import { CustomMenuItem } from '../../models/menu-item.model';
@@ -13,7 +13,7 @@ import { Subscription, Observable } from 'rxjs';
   templateUrl: './panel-menu.component.html',
   styleUrls: ['./panel-menu.component.css']
 })
-export class PanelMenuComponent implements OnInit {
+export class PanelMenuComponent implements OnInit, OnDestroy {
 
   // Name de los botones de accion
   globalConstants: GlobalsConstants = new GlobalsConstants();
@@ -29,6 +29,8 @@ export class PanelMenuComponent implements OnInit {
   modeloForm: FormGroup;
 
   evenObservable: Observable<MenuModel>;
+
+  subscription: Subscription;
 
   constructor(private seguridadService: SeguridadService,
               public mensajePrimeNgService: MensajePrimeNgService,
@@ -56,7 +58,8 @@ export class PanelMenuComponent implements OnInit {
 
   getListaMenu() {
     this.items = [];
-    this.seguridadService.getMenuAll()
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.getMenuAll()
     .subscribe(data => {
       this.listModel = data;
       for (const menu of this.listModel.filter(x => x.idMenuPadre === 0)) {
@@ -160,11 +163,18 @@ export class PanelMenuComponent implements OnInit {
       this.evenObservable = this.seguridadService.setUpdateMenu(this.modelo);
     }
 
-    this.evenObservable.subscribe(() =>  {
+    this.subscription = new Subscription();
+    this.subscription = this.evenObservable.subscribe(() =>  {
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
       this.getListaMenu(); },
       (error) => {
         this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, error);
     });
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

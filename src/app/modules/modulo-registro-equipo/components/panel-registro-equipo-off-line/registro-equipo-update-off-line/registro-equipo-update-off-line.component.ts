@@ -60,8 +60,7 @@ export class RegistroEquipoUpdateOffLineComponent implements OnInit, OnDestroy {
 
   listIma: any[];
 
-  constructor(private registroEquipoService: RegistroEquipoService,
-              private registroEquipoLocalService: RegistroEquipoLocalService,
+  constructor(private registroEquipoLocalService: RegistroEquipoLocalService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private router: Router,
               private readonly route: ActivatedRoute,
@@ -73,7 +72,9 @@ export class RegistroEquipoUpdateOffLineComponent implements OnInit, OnDestroy {
     ]);
   }
   ngOnDestroy() {
-    this.subscription$.unsubscribe();
+    if (this.subscription$) {
+      this.subscription$.unsubscribe();
+    }
   }
 
   ngOnInit(): void {
@@ -186,9 +187,7 @@ export class RegistroEquipoUpdateOffLineComponent implements OnInit, OnDestroy {
 
   onToGrabar() {
     this.subscription$ = new Subscription();
-
-    console.log('modeloItem', this.modeloItem);
-
+    this.modeloItem.flgEnModificacion = false;
     this.subscription$ = this.registroEquipoLocalService.setUpdateTxRegistroEquipo(this.modeloItem)
     .subscribe(() =>  {
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);

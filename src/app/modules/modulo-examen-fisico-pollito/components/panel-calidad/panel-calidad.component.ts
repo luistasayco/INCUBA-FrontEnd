@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GlobalsConstants } from 'src/app/modules/modulo-compartido/models/globals-constants';
 import { CalidadModel } from '../../models/calidad.model';
 import { MensajePrimeNgService } from 'src/app/modules/modulo-compartido/services/mensaje-prime-ng.service';
@@ -6,13 +6,14 @@ import { ConfirmationService } from 'primeng';
 import { Router } from '@angular/router';
 import { IMensajeResultadoApi } from 'src/app/modules/modulo-compartido/models/mensaje-resultado-api';
 import { ExamenFisicoPollitoService } from '../../services/examen-fisico-pollito.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-panel-calidad',
   templateUrl: './panel-calidad.component.html',
   styleUrls: ['./panel-calidad.component.css']
 })
-export class PanelCalidadComponent implements OnInit {
+export class PanelCalidadComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Calidad';
@@ -32,6 +33,8 @@ export class PanelCalidadComponent implements OnInit {
 
   // Opcion Eliminar
   modeloEliminar: CalidadModel;
+
+  subscription: Subscription;
 
   constructor(private examenFisicoPollitoService: ExamenFisicoPollitoService,
               public mensajePrimeNgService: MensajePrimeNgService,
@@ -57,7 +60,8 @@ export class PanelCalidadComponent implements OnInit {
   onListar() {
 
     this.modeloFind = {descripcion: this.descripcionFind};
-    this.examenFisicoPollitoService.getCalidad(this.modeloFind)
+    this.subscription = new Subscription();
+    this.subscription = this.examenFisicoPollitoService.getCalidad(this.modeloFind)
     .subscribe(resp => {
       if (resp) {
           this.listModelo = resp;
@@ -74,7 +78,8 @@ export class PanelCalidadComponent implements OnInit {
   }
 
   onRowEditSave(modelo: CalidadModel) {
-    this.examenFisicoPollitoService.setUpdateCalidad(modelo)
+    this.subscription = new Subscription();
+    this.subscription = this.examenFisicoPollitoService.setUpdateCalidad(modelo)
     .subscribe((resp: IMensajeResultadoApi) => {
       delete this.modelocloned[modelo.idCalidad];
       this.mensajePrimeNgService.onToExitoMsg(null, resp);
@@ -115,7 +120,8 @@ export class PanelCalidadComponent implements OnInit {
   }
 
   onToDelete() {
-    this.examenFisicoPollitoService.setDeleteCalidad(this.modeloEliminar)
+    this.subscription = new Subscription();
+    this.subscription = this.examenFisicoPollitoService.setDeleteCalidad(this.modeloEliminar)
     .subscribe((resp: IMensajeResultadoApi) => {
       this.listModelo = this.listModelo.filter(datafilter => datafilter.idCalidad !== this.modeloEliminar.idCalidad );
       this.mensajePrimeNgService.onToExitoMsg(null, resp);
@@ -123,6 +129,12 @@ export class PanelCalidadComponent implements OnInit {
       (error) => {
         this.mensajePrimeNgService.onToErrorMsg(null, error);
       });
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
 }

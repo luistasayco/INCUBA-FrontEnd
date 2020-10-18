@@ -1,19 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GlobalsConstants } from 'src/app/modules/modulo-compartido/models/globals-constants';
 import { ModeloModel } from '../../models/modelo.model';
 import { RegistroEquipoService } from '../../services/registro-equipo.service';
 import { MensajePrimeNgService } from 'src/app/modules/modulo-compartido/services/mensaje-prime-ng.service';
 import { Router } from '@angular/router';
 import { ConfirmationService } from 'primeng';
-import { IMensajeResultadoApi } from 'src/app/modules/modulo-compartido/models/mensaje-resultado-api';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-panel-modelo',
   templateUrl: './panel-modelo.component.html',
   styleUrls: ['./panel-modelo.component.css']
 })
-export class PanelModeloComponent implements OnInit {
+export class PanelModeloComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Modelo';
@@ -34,10 +34,10 @@ export class PanelModeloComponent implements OnInit {
   // Opcion Eliminar
   modeloEliminar: ModeloModel;
 
+  subscription: Subscription;
+
   constructor(private registroEquipoService: RegistroEquipoService,
               public mensajePrimeNgService: MensajePrimeNgService,
-              private router: Router,
-              private confirmationService: ConfirmationService,
               private breadcrumbService: BreadcrumbService) {
                 this.breadcrumbService.setItems([
                     { label: 'Modulo' },
@@ -61,7 +61,8 @@ export class PanelModeloComponent implements OnInit {
   onListar() {
 
     this.modeloFind = {descripcion: this.descripcionFind};
-    this.registroEquipoService.getModelo(this.modeloFind)
+    this.subscription = new Subscription();
+    this.subscription = this.registroEquipoService.getModelo(this.modeloFind)
     .subscribe(resp => {
       if (resp) {
           this.listModelo = resp;
@@ -72,4 +73,11 @@ export class PanelModeloComponent implements OnInit {
       }
     );
   }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
 }

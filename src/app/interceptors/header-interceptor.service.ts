@@ -5,6 +5,9 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { InterfaceError } from '../interface/error.interface';
 import { ConstantesDataBase } from '../constants/constantes-db';
+import { SessionService } from '../services/session.service';
+import { CifrarDataService } from '../services/cifrar-data.service';
+import { ofType } from '@ngrx/effects';
 
 interface errorHttp extends HttpErrorResponse{
   servidorNoEncontrado: boolean
@@ -15,13 +18,33 @@ interface errorHttp extends HttpErrorResponse{
 })
 export class HeaderInterceptorService {
 
-  constructor(private userContextService: UserContextService) { }
+  _FLGDATABASESELECCIONADA: boolean;
+  _DATABASESELECCIONADA: string;
+
+  constructor(private userContextService: UserContextService,
+              private sessionService: SessionService,
+              private cifrarDataService: CifrarDataService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
+    this._FLGDATABASESELECCIONADA = false;
+
+    if (this.sessionService.getItem('FLGDATABASESELECCIONADA')) {
+      this._FLGDATABASESELECCIONADA = this.cifrarDataService.decrypt(
+        this.sessionService.getItem('FLGDATABASESELECCIONADA')) === 'false' ? false : true;
+    }
+
+    if (this.sessionService.getItem('DATABASESELECCIONADA')) {
+      this._DATABASESELECCIONADA = this.cifrarDataService.decrypt(this.sessionService.getItem('DATABASESELECCIONADA'));
+    }
+
     let updateReq: HttpRequest<any>;
 
+    // console.log('_FLGDATABASESELECCIONADA', this. _FLGDATABASESELECCIONADA);
+    // console.log('_DATABASESELECCIONADA', this._DATABASESELECCIONADA);
+
     const user = this.userContextService.user$.getValue();
+
     if (user) {
       const TOKEN = localStorage.getItem('token');
 
@@ -30,21 +53,23 @@ export class HeaderInterceptorService {
           headers: new HttpHeaders({
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${TOKEN}`,
-            'dbName': ConstantesDataBase._DATABASESELECCIONADA
+            'dbName': this._DATABASESELECCIONADA
           })
         }
       );
     } else {
-      if ( ConstantesDataBase._FLGDATABASESELECCIONADA ) {
+      if ( this._FLGDATABASESELECCIONADA ) {
+        // console.log('_DATABASESELECCIONADA', this._DATABASESELECCIONADA);
         updateReq = req.clone(
           {
             headers: new HttpHeaders({
               'Content-Type': 'application/json',
-              'dbName': ConstantesDataBase._DATABASESELECCIONADA
+              'dbName': this._DATABASESELECCIONADA
             })
           }
         );
       } else {
+        // console.log('_DATABASEDEFAULT', ConstantesDataBase._DATABASEDEFAULT);
         updateReq = req.clone(
           {
             headers: new HttpHeaders({

@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit {
   }
 
   onSync() {
-    this.router.navigate(['/main/module-si']);
+    // this.router.navigate(['/main/module-si']);
   }
 
 }

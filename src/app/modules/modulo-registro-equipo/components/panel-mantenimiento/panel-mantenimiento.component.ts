@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GlobalsConstants } from 'src/app/modules/modulo-compartido/models/globals-constants';
 import { MantenimientoModel } from '../../models/mantenimiento.model';
 import { RegistroEquipoService } from '../../services/registro-equipo.service';
@@ -7,13 +7,14 @@ import { ConfirmationService } from 'primeng';
 import { MensajePrimeNgService } from 'src/app/modules/modulo-compartido/services/mensaje-prime-ng.service';
 import { IMensajeResultadoApi } from 'src/app/modules/modulo-compartido/models/mensaje-resultado-api';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-panel-mantenimiento',
   templateUrl: './panel-mantenimiento.component.html',
   styleUrls: ['./panel-mantenimiento.component.css']
 })
-export class PanelMantenimientoComponent implements OnInit {
+export class PanelMantenimientoComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Mantenimiento';
@@ -33,6 +34,8 @@ export class PanelMantenimientoComponent implements OnInit {
 
   // Opcion Eliminar
   modeloEliminar: MantenimientoModel;
+
+  subscription: Subscription;
 
   constructor(private registroEquipoService: RegistroEquipoService,
               public mensajePrimeNgService: MensajePrimeNgService,
@@ -61,7 +64,8 @@ export class PanelMantenimientoComponent implements OnInit {
   onListar() {
 
     this.modeloFind = {descripcion: this.descripcionFind};
-    this.registroEquipoService.getMantenimiento(this.modeloFind)
+    this.subscription = new Subscription();
+    this.subscription = this.registroEquipoService.getMantenimiento(this.modeloFind)
     .subscribe(resp => {
       if (resp) {
           this.listModelo = resp;
@@ -78,7 +82,8 @@ export class PanelMantenimientoComponent implements OnInit {
   }
 
   onRowEditSave(modelo: MantenimientoModel) {
-    this.registroEquipoService.setUpdateMantenimiento(modelo)
+    this.subscription = new Subscription();
+    this.subscription = this.registroEquipoService.setUpdateMantenimiento(modelo)
     .subscribe((resp: IMensajeResultadoApi) => {
       delete this.modelocloned[modelo.idMantenimiento];
       this.mensajePrimeNgService.onToExitoMsg(null, resp);
@@ -119,7 +124,8 @@ export class PanelMantenimientoComponent implements OnInit {
   }
 
   onToDelete() {
-    this.registroEquipoService.setDeleteMantenimiento(this.modeloEliminar)
+    this.subscription = new Subscription();
+    this.subscription = this.registroEquipoService.setDeleteMantenimiento(this.modeloEliminar)
     .subscribe((resp: IMensajeResultadoApi) => {
       this.listModelo = this.listModelo.filter(datafilter => datafilter.idMantenimiento !== this.modeloEliminar.idMantenimiento );
       this.mensajePrimeNgService.onToExitoMsg(null, resp);
@@ -127,6 +133,12 @@ export class PanelMantenimientoComponent implements OnInit {
       (error) => {
         this.mensajePrimeNgService.onToErrorMsg(null, error);
       });
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
 }

@@ -6,7 +6,7 @@
     <!-- Grilla de Datos     -->
     <p-panel header="Lista de {{titulo}}">
 
-        <p-table [value]="listModelo" [columns]="columnas" [paginator]="true" [rows]="globalConstants.sizePage" dataKey="id" editMode="row" autoLayout="true" [responsive]="true">
+        <p-table [(value)]="listModelo" [columns]="columnas" [paginator]="true" [rows]="globalConstants.sizePage" dataKey="id" editMode="row" autoLayout="true" [responsive]="true">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns">

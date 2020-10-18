@@ -11,7 +11,7 @@ import { LanguageService } from '../../../../services/language.service';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
 import { RegistroEquipoLocalService } from '../../services/registro-equipo-local.service';
 import { CompartidoLocalService } from '../../../modulo-compartido/services/compartido-local.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-panel-registro-equipo-off-line',
@@ -51,7 +51,7 @@ export class PanelRegistroEquipoOffLineComponent implements OnInit, OnDestroy {
 
   // Estado del internet
   isNetwork: boolean;
-
+  interval;
   constructor(private registroEquipoLocalService: RegistroEquipoLocalService,
               private compartidoLocalService: CompartidoLocalService,
               public mensajePrimeNgService: MensajePrimeNgService,
@@ -65,7 +65,10 @@ export class PanelRegistroEquipoOffLineComponent implements OnInit, OnDestroy {
     ]);
   }
   ngOnDestroy() {
-    this.subscription$.unsubscribe();
+    clearInterval(this.interval);
+    if (this.subscription$) {
+      this.subscription$.unsubscribe();
+    }
   }
 
   ngOnInit() {
@@ -86,6 +89,7 @@ export class PanelRegistroEquipoOffLineComponent implements OnInit, OnDestroy {
     ];
 
     this.onListar();
+    this.onUpdateDataVistaUsuario();
   }
 
   onToBuscar() {
@@ -142,14 +146,16 @@ export class PanelRegistroEquipoOffLineComponent implements OnInit, OnDestroy {
   }
 
   onListar() {
+    this.listModelo = [];
     this.modeloFind.codigoEmpresa = this.selectedEmpresa === null ? '' : this.selectedEmpresa.value;
     this.modeloFind.codigoPlanta = this.selectedPlanta === null ? '' : this.selectedPlanta.value;
     this.modeloFind.codigoModelo = this.selectedModelo === null ? '' : this.selectedModelo.value;
     this.subscription$ = new Subscription();
     this.subscription$ = this.registroEquipoLocalService.getTxRegistroEquipo()
-    .subscribe(resp => {
+    .subscribe((resp: TxRegistroEquipoModel[]) => {
       if (resp) {
-          this.listModelo = resp;
+          let filterData = [...resp].filter(x => x.flgMigrado === false);
+          this.listModelo = filterData;
         }
       },
       (error) => {
@@ -230,6 +236,28 @@ export class PanelRegistroEquipoOffLineComponent implements OnInit, OnDestroy {
   }
 
   onToUpdate(data: any) {
-    this.router.navigate(['/main/module-re/update-registro-equipo-offline', data.id]);
+
+    this.subscription$ = new Subscription();
+    data.flgEnModificacion = true;
+    this.subscription$ = this.registroEquipoLocalService.setUpdateTxRegistroEquipo(data)
+    .subscribe(resp => {
+      if (resp) {
+          this.router.navigate(['/main/module-re/update-registro-equipo-offline', data.id]);
+        }
+      },
+      (error) => {
+        this.mensajePrimeNgService.onToErrorMsg(null, error);
+      }
+    );
   }
+
+  onUpdateDataVistaUsuario() {
+    clearInterval(this.interval);
+
+    this.interval = setInterval(() => {
+    console.log('consulta data local');
+    this.onListar();
+  }, 10000);
+  }
+
 }

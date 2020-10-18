@@ -1,7 +1,9 @@
+import { ConstantesTablasIDB } from '../../../constants/constantes-tablas-indexdb';
+
 export const estructuraBD = {
     BASE_DE_DATOS: [
       {
-          store: 'mstEmpresa',
+          store: ConstantesTablasIDB._TABLA_MSTEMPRESA,
           storeConfig: { keyPath: 'id', autoIncrement: true },
           storeSchema: [
             { name: 'codigoEmpresa', keypath: 'codigoEmpresa', options: { unique: true } },
@@ -9,7 +11,7 @@ export const estructuraBD = {
           ]
       },
       {
-          store: 'mstPlanta',
+          store: ConstantesTablasIDB._TABLA_MSTPLANTA,
           storeConfig: { keyPath: 'id', autoIncrement: true },
           storeSchema: [
             { name: 'PlantaEmpresa', keypath: 'PlantaEmpresa', options: { unique: true } },
@@ -19,7 +21,7 @@ export const estructuraBD = {
           ]
       },
       {
-          store: 'mstModelo',
+          store: ConstantesTablasIDB._TABLA_MSTMODELO,
           storeConfig: { keyPath: 'id', autoIncrement: true },
           storeSchema: [
             { name: 'codigoModelo', keypath: 'codigoModelo', options: { unique: true } },
@@ -27,7 +29,7 @@ export const estructuraBD = {
           ]
       },
       {
-        store: 'mstCondicionLimpieza',
+        store: ConstantesTablasIDB._TABLA_MSTCONDICIONLIMPIEZA,
         storeConfig: { keyPath: 'id', autoIncrement: true },
         storeSchema: [
           { name: 'idCondicionLimpieza', keypath: 'idCondicionLimpieza', options: { unique: true } },
@@ -36,7 +38,7 @@ export const estructuraBD = {
         ]
       },
       {
-        store: 'mstRequerimientoEquipo',
+        store: ConstantesTablasIDB._TABLA_MSTREQUERIMIENTOEQUIPO,
         storeConfig: { keyPath: 'id', autoIncrement: true },
         storeSchema: [
           { name: 'idRequerimientoEquipo', keypath: 'idRequerimientoEquipo', options: { unique: true } },
@@ -45,7 +47,7 @@ export const estructuraBD = {
         ]
       },
       {
-        store: 'mstEquipo',
+        store: ConstantesTablasIDB._TABLA_MSTEQUIPO,
         storeConfig: { keyPath: 'id', autoIncrement: true },
         storeSchema: [
           { name: 'idEquipo', keypath: 'idEquipo', options: { unique: true } },
@@ -57,7 +59,7 @@ export const estructuraBD = {
         ]
       },
       {
-        store: 'mstMantenimientoPorModelo',
+        store: ConstantesTablasIDB._TABLA_MSTMANTENIMIENTOPORMODELO,
         storeConfig: { keyPath: 'id', autoIncrement: true },
         storeSchema: [
           { name: 'IdMantenimientoPorModelo', keypath: 'IdMantenimientoPorModelo', options: { unique: true } },
@@ -67,7 +69,7 @@ export const estructuraBD = {
         ]
       },
       {
-        store: 'mstRepuestoPorModelo',
+        store: ConstantesTablasIDB._TABLA_MSTREPUESTOPORMODELO,
         storeConfig: { keyPath: 'id', autoIncrement: true },
         storeSchema: [
           { name: 'IdRepuestoPorModelo', keypath: 'IdRepuestoPorModelo', options: { unique: true } },
@@ -79,7 +81,7 @@ export const estructuraBD = {
         ]
       },
       {
-        store: 'trxRegistroEquipo',
+        store: ConstantesTablasIDB._TABLA_TXREGISTROEQUIPO,
         storeConfig: { keyPath: 'id', autoIncrement: true },
         storeSchema: [
           { name: 'idRegistroEquipo', keypath: 'idRegistroEquipo', options: { unique: false } },

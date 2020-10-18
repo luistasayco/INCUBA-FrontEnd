@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TreeNode } from 'primeng';
 import { GlobalsConstants } from '../../../modulo-compartido/models/globals-constants';
 import { MenuModel } from '../../models/menu.model';
@@ -10,13 +10,14 @@ import { Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { IMensajeResultadoApi } from '../../../modulo-compartido/models/mensaje-resultado-api';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-panel-opcion',
   templateUrl: './panel-opcion.component.html',
   styleUrls: ['./panel-opcion.component.css']
 })
-export class PanelOpcionComponent implements OnInit {
+export class PanelOpcionComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Opcion';
@@ -38,6 +39,8 @@ export class PanelOpcionComponent implements OnInit {
 
   // Opcion Eliminar
   modeloEliminar: OpcionModel;
+
+  subscription: Subscription;
 
   constructor(private seguridadService: SeguridadService,
               public mensajePrimeNgService: MensajePrimeNgService,
@@ -61,7 +64,8 @@ export class PanelOpcionComponent implements OnInit {
 
   getListaMenu() {
     this.items = [];
-    this.seguridadService.getMenuAll()
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.getMenuAll()
     .subscribe(data => {
       this.listModel = data;
       for (const menu of this.listModel.filter(x => x.idMenuPadre === 0)) {
@@ -108,7 +112,8 @@ export class PanelOpcionComponent implements OnInit {
 
   onListar(idMenu: number) {
 
-    this.seguridadService.getOpcion(idMenu)
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.getOpcion(idMenu)
     .subscribe(resp => {
       if (resp) {
           this.listModelo = resp;
@@ -125,7 +130,8 @@ export class PanelOpcionComponent implements OnInit {
   }
 
   onRowEditSave(modelo: OpcionModel) {
-    this.seguridadService.setUpdateOpcion(modelo)
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.setUpdateOpcion(modelo)
     .subscribe((resp: IMensajeResultadoApi) => {
       delete this.modelocloned[modelo.idOpcion];
       this.mensajePrimeNgService.onToExitoMsg(null, resp);
@@ -166,7 +172,8 @@ export class PanelOpcionComponent implements OnInit {
   }
 
   onToDelete() {
-    this.seguridadService.setDeleteOpcion(this.modeloEliminar)
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.setDeleteOpcion(this.modeloEliminar)
     .subscribe((resp: IMensajeResultadoApi) => {
       this.listModelo = this.listModelo.filter(datafilter => datafilter.idOpcion !== this.modeloEliminar.idOpcion );
       this.mensajePrimeNgService.onToExitoMsg(null, resp);
@@ -174,6 +181,12 @@ export class PanelOpcionComponent implements OnInit {
       (error) => {
         this.mensajePrimeNgService.onToErrorMsg(null, error);
       });
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
 }

@@ -33,6 +33,6 @@ export class AppComponent implements OnInit, OnDestroy {
     clearInterval(this.interval);
     this.interval = setInterval(() => {
       this.enviarDatosRemotosService.enviarDatosAServidorRemoto();
-    }, 20000);
+    }, 120000);
   }
 }

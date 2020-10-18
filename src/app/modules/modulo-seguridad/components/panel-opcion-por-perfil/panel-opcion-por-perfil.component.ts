@@ -1,24 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TreeNode, SelectItem } from 'primeng';
 import { GlobalsConstants } from '../../../modulo-compartido/models/globals-constants';
 import { CustomMenuItem } from '../../models/menu-item.model';
 import { SeguridadService } from '../../services/seguridad.service';
 import { MensajePrimeNgService } from '../../../modulo-compartido/services/mensaje-prime-ng.service';
-import { Router } from '@angular/router';
-import { ConfirmationService } from 'primeng/api';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
-import { OpcionModel } from '../../models/opcion.model';
 import { MenuModel } from '../../models/menu.model';
 import { environment } from 'src/environments/environment';
 import { OpcionPorPerfilModel } from '../../models/opcion-por-perfil';
 import { PerfilModel } from '../../models/pefil.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-panel-opcion-por-perfil',
   templateUrl: './panel-opcion-por-perfil.component.html',
   styleUrls: ['./panel-opcion-por-perfil.component.css']
 })
-export class PanelOpcionPorPerfilComponent implements OnInit {
+export class PanelOpcionPorPerfilComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Opcion';
@@ -39,6 +37,8 @@ export class PanelOpcionPorPerfilComponent implements OnInit {
 
   perfilSelected: any;
 
+  subscription: Subscription;
+
   constructor(private seguridadService: SeguridadService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService) {
@@ -56,7 +56,8 @@ export class PanelOpcionPorPerfilComponent implements OnInit {
 
   getListaMenu() {
     this.items = [];
-    this.seguridadService.getMenuAll()
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.getMenuAll()
     .subscribe(data => {
       this.listModel = data;
       for (const menu of this.listModel.filter(x => x.idMenuPadre === 0)) {
@@ -93,7 +94,8 @@ export class PanelOpcionPorPerfilComponent implements OnInit {
   }
 
   getToObtienePerfil() {
-    this.seguridadService.getPerfil(this.modeloPerfil)
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.getPerfil(this.modeloPerfil)
     .subscribe((data: PerfilModel[]) => {
       this.listItemPerfil = [];
       for (let item of data) {
@@ -101,7 +103,7 @@ export class PanelOpcionPorPerfilComponent implements OnInit {
       }
     });
   }
-  
+
   onChangePerfil() {
     let menu = this.modelo ? this.modelo.idMenu : 0;
     this.onListar(menu);
@@ -119,7 +121,8 @@ export class PanelOpcionPorPerfilComponent implements OnInit {
 
     let perfil = this.perfilSelected ? this.perfilSelected.value : 0  ;
 
-    this.seguridadService.getPorSeleccionarOpcionPorPerfil(idMenu, perfil )
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.getPorSeleccionarOpcionPorPerfil(idMenu, perfil )
     .subscribe(resp => {
       if (resp) {
           this.listModelPorSeleccionar = resp;
@@ -130,7 +133,8 @@ export class PanelOpcionPorPerfilComponent implements OnInit {
       }
     );
 
-    this.seguridadService.getSeleccionadoOpcionPorPerfil(idMenu, perfil)
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.getSeleccionadoOpcionPorPerfil(idMenu, perfil)
     .subscribe(resp => {
       if (resp) {
           this.listModelSeleccionado = resp;
@@ -168,7 +172,8 @@ export class PanelOpcionPorPerfilComponent implements OnInit {
       return dato;
     });
 
-    this.seguridadService.setInsertOpcionPorPerfil(event)
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.setInsertOpcionPorPerfil(event)
     .subscribe(() =>  {
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
     },
@@ -186,12 +191,19 @@ export class PanelOpcionPorPerfilComponent implements OnInit {
       return dato;
     });
 
-    this.seguridadService.setDeleteOpcionPorPerfil(event)
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.setDeleteOpcionPorPerfil(event)
     .subscribe(() =>  {
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
     },
       (error) => {
         this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, error);
     });
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

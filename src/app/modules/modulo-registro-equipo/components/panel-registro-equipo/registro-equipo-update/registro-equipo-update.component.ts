@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GlobalsConstants } from '../../../../modulo-compartido/models/globals-constants';
 import { SelectItem } from 'primeng';
 import { EmpresaModel } from '../../../../modulo-compartido/models/empresa.model';
@@ -18,7 +18,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './registro-equipo-update.component.html',
   styleUrls: ['./registro-equipo-update.component.css']
 })
-export class RegistroEquipoUpdateComponent implements OnInit {
+export class RegistroEquipoUpdateComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Registro de Equipo Nro:';
@@ -192,5 +192,11 @@ export class RegistroEquipoUpdateComponent implements OnInit {
 
   back() {
     this.router.navigate(['/main/module-re/panel-registro-equipo']);
+  }
+
+  ngOnDestroy() {
+    if (this.subscription$) {
+      this.subscription$.unsubscribe();
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GlobalsConstants } from '../../../../modulo-compartido/models/globals-constants';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { RequerimientoEquipoModel } from '../../../models/requerimiento-equipo.model';
@@ -6,13 +6,14 @@ import { RegistroEquipoService } from '../../../services/registro-equipo.service
 import { MensajePrimeNgService } from '../../../../modulo-compartido/services/mensaje-prime-ng.service';
 import { Router } from '@angular/router';
 import { BreadcrumbService } from '../../../../../services/breadcrumb.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-requerimiento-equipo-create',
   templateUrl: './requerimiento-equipo-create.component.html',
   styleUrls: ['./requerimiento-equipo-create.component.css']
 })
-export class RequerimientoEquipoCreateComponent implements OnInit {
+export class RequerimientoEquipoCreateComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Requerimiento de equipo';
@@ -23,6 +24,8 @@ export class RequerimientoEquipoCreateComponent implements OnInit {
   maestroForm: FormGroup;
 
   modelo: RequerimientoEquipoModel = new RequerimientoEquipoModel();
+
+  subscription: Subscription;
 
   constructor(private fb: FormBuilder,
               private registroEquipoService: RegistroEquipoService,
@@ -48,7 +51,8 @@ export class RequerimientoEquipoCreateComponent implements OnInit {
   onClickSave() {
     this.modelo.descripcion = this.maestroForm.controls['descripcion'].value;
     this.modelo.orden = this.maestroForm.controls['orden'].value;
-    this.registroEquipoService.setInsertRequerimientoEquipo(this.modelo)
+    this.subscription = new Subscription();
+    this.subscription = this.registroEquipoService.setInsertRequerimientoEquipo(this.modelo)
     .subscribe(() =>  {
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
       this.back(); },
@@ -59,6 +63,12 @@ export class RequerimientoEquipoCreateComponent implements OnInit {
 
   back() {
     this.router.navigate(['/main/module-re/panel-requerimiento-equipo']);
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
 }

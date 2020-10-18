@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GlobalsConstants } from 'src/app/modules/modulo-compartido/models/globals-constants';
 import { CondicionLimpiezaModel } from '../../models/condicion-limpieza.model';
 import { RegistroEquipoService } from '../../services/registro-equipo.service';
@@ -7,13 +7,14 @@ import { ConfirmationService } from 'primeng';
 import { Router } from '@angular/router';
 import { IMensajeResultadoApi } from 'src/app/modules/modulo-compartido/models/mensaje-resultado-api';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-panel-condicion-limpieza',
   templateUrl: './panel-condicion-limpieza.component.html',
   styleUrls: ['./panel-condicion-limpieza.component.css']
 })
-export class PanelCondicionLimpiezaComponent implements OnInit {
+export class PanelCondicionLimpiezaComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Condición de Limpieza';
@@ -33,6 +34,8 @@ export class PanelCondicionLimpiezaComponent implements OnInit {
 
   // Opcion Eliminar
   modeloEliminar: CondicionLimpiezaModel;
+
+  subscription: Subscription;
 
   constructor(private registroEquipoService: RegistroEquipoService,
               public mensajePrimeNgService: MensajePrimeNgService,
@@ -62,7 +65,8 @@ export class PanelCondicionLimpiezaComponent implements OnInit {
   onListar() {
 
     this.modeloFind = {descripcion: this.descripcionFind};
-    this.registroEquipoService.getCondicionLimpieza(this.modeloFind)
+    this.subscription = new Subscription();
+    this.subscription = this.registroEquipoService.getCondicionLimpieza(this.modeloFind)
     .subscribe(resp => {
       if (resp) {
           this.listModelo = resp;
@@ -79,7 +83,8 @@ export class PanelCondicionLimpiezaComponent implements OnInit {
   }
 
   onRowEditSave(modelo: CondicionLimpiezaModel) {
-    this.registroEquipoService.setUpdateCondicionLimpieza(modelo)
+    this.subscription = new Subscription();
+    this.subscription = this.registroEquipoService.setUpdateCondicionLimpieza(modelo)
     .subscribe((resp: IMensajeResultadoApi) => {
       delete this.modelocloned[modelo.idCondicionLimpieza];
       this.mensajePrimeNgService.onToExitoMsg(null, resp);
@@ -120,7 +125,8 @@ export class PanelCondicionLimpiezaComponent implements OnInit {
   }
 
   onToDelete() {
-    this.registroEquipoService.setDeleteCondicionLimpieza(this.modeloEliminar)
+    this.subscription = new Subscription();
+    this.subscription = this.registroEquipoService.setDeleteCondicionLimpieza(this.modeloEliminar)
     .subscribe((resp: IMensajeResultadoApi) => {
       this.listModelo = this.listModelo.filter(datafilter => datafilter.idCondicionLimpieza !== this.modeloEliminar.idCondicionLimpieza );
       this.mensajePrimeNgService.onToExitoMsg(null, resp);
@@ -128,6 +134,12 @@ export class PanelCondicionLimpiezaComponent implements OnInit {
       (error) => {
         this.mensajePrimeNgService.onToErrorMsg(null, error);
       });
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
 }

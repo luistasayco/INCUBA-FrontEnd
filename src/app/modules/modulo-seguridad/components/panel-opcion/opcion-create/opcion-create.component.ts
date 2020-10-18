@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GlobalsConstants } from '../../../../modulo-compartido/models/globals-constants';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { OpcionModel } from '../../../models/opcion.model';
@@ -6,13 +6,14 @@ import { SeguridadService } from '../../../services/seguridad.service';
 import { MensajePrimeNgService } from '../../../../modulo-compartido/services/mensaje-prime-ng.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { BreadcrumbService } from '../../../../../services/breadcrumb.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-opcion-create',
   templateUrl: './opcion-create.component.html',
   styleUrls: ['./opcion-create.component.css']
 })
-export class OpcionCreateComponent implements OnInit {
+export class OpcionCreateComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Opcion';
@@ -26,6 +27,8 @@ export class OpcionCreateComponent implements OnInit {
 
   // Id del menu seleccionado
   idMenu: number;
+
+  subscription: Subscription;
 
   constructor(private fb: FormBuilder,
               private seguridadService: SeguridadService,
@@ -56,7 +59,8 @@ export class OpcionCreateComponent implements OnInit {
   onClickSave() {
     this.modelo.idMenu = Number(this.idMenu);
     this.modelo.descripcionOpcion = this.maestroForm.controls['descripcion'].value;
-    this.seguridadService.setInsertOpcion(this.modelo)
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.setInsertOpcion(this.modelo)
     .subscribe(() =>  {
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
       this.back(); },
@@ -67,6 +71,12 @@ export class OpcionCreateComponent implements OnInit {
 
   back() {
     this.router.navigate(['/main/module-se/panel-opcion']);
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
 }

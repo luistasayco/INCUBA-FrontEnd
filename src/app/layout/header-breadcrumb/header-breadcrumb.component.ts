@@ -23,9 +23,7 @@ export class HeaderBreadcrumbComponent implements OnDestroy, OnInit {
     isNetwork: boolean;
 
     constructor(public breadcrumbService: BreadcrumbService,
-                private sessionService: SessionService,
                 private userContextService: UserContextService,
-                private router: Router,
                 private readonly servicioInternet: estadoInternetService) {
         this.subscription = breadcrumbService.itemsHandler.subscribe(response => {
             this.items = response;

@@ -34,6 +34,7 @@ export class TxRegistroEquipoModel {
     txRegistroEquipoDetalle6Repuestos: TxRegistroEquipoDetalle6Model[];
     txRegistroEquipoDetalle7: TxRegistroEquipoDetalle7Model[];
     flgMigrado: boolean;
+    flgEnModificacion: boolean;
     // Auditoria
     regUsuario?: number;
     regEstacion?: string;
@@ -51,6 +52,7 @@ export class TxRegistroEquipoModel {
         this.firmaIncuba = '';
         this.firmaPlanta = '';
         this.flgCerrado = false;
+        this.flgEnModificacion = false;
         this.fecRegistroInicio = null;
         this.fecRegistroFin = null;
 

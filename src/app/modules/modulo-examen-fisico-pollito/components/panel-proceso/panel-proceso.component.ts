@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GlobalsConstants } from 'src/app/modules/modulo-compartido/models/globals-constants';
 import { ProcesoModel } from '../../models/proceso.model';
 import { IMensajeResultadoApi } from 'src/app/modules/modulo-compartido/models/mensaje-resultado-api';
@@ -7,13 +7,14 @@ import { ConfirmationService } from 'primeng';
 import { Router } from '@angular/router';
 import { ExamenFisicoPollitoService } from '../../services/examen-fisico-pollito.service';
 import { ProcesoDetalleModel } from '../../models/proceso-detalle.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-panel-proceso',
   templateUrl: './panel-proceso.component.html',
   styleUrls: ['./panel-proceso.component.css']
 })
-export class PanelProcesoComponent implements OnInit {
+export class PanelProcesoComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Proceso';
@@ -53,6 +54,8 @@ export class PanelProcesoComponent implements OnInit {
   // Opcion Eliminar
   modeloEliminarDetalle: ProcesoDetalleModel;
 
+  subscription: Subscription;
+
   constructor(private examenFisicoPollitoService: ExamenFisicoPollitoService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private router: Router,
@@ -83,7 +86,8 @@ export class PanelProcesoComponent implements OnInit {
   onListar() {
 
     this.modeloFind = {descripcion: this.descripcionFind};
-    this.examenFisicoPollitoService.getProceso(this.modeloFind)
+    this.subscription = new Subscription();
+    this.subscription = this.examenFisicoPollitoService.getProceso(this.modeloFind)
     .subscribe(resp => {
       if (resp) {
           this.listModelo = resp;
@@ -117,7 +121,8 @@ export class PanelProcesoComponent implements OnInit {
   onListarDetalle(id: number) {
 
     this.modeloFindDetalle = {idProceso: id};
-    this.examenFisicoPollitoService.getProcesoDetalle(this.modeloFindDetalle)
+    this.subscription = new Subscription();
+    this.subscription = this.examenFisicoPollitoService.getProcesoDetalle(this.modeloFindDetalle)
     .subscribe(resp => {
       if (resp) {
           this.listModeloDetalle = resp;
@@ -134,7 +139,8 @@ export class PanelProcesoComponent implements OnInit {
   }
 
   onRowEditSave(modelo: ProcesoModel) {
-    this.examenFisicoPollitoService.setUpdateProceso(modelo)
+    this.subscription = new Subscription();
+    this.subscription = this.examenFisicoPollitoService.setUpdateProceso(modelo)
     .subscribe((resp: IMensajeResultadoApi) => {
       delete this.modelocloned[modelo.idProceso];
       this.mensajePrimeNgService.onToExitoMsg(null, resp);
@@ -154,7 +160,8 @@ export class PanelProcesoComponent implements OnInit {
   }
 
   onRowEditSaveDetalle(modelo: ProcesoDetalleModel) {
-    this.examenFisicoPollitoService.setUpdateProcesoDetalle(modelo)
+    this.subscription = new Subscription();
+    this.subscription = this.examenFisicoPollitoService.setUpdateProcesoDetalle(modelo)
     .subscribe((resp: IMensajeResultadoApi) => {
       delete this.modeloclonedDetalle[modelo.idProcesoDetalle];
       this.mensajePrimeNgService.onToExitoMsg(null, resp);
@@ -225,7 +232,8 @@ export class PanelProcesoComponent implements OnInit {
   }
 
   onToDelete() {
-    this.examenFisicoPollitoService.setDeleteProceso(this.modeloEliminar)
+    this.subscription = new Subscription();
+    this.subscription = this.examenFisicoPollitoService.setDeleteProceso(this.modeloEliminar)
     .subscribe((resp: IMensajeResultadoApi) => {
       this.listModelo = this.listModelo.filter(datafilter => datafilter.idProceso !== this.modeloEliminar.idProceso );
       this.mensajePrimeNgService.onToExitoMsg(null, resp);
@@ -236,7 +244,8 @@ export class PanelProcesoComponent implements OnInit {
   }
 
   onToDeleteDetalle() {
-    this.examenFisicoPollitoService.setDeleteProcesoDetalle(this.modeloEliminarDetalle)
+    this.subscription = new Subscription();
+    this.subscription = this.examenFisicoPollitoService.setDeleteProcesoDetalle(this.modeloEliminarDetalle)
     .subscribe((resp: IMensajeResultadoApi) => {
       this.listModeloDetalle =
       this.listModeloDetalle.filter(datafilter => datafilter.idProcesoDetalle !== this.modeloEliminarDetalle.idProcesoDetalle );
@@ -245,5 +254,11 @@ export class PanelProcesoComponent implements OnInit {
       (error) => {
         this.mensajePrimeNgService.onToErrorMsg(null, error);
       });
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }
