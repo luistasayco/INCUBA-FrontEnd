@@ -19,7 +19,12 @@ export class TxRegistroEquipoModel {
     firmaIncuba?: string;
     firmaPlanta?: string;
     flgCerrado?: boolean;
-
+    responsableIncuba?: string;
+    responsablePlanta?: string;
+    usuarioCierre?: string;
+    idUsuarioCierre?: number;
+    fecCierre?: Date;
+    usuarioCreacion?: string;
     //Varibles para el filtro
     fecRegistroInicio?: Date;
     fecRegistroFin?: Date;
@@ -55,7 +60,12 @@ export class TxRegistroEquipoModel {
         this.flgEnModificacion = false;
         this.fecRegistroInicio = null;
         this.fecRegistroFin = null;
-
+        this.responsableIncuba = '';
+        this.responsablePlanta = '';
+        this.usuarioCierre = '';
+        this.idUsuarioCierre = 0;
+        this.fecCierre = null;
+        this.usuarioCreacion = '';
         this.txRegistroEquipoDetalle1 = [];
         this.txRegistroEquipoDetalle2 = [];
         this.txRegistroEquipoDetalle2NoPredeterminado = [];

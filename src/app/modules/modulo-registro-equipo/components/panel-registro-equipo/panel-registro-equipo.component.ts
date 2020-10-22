@@ -13,6 +13,10 @@ import { LanguageService } from '../../../../services/language.service';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
 import { Subscription } from 'rxjs';
 import { IMensajeResultadoApi } from '../../../modulo-compartido/models/mensaje-resultado-api';
+import { saveAs } from 'file-saver';
+import { environment } from '../../../../../environments/environment.prod';
+import { SessionService } from '../../../../services/session.service';
+import { CifrarDataService } from '../../../../services/cifrar-data.service';
 
 @Component({
   selector: 'app-panel-registro-equipo',
@@ -51,13 +55,19 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
 
   subscription$: Subscription;
 
+  displayDatosCierre: boolean;
+
+  modeloDatosCierre: TxRegistroEquipoModel  = new TxRegistroEquipoModel();
+
   constructor(private registroEquipoService: RegistroEquipoService,
               private compartidoService: CompartidoService,
               public mensajePrimeNgService: MensajePrimeNgService,
               public lenguageService: LanguageService,
               private router: Router,
               private breadcrumbService: BreadcrumbService,
-              private confirmationService: ConfirmationService) {
+              private confirmationService: ConfirmationService,
+              private sessionService: SessionService,
+              private cifrarDataService: CifrarDataService) {
     this.breadcrumbService.setItems([
         { label: 'Modulo' },
         { label: 'Registro de Equipo', routerLink: ['module-re/panel-registro-equipo'] }
@@ -85,7 +95,8 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
       { field: 'fecRegistro', header: 'Fecha' },
       { field: 'codigoEmpresa', header: 'Empresa' },
       { field: 'codigoPlanta', header: 'Planta' },
-      { field: 'idModelo', header: 'Modelo' }
+      { field: 'idModelo', header: 'Modelo' },
+      { field: 'UsuarioCreacion', header: 'Usuario' }
     ];
   }
 
@@ -175,16 +186,24 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
     });
   }
 
-  onToCerrar(data: any) {
+  onToCerrar(data: TxRegistroEquipoModel) {
     this.subscription$ = new Subscription();
     data.flgCerrado = true;
+    data.fecCierre = new Date();
     this.subscription$ = this.registroEquipoService.setUpdateStatusTxRegistroEquipo(data)
     .subscribe((resp: IMensajeResultadoApi) => {
         this.listModelo.find(x => x.idRegistroEquipo === data.idRegistroEquipo).flgCerrado = true;
+        this.listModelo.find(x => x.idRegistroEquipo === data.idRegistroEquipo).fecCierre = new Date();
+        this.listModelo
+        .find(x => x.idRegistroEquipo === data.idRegistroEquipo)
+        .usuarioCierre = this.cifrarDataService.decrypt(this.sessionService.getItem('usuario'));
 
         this.mensajePrimeNgService.onToExitoMsg(null, resp);
       },
       (error) => {
+        this.listModelo.find(x => x.idRegistroEquipo === data.idRegistroEquipo).flgCerrado = false;
+        this.listModelo.find(x => x.idRegistroEquipo === data.idRegistroEquipo).fecCierre = null;
+        this.listModelo.find(x => x.idRegistroEquipo === data.idRegistroEquipo).usuarioCierre = '';
         this.mensajePrimeNgService.onToErrorMsg(null, error);
       }
     );
@@ -219,11 +238,38 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
       }
     );
   }
+
+  onToRowSelectPDF(modelo: any) {
+    this.registroEquipoService.setPDFTxRegistroEquipo(modelo.idRegistroEquipo)
+    .subscribe((resp: any) => {
+
+      console.log(resp);
+
+      let file = new window.Blob([resp], {type: 'application/pdf'});
+      // saveAs(new Blob([resp], {type: 'application/pdf'}), 'Registros');
+      let fileURL = window.URL.createObjectURL(file);
+      window.open(fileURL, '_blank');
+      // console.log(resp);
+
+      // this.mensajePrimeNgService.onToExitoMsg(null, resp);
+    },
+      (error) => {
+        console.log('error', error);
+        this.mensajePrimeNgService.onToErrorMsg(null, error);
+      });
+  }
+
   onToCreate() {
     this.router.navigate(['/main/module-re/create-registro-equipo']);
   }
 
   onToUpdate(data: any) {
     this.router.navigate(['/main/module-re/update-registro-equipo', data.idRegistroEquipo]);
+  }
+
+  onDatosCierre(data: TxRegistroEquipoModel) {
+    this.displayDatosCierre = true;
+
+    this.modeloDatosCierre = data;
   }
 }

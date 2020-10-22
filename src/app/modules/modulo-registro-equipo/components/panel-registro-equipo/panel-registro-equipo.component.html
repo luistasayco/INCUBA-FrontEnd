@@ -71,6 +71,9 @@
                     <td>
                         <span class="ui-column-title">Modelo</span> {{rowData.descripcionModelo}}
                     </td>
+                    <td>
+                        <span class="ui-column-title">Usuario</span> {{rowData.usuarioCreacion}}
+                    </td>
                     <td class="action-td">
                         <button *ngIf="!rowData.flgCerrado" pButton icon="{{globalConstants.icoEditar}}" (click)="onToUpdate(rowData)"></button>
                         <button *ngIf="rowData.flgCerrado" pButton icon="{{globalConstants.icoVisualizar}}" (click)="onToUpdate(rowData)"></button>
@@ -80,10 +83,10 @@
                     </td>
                     <td class="action-td">
                         <button *ngIf="!rowData.flgCerrado" pButton icon="{{globalConstants.icoAbierto}}" (click)="onConfirmCerrar(rowData)"></button>
-                        <button *ngIf="rowData.flgCerrado" pButton icon="{{globalConstants.icoCerrado}}" class="ui-button-danger"></button>
+                        <button *ngIf="rowData.flgCerrado" pButton icon="{{globalConstants.icoCerrado}}" class="ui-button-danger" (click)="onDatosCierre(rowData)"></button>
                     </td>
                     <td class="action-td">
-                        <button pButton icon="{{globalConstants.icoPDF}}" class="ui-button-danger"></button>
+                        <button pButton icon="{{globalConstants.icoPDF}}" class="ui-button-danger" (click)="onToRowSelectPDF(rowData)"></button>
                     </td>
                 </tr>
             </ng-template>
@@ -102,3 +105,17 @@
 
 <!-- Para Eliminar -->
 <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000"></p-confirmDialog>
+
+<p-dialog header="Datos de Cierre" [(visible)]="displayDatosCierre" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+    <div class="p-field p-grid">
+        <label for="fecha" class="p-col-fixed" style="width:100px">Fecha : </label>
+        <label for="cfecha" class="p-col-fixed" style="width:100px">{{modeloDatosCierre.fecCierre | date:'short'}}</label>
+    </div>
+    <div class="p-field p-grid">
+        <label for="usuario" class="p-col-fixed" style="width:100px">Usuario : </label>
+        <label for="cusuario" class="p-col-fixed" style="width:100px">{{modeloDatosCierre.usuarioCierre}}</label>
+    </div>
+    <p-footer>
+        <button type="button" pButton icon="pi pi-check" (click)="displayDatosCierre=false" label="Ok"></button>
+    </p-footer>
+</p-dialog>

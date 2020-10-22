@@ -236,7 +236,19 @@
                         <label for="firma2">{{globalConstants.cFirma2}}</label>
                     </div>
                 </div>
+                <div class="ui-g-12 ui-md-6">
+                    <div class="p-field">
+                        <label for="nombreInvetsa">Nombre:</label>
+                        <input [disabled]="true" id="nombreInvetsa" type="text" [(ngModel)]="modeloItem.responsableIncuba" pInputText>
+                    </div>
+                </div>
 
+                <div class="ui-g-12 ui-md-6">
+                    <div class="p-field">
+                        <label for="nombrePlanta">Nombre:</label>
+                        <input [disabled]="true" id="nombrePlanta" type="text" [(ngModel)]="modeloItem.responsablePlanta" pInputText>
+                    </div>
+                </div>
                 <div class="ui-g-12 ui-md-6">
                     <button [disabled]="modeloItem.flgCerrado" pButton type="button" label="{{globalConstants.cGrabar}}" icon="{{globalConstants.icoGrabar}}" (click)="onToGrabar()"></button>
                 </div>

@@ -398,6 +398,7 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
     }
 
     this.subscription$ = new Subscription();
+    this.modeloItem.flgCerrado = false;
     this.subscription$  = this.registroEquipoService.setInsertTxRegistroEquipo( this.modeloItem )
     .subscribe(() =>  {
       this.back();
