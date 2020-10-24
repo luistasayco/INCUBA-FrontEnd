@@ -31,9 +31,9 @@
                 </p-pickList>
             </p-accordionTab>
             <p-accordionTab header="Mantenimiento">
-                <p-pickList [source]="listMantenimientoPorSeleccionado" [target]="listMantenimientoSeleccionado" sourceHeader="Lista" targetHeader="Seleccionado" [responsive]="true" filterBy="descripcion" dragdrop="true" showSourceControls='false' sourceFilterPlaceholder="Search by mantenimiento"
-                    targetFilterPlaceholder="Search by mantenimiento" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}" [showSourceControls]="false" [showTargetControls]="false" (onMoveToTarget)="onToMoveToTargetMantenimiento($event.items)"
-                    (onMoveToSource)="onToMoveToSourceMantenimiento($event.items)" (onMoveAllToTarget)="onToMoveAllToTargetMantenimiento($event.items)" (onToMoveAllToSource)="onToMoveAllToSourceMantenimiento($event.items)">
+                <p-pickList [disabled]="buttonAcces.btnAdicionarEliminarMantenimiento" [source]="listMantenimientoPorSeleccionado" [target]="listMantenimientoSeleccionado" sourceHeader="Lista" targetHeader="Seleccionado" [responsive]="true" filterBy="descripcion" dragdrop="true"
+                    showSourceControls='false' sourceFilterPlaceholder="Search by mantenimiento" targetFilterPlaceholder="Search by mantenimiento" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}" [showSourceControls]="false" [showTargetControls]="false"
+                    (onMoveToTarget)="onToMoveToTargetMantenimiento($event.items)" (onMoveToSource)="onToMoveToSourceMantenimiento($event.items)" (onMoveAllToTarget)="onToMoveAllToTargetMantenimiento($event.items)" (onToMoveAllToSource)="onToMoveAllToSourceMantenimiento($event.items)">
                     <ng-template let-mantenimiento pTemplate="item">
                         <div class="ui-helper-clearfix">
                             <div style="font-size:14px;float:left;margin:5px 5px 0 0">{{mantenimiento.idMantenimiento}} - {{mantenimiento.descripcion}}</div>
@@ -42,9 +42,9 @@
                 </p-pickList>
             </p-accordionTab>
             <p-accordionTab header="Repuesto">
-                <p-pickList [source]="listRepuestoPorSeleccionado" [target]="listRepuestoSeleccionado" sourceHeader="Lista" targetHeader="Seleccionado" [responsive]="true" filterBy="codigoRepuesto" dragdrop="true" showSourceControls='false' sourceFilterPlaceholder="Search by repuesto"
-                    targetFilterPlaceholder="Search by repuesto" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}" [showSourceControls]="false" [showTargetControls]="false" (onMoveToTarget)="onToMoveToTargetRepuesto($event.items)" (onMoveToSource)="onToMoveToSourceRepuesto($event.items)"
-                    (onMoveAllToTarget)="onToMoveAllToTargetRepuesto($event.items)" (onToMoveAllToSource)="onToMoveAllToSourceRepuesto($event.items)">
+                <p-pickList [disabled]="buttonAcces.btnAdicionarEliminarRepuesto" [source]="listRepuestoPorSeleccionado" [target]="listRepuestoSeleccionado" sourceHeader="Lista" targetHeader="Seleccionado" [responsive]="true" filterBy="codigoRepuesto" dragdrop="true"
+                    showSourceControls='false' sourceFilterPlaceholder="Search by repuesto" targetFilterPlaceholder="Search by repuesto" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}" [showSourceControls]="false" [showTargetControls]="false"
+                    (onMoveToTarget)="onToMoveToTargetRepuesto($event.items)" (onMoveToSource)="onToMoveToSourceRepuesto($event.items)" (onMoveAllToTarget)="onToMoveAllToTargetRepuesto($event.items)" (onToMoveAllToSource)="onToMoveAllToSourceRepuesto($event.items)">
                     <ng-template let-repuesto pTemplate="item">
                         <div class="ui-helper-clearfix">
                             <p-toggleButton onIcon="pi pi-check" [(ngModel)]="repuesto.flgPredeterminado" offIcon="pi pi-times" [style]="{'width':'150px'}" onLabel="Predeterminado" offLabel="Predeterminado"></p-toggleButton>

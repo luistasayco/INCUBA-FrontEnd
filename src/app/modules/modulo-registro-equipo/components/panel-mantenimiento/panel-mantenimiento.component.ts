@@ -8,6 +8,8 @@ import { MensajePrimeNgService } from 'src/app/modules/modulo-compartido/service
 import { IMensajeResultadoApi } from 'src/app/modules/modulo-compartido/models/mensaje-resultado-api';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
 import { Subscription } from 'rxjs';
+import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
+import { ButtonAcces } from '../../../../models/acceso-button';
 
 @Component({
   selector: 'app-panel-mantenimiento',
@@ -15,6 +17,9 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./panel-mantenimiento.component.css']
 })
 export class PanelMantenimientoComponent implements OnInit, OnDestroy {
+
+  // Dar acceso a los botones se tiene que mejorar
+  buttonAcces: ButtonAcces = new ButtonAcces();
 
   // Titulo del componente
   titulo = 'Mantenimiento';
@@ -36,12 +41,13 @@ export class PanelMantenimientoComponent implements OnInit, OnDestroy {
   modeloEliminar: MantenimientoModel;
 
   subscription: Subscription;
-
+  
   constructor(private registroEquipoService: RegistroEquipoService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private router: Router,
               private confirmationService: ConfirmationService,
-              private breadcrumbService: BreadcrumbService) {
+              private breadcrumbService: BreadcrumbService,
+              private menuDinamicoService: MenuDinamicoService) {
                 this.breadcrumbService.setItems([
                     { label: 'Modulo' },
                     { label: 'Mantenimiento', routerLink: ['module-re/panel-mantenimiento'] }
@@ -53,8 +59,13 @@ export class PanelMantenimientoComponent implements OnInit, OnDestroy {
       { header: 'Codigo' },
       { header: 'Descripcion' }
     ];
-
     this.onListar();
+
+    this.subscription = new Subscription();
+    this.subscription = this.menuDinamicoService.getObtieneOpciones('app-panel-mantenimiento')
+    .subscribe(acces => {
+      this.buttonAcces = acces;
+    });
   }
 
   onToBuscar() {
@@ -69,6 +80,11 @@ export class PanelMantenimientoComponent implements OnInit, OnDestroy {
     .subscribe(resp => {
       if (resp) {
           this.listModelo = resp;
+
+          // this.query.forEach((div: ElementRef) => {
+          //   console.log(div.nativeElement);
+          //   this.renderer.setAttribute(div.nativeElement, 'disabled', 'true');
+          // });
         }
       },
       (error) => {

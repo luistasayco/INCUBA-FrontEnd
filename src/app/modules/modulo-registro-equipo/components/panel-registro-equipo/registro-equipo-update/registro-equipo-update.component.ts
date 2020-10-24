@@ -12,6 +12,7 @@ import { MensajePrimeNgService } from '../../../../modulo-compartido/services/me
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { BreadcrumbService } from '../../../../../services/breadcrumb.service';
 import { Subscription } from 'rxjs';
+import { TxRegistroEquipoDetalle7Model } from '../../../models/tx-registro-equipo-detalle7.model';
 
 @Component({
   selector: 'app-registro-equipo-update',
@@ -59,6 +60,8 @@ export class RegistroEquipoUpdateComponent implements OnInit, OnDestroy {
 
   listIma: any[];
 
+  cloneListImagen: TxRegistroEquipoDetalle7Model[] = [];
+
   constructor(private registroEquipoService: RegistroEquipoService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private router: Router,
@@ -101,6 +104,7 @@ export class RegistroEquipoUpdateComponent implements OnInit, OnDestroy {
     .subscribe(resp => {
       if (resp) {
         this.modeloItem = resp;
+        this.cloneListImagen = [...this.modeloItem.txRegistroEquipoDetalle7];
         this.onUpdateRow();
         }
       },
@@ -169,12 +173,26 @@ export class RegistroEquipoUpdateComponent implements OnInit, OnDestroy {
   listUpdate(event: any[]) {
     this.modeloItem.txRegistroEquipoDetalle7 = [];
     event.forEach(x => {
-      this.modeloItem.txRegistroEquipoDetalle7.push({
-        idRegistroEquipoDetalle: 0,
-        idRegistroEquipo: 0,
-        foto: x.imagen,
-        orden: 0
-      });
+      if (this.cloneListImagen) {
+        let itemImagen = this.cloneListImagen.find(xFind => xFind.foto === x.imagen);
+        if (itemImagen) {
+          this.modeloItem.txRegistroEquipoDetalle7.push(itemImagen);
+        } else {
+          this.modeloItem.txRegistroEquipoDetalle7.push({
+            idRegistroEquipoDetalle: 0,
+            idRegistroEquipo: 0,
+            foto: x.imagen,
+            orden: 0
+          });
+        }
+      } else {
+        this.modeloItem.txRegistroEquipoDetalle7.push({
+          idRegistroEquipoDetalle: 0,
+          idRegistroEquipo: 0,
+          foto: x.imagen,
+          orden: 0
+        });
+      }
     });
   }
 

@@ -11,6 +11,8 @@ import { ConfirmationService } from 'primeng/api';
 import { IMensajeResultadoApi } from '../../../modulo-compartido/models/mensaje-resultado-api';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
 import { Subscription } from 'rxjs';
+import { ButtonAcces } from '../../../../models/acceso-button';
+import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
 
 @Component({
   selector: 'app-panel-opcion',
@@ -21,6 +23,8 @@ export class PanelOpcionComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Opcion';
+  // Acceso de botones
+  buttonAcces: ButtonAcces = new ButtonAcces();
   // Name de los botones de accion
   globalConstants: GlobalsConstants = new GlobalsConstants();
 
@@ -46,7 +50,8 @@ export class PanelOpcionComponent implements OnInit, OnDestroy {
               public mensajePrimeNgService: MensajePrimeNgService,
               private router: Router,
               private confirmationService: ConfirmationService,
-              private breadcrumbService: BreadcrumbService) {
+              private breadcrumbService: BreadcrumbService,
+              private menuDinamicoService: MenuDinamicoService) {
                 this.breadcrumbService.setItems([
                   { label: 'Modulo Seguridad' },
                   { label: 'Opcion', routerLink: ['module-se/panel-opcion'] }
@@ -60,6 +65,12 @@ export class PanelOpcionComponent implements OnInit, OnDestroy {
         { header: 'Codigo' },
         { header: 'Descripcion' }
       ];
+
+      this.subscription = new Subscription();
+      this.subscription = this.menuDinamicoService.getObtieneOpciones('app-panel-opcion')
+      .subscribe(acces => {
+        this.buttonAcces = acces;
+      });
   }
 
   getListaMenu() {

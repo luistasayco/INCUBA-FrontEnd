@@ -12,6 +12,11 @@ import { BreadcrumbService } from '../../../../services/breadcrumb.service';
 import { RegistroEquipoLocalService } from '../../services/registro-equipo-local.service';
 import { CompartidoLocalService } from '../../../modulo-compartido/services/compartido-local.service';
 import { Subscription, Observable } from 'rxjs';
+import { SessionService } from '../../../../services/session.service';
+import { environment } from '../../../../../environments/environment.prod';
+import { UtilService } from '../../../modulo-compartido/services/util.service';
+import { ButtonAcces } from '../../../../models/acceso-button';
+import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
 
 @Component({
   selector: 'app-panel-registro-equipo-off-line',
@@ -21,7 +26,8 @@ import { Subscription, Observable } from 'rxjs';
 export class PanelRegistroEquipoOffLineComponent implements OnInit, OnDestroy {
   // Titulo del componente
   titulo = 'Registros de Equipos';
-
+  // Acceso de botones
+  buttonAcces: ButtonAcces = new ButtonAcces();
   // Name de los botones de accion
   globalConstants: GlobalsConstants = new GlobalsConstants();
 
@@ -52,13 +58,21 @@ export class PanelRegistroEquipoOffLineComponent implements OnInit, OnDestroy {
   // Estado del internet
   isNetwork: boolean;
   interval;
+
+  displayDatosCierre: boolean;
+
+  modeloDatosCierre: TxRegistroEquipoModel  = new TxRegistroEquipoModel();
+
   constructor(private registroEquipoLocalService: RegistroEquipoLocalService,
               private compartidoLocalService: CompartidoLocalService,
               public mensajePrimeNgService: MensajePrimeNgService,
               public lenguageService: LanguageService,
               private router: Router,
               private breadcrumbService: BreadcrumbService,
-              private confirmationService: ConfirmationService) {
+              private confirmationService: ConfirmationService,
+              private sessionService: SessionService,
+              private utilService: UtilService,
+              private menuDinamicoService: MenuDinamicoService) {
     this.breadcrumbService.setItems([
         { label: 'Modulo' },
         { label: 'Registro de Equipo', routerLink: ['module-re/panel-registro-equipo-offline'] }
@@ -72,6 +86,7 @@ export class PanelRegistroEquipoOffLineComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
     this.modeloFind =  new TxRegistroEquipoModel();
     this.selectedEmpresa = null;
     this.selectedPlanta = null;
@@ -85,8 +100,15 @@ export class PanelRegistroEquipoOffLineComponent implements OnInit, OnDestroy {
       { field: 'fecRegistro', header: 'Fecha' },
       { field: 'codigoEmpresa', header: 'Empresa' },
       { field: 'codigoPlanta', header: 'Planta' },
-      { field: 'idModelo', header: 'Modelo' }
+      { field: 'idModelo', header: 'Modelo' },
+      { field: 'UsuarioCreacion', header: 'Usuario' }
     ];
+
+    this.subscription$ = new Subscription();
+    this.subscription$ = this.menuDinamicoService.getObtieneOpciones('app-panel-registro-equipo-off-line')
+    .subscribe(acces => {
+      this.buttonAcces = acces;
+    });
 
     this.onListar();
     this.onUpdateDataVistaUsuario();
@@ -165,6 +187,10 @@ export class PanelRegistroEquipoOffLineComponent implements OnInit, OnDestroy {
   }
 
   onConfirmCerrar(data: any) {
+    if (data.flgCerrado) {
+      this.mensajePrimeNgService.onToInfoMsg(null, 'Registro seleccionado se encuentra CERRADO!!!');
+      return;
+    }
     this.confirmationService.confirm({
         message: this.globalConstants.subTitleCierre,
         header: this.globalConstants.titleCierre,
@@ -182,23 +208,40 @@ export class PanelRegistroEquipoOffLineComponent implements OnInit, OnDestroy {
 
   onToCerrar(data: any) {
     this.subscription$ = new Subscription();
+
+    let dataClone = {...data};
+    let usuario =  this.sessionService.getItemDecrypt('usuario');
+
     data.flgCerrado = true;
+    data.fecCierre = this.utilService.fechaApi_POST();
+    data.idUsuarioCierre = environment.usuario;
+    data.usuarioCierre =usuario;
+
     this.subscription$ = this.registroEquipoLocalService.setUpdateTxRegistroEquipo(data)
     .subscribe(resp => {
       if (resp) {
 
         this.listModelo.find((x: any) => x.id === data.id).flgCerrado = true;
+        this.listModelo.find((x: any) => x.id === data.id).fecCierre = this.utilService.fechaApi_POST();
+        this.listModelo.find((x: any) => x.id === data.id).usuarioCierre = usuario;
 
         this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
         }
       },
       (error) => {
+        this.listModelo.find((x: any) => x.id === data.id).flgCerrado = false;
+        this.listModelo.find((x: any) => x.id === data.id).fecCierre = null;
+        this.listModelo.find((x: any) => x.id === data.id).usuarioCierre = '';
         this.mensajePrimeNgService.onToErrorMsg(null, error);
       }
     );
   }
 
   onConfirmEliminar(data: any) {
+    if (data.flgCerrado) {
+      this.mensajePrimeNgService.onToInfoMsg(null, 'Registro seleccionado se encuentra CERRADO!!!');
+      return;
+    }
     this.confirmationService.confirm({
         message: this.globalConstants.subTitleEliminar,
         header: this.globalConstants.titleEliminar,
@@ -257,7 +300,13 @@ export class PanelRegistroEquipoOffLineComponent implements OnInit, OnDestroy {
     this.interval = setInterval(() => {
     console.log('consulta data local');
     this.onListar();
-  }, 10000);
+    }, 20000);
+  }
+
+  onDatosCierre(data: TxRegistroEquipoModel) {
+    this.displayDatosCierre = true;
+
+    this.modeloDatosCierre = data;
   }
 
 }

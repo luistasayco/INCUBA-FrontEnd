@@ -7,6 +7,8 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { GlobalsConstants } from '../../../modulo-compartido/models/globals-constants';
 import { MensajePrimeNgService } from '../../../modulo-compartido/services/mensaje-prime-ng.service';
 import { Subscription, Observable } from 'rxjs';
+import { ButtonAcces } from '../../../../models/acceso-button';
+import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
 
 @Component({
   selector: 'app-panel-menu',
@@ -15,6 +17,8 @@ import { Subscription, Observable } from 'rxjs';
 })
 export class PanelMenuComponent implements OnInit, OnDestroy {
 
+  // Acceso de botones
+  buttonAcces: ButtonAcces = new ButtonAcces();
   // Name de los botones de accion
   globalConstants: GlobalsConstants = new GlobalsConstants();
 
@@ -34,12 +38,19 @@ export class PanelMenuComponent implements OnInit, OnDestroy {
 
   constructor(private seguridadService: SeguridadService,
               public mensajePrimeNgService: MensajePrimeNgService,
-              private fb: FormBuilder) { }
+              private fb: FormBuilder,
+              private menuDinamicoService: MenuDinamicoService) { }
 
   ngOnInit() {
-      this.getListaMenu();
+    this.getListaMenu();
 
-      this.getInicializaForm();
+    this.getInicializaForm();
+
+    this.subscription = new Subscription();
+    this.subscription = this.menuDinamicoService.getObtieneOpciones('app-panel-menu')
+    .subscribe(acces => {
+      this.buttonAcces = acces;
+    });
   }
 
   getInicializaForm() {
@@ -51,7 +62,8 @@ export class PanelMenuComponent implements OnInit, OnDestroy {
         'url' : new FormControl('', Validators.compose([Validators.required])),
         'nroNivel' : new FormControl(''),
         'flgActivo' : new FormControl('', Validators.compose([Validators.required])),
-        'idMenuPadre' : new FormControl('', Validators.compose([Validators.required]))
+        'idMenuPadre' : new FormControl('', Validators.compose([Validators.required])),
+        'nombreFormulario' : new FormControl('')
       }
     );
   }
@@ -128,6 +140,7 @@ export class PanelMenuComponent implements OnInit, OnDestroy {
     this.modeloForm.controls['flgActivo'].setValue(modeloMenu.flgActivo);
     this.modeloForm.controls['idMenuPadre'].setValue(modeloMenu.idMenuPadre);
     this.modeloForm.controls['nroNivel'].setValue(modeloMenu.nroNivel);
+    this.modeloForm.controls['nombreFormulario'].setValue(modeloMenu.nombreFormulario);
   }
 
   goNewChildren()
@@ -156,6 +169,7 @@ export class PanelMenuComponent implements OnInit, OnDestroy {
     this.modelo.flgActivo = Boolean(this.modeloForm.controls['flgActivo'].value);
     this.modelo.idMenuPadre = Number(this.modeloForm.controls['idMenuPadre'].value);
     this.modelo.nroNivel = Number(this.modeloForm.controls['nroNivel'].value);
+    this.modelo.nombreFormulario = this.modeloForm.controls['nombreFormulario'].value;
 
     if (this.modelo.idMenu === 0) {
       this.evenObservable = this.seguridadService.setInsertMenu(this.modelo);

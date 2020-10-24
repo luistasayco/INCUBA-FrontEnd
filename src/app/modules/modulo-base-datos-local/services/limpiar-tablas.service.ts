@@ -21,7 +21,6 @@ export class LimpiarTablasService {
           if (resultado.length > 0) {
             resultado = resultado
             .filter(x => x.flgMigrado === true)
-            .filter(y => y.flgEnModificacion === false);
             resultado.forEach(element => {
               this.servicioIndexDB.delete(tabla, element.id);
             });

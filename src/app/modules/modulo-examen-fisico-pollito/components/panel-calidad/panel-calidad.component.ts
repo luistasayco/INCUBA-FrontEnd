@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 import { IMensajeResultadoApi } from 'src/app/modules/modulo-compartido/models/mensaje-resultado-api';
 import { ExamenFisicoPollitoService } from '../../services/examen-fisico-pollito.service';
 import { Subscription } from 'rxjs';
+import { ButtonAcces } from '../../../../models/acceso-button';
+import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
 
 @Component({
   selector: 'app-panel-calidad',
@@ -17,6 +19,9 @@ export class PanelCalidadComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Calidad';
+
+  // Acceso a los botones
+  buttonAcces: ButtonAcces = new ButtonAcces();
 
   // Name de los botones de accion
   globalConstants: GlobalsConstants = new GlobalsConstants();
@@ -39,7 +44,8 @@ export class PanelCalidadComponent implements OnInit, OnDestroy {
   constructor(private examenFisicoPollitoService: ExamenFisicoPollitoService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private router: Router,
-              private confirmationService: ConfirmationService) { }
+              private confirmationService: ConfirmationService,
+              private menuDinamicoService: MenuDinamicoService) { }
 
   ngOnInit() {
     this.columnas = [
@@ -49,6 +55,12 @@ export class PanelCalidadComponent implements OnInit, OnDestroy {
       { header: 'Rango Fin' },
       { header: 'Color' }
     ];
+
+    this.subscription = new Subscription();
+    this.subscription = this.menuDinamicoService.getObtieneOpciones('app-panel-calidad')
+    .subscribe(acces => {
+      this.buttonAcces = acces;
+    });
 
     this.onListar();
   }

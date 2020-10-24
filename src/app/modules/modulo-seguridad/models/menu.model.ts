@@ -1,3 +1,4 @@
+import { OpcionModel } from './opcion.model';
 export class MenuModel {
     idMenu?: number;
     descripcionTitulo?: string;
@@ -7,6 +8,8 @@ export class MenuModel {
     flgActivo?: boolean;
     idMenuPadre?: number;
     flgChildren?: boolean;
+    nombreFormulario?: string;
+    listaOpciones?: OpcionModel[];
 
     // Auditoria
     regUsuario?: number;
@@ -21,6 +24,8 @@ export class MenuModel {
         this.flgActivo = true;
         this.idMenuPadre = 0;
         this.flgChildren = false;
+        this.nombreFormulario = '';
+        this.listaOpciones = [];
         this.regUsuario = 0;
         this.regEstacion = '';
     }

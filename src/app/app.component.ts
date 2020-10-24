@@ -8,7 +8,6 @@ import { LimpiarTablasService } from './modules/modulo-base-datos-local/services
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit, OnDestroy {
-  title = 'INCUBA-FrontEnd';
 
   interval;
 
@@ -33,6 +32,6 @@ export class AppComponent implements OnInit, OnDestroy {
     clearInterval(this.interval);
     this.interval = setInterval(() => {
       this.enviarDatosRemotosService.enviarDatosAServidorRemoto();
-    }, 420000);
+    }, 600000);
   }
 }

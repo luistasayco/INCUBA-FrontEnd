@@ -61,7 +61,9 @@ export class EnviarDatosRemotosService {
       .subscribe(resultado => {
         if (resultado) {
           registros = [...resultado];
-          registros = registros.filter(x => x.flgMigrado === false);
+          registros = registros
+          .filter(x => x.flgMigrado === false)
+          .filter(y => y.flgEnModificacion === false);
 
           if ( registros.length > 0 ) {
             registros.forEach( item => {

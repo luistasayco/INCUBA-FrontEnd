@@ -7,15 +7,15 @@ import { MensajePrimeNgService } from '../modules/modulo-compartido/services/men
 import { UserContextService } from '../services/user-context.service';
 import { SessionService } from '../services/session.service';
 import { MenuDinamicoService } from '../services/menu-dinamico.service';
-import { CifrarDataService } from '../services/cifrar-data.service';
 import { DataBaseModel } from '../modules/modulo-seguridad/models/data-base';
 import { SelectItem } from 'primeng';
-import { ConstantesDataBase } from '../constants/constantes-db';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { TraerDatosRemotosService } from '../modules/modulo-repository/services/traer-datos-remotos.service';
 import { estadoInternetService } from '../modules/modulo-estado-internet/estadoInternet.service';
 import { Subscription } from 'rxjs';
 import { variableGlobal } from '../interface/variable-global.interface';
+import { FunctionDBLocalService } from '../modules/modulo-base-datos-local/services/function-dblocal.service';
+import { ConstantesTablasIDB } from '../constants/constantes-tablas-indexdb';
 
 @Component({
   selector: 'app-login',
@@ -42,14 +42,14 @@ export class LoginComponent implements OnInit, OnDestroy {
               public readonly mensajePrimeNgService: MensajePrimeNgService,
               private readonly userContextService: UserContextService,
               private readonly menuDinamicoService: MenuDinamicoService,
-              private readonly cifrarDataService: CifrarDataService,
               private readonly sessionService: SessionService,
               private readonly fb: FormBuilder,
               private readonly servicioTraerDatos: TraerDatosRemotosService,
-              private readonly servicioInternet: estadoInternetService) { }
+              private readonly servicioInternet: estadoInternetService,
+              private readonly functionDBLocalService: FunctionDBLocalService) { }
 
   ngOnInit(): void {
-    this.sessionService.setItem('FLGDATABASESELECCIONADA', this.cifrarDataService.encrypt(false));
+    this.sessionService.setItemEncrypt('FLGDATABASESELECCIONADA', false);
 
     this.modeloLogin = new LoginModel();
     this.iniciarObservableEstadoInternet();
@@ -90,8 +90,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   onChangeDataBase() {
-    this.sessionService.setItem('FLGDATABASESELECCIONADA', this.cifrarDataService.encrypt(true));
-    this.sessionService.setItem('DATABASESELECCIONADA', this.cifrarDataService.encrypt(this.formularioLogin.value.dataBase.value));
+    this.sessionService.setItemEncrypt('FLGDATABASESELECCIONADA', true);
+    this.sessionService.setItemEncrypt('DATABASESELECCIONADA', this.formularioLogin.value.dataBase.value);
   }
 
   onClickLogin()
@@ -123,12 +123,15 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   onEncriptaData(res: any) {
+
+    this.functionDBLocalService.createEnDBLocalDesdeServidor(ConstantesTablasIDB._TABLA_SEGMENU, res.listaAccesoMenu);
+
     this.sessionService.setItem('menu', res.listaAccesoMenu);
-    this.sessionService.setItem('idUsuario', this.cifrarDataService.encrypt(res.idUsuario));
-    this.sessionService.setItem('imagen', this.cifrarDataService.encrypt(res.imagen));
-    this.sessionService.setItem('nombre', this.cifrarDataService.encrypt(res.nombre));
-    this.sessionService.setItem('usuario', this.cifrarDataService.encrypt(res.usuario));
-    this.userContextService.setUser(this.cifrarDataService.encrypt(res.usuario));
+    this.sessionService.setItemEncrypt('idUsuario', res.idUsuario);
+    this.sessionService.setItemEncrypt('imagen', res.imagen);
+    this.sessionService.setItemEncrypt('nombre', res.nombre);
+    this.sessionService.setItemEncrypt('usuario', res.usuario);
+    this.userContextService.setUser(res.usuario);
   }
 
   onGeneraMenu() {

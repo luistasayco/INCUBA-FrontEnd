@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { ExamenFisicoPollitoService } from '../../services/examen-fisico-pollito.service';
 import { ProcesoDetalleModel } from '../../models/proceso-detalle.model';
 import { Subscription } from 'rxjs';
+import { ButtonAcces } from '../../../../models/acceso-button';
+import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
 
 @Component({
   selector: 'app-panel-proceso',
@@ -18,6 +20,9 @@ export class PanelProcesoComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Proceso';
+
+  // Acceso de botones
+  buttonAcces: ButtonAcces = new ButtonAcces();
 
   // Name de los botones de accion
   globalConstants: GlobalsConstants = new GlobalsConstants();
@@ -59,7 +64,8 @@ export class PanelProcesoComponent implements OnInit, OnDestroy {
   constructor(private examenFisicoPollitoService: ExamenFisicoPollitoService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private router: Router,
-              private confirmationService: ConfirmationService) { }
+              private confirmationService: ConfirmationService,
+              private menuDinamicoService: MenuDinamicoService) { }
 
   ngOnInit() {
     this.columnas = [
@@ -75,6 +81,12 @@ export class PanelProcesoComponent implements OnInit, OnDestroy {
       { header: 'Factor' },
       { header: 'Orden' }
     ];
+
+    this.subscription = new Subscription();
+    this.subscription = this.menuDinamicoService.getObtieneOpciones('app-panel-proceso')
+    .subscribe(acces => {
+      this.buttonAcces = acces;
+    });
 
     this.onListar();
   }

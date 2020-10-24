@@ -2,7 +2,11 @@ import { Injectable } from '@angular/core';
 import { MenuCustomModel } from '../models/menu.model';
 import { MenuModel } from '../modules/modulo-seguridad/models/menu.model';
 import { SessionService } from './session.service';
-import { CifrarDataService } from './cifrar-data.service';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
+import { Observable } from 'rxjs';
+import { OpcionModel } from '../modules/modulo-seguridad/models/opcion.model';
+import { ConstantesTablasIDB } from '../constants/constantes-tablas-indexdb';
+import { ButtonAcces } from '../models/acceso-button';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +16,11 @@ export class MenuDinamicoService {
   private listMenu: MenuCustomModel[];
   private listMenuModelo: MenuModel[];
   private modeloMenu: MenuCustomModel;
+  private listOpcion: OpcionModel[];
+  private buttonAcces: ButtonAcces = new ButtonAcces();
 
-  constructor(private sessionService: SessionService) { }
+  constructor(private sessionService: SessionService,
+              private dbService: NgxIndexedDBService) { }
 
   setArmaMenuDimamico(){
     let menu = this.sessionService.getItem('menu');
@@ -109,4 +116,72 @@ export class MenuDinamicoService {
   ];
   }
 
+  // Se tiene que mejorar el acceso a las opciones
+  // http://blog.enriqueoriol.com/2017/08/angular-dom-renderer.html
+  // https://pablolazaro.github.io/2016/10/13/Angular-2-Controlando-componentes-hijos-con-ViewChild-y-ViewChildren/
+  getObtieneOpciones(nombreFormulario: string): Observable<ButtonAcces> {
+    this.buttonAcces = new ButtonAcces();
+    const observadorBorrar = new Observable<ButtonAcces>( observer => {
+      this.dbService.getAll(ConstantesTablasIDB._TABLA_SEGMENU)
+      .subscribe((data: MenuModel[]) => {
+      if (data) {
+          this.listOpcion  = [...data].find(x => x.nombreFormulario === nombreFormulario).listaOpciones;
+
+          this.listOpcion.forEach(element => {
+            if (element.keyOpcion === 'btn-nuevo') {
+              this.buttonAcces.btnNuevo = false;
+            }
+            if (element.keyOpcion === 'btn-editar') {
+              this.buttonAcces.btnEditar = false;
+            }
+            if (element.keyOpcion === 'btn-eliminar') {
+              this.buttonAcces.btnEliminar = false;
+            }
+
+            if (element.keyOpcion === 'btn-adicionar-eliminar') {
+              this.buttonAcces.btnAdicionarEliminar = false;
+            }
+            if (element.keyOpcion === 'btn-cerrar') {
+              this.buttonAcces.btnCerrar = false;
+            }
+            if (element.keyOpcion === 'btn-editar-detalle') {
+              this.buttonAcces.btnEditarDetalle = false;
+            }
+            if (element.keyOpcion === 'btn-eliminar-detalle') {
+              this.buttonAcces.btnEliminarDetalle = false;
+            }
+            if (element.keyOpcion === 'btn-grabar') {
+              this.buttonAcces.btnGrabar = false;
+            }
+            if (element.keyOpcion === 'btn-menu-hijo') {
+              this.buttonAcces.btnMenuHijo = false;
+            }
+            if (element.keyOpcion === 'btn-menu-padre') {
+              this.buttonAcces.btnMenuPadre = false;
+            }
+            if (element.keyOpcion === 'btn-nuevo-detalle') {
+              this.buttonAcces.btnNuevoDetalle = false;
+            }
+            if (element.keyOpcion === 'btn-pdf') {
+              this.buttonAcces.btnPDF = false;
+            }
+            if (element.keyOpcion === 'btn-adicionar-eliminar-mant') {
+              this.buttonAcces.btnAdicionarEliminarMantenimiento = false;
+            }
+            if (element.keyOpcion === 'btn-adicionar-eliminar-repuesto') {
+              this.buttonAcces.btnAdicionarEliminarRepuesto = false;
+            }
+          });
+
+          observer.next(this.buttonAcces);
+          observer.complete();
+        } else {
+          observer.next(this.buttonAcces);
+          observer.complete();
+        }
+      });
+    });
+
+    return observadorBorrar;
+  }
 }

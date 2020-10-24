@@ -8,6 +8,8 @@ import { ConfirmationService } from 'primeng/api';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
 import { IMensajeResultadoApi } from '../../../modulo-compartido/models/mensaje-resultado-api';
 import { Subscription } from 'rxjs';
+import { ButtonAcces } from '../../../../models/acceso-button';
+import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
 
 @Component({
   selector: 'app-panel-persona',
@@ -18,7 +20,8 @@ export class PanelPersonaComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Usuario';
-
+  // Acceso de botones
+  buttonAcces: ButtonAcces = new ButtonAcces();
   // Name de los botones de accion
   globalConstants: GlobalsConstants = new GlobalsConstants();
 
@@ -38,7 +41,8 @@ export class PanelPersonaComponent implements OnInit, OnDestroy {
               public mensajePrimeNgService: MensajePrimeNgService,
               private router: Router,
               private confirmationService: ConfirmationService,
-              private breadcrumbService: BreadcrumbService) {
+              private breadcrumbService: BreadcrumbService,
+              private menuDinamicoService: MenuDinamicoService) {
                 this.breadcrumbService.setItems([
                     { label: 'Modulo' },
                     { label: 'Usuario', routerLink: ['module-se/panel-persona'] }
@@ -53,7 +57,11 @@ export class PanelPersonaComponent implements OnInit, OnDestroy {
       { header: 'Nro Documento' },
       { header: 'Activo' }
     ];
-
+    this.subscription = new Subscription();
+    this.subscription = this.menuDinamicoService.getObtieneOpciones('app-panel-persona')
+    .subscribe(acces => {
+      this.buttonAcces = acces;
+    });
     this.onListar();
   }
 

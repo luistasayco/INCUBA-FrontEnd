@@ -3,8 +3,6 @@ import { GlobalsConstants } from 'src/app/modules/modulo-compartido/models/globa
 import { ModeloModel } from '../../models/modelo.model';
 import { RegistroEquipoService } from '../../services/registro-equipo.service';
 import { MensajePrimeNgService } from 'src/app/modules/modulo-compartido/services/mensaje-prime-ng.service';
-import { Router } from '@angular/router';
-import { ConfirmationService } from 'primeng';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
 import { Subscription } from 'rxjs';
 

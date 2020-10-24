@@ -37,6 +37,10 @@
                             <label for="nivel">Nivel</label>
                             <input id="nivel" type="text" placeholder="Nivel" pInputText formControlName="nroNivel">
                         </div>
+                        <div class="ui-g-12">
+                            <label for="formulario">Nombre Formulario</label>
+                            <input id="formulario" type="text" placeholder="Nombre Formulario" pInputText formControlName="nombreFormulario">
+                        </div>
                     </div>
                 </form>
             </div>
@@ -49,13 +53,13 @@
 
         <div class="ui-grid ui-fluid">
             <div class="ui-g-12 ui-md-6">
-                <button pButton type="button" label="Menu Padre" icon="{{globalConstants.icoNuevo}}" [disabled]="!itemSelected" (click)="goNewPadre()"></button>
+                <button [disabled]="buttonAcces.btnMenuPadre" pButton type="button" label="Menu Padre" icon="{{globalConstants.icoNuevo}}" (click)="goNewPadre()"></button>
             </div>
             <div class="ui-g-12 ui-md-6">
-                <button pButton type="button" label="Menu Hijo" icon="{{globalConstants.icoNuevo}}" [disabled]="!itemSelected" (click)="goNewChildren()"></button>
+                <button [disabled]="buttonAcces.btnMenuHijo" pButton type="button" label="Menu Hijo" icon="{{globalConstants.icoNuevo}}" (click)="goNewChildren()"></button>
             </div>
             <div class="ui-g-12">
-                <button pButton type="submit" [disabled]="!modeloForm.valid" label="{{globalConstants.cGrabar}}" icon="{{globalConstants.icoGrabar}}" (click)="onClickSave()"></button>
+                <button pButton type="submit" [disabled]="buttonAcces.btnGrabar" *ngIf="!modeloForm.valid" label="{{globalConstants.cGrabar}}" icon="{{globalConstants.icoGrabar}}" (click)="onClickSave()"></button>
             </div>
         </div>
     </p-footer>

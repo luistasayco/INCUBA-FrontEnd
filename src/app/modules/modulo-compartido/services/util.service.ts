@@ -18,4 +18,10 @@ export class UtilService {
   recortarMensajeApiExito(msg: string): string {
     return msg.split(',')[0];
   }
+
+  fechaApi_POST(): Date {
+    var date = new Date();
+    var today = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
+    return today;
+  }
 }

@@ -14,7 +14,13 @@ export class UserContextService {
   public user$ = new BehaviorSubject(defaultUser);
 
   constructor(private sessionService: SessionService, private router: Router) {
-    let data = this.sessionService.getItem('currentUser');
+
+    let data = null;
+
+    if (this.sessionService.getItem('currentUser')) {
+      data = this.sessionService.getItemDecrypt('currentUser');
+    }
+
     if ( data != null)
     {
       this.user$.next(data);
@@ -23,7 +29,7 @@ export class UserContextService {
 
   public setUser(user: any)
   {
-    this.sessionService.setItem('currentUser', user);
+    this.sessionService.setItemEncrypt('currentUser', user);
     this.user$.next(user);
   }
 

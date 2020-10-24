@@ -10,6 +10,8 @@ import { environment } from 'src/environments/environment';
 import { OpcionPorPerfilModel } from '../../models/opcion-por-perfil';
 import { PerfilModel } from '../../models/pefil.model';
 import { Subscription } from 'rxjs';
+import { ButtonAcces } from '../../../../models/acceso-button';
+import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
 
 @Component({
   selector: 'app-panel-opcion-por-perfil',
@@ -19,7 +21,9 @@ import { Subscription } from 'rxjs';
 export class PanelOpcionPorPerfilComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
-  titulo = 'Opcion';
+  titulo = 'Opciones por Perfil';
+  // Acceso de botones
+  buttonAcces: ButtonAcces = new ButtonAcces();
   // Name de los botones de accion
   globalConstants: GlobalsConstants = new GlobalsConstants();
 
@@ -41,7 +45,8 @@ export class PanelOpcionPorPerfilComponent implements OnInit, OnDestroy {
 
   constructor(private seguridadService: SeguridadService,
               public mensajePrimeNgService: MensajePrimeNgService,
-              private breadcrumbService: BreadcrumbService) {
+              private breadcrumbService: BreadcrumbService,
+              private menuDinamicoService: MenuDinamicoService) {
                 this.breadcrumbService.setItems([
                   { label: 'Modulo Seguridad' },
                   { label: 'Opcion por Perfil', routerLink: ['module-se/panel-opcion-por-perfil'] }
@@ -49,9 +54,15 @@ export class PanelOpcionPorPerfilComponent implements OnInit, OnDestroy {
               }
 
   ngOnInit() {
-      this.getListaMenu();
+    this.subscription = new Subscription();
+    this.subscription = this.menuDinamicoService.getObtieneOpciones('app-panel-opcion-por-perfil')
+    .subscribe(acces => {
+      this.buttonAcces = acces;
+    });
 
-      this.getToObtienePerfil();
+    this.getListaMenu();
+
+    this.getToObtienePerfil();
   }
 
   getListaMenu() {
@@ -163,6 +174,11 @@ export class PanelOpcionPorPerfilComponent implements OnInit, OnDestroy {
   }
 
   setCreateItem(event: OpcionPorPerfilModel[]) {
+
+    if (!this.perfilSelected) {
+      this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, 'Seleccionar un Perfil');
+      return;
+    }
 
     event.map(dato => {
       dato.idPerfil = this.perfilSelected.value,

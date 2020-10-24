@@ -14,9 +14,9 @@ import { BreadcrumbService } from '../../../../services/breadcrumb.service';
 import { Subscription } from 'rxjs';
 import { IMensajeResultadoApi } from '../../../modulo-compartido/models/mensaje-resultado-api';
 import { saveAs } from 'file-saver';
-import { environment } from '../../../../../environments/environment.prod';
 import { SessionService } from '../../../../services/session.service';
-import { CifrarDataService } from '../../../../services/cifrar-data.service';
+import { ButtonAcces } from '../../../../models/acceso-button';
+import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
 
 @Component({
   selector: 'app-panel-registro-equipo',
@@ -27,7 +27,8 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Registros de Equipos';
-
+  // Acceso de botones
+  buttonAcces: ButtonAcces = new ButtonAcces();
   // Name de los botones de accion
   globalConstants: GlobalsConstants = new GlobalsConstants();
 
@@ -67,7 +68,7 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
               private breadcrumbService: BreadcrumbService,
               private confirmationService: ConfirmationService,
               private sessionService: SessionService,
-              private cifrarDataService: CifrarDataService) {
+              private menuDinamicoService: MenuDinamicoService) {
     this.breadcrumbService.setItems([
         { label: 'Modulo' },
         { label: 'Registro de Equipo', routerLink: ['module-re/panel-registro-equipo'] }
@@ -77,18 +78,40 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
     if (this.subscription$) {
       this.subscription$.unsubscribe();
     }
+
+    // Guardar los filtros en la session
+    this.sessionService.setItemEncrypt('filter-re-idRegistroEquipo', this.modeloFind.idRegistroEquipo);
+    this.sessionService.setItemEncrypt('filter-re-fecRegistroInicio', this.modeloFind.fecRegistroInicio);
+    this.sessionService.setItemEncrypt('filter-re-fecRegistroFin', this.modeloFind.fecRegistroFin);
+    this.sessionService.setItemEncrypt('filter-re-selectedEmpresa', this.selectedEmpresa);
+    this.sessionService.setItemEncrypt('filter-re-selectedPlanta', this.selectedPlanta);
+    this.sessionService.setItemEncrypt('filter-re-selectedModelo', this.selectedModelo);
   }
 
   ngOnInit() {
-    this.selectedEmpresa = null;
-    this.selectedPlanta = null;
-    this.selectedModelo = null;
-
-    this.modeloFind.fecRegistroInicio = new Date();
-    this.modeloFind.fecRegistroFin = new Date();
 
     this.getToObtieneEmpresa();
     this.getToObtieneModelo();
+
+    if (this.sessionService.getItem('filter-re-idRegistroEquipo')) {
+
+
+      this.modeloFind.idRegistroEquipo = this.sessionService.getItemDecrypt('filter-re-idRegistroEquipo');
+      this.modeloFind.fecRegistroInicio = new Date(this.sessionService.getItemDecrypt('filter-re-fecRegistroInicio'));
+      this.modeloFind.fecRegistroFin = new Date(this.sessionService.getItemDecrypt('filter-re-fecRegistroFin'));
+      this.selectedEmpresa = this.sessionService.getItemDecrypt('filter-re-selectedEmpresa');
+      if (this.selectedEmpresa) {
+        this.getOnChangeEmpresa();
+      }
+      this.selectedModelo = this.sessionService.getItemDecrypt('filter-re-selectedModelo');
+    } else {
+      this.selectedEmpresa = null;
+      this.selectedPlanta = null;
+      this.selectedModelo = null;
+
+      this.modeloFind.fecRegistroInicio = new Date();
+      this.modeloFind.fecRegistroFin = new Date();
+    }
 
     this.columnas = [
       { field: 'idRegistroEquipo', header: 'Nro' },
@@ -98,6 +121,12 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
       { field: 'idModelo', header: 'Modelo' },
       { field: 'UsuarioCreacion', header: 'Usuario' }
     ];
+
+    this.subscription$ = new Subscription();
+    this.subscription$ = this.menuDinamicoService.getObtieneOpciones('app-panel-registro-equipo')
+    .subscribe(acces => {
+      this.buttonAcces = acces;
+    });
   }
 
   onToBuscar() {
@@ -133,6 +162,10 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
       for (let item of data) {
         this.listItemPlanta.push({ label: item.descripcion, value: item.codigoPlanta });
       }
+      if (this.sessionService.getItem('filter-re-selectedPlanta')) {
+        this.selectedPlanta = this.sessionService.getItemDecrypt('filter-re-selectedPlanta');
+        this.onListar();
+      }
     });
   }
 
@@ -154,6 +187,7 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
   }
 
   onListar() {
+    this.modeloFind.idRegistroEquipo = this.modeloFind.idRegistroEquipo === null ? 0 : this.modeloFind.idRegistroEquipo;
     this.modeloFind.codigoEmpresa = this.selectedEmpresa === null ? '' : this.selectedEmpresa.value;
     this.modeloFind.codigoPlanta = this.selectedPlanta === null ? '' : this.selectedPlanta.value;
     this.modeloFind.codigoModelo = this.selectedModelo === null ? '' : this.selectedModelo.value;
@@ -170,7 +204,13 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
     );
   }
 
-  onConfirmCerrar(data: any) {
+  onConfirmCerrar(data: TxRegistroEquipoModel) {
+
+    if (data.flgCerrado) {
+      this.mensajePrimeNgService.onToInfoMsg(null, 'Registro seleccionado se encuentra CERRADO!!!');
+      return;
+    }
+
     this.confirmationService.confirm({
         message: this.globalConstants.subTitleCierre,
         header: this.globalConstants.titleCierre,
@@ -189,14 +229,13 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
   onToCerrar(data: TxRegistroEquipoModel) {
     this.subscription$ = new Subscription();
     data.flgCerrado = true;
-    data.fecCierre = new Date();
     this.subscription$ = this.registroEquipoService.setUpdateStatusTxRegistroEquipo(data)
     .subscribe((resp: IMensajeResultadoApi) => {
         this.listModelo.find(x => x.idRegistroEquipo === data.idRegistroEquipo).flgCerrado = true;
         this.listModelo.find(x => x.idRegistroEquipo === data.idRegistroEquipo).fecCierre = new Date();
         this.listModelo
         .find(x => x.idRegistroEquipo === data.idRegistroEquipo)
-        .usuarioCierre = this.cifrarDataService.decrypt(this.sessionService.getItem('usuario'));
+        .usuarioCierre = this.sessionService.getItemDecrypt('usuario');
 
         this.mensajePrimeNgService.onToExitoMsg(null, resp);
       },
@@ -210,6 +249,10 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
   }
 
   onConfirmEliminar(data: any) {
+    if (data.flgCerrado) {
+      this.mensajePrimeNgService.onToInfoMsg(null, 'Registro seleccionado se encuentra CERRADO!!!');
+      return;
+    }
     this.confirmationService.confirm({
         message: this.globalConstants.subTitleEliminar,
         header: this.globalConstants.titleEliminar,
@@ -240,18 +283,21 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
   }
 
   onToRowSelectPDF(modelo: any) {
+
+    if (!modelo.flgCerrado) {
+      this.mensajePrimeNgService.onToInfoMsg(null, 'Registro seleccionado se encuentra CERRADO!!!');
+      return;
+    }
+
     this.registroEquipoService.setPDFTxRegistroEquipo(modelo.idRegistroEquipo)
     .subscribe((resp: any) => {
 
       console.log(resp);
 
-      let file = new window.Blob([resp], {type: 'application/pdf'});
-      // saveAs(new Blob([resp], {type: 'application/pdf'}), 'Registros');
-      let fileURL = window.URL.createObjectURL(file);
-      window.open(fileURL, '_blank');
-      // console.log(resp);
-
-      // this.mensajePrimeNgService.onToExitoMsg(null, resp);
+      // let file = new window.Blob([resp], {type: 'application/pdf'});
+      saveAs(new Blob([resp], {type: 'application/pdf'}), 'Registros');
+      // let fileURL = window.URL.createObjectURL(file);
+      // window.open(fileURL, '_blank');
     },
       (error) => {
         console.log('error', error);

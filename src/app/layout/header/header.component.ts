@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { LayoutComponent } from '../layout.component';
 import { SessionService } from '../../services/session.service';
 import { UserContextService } from '../../services/user-context.service';
-import { Router } from '@angular/router';
-import { CifrarDataService } from '../../services/cifrar-data.service';
 
 @Component({
   selector: 'app-header',
@@ -17,17 +15,15 @@ export class HeaderComponent implements OnInit {
 
   constructor(public app: LayoutComponent,
               private sessionService: SessionService,
-              private userContextService: UserContextService,
-              private router: Router,
-              private cifrarDataService: CifrarDataService) { }
+              private userContextService: UserContextService) { }
 
   ngOnInit(): void {
     this.profile();
   }
 
   profile() {
-    this.nombre = this.cifrarDataService.decrypt(this.sessionService.getItem('nombre'));
-    this.imagen = this.cifrarDataService.decrypt(this.sessionService.getItem('imagen'));
+    this.nombre = this.sessionService.getItemDecrypt('nombre');
+    this.imagen = this.sessionService.getItemDecrypt('imagen');
   }
 
   logout() {

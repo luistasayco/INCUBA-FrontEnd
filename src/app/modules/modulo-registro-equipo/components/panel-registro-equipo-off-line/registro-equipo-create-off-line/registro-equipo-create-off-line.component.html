@@ -360,6 +360,20 @@
                 </div>
 
                 <div class="ui-g-12 ui-md-6">
+                    <div class="p-field">
+                        <label for="nombreInvetsa">Nombre:</label>
+                        <input id="nombreInvetsa" type="text" [(ngModel)]="modeloItem.responsableIncuba" pInputText>
+                    </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-6">
+                    <div class="p-field">
+                        <label for="nombrePlanta">Nombre:</label>
+                        <input id="nombrePlanta" type="text" [(ngModel)]="modeloItem.responsablePlanta" pInputText>
+                    </div>
+                </div>
+
+                <div class="ui-g-12 ui-md-6">
                     <button pButton type="button" label="{{globalConstants.cGrabar}}" icon="{{globalConstants.icoGrabar}}" (click)="onToGrabar()" [disabled]="modeloItem.firmaIncuba === null || modeloItem.firmaIncuba === '' || modeloItem.firmaPlanta === null || modeloItem.firmaPlanta === '' || modeloItem.codigoEmpresa === '' || modeloItem.codigoPlanta === '' || modeloItem.codigoModelo === ''"></button>
                 </div>
 

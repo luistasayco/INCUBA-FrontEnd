@@ -13,6 +13,8 @@ import { RepuestoPorModeloModel } from '../../models/repuesto-por-modelo.model';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
 import { Subscription } from 'rxjs';
 import { SelectItem } from 'primeng';
+import { ButtonAcces } from '../../../../models/acceso-button';
+import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
 
 @Component({
   selector: 'app-panel-asociacion',
@@ -23,7 +25,8 @@ export class PanelAsociacionComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Asociación';
-
+  // Acceso de botones
+  buttonAcces: ButtonAcces = new ButtonAcces();
   // Name de los botones de accion
   globalConstants: GlobalsConstants = new GlobalsConstants();
 
@@ -60,7 +63,8 @@ export class PanelAsociacionComponent implements OnInit, OnDestroy {
   constructor(private registroEquipoService: RegistroEquipoService,
               private compartidoService: CompartidoService,
               public mensajePrimeNgService: MensajePrimeNgService,
-              private breadcrumbService: BreadcrumbService) {
+              private breadcrumbService: BreadcrumbService,
+              private menuDinamicoService: MenuDinamicoService) {
                 this.breadcrumbService.setItems([
                     { label: 'Modulo' },
                     { label: 'Asociación', routerLink: ['module-re/panel-asociacion'] }
@@ -77,6 +81,12 @@ export class PanelAsociacionComponent implements OnInit, OnDestroy {
     this.getToObtieneModelo();
 
     this.listEquipoPorSeleccionado = [];
+
+    this.subscription = new Subscription();
+    this.subscription = this.menuDinamicoService.getObtieneOpciones('app-panel-asociacion')
+    .subscribe(acces => {
+      this.buttonAcces = acces;
+    });
   }
 
   getToObtieneEmpresa() {

@@ -8,6 +8,8 @@ import { ConfirmationService } from 'primeng';
 import { IMensajeResultadoApi } from '../../../modulo-compartido/models/mensaje-resultado-api';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
 import { Subscription } from 'rxjs';
+import { ButtonAcces } from '../../../../models/acceso-button';
+import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
 
 @Component({
   selector: 'app-panel-requerimiento-equipo',
@@ -18,7 +20,8 @@ export class PanelRequerimientoEquipoComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Requerimiento de equipo';
-
+  // Acceso de botones
+  buttonAcces: ButtonAcces = new ButtonAcces();
   // Name de los botones de accion
   globalConstants: GlobalsConstants = new GlobalsConstants();
 
@@ -42,7 +45,8 @@ export class PanelRequerimientoEquipoComponent implements OnInit, OnDestroy {
               public mensajePrimeNgService: MensajePrimeNgService,
               private router: Router,
               private confirmationService: ConfirmationService,
-              private breadcrumbService: BreadcrumbService) {
+              private breadcrumbService: BreadcrumbService,
+              private menuDinamicoService: MenuDinamicoService) {
                 this.breadcrumbService.setItems([
                     { label: 'Modulo' },
                     { label: 'Requerimiento equipo', routerLink: ['module-re/panel-requerimiento-equipo'] }
@@ -55,6 +59,12 @@ export class PanelRequerimientoEquipoComponent implements OnInit, OnDestroy {
       { header: 'Descripcion' },
       { header: 'Orden' }
     ];
+
+    this.subscription = new Subscription();
+    this.subscription = this.menuDinamicoService.getObtieneOpciones('app-panel-requerimiento-equipo')
+    .subscribe(acces => {
+      this.buttonAcces = acces;
+    });
 
     this.onListar();
   }

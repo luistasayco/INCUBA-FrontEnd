@@ -15,6 +15,9 @@ import { EquipoModel } from '../../../../modulo-compartido/models/equipo.model';
 import { Subscription } from 'rxjs';
 import { FunctionDBLocalService } from '../../../../modulo-base-datos-local/services/function-dblocal.service';
 import { Router } from '@angular/router';
+import { UtilService } from '../../../../modulo-compartido/services/util.service';
+import { SessionService } from '../../../../../services/session.service';
+import { ConstantesTablasIDB } from '../../../../../constants/constantes-tablas-indexdb';
 
 @Component({
   selector: 'app-registro-equipo-create-off-line',
@@ -78,7 +81,9 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
               public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService,
               private functionDBLocalService: FunctionDBLocalService,
-              private router: Router) {
+              private router: Router,
+              private utilService: UtilService,
+              private sessionService: SessionService) {
                 this.breadcrumbService.setItems([
                     { label: 'Modulo' },
                     { label: 'Registro de Equipo (Offline)', routerLink: ['module-re/panel-registro-equipo-offline'] },
@@ -450,12 +455,15 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
       this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, `Ingresar ${this.globalConstants.cFirma2}`);
       return;
     }
-    this.modeloItem.flgMigrado = false;
-    this.modeloItem.fecHoraRegistro = new Date();
-    this.modeloItem.fecRegistro = new Date();
 
+    let usuario =  this.sessionService.getItemDecrypt('usuario');
+
+    this.modeloItem.flgMigrado = false;
+    this.modeloItem.fecHoraRegistro = this.utilService.fechaApi_POST();
+    this.modeloItem.fecRegistro = this.utilService.fechaApi_POST();
+    this.modeloItem.usuarioCreacion = usuario;
     this.subscription$ = new Subscription();
-    this.subscription$  = this.functionDBLocalService.setNewRegistro('trxRegistroEquipo', this.modeloItem)
+    this.subscription$  = this.functionDBLocalService.setNewRegistro(ConstantesTablasIDB._TABLA_TXREGISTROEQUIPO, this.modeloItem)
     .subscribe(() =>  {
       this.back();
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);

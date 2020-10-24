@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { IMensajeResultadoApi } from 'src/app/modules/modulo-compartido/models/mensaje-resultado-api';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
 import { Subscription } from 'rxjs';
+import { ButtonAcces } from '../../../../models/acceso-button';
+import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
 
 @Component({
   selector: 'app-panel-condicion-limpieza',
@@ -18,7 +20,8 @@ export class PanelCondicionLimpiezaComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Condición de Limpieza';
-
+  // Acceso de botones
+  buttonAcces: ButtonAcces = new ButtonAcces();
   // Name de los botones de accion
   globalConstants: GlobalsConstants = new GlobalsConstants();
 
@@ -41,7 +44,8 @@ export class PanelCondicionLimpiezaComponent implements OnInit, OnDestroy {
               public mensajePrimeNgService: MensajePrimeNgService,
               private router: Router,
               private confirmationService: ConfirmationService,
-              private breadcrumbService: BreadcrumbService) {
+              private breadcrumbService: BreadcrumbService,
+              private menuDinamicoService: MenuDinamicoService) {
                 this.breadcrumbService.setItems([
                     { label: 'Modulo' },
                     { label: 'Condición de limpieza', routerLink: ['module-re/panel-condicion-limpieza'] }
@@ -54,6 +58,12 @@ export class PanelCondicionLimpiezaComponent implements OnInit, OnDestroy {
       { header: 'Descripcion'},
       { header: 'Orden'}
     ];
+
+    this.subscription = new Subscription();
+    this.subscription = this.menuDinamicoService.getObtieneOpciones('app-panel-condicion-limpieza')
+    .subscribe(acces => {
+      this.buttonAcces = acces;
+    });
 
     this.onListar();
   }

@@ -19,6 +19,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { DialogModule } from 'primeng/dialog';
 import { ListboxModule } from 'primeng/listbox';
+import { TooltipModule } from 'primeng/tooltip';
 // Sevices
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
@@ -42,7 +43,8 @@ import { MessageService } from 'primeng/api';
             CalendarModule,
             ToggleButtonModule,
             DialogModule,
-            ListboxModule],
+            ListboxModule,
+            TooltipModule],
     providers: [MessageService, ConfirmationService],
 })
 export class RegistroEquipoPrimeNgModule {}

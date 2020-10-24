@@ -106,6 +106,22 @@ export const estructuraBD = {
           { name: 'txRegistroEquipoDetalle7', keypath: 'txRegistroEquipoDetalle7', options: { unique: false } },
           { name: 'flgMigrado', keypath: 'flgMigrado', options: { unique: false } }
         ]
+      },
+      {
+        store: ConstantesTablasIDB._TABLA_SEGMENU,
+        storeConfig: { keyPath: 'id', autoIncrement: true },
+        storeSchema: [
+          { name: 'idMenu', keypath: 'IdRepuestoPorModelo', options: { unique: true } },
+          { name: 'descripcionTitulo', keypath: 'codigoModelo', options: { unique: false } },
+          { name: 'icono', keypath: 'CodigoRepuesto', options: { unique: false } },
+          { name: 'url', keypath: 'descripcion', options: { unique: false } },
+          { name: 'nroNivel', keypath: 'FlgPredeterminado', options: { unique: false } },
+          { name: 'flgActivo', keypath: 'FlgAccesorio', options: { unique: false } },
+          { name: 'idMenuPadre', keypath: 'FlgAccesorio', options: { unique: false } },
+          { name: 'flgChildren', keypath: 'FlgAccesorio', options: { unique: false } },
+          { name: 'nombreFormulario', keypath: 'FlgAccesorio', options: { unique: false } },
+          { name: 'listOpcion', keypath: 'FlgAccesorio', options: { unique: false } }
+        ]
       }
     ]
 }

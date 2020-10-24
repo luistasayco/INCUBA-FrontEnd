@@ -315,7 +315,6 @@ export class RegistroEquipoService {
   setUpdateStatusTxRegistroEquipo(value: TxRegistroEquipoModel) {
     value.regUsuario = environment.usuario;
     value.regEstacion = environment.estacion;
-    value.idUsuarioCierre = environment.usuario;
     const url = environment.url_api + 'TxRegistroEquipo/UpdateStatus';
     const param: string = JSON.stringify(value);
     return this.http.put(

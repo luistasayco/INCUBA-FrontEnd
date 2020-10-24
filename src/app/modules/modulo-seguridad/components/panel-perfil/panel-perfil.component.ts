@@ -8,6 +8,8 @@ import { ConfirmationService } from 'primeng';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
 import { IMensajeResultadoApi } from '../../../modulo-compartido/models/mensaje-resultado-api';
 import { Subscription } from 'rxjs';
+import { ButtonAcces } from '../../../../models/acceso-button';
+import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
 
 @Component({
   selector: 'app-panel-perfil',
@@ -18,7 +20,8 @@ export class PanelPerfilComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
   titulo = 'Perfil';
-
+  // Acceso de botones
+  buttonAcces: ButtonAcces = new ButtonAcces();
   // Name de los botones de accion
   globalConstants: GlobalsConstants = new GlobalsConstants();
 
@@ -41,7 +44,8 @@ export class PanelPerfilComponent implements OnInit, OnDestroy {
               public mensajePrimeNgService: MensajePrimeNgService,
               private router: Router,
               private confirmationService: ConfirmationService,
-              private breadcrumbService: BreadcrumbService) {
+              private breadcrumbService: BreadcrumbService,
+              private menuDinamicoService: MenuDinamicoService) {
                 this.breadcrumbService.setItems([
                     { label: 'Modulo' },
                     { label: 'Perfil', routerLink: ['module-se/panel-perfil'] }
@@ -54,7 +58,11 @@ export class PanelPerfilComponent implements OnInit, OnDestroy {
       { header: 'Descripcion' },
       { header: 'Activo' }
     ];
-
+    this.subscription = new Subscription();
+    this.subscription = this.menuDinamicoService.getObtieneOpciones('app-panel-perfil')
+    .subscribe(acces => {
+      this.buttonAcces = acces;
+    });
     this.onListar();
   }
 

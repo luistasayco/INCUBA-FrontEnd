@@ -7,7 +7,6 @@ import { InterfaceError } from '../interface/error.interface';
 import { ConstantesDataBase } from '../constants/constantes-db';
 import { SessionService } from '../services/session.service';
 import { CifrarDataService } from '../services/cifrar-data.service';
-import { ofType } from '@ngrx/effects';
 
 interface errorHttp extends HttpErrorResponse{
   servidorNoEncontrado: boolean
@@ -22,28 +21,25 @@ export class HeaderInterceptorService {
   _DATABASESELECCIONADA: string;
 
   constructor(private userContextService: UserContextService,
-              private sessionService: SessionService,
-              private cifrarDataService: CifrarDataService) { }
+              private sessionService: SessionService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     this._FLGDATABASESELECCIONADA = false;
 
     if (this.sessionService.getItem('FLGDATABASESELECCIONADA')) {
-      this._FLGDATABASESELECCIONADA = this.cifrarDataService.decrypt(
-        this.sessionService.getItem('FLGDATABASESELECCIONADA')) === 'false' ? false : true;
+      this._FLGDATABASESELECCIONADA = this.sessionService.getItemDecrypt('FLGDATABASESELECCIONADA') === 'false' ? false : true;
     }
 
     if (this.sessionService.getItem('DATABASESELECCIONADA')) {
-      this._DATABASESELECCIONADA = this.cifrarDataService.decrypt(this.sessionService.getItem('DATABASESELECCIONADA'));
+      this._DATABASESELECCIONADA = this.sessionService.getItemDecrypt('DATABASESELECCIONADA');
     }
 
     let updateReq: HttpRequest<any>;
 
-    // console.log('_FLGDATABASESELECCIONADA', this. _FLGDATABASESELECCIONADA);
-    // console.log('_DATABASESELECCIONADA', this._DATABASESELECCIONADA);
-
     const user = this.userContextService.user$.getValue();
+
+    console.log('user', user);
 
     if (user) {
       const TOKEN = localStorage.getItem('token');
@@ -59,7 +55,6 @@ export class HeaderInterceptorService {
       );
     } else {
       if ( this._FLGDATABASESELECCIONADA ) {
-        // console.log('_DATABASESELECCIONADA', this._DATABASESELECCIONADA);
         updateReq = req.clone(
           {
             headers: new HttpHeaders({
@@ -69,7 +64,6 @@ export class HeaderInterceptorService {
           }
         );
       } else {
-        // console.log('_DATABASEDEFAULT', ConstantesDataBase._DATABASEDEFAULT);
         updateReq = req.clone(
           {
             headers: new HttpHeaders({

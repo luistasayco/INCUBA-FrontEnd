@@ -11,4 +11,7 @@ export class ConstantesTablasIDB {
 
     // Tablas Transaccionales
     public static _TABLA_TXREGISTROEQUIPO = 'trxRegistroEquipo';
+
+    // Tablas de seguridad
+    public static _TABLA_SEGMENU = 'segMenu';
 }
