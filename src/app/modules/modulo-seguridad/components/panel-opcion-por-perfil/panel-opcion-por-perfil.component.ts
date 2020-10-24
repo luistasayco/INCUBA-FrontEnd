@@ -12,6 +12,8 @@ import { PerfilModel } from '../../models/pefil.model';
 import { Subscription } from 'rxjs';
 import { ButtonAcces } from '../../../../models/acceso-button';
 import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
+import { variableGlobal } from '../../../../interface/variable-global.interface';
+import { UserContextService } from '../../../../services/user-context.service';
 
 @Component({
   selector: 'app-panel-opcion-por-perfil',
@@ -46,7 +48,8 @@ export class PanelOpcionPorPerfilComponent implements OnInit, OnDestroy {
   constructor(private seguridadService: SeguridadService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService,
-              private menuDinamicoService: MenuDinamicoService) {
+              private menuDinamicoService: MenuDinamicoService,
+              private userContextService: UserContextService) {
                 this.breadcrumbService.setItems([
                   { label: 'Modulo Seguridad' },
                   { label: 'Opcion por Perfil', routerLink: ['module-se/panel-opcion-por-perfil'] }
@@ -182,8 +185,8 @@ export class PanelOpcionPorPerfilComponent implements OnInit, OnDestroy {
 
     event.map(dato => {
       dato.idPerfil = this.perfilSelected.value,
-      dato.regUsuario = environment.usuario,
-      dato.regEstacion = environment.estacion
+      dato.regUsuario = this.userContextService.getIdUsuario(),
+      dato.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo
 
       return dato;
     });
@@ -202,8 +205,8 @@ export class PanelOpcionPorPerfilComponent implements OnInit, OnDestroy {
 
     event.map(dato => {
       dato.idPerfil = this.perfilSelected.value,
-      dato.regUsuario = environment.usuario,
-      dato.regEstacion = environment.estacion
+      dato.regUsuario = this.userContextService.getIdUsuario(),
+      dato.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo
       return dato;
     });
 

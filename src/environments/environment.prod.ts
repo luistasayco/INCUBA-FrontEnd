@@ -1,7 +1,5 @@
 export const environment = {
   production: true,
   url_api : 'http://localhost:54026/api/',
-  url_api_seguridad : 'http://localhost:58144/api/',
-  usuario : 1,
-  estacion : 'CPU1688'
+  url_api_seguridad : 'http://localhost:58144/api/'
 };

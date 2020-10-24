@@ -6,13 +6,15 @@ import { MenuModel } from '../models/menu.model';
 import { OpcionModel } from '../models/opcion.model';
 import { OpcionPorPerfilModel } from '../models/opcion-por-perfil';
 import { environment } from 'src/environments/environment';
+import { UserContextService } from '../../../services/user-context.service';
+import { variableGlobal } from '../../../interface/variable-global.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SeguridadService {
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private userContextService: UserContextService) {
   }
 
   // title:  Metodos para perfil
@@ -26,8 +28,8 @@ export class SeguridadService {
   }
 
   setInsertPerfil(value: PerfilModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api_seguridad + 'Perfil/Create';
     const param: string = JSON.stringify(value);
     return this.http.post(
@@ -37,8 +39,8 @@ export class SeguridadService {
   }
 
   setUpdatePerfil(value: PerfilModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api_seguridad + 'Perfil/Update';
     const param: string = JSON.stringify(value);
     return this.http.put(
@@ -48,8 +50,8 @@ export class SeguridadService {
   }
 
   setDeletePerfil(value: PerfilModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api_seguridad + 'Perfil/Delete';
     const param: string = JSON.stringify(value);
     return this.http.patch(
@@ -73,8 +75,8 @@ export class SeguridadService {
     (`${environment.url_api_seguridad}Persona/GetbyIdPersona/${id}`);
   }
   setInsertPersona(value: PersonaModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api_seguridad + 'Persona/Create';
     const param: string = JSON.stringify(value);
     return this.http.post(
@@ -83,8 +85,8 @@ export class SeguridadService {
     );
   }
   setUpdatePersona(value: PersonaModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api_seguridad + 'Persona/Update';
     const param: string = JSON.stringify(value);
     return this.http.put(
@@ -93,8 +95,8 @@ export class SeguridadService {
     );
   }
   setDeletePersona(value: PersonaModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api_seguridad + 'Persona/Delete';
     const param: string = JSON.stringify(value);
     return this.http.patch(
@@ -111,8 +113,8 @@ export class SeguridadService {
     (`${environment.url_api_seguridad}Menu/GetAll/`);
   }
   setInsertMenu(value: MenuModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api_seguridad + 'Menu/Create';
     const param: string = JSON.stringify(value);
     return this.http.post(
@@ -121,8 +123,8 @@ export class SeguridadService {
     );
   }
   setUpdateMenu(value: MenuModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api_seguridad + 'Menu/Update';
     const param: string = JSON.stringify(value);
     return this.http.put(
@@ -142,8 +144,8 @@ export class SeguridadService {
     (`${environment.url_api_seguridad}Opcion/GetAll/`, { params: parametros });
   }
   setInsertOpcion(value: OpcionModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api_seguridad + 'Opcion/Create';
     const param: string = JSON.stringify(value);
     return this.http.post(
@@ -152,8 +154,8 @@ export class SeguridadService {
     );
   }
   setUpdateOpcion(value: OpcionModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api_seguridad + 'Opcion/Update';
     const param: string = JSON.stringify(value);
     return this.http.put(
@@ -162,8 +164,8 @@ export class SeguridadService {
     );
   }
   setDeleteOpcion(value: OpcionModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api_seguridad + 'Opcion/Delete';
     const param: string = JSON.stringify(value);
     return this.http.patch(

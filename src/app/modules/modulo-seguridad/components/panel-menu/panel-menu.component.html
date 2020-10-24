@@ -59,7 +59,7 @@
                 <button [disabled]="buttonAcces.btnMenuHijo" pButton type="button" label="Menu Hijo" icon="{{globalConstants.icoNuevo}}" (click)="goNewChildren()"></button>
             </div>
             <div class="ui-g-12">
-                <button pButton type="submit" [disabled]="buttonAcces.btnGrabar" *ngIf="!modeloForm.valid" label="{{globalConstants.cGrabar}}" icon="{{globalConstants.icoGrabar}}" (click)="onClickSave()"></button>
+                <button pButton type="submit" [disabled]="buttonAcces.btnGrabar" *ngIf="modeloForm.valid" label="{{globalConstants.cGrabar}}" icon="{{globalConstants.icoGrabar}}" (click)="onClickSave()"></button>
             </div>
         </div>
     </p-footer>

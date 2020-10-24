@@ -252,12 +252,6 @@ export class PanelAsociacionComponent implements OnInit, OnDestroy {
 
   setCreateItemMantenimiento(event: MantenimientoPorModeloModel[]) {
 
-    event.map(dato => {
-      dato.regUsuario = environment.usuario,
-      dato.regEstacion = environment.estacion
-      return dato;
-    });
-
     this.subscription = new Subscription();
     this.subscription = this.registroEquipoService.setInsertMantenimientoPorModelo(event)
     .subscribe(() =>  {
@@ -269,13 +263,6 @@ export class PanelAsociacionComponent implements OnInit, OnDestroy {
   }
 
   setDeleteItemMantenimiento(event: MantenimientoPorModeloModel[]) {
-
-    event.map(dato => {
-      dato.regUsuario = environment.usuario,
-      dato.regEstacion = environment.estacion
-      return dato;
-    });
-
     this.subscription = new Subscription();
     this.subscription = this.registroEquipoService.setDeleteMantenimientoPorModelo(event)
     .subscribe(() =>  {
@@ -307,13 +294,6 @@ export class PanelAsociacionComponent implements OnInit, OnDestroy {
   }
 
   setCreateItemRepuesto(event: RepuestoPorModeloModel[]) {
-
-    event.map(dato => {
-      dato.regUsuario = environment.usuario,
-      dato.regEstacion = environment.estacion
-      return dato;
-    });
-
     this.subscription = new Subscription();
     this.subscription = this.registroEquipoService.setInsertRepuestoPorModelo(event)
     .subscribe(() =>  {
@@ -325,13 +305,6 @@ export class PanelAsociacionComponent implements OnInit, OnDestroy {
   }
 
   setDeleteItemRepuesto(event: RepuestoPorModeloModel[]) {
-
-    event.map(dato => {
-      dato.regUsuario = environment.usuario,
-      dato.regEstacion = environment.estacion
-      return dato;
-    });
-
     this.subscription = new Subscription();
     this.subscription = this.registroEquipoService.setDeleteRepuestoPorModelo(event)
     .subscribe(() =>  {

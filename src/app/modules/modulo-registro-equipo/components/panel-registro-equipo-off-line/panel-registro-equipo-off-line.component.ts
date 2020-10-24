@@ -17,6 +17,7 @@ import { environment } from '../../../../../environments/environment.prod';
 import { UtilService } from '../../../modulo-compartido/services/util.service';
 import { ButtonAcces } from '../../../../models/acceso-button';
 import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
+import { UserContextService } from '../../../../services/user-context.service';
 
 @Component({
   selector: 'app-panel-registro-equipo-off-line',
@@ -70,9 +71,9 @@ export class PanelRegistroEquipoOffLineComponent implements OnInit, OnDestroy {
               private router: Router,
               private breadcrumbService: BreadcrumbService,
               private confirmationService: ConfirmationService,
-              private sessionService: SessionService,
               private utilService: UtilService,
-              private menuDinamicoService: MenuDinamicoService) {
+              private menuDinamicoService: MenuDinamicoService,
+              private userContextService: UserContextService) {
     this.breadcrumbService.setItems([
         { label: 'Modulo' },
         { label: 'Registro de Equipo', routerLink: ['module-re/panel-registro-equipo-offline'] }
@@ -210,12 +211,12 @@ export class PanelRegistroEquipoOffLineComponent implements OnInit, OnDestroy {
     this.subscription$ = new Subscription();
 
     let dataClone = {...data};
-    let usuario =  this.sessionService.getItemDecrypt('usuario');
+    let usuario =  this.userContextService.getUsuario();
 
     data.flgCerrado = true;
     data.fecCierre = this.utilService.fechaApi_POST();
-    data.idUsuarioCierre = environment.usuario;
-    data.usuarioCierre =usuario;
+    data.idUsuarioCierre = this.userContextService.getIdUsuario();
+    data.usuarioCierre = usuario;
 
     this.subscription$ = this.registroEquipoLocalService.setUpdateTxRegistroEquipo(data)
     .subscribe(resp => {

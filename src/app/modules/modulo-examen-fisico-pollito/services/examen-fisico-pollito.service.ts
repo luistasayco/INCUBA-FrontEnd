@@ -4,13 +4,16 @@ import { ProcesoModel } from '../models/proceso.model';
 import { environment } from 'src/environments/environment';
 import { CalidadModel } from '../models/calidad.model';
 import { ProcesoDetalleModel } from '../models/proceso-detalle.model';
+import { UserContextService } from '../../../services/user-context.service';
+import { variableGlobal } from '../../../interface/variable-global.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExamenFisicoPollitoService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private userContextService: UserContextService) {
+   }
 
   // title:  Metodos para Proceso
   // Author: Luis Tasayco
@@ -23,8 +26,8 @@ export class ExamenFisicoPollitoService {
   }
 
   setInsertProceso(value: ProcesoModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api + 'Proceso/Create';
     const param: string = JSON.stringify(value);
     return this.http.post(
@@ -34,8 +37,8 @@ export class ExamenFisicoPollitoService {
   }
 
   setUpdateProceso(value: ProcesoModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api + 'Proceso/Update';
     const param: string = JSON.stringify(value);
     return this.http.put(
@@ -45,8 +48,8 @@ export class ExamenFisicoPollitoService {
   }
 
   setDeleteProceso(value: ProcesoModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api + 'Proceso/Delete';
     const param: string = JSON.stringify(value);
     return this.http.patch(
@@ -66,8 +69,8 @@ export class ExamenFisicoPollitoService {
   }
 
   setInsertProcesoDetalle(value: ProcesoDetalleModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api + 'ProcesoDetalle/Create';
     const param: string = JSON.stringify(value);
     return this.http.post(
@@ -77,8 +80,8 @@ export class ExamenFisicoPollitoService {
   }
 
   setUpdateProcesoDetalle(value: ProcesoDetalleModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api + 'ProcesoDetalle/Update';
     const param: string = JSON.stringify(value);
     return this.http.put(
@@ -88,8 +91,8 @@ export class ExamenFisicoPollitoService {
   }
 
   setDeleteProcesoDetalle(value: ProcesoDetalleModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api + 'ProcesoDetalle/Delete';
     const param: string = JSON.stringify(value);
     return this.http.patch(
@@ -109,8 +112,8 @@ export class ExamenFisicoPollitoService {
   }
 
   setInsertCalidad(value: CalidadModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api + 'Calidad/Create';
     const param: string = JSON.stringify(value);
     return this.http.post(
@@ -120,8 +123,8 @@ export class ExamenFisicoPollitoService {
   }
 
   setUpdateCalidad(value: CalidadModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api + 'Calidad/Update';
     const param: string = JSON.stringify(value);
     return this.http.put(
@@ -131,8 +134,8 @@ export class ExamenFisicoPollitoService {
   }
 
   setDeleteCalidad(value: CalidadModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api + 'Calidad/Delete';
     const param: string = JSON.stringify(value);
     return this.http.patch(

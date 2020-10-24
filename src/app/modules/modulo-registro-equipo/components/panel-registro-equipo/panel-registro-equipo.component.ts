@@ -93,24 +93,28 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
     this.getToObtieneEmpresa();
     this.getToObtieneModelo();
 
+    this.selectedEmpresa = null;
+    this.selectedPlanta = null;
+    this.selectedModelo = null;
+
+    this.modeloFind.fecRegistroInicio = new Date();
+    this.modeloFind.fecRegistroFin = new Date();
+
     if (this.sessionService.getItem('filter-re-idRegistroEquipo')) {
 
 
       this.modeloFind.idRegistroEquipo = this.sessionService.getItemDecrypt('filter-re-idRegistroEquipo');
       this.modeloFind.fecRegistroInicio = new Date(this.sessionService.getItemDecrypt('filter-re-fecRegistroInicio'));
       this.modeloFind.fecRegistroFin = new Date(this.sessionService.getItemDecrypt('filter-re-fecRegistroFin'));
-      this.selectedEmpresa = this.sessionService.getItemDecrypt('filter-re-selectedEmpresa');
-      if (this.selectedEmpresa) {
-        this.getOnChangeEmpresa();
+      if (this.sessionService.getItemDecrypt('filter-re-selectedEmpresa') !== 'null') {
+        this.selectedEmpresa = this.sessionService.getItemDecrypt('filter-re-selectedEmpresa');
+        if (this.selectedEmpresa) {
+          this.getOnChangeEmpresa();
+        }
       }
-      this.selectedModelo = this.sessionService.getItemDecrypt('filter-re-selectedModelo');
-    } else {
-      this.selectedEmpresa = null;
-      this.selectedPlanta = null;
-      this.selectedModelo = null;
-
-      this.modeloFind.fecRegistroInicio = new Date();
-      this.modeloFind.fecRegistroFin = new Date();
+      if ( this.sessionService.getItemDecrypt('filter-re-selectedModelo') !== 'null') {
+        this.selectedModelo = this.sessionService.getItemDecrypt('filter-re-selectedModelo');
+      }
     }
 
     this.columnas = [

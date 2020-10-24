@@ -11,13 +11,17 @@ import { RequerimientoEquipoModel } from '../models/requerimiento-equipo.model';
 import { TxRegistroEquipoModel } from '../models/tx-registro-equipo.model';
 import { UtilService } from '../../modulo-compartido/services/util.service';
 import { TxRegistroEquipoDetalle1Model } from '../models/tx-registro-equipo-detalle1.model';
+import { UserContextService } from '../../../services/user-context.service';
+import { variableGlobal } from '../../../interface/variable-global.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RegistroEquipoService {
 
-  constructor(private http: HttpClient, private utils: UtilService) {}
+  constructor(private http: HttpClient,
+              private utils: UtilService,
+              private userContextService: UserContextService) {}
 
   // title:  Metodos para Mantenimiento
   // Author: Luis Tasayco
@@ -31,8 +35,8 @@ export class RegistroEquipoService {
   }
 
   setInsertMantenimiento(value: MantenimientoModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api + 'Mantenimiento/Create';
     const param: string = JSON.stringify(value);
     return this.http.post(
@@ -42,8 +46,8 @@ export class RegistroEquipoService {
   }
 
   setUpdateMantenimiento(value: MantenimientoModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api + 'Mantenimiento/Update';
     const param: string = JSON.stringify(value);
     return this.http.put(
@@ -53,8 +57,8 @@ export class RegistroEquipoService {
   }
 
   setDeleteMantenimiento(value: MantenimientoModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api + 'Mantenimiento/Delete';
     const param: string = JSON.stringify(value);
     return this.http.patch(
@@ -75,8 +79,8 @@ export class RegistroEquipoService {
   }
 
   setInsertCondicionLimpieza(value: CondicionLimpiezaModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api + 'CondicionLimpieza/Create';
     const param: string = JSON.stringify(value);
     return this.http.post(
@@ -86,8 +90,8 @@ export class RegistroEquipoService {
   }
 
   setUpdateCondicionLimpieza(value: CondicionLimpiezaModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api + 'CondicionLimpieza/Update';
     const param: string = JSON.stringify(value);
     return this.http.put(
@@ -97,8 +101,8 @@ export class RegistroEquipoService {
   }
 
   setDeleteCondicionLimpieza(value: CondicionLimpiezaModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api + 'CondicionLimpieza/Delete';
     const param: string = JSON.stringify(value);
     return this.http.patch(
@@ -119,8 +123,8 @@ export class RegistroEquipoService {
   }
 
   setInsertRequerimientoEquipo(value: RequerimientoEquipoModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api + 'RequerimientoEquipo/Create';
     const param: string = JSON.stringify(value);
     return this.http.post(
@@ -130,8 +134,8 @@ export class RegistroEquipoService {
   }
 
   setUpdateRequerimientoEquipo(value: RequerimientoEquipoModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api + 'RequerimientoEquipo/Update';
     const param: string = JSON.stringify(value);
     return this.http.put(
@@ -141,8 +145,8 @@ export class RegistroEquipoService {
   }
 
   setDeleteRequerimientoEquipo(value: RequerimientoEquipoModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api + 'RequerimientoEquipo/Delete';
     const param: string = JSON.stringify(value);
     return this.http.patch(
@@ -195,6 +199,11 @@ export class RegistroEquipoService {
   }
 
   setInsertMantenimientoPorModelo(value: MantenimientoPorModeloModel[]) {
+    value.map(dato => {
+      dato.regUsuario = this.userContextService.getIdUsuario(),
+      dato.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo
+      return dato;
+    });
     const url = environment.url_api + 'MantenimientoPorModelo/Create';
     const param: string = JSON.stringify(value);
     return this.http.post(
@@ -204,6 +213,11 @@ export class RegistroEquipoService {
   }
 
   setDeleteMantenimientoPorModelo(value: MantenimientoPorModeloModel[]) {
+    value.map(dato => {
+      dato.regUsuario = this.userContextService.getIdUsuario(),
+      dato.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo
+      return dato;
+    });
     const url = environment.url_api + 'MantenimientoPorModelo/Delete';
     const param: string = JSON.stringify(value);
     return this.http.patch(
@@ -232,6 +246,11 @@ export class RegistroEquipoService {
   }
 
   setInsertRepuestoPorModelo(value: RepuestoPorModeloModel[]) {
+    value.map(dato => {
+      dato.regUsuario = this.userContextService.getIdUsuario(),
+      dato.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo
+      return dato;
+    });
     const url = environment.url_api + 'RepuestoPorModelo/Create';
     const param: string = JSON.stringify(value);
     return this.http.post(
@@ -241,6 +260,11 @@ export class RegistroEquipoService {
   }
 
   setDeleteRepuestoPorModelo(value: RepuestoPorModeloModel[]) {
+    value.map(dato => {
+      dato.regUsuario = this.userContextService.getIdUsuario(),
+      dato.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo
+      return dato;
+    });
     const url = environment.url_api + 'RepuestoPorModelo/Delete';
     const param: string = JSON.stringify(value);
     return this.http.patch(
@@ -291,8 +315,8 @@ export class RegistroEquipoService {
   }
 
   setInsertTxRegistroEquipo(value: TxRegistroEquipoModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api + 'TxRegistroEquipo/Create';
     const param: string = JSON.stringify(value);
     return this.http.post(
@@ -302,8 +326,8 @@ export class RegistroEquipoService {
   }
 
   setUpdateTxRegistroEquipo(value: TxRegistroEquipoModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api + 'TxRegistroEquipo/Update';
     const param: string = JSON.stringify(value);
     return this.http.put(
@@ -313,8 +337,8 @@ export class RegistroEquipoService {
   }
 
   setUpdateStatusTxRegistroEquipo(value: TxRegistroEquipoModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api + 'TxRegistroEquipo/UpdateStatus';
     const param: string = JSON.stringify(value);
     return this.http.put(
@@ -324,8 +348,8 @@ export class RegistroEquipoService {
   }
 
   setDeleteTxRegistroEquipo(value: TxRegistroEquipoModel) {
-    value.regUsuario = environment.usuario;
-    value.regEstacion = environment.estacion;
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api + 'TxRegistroEquipo/Delete';
     const param: string = JSON.stringify(value);
     return this.http.patch(

@@ -27,6 +27,14 @@ export class UserContextService {
     }
   }
 
+  public getIdUsuario(): number {
+    return Number(this.sessionService.getItemDecrypt('idUsuario'));
+  }
+
+  public getUsuario() {
+    return this.sessionService.getItemDecrypt('usuario');
+  }
+
   public setUser(user: any)
   {
     this.sessionService.setItemEncrypt('currentUser', user);
