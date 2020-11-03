@@ -117,7 +117,7 @@ export class PanelProcesoComponent implements OnInit, OnDestroy {
     if (event !== null)
     {
       this.modeloSelectDetalle = event.data;
-      this.tituloDetalle = this.titulo + ' [' + this.modeloSelectDetalle.descripcion + ']';
+      this.tituloDetalle = this.titulo + ' [' + this.modeloSelectDetalle.descripcionProcesoDetalle + ']';
       this.onListarDetalle(this.modeloSelectDetalle.idProceso);
     }
   }

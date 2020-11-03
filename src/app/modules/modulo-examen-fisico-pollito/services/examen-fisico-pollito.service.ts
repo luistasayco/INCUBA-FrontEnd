@@ -6,13 +6,15 @@ import { CalidadModel } from '../models/calidad.model';
 import { ProcesoDetalleModel } from '../models/proceso-detalle.model';
 import { UserContextService } from '../../../services/user-context.service';
 import { variableGlobal } from '../../../interface/variable-global.interface';
+import { UtilService } from '../../modulo-compartido/services/util.service';
+import { TxExamenFisicoPollitoModel } from '../models/tx-examen-fisico-pollito';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExamenFisicoPollitoService {
 
-  constructor(private http: HttpClient, private userContextService: UserContextService) {
+  constructor(private http: HttpClient, private userContextService: UserContextService, private utils: UtilService) {
    }
 
   // title:  Metodos para Proceso
@@ -142,5 +144,66 @@ export class ExamenFisicoPollitoService {
         url,
         param
     );
+  }
+
+  // title:  Metodos para TrExamen Fisico Pollito
+  // Author: Luis Tasayco
+  // Date:   04/09/2020
+  getTxExamenFisicoPollitoPorFiltros(id: number, codigoEmpresa: string, fecInicio: Date, fecFin: Date) {
+    let parametros = new HttpParams();
+    parametros = parametros.append('idExamenFisico', id.toString());
+    parametros = parametros.append('codigoEmpresa', codigoEmpresa);
+    parametros = parametros.append('fecRegistroInicio', this.utils.fecha_AAAAMMDD(fecInicio));
+    parametros = parametros.append('fecRegistroFin', this.utils.fecha_AAAAMMDD(fecFin));
+    return this.http.get<TxExamenFisicoPollitoModel[]>
+    (`${environment.url_api}TxExamenFisicoPollito/GetAll/`, { params: parametros });
+  }
+
+  getTxExamenFisicoPollitoPorId(id: number) {
+    return this.http.get<TxExamenFisicoPollitoModel>
+    (`${environment.url_api}TxExamenFisicoPollito/GetByIdTxExamenFisicoPollito/${id}`);
+  }
+
+  getTxExamenFisicoPollitoPorIdNew() {
+    return this.http.get<TxExamenFisicoPollitoModel>
+    (`${environment.url_api}TxExamenFisicoPollito/GetByIdTxExamenFisicoPollitoNew`);
+  }
+
+  setInsertExamenFisicoPollito(value: TxExamenFisicoPollitoModel) {
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
+    const url = environment.url_api + 'TxExamenFisicoPollito/Create';
+    const param: string = JSON.stringify(value);
+    return this.http.post(
+        url,
+        param
+    );
+  }
+
+  setUpdateTxExamenFisicoPollito(value: TxExamenFisicoPollitoModel) {
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
+    const url = environment.url_api + 'TxExamenFisicoPollito/Update';
+    const param: string = JSON.stringify(value);
+    return this.http.put(
+        url,
+        param
+    );
+  }
+
+  setDeleteExamenFisicoPollito(value: TxExamenFisicoPollitoModel) {
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
+    const url = environment.url_api + 'TxExamenFisicoPollito/Delete';
+    const param: string = JSON.stringify(value);
+    return this.http.patch(
+        url,
+        param
+    );
+  }
+
+  setPDFExamenFisicoPollito(id: number) {
+    return this.http.get
+    (`${environment.url_api}TxExamenFisicoPollito/GetGeneraPdfByIdTxExamenFisicoPollito/${id}`, { responseType: 'arraybuffer' });
   }
 }

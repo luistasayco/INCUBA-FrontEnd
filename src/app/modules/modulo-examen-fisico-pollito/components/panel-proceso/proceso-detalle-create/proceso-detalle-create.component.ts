@@ -46,7 +46,7 @@ export class ProcesoDetalleCreateComponent implements OnInit, OnDestroy {
   }
 
   onClickSave() {
-    this.modelo.descripcion = this.maestroForm.controls['descripcion'].value;
+    this.modelo.descripcionProcesoDetalle = this.maestroForm.controls['descripcion'].value;
     this.modelo.factor = this.maestroForm.controls['factor'].value;
     this.modelo.orden = this.maestroForm.controls['orden'].value;
     this.subscription = new Subscription();

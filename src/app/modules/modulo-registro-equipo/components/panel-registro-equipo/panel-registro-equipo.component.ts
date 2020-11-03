@@ -24,7 +24,6 @@ import { MenuDinamicoService } from '../../../../services/menu-dinamico.service'
   styleUrls: ['./panel-registro-equipo.component.css']
 })
 export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
-
   // Titulo del componente
   titulo = 'Registros de Equipos';
   // Acceso de botones

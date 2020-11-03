@@ -12,6 +12,11 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ColorPickerModule } from 'primeng/colorpicker';
+import { DropdownModule } from 'primeng/dropdown';
+import { CalendarModule } from 'primeng/calendar';
+import { AccordionModule } from 'primeng/accordion';
+import { CheckboxModule } from 'primeng/checkbox';
+import { RadioButtonModule } from 'primeng/radiobutton';
 // Sevices
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
@@ -28,7 +33,12 @@ import { MessageService } from 'primeng/api';
             PanelModule,
             InputTextareaModule,
             InputSwitchModule,
-            ColorPickerModule],
+            ColorPickerModule,
+            DropdownModule,
+            CalendarModule,
+            AccordionModule,
+            CheckboxModule,
+            RadioButtonModule],
     providers: [MessageService, ConfirmationService],
 })
 export class ExamenFisicoPollitoPrimeNgModule {}

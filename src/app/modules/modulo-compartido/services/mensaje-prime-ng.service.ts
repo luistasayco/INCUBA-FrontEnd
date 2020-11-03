@@ -68,7 +68,7 @@ export class MensajePrimeNgService {
       this.mensajeApiInformacion(titulo, mensaje);
     } else {
       this.msgs = [];
-      this.msgs.push({severity: 'info',
+      this.msgs.push({severity: 'warn',
                       summary: titulo ? titulo : this.globalConstants.msgInfoSummary,
                       detail: mensaje ? mensaje : this.globalConstants.msgInfoDetail});
       this.onToClearMsg();
@@ -77,7 +77,7 @@ export class MensajePrimeNgService {
 
   private mensajeApiInformacion(titulo: string, mensaje?: IMensajeResultadoApi) {
     this.msgs = [];
-    this.msgs.push({severity: 'info',
+    this.msgs.push({severity: 'warn',
                     summary: titulo ? titulo : this.globalConstants.msgInfoSummary,
                     detail: this.globalConstants.msgInfoDetail});
     this.onToClearMsg();

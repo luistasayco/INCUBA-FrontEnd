@@ -15,12 +15,11 @@ import { RequerimientoEquipoCreateComponent } from './components/panel-requerimi
 import { PanelRegistroEquipoComponent } from './components/panel-registro-equipo/panel-registro-equipo.component';
 import { RegistroEquipoCreateComponent } from './components/panel-registro-equipo/registro-equipo-create/registro-equipo-create.component';
 import { RegistroEquipoUpdateComponent } from './components/panel-registro-equipo/registro-equipo-update/registro-equipo-update.component';
-import { SignaturePadModule } from '@ng-plus/signature-pad';
-import { PanelFirmaDigitalComponent } from '../modulo-compartido/components/panel-firma-digital/panel-firma-digital.component';
 import { PanelRegistroEquipoOffLineComponent } from './components/panel-registro-equipo-off-line/panel-registro-equipo-off-line.component';
 import { RegistroEquipoUpdateOffLineComponent } from './components/panel-registro-equipo-off-line/registro-equipo-update-off-line/registro-equipo-update-off-line.component';
 import { RegistroEquipoCreateOffLineComponent } from './components/panel-registro-equipo-off-line/registro-equipo-create-off-line/registro-equipo-create-off-line.component';
 import { GaleriaImagenModule } from '../modulo-compartido/components/galeria-imagen/galeria-imagen.module';
+import { FirmaDigitalModule } from '../modulo-compartido/components/panel-firma-digital/panel-firma-digital.module';
 
 @NgModule({
     declarations: [PanelMantenimientoComponent,
@@ -35,7 +34,6 @@ import { GaleriaImagenModule } from '../modulo-compartido/components/galeria-ima
                 PanelRegistroEquipoComponent,
                 RegistroEquipoCreateComponent,
                 RegistroEquipoUpdateComponent,
-                PanelFirmaDigitalComponent,
                 PanelRegistroEquipoOffLineComponent,
                 RegistroEquipoUpdateOffLineComponent,
                 RegistroEquipoCreateOffLineComponent],
@@ -43,8 +41,7 @@ import { GaleriaImagenModule } from '../modulo-compartido/components/galeria-ima
         RegistroEquipoRoutingModule,
         FormsModule,
         ReactiveFormsModule,
-        RegistroEquipoPrimeNgModule,
-        SignaturePadModule, GaleriaImagenModule],
+        RegistroEquipoPrimeNgModule, GaleriaImagenModule, FirmaDigitalModule],
     exports: [],
     providers: [],
 })

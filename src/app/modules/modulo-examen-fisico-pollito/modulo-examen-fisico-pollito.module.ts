@@ -8,14 +8,28 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CalidadCreateComponent } from './components/panel-calidad/calidad-create/calidad-create.component';
 import { ProcesoCreateComponent } from './components/panel-proceso/proceso-create/proceso-create.component';
 import { ProcesoDetalleCreateComponent } from './components/panel-proceso/proceso-detalle-create/proceso-detalle-create.component';
+import { PanelTxExamenFisicoPollitoComponent } from './components/panel-tx-examen-fisico-pollito/panel-tx-examen-fisico-pollito.component';
+import { TxExamenFisicoPollitoCreateComponent } from './components/panel-tx-examen-fisico-pollito/tx-examen-fisico-pollito-create/tx-examen-fisico-pollito-create.component';
+import { TxExamenFisicoPollitoUpdateComponent } from './components/panel-tx-examen-fisico-pollito/tx-examen-fisico-pollito-update/tx-examen-fisico-pollito-update.component';
+import { FirmaDigitalModule } from '../modulo-compartido/components/panel-firma-digital/panel-firma-digital.module';
+import { GaleriaImagenModule } from '../modulo-compartido/components/galeria-imagen/galeria-imagen.module';
 
 @NgModule({
     declarations: [ PanelCalidadComponent,
                     PanelProcesoComponent,
                     CalidadCreateComponent,
                     ProcesoCreateComponent,
-                    ProcesoDetalleCreateComponent],
-    imports: [ CommonModule, ExamenFisicoPollitoPrimeNgModule, ExamenFisicoPollitoRoutingModule, FormsModule, ReactiveFormsModule ],
+                    ProcesoDetalleCreateComponent,
+                    PanelTxExamenFisicoPollitoComponent,
+                    TxExamenFisicoPollitoCreateComponent,
+                    TxExamenFisicoPollitoUpdateComponent],
+    imports: [ CommonModule,
+        ExamenFisicoPollitoPrimeNgModule,
+        ExamenFisicoPollitoRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        FirmaDigitalModule,
+    GaleriaImagenModule],
     exports: [],
     providers: [],
 })

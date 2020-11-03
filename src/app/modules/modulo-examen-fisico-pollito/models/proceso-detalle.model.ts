@@ -1,10 +1,12 @@
 export class ProcesoDetalleModel {
     idProcesoDetalle?: number;
     idProceso: number;
-    descripcion?: string;
+    descripcionProceso?: string;
+    descripcionProcesoDetalle?: string;
     factor?: number;
     orden?: number;
     tipoControl?: string;
+    etiqueta?: string;
 
     // Auditoria
     regUsuario?: number;
@@ -13,10 +15,12 @@ export class ProcesoDetalleModel {
     constructor(){
         this.idProcesoDetalle = 0;
         this.idProceso = 0;
-        this.descripcion = '';
+        this.descripcionProceso = '';
+        this.descripcionProcesoDetalle = '';
         this.factor = 0;
         this.orden = 0;
         this.tipoControl = '';
+        this.etiqueta = '';
         this.regUsuario = 0;
         this.regEstacion = '';
     }
