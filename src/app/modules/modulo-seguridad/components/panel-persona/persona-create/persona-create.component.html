@@ -101,6 +101,16 @@
                                 </div>
                             </div>
                         </p-fieldset>
+                        <p-fieldset legend="Acceso por Socio de Negocio" [toggleable]="true" [collapsed]="true">
+                            <p-pickList [source]="listEmpresaPorSeleccionado" [target]="listEmpresaSeleccionado" sourceHeader="Lista" targetHeader="Seleccionado" [responsive]="true" filterBy="codigoEmpresa" dragdrop="true" showSourceControls='false' sourceFilterPlaceholder="Search by Socio Negocio"
+                                targetFilterPlaceholder="Search by Socio de Negocio" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}" [showSourceControls]="false" [showTargetControls]="false">
+                                <ng-template let-empresa pTemplate="item">
+                                    <div class="ui-helper-clearfix">
+                                        <div style="font-size:14px;float:left;margin:5px 5px 0 0">{{empresa.descripcionEmpresa}}</div>
+                                    </div>
+                                </ng-template>
+                            </p-pickList>
+                        </p-fieldset>
                         <p-fieldset legend="Datos Adicionales">
                             <p-fieldset legend="Foto" [toggleable]="true" [collapsed]="true">
                                 <div class="ui-g-12 ui-md-4">

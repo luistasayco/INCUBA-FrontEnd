@@ -17,6 +17,8 @@ import { saveAs } from 'file-saver';
 import { SessionService } from '../../../../services/session.service';
 import { ButtonAcces } from '../../../../models/acceso-button';
 import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
+import { SeguridadService } from '../../../modulo-seguridad/services/seguridad.service';
+import { EmpresaPorUsuarioModel } from '../../../modulo-seguridad/models/empresa-por-usuario';
 
 @Component({
   selector: 'app-panel-registro-equipo',
@@ -41,7 +43,6 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
   selectedPlanta: any;
   selectedModelo: any;
 
-  modeloEmpresa: EmpresaModel = new EmpresaModel();
   modeloPlanta: PlantaModel = new PlantaModel();
   modeloModelo: ModeloModel = new ModeloModel();
 
@@ -67,7 +68,8 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
               private breadcrumbService: BreadcrumbService,
               private confirmationService: ConfirmationService,
               private sessionService: SessionService,
-              private menuDinamicoService: MenuDinamicoService) {
+              private menuDinamicoService: MenuDinamicoService,
+              private seguridadService: SeguridadService) {
     this.breadcrumbService.setItems([
         { label: 'Modulo' },
         { label: 'Registro de Equipo', routerLink: ['module-re/panel-registro-equipo'] }
@@ -138,11 +140,11 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
 
   getToObtieneEmpresa() {
     this.subscription$ = new Subscription();
-    this.subscription$ = this.compartidoService.getEmpresa(this.modeloEmpresa)
-    .subscribe((data: EmpresaModel[]) => {
+    this.subscription$ = this.seguridadService.getEmpresaConAccesoPorUsuario()
+    .subscribe((data: EmpresaPorUsuarioModel[]) => {
       this.listItemEmpresa = [];
       for (let item of data) {
-        this.listItemEmpresa.push({ label: item.descripcion, value: item.codigoEmpresa });
+        this.listItemEmpresa.push({ label: item.descripcionEmpresa, value: item.codigoEmpresa });
       }
     });
   }
@@ -298,7 +300,8 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
       console.log(resp);
 
       // let file = new window.Blob([resp], {type: 'application/pdf'});
-      saveAs(new Blob([resp], {type: 'application/pdf'}), 'Registros');
+      // saveAs(new Blob([resp], {type: 'application/pdf'}), 'Registros');
+      saveAs(new Blob([resp], {type: 'application/pdf'}), `RegistroEquipo#${modelo.idRegistroEquipo.toString()}`);
       // let fileURL = window.URL.createObjectURL(file);
       // window.open(fileURL, '_blank');
     },

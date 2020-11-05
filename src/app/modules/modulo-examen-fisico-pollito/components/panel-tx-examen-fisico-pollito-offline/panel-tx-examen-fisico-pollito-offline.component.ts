@@ -1,0 +1,147 @@
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ButtonAcces } from '../../../../models/acceso-button';
+import { GlobalsConstants } from '../../../modulo-compartido/models/globals-constants';
+import { TxExamenFisicoPollitoModel } from '../../models/tx-examen-fisico-pollito';
+import { Subscription } from 'rxjs';
+import { BreadcrumbService } from '../../../../services/breadcrumb.service';
+import { SessionService } from '../../../../services/session.service';
+import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
+import { ExamenFisicoPollitoLocalService } from '../../services/examen-fisico-pollito-local.service';
+import { MensajePrimeNgService } from '../../../modulo-compartido/services/mensaje-prime-ng.service';
+import { ConfirmationService } from 'primeng';
+import { Router } from '@angular/router';
+import { LanguageService } from '../../../../services/language.service';
+import { SeguridadService } from '../../../modulo-seguridad/services/seguridad.service';
+import { IMensajeResultadoApi } from '../../../modulo-compartido/models/mensaje-resultado-api';
+
+@Component({
+  selector: 'app-panel-tx-examen-fisico-pollito-offline',
+  templateUrl: './panel-tx-examen-fisico-pollito-offline.component.html',
+  styleUrls: ['./panel-tx-examen-fisico-pollito-offline.component.css']
+})
+export class PanelTxExamenFisicoPollitoOfflineComponent implements OnInit, OnDestroy {
+
+  // Titulo del componente
+  titulo = 'Examen Fisico del Pollito';
+  // Acceso de botones
+  buttonAcces: ButtonAcces = new ButtonAcces();
+  // Name de los botones de accion
+  globalConstants: GlobalsConstants = new GlobalsConstants();
+
+  // Opcion Buscar
+  modeloItem: TxExamenFisicoPollitoModel;
+  listModelo: TxExamenFisicoPollitoModel[];
+
+  columnas: any[];
+
+  subscription$: Subscription;
+
+  constructor(private breadcrumbService: BreadcrumbService,
+              private sessionService: SessionService,
+              private menuDinamicoService: MenuDinamicoService,
+              private examenFisicoPollitoLocalService: ExamenFisicoPollitoLocalService,
+              public mensajePrimeNgService: MensajePrimeNgService,
+              private confirmationService: ConfirmationService,
+              private router: Router,
+              public lenguageService: LanguageService,
+              private seguridadService: SeguridadService) {
+    this.breadcrumbService.setItems([
+    { label: 'Modulo' },
+    { label: 'Examen Fisico del Pollito Offline', routerLink: ['module-ef/panel-tx-examen-fisico-pollito-offline'] }
+    ]);
+  }
+
+  ngOnInit(): void {
+    this.modeloItem = new TxExamenFisicoPollitoModel();
+
+    this.columnas = [
+      { field: 'idExamenFisico', header: 'Nro' },
+      { field: 'fecRegistro', header: 'Fecha' },
+      { field: 'codigoEmpresa', header: 'Empresa' },
+      { field: 'calificacion', header: 'Calificacion' },
+      { field: 'descripcionCalidad', header: 'Calidad' },
+      { field: 'usuarioCreacion', header: 'Usuario' }
+    ];
+
+    this.subscription$ = new Subscription();
+    this.subscription$ = this.menuDinamicoService.getObtieneOpciones('app-panel-tx-examen-fisico-pollito-offline')
+    .subscribe(acces => {
+      this.buttonAcces = acces;
+    });
+
+    this.onListar();
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription$) {
+      this.subscription$.unsubscribe();
+    }
+  }
+
+  onListar() {
+    this.subscription$ = new Subscription();
+    this.subscription$ = this.examenFisicoPollitoLocalService.getExamenFisicoPollito()
+    .subscribe(resp => {
+      if (resp) {
+        console.log(resp);
+        this.listModelo = resp;
+        }
+      },
+      (error) => {
+        this.mensajePrimeNgService.onToErrorMsg(null, error);
+      }
+    );
+  }
+
+  onConfirmEliminar(data: any) {
+    this.confirmationService.confirm({
+        message: this.globalConstants.subTitleEliminar,
+        header: this.globalConstants.titleEliminar,
+        icon: 'pi pi-info-circle',
+        acceptLabel: 'Si',
+        rejectLabel: 'No',
+        accept: () => {
+          this.onToEliminar(data);
+        },
+        reject: () => {
+          this.mensajePrimeNgService.onToCancelMsg(this.globalConstants.msgCancelSummary, this.globalConstants.msgCancelDetail);
+        }
+    });
+  }
+
+  onToEliminar(data: any) {
+    this.subscription$ = new Subscription();
+    this.subscription$ = this.examenFisicoPollitoLocalService.setDeleteTxExamenFisicoPollito(data.id)
+    .subscribe(resp => {
+        if (resp) {
+
+          this.listModelo = [...this.listModelo].filter((x: any) => x.id !== data.id);
+
+          this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
+        }
+      },
+      (error) => {
+        this.mensajePrimeNgService.onToErrorMsg(null, error);
+      }
+    );
+  }
+
+  onToCreate() {
+    this.router.navigate(['/main/module-ef/create-tx-examen-fisico-pollito-offline']);
+  }
+
+  onToUpdate(data: any) {
+    this.subscription$ = new Subscription();
+    data.flgEnModificacion = true;
+    this.subscription$ = this.examenFisicoPollitoLocalService.setUpdateTxExamenFisicoPollito(data)
+    .subscribe(resp => {
+      if (resp) {
+        this.router.navigate(['/main/module-ef/update-tx-examen-fisico-pollito-offline', data.id]);
+        }
+      },
+      (error) => {
+        this.mensajePrimeNgService.onToErrorMsg(null, error);
+      }
+    );
+  }
+}

@@ -15,6 +15,8 @@ import { Subscription } from 'rxjs';
 import { SelectItem } from 'primeng';
 import { ButtonAcces } from '../../../../models/acceso-button';
 import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
+import { SeguridadService } from '../../../modulo-seguridad/services/seguridad.service';
+import { EmpresaPorUsuarioModel } from '../../../modulo-seguridad/models/empresa-por-usuario';
 
 @Component({
   selector: 'app-panel-asociacion',
@@ -40,7 +42,6 @@ export class PanelAsociacionComponent implements OnInit, OnDestroy {
   selectedPlanta: any;
   selectedModelo: any;
 
-  modeloEmpresa: EmpresaModel = new EmpresaModel();
   modeloPlanta: PlantaModel = new PlantaModel();
   modeloModelo: ModeloModel = new ModeloModel();
   modeloEquipoPorModelo: EquipoPorModeloModel = new EquipoPorModeloModel();
@@ -64,7 +65,8 @@ export class PanelAsociacionComponent implements OnInit, OnDestroy {
               private compartidoService: CompartidoService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService,
-              private menuDinamicoService: MenuDinamicoService) {
+              private menuDinamicoService: MenuDinamicoService,
+              private seguridadService: SeguridadService) {
                 this.breadcrumbService.setItems([
                     { label: 'Modulo' },
                     { label: 'Asociación', routerLink: ['module-re/panel-asociacion'] }
@@ -91,11 +93,11 @@ export class PanelAsociacionComponent implements OnInit, OnDestroy {
 
   getToObtieneEmpresa() {
     this.subscription = new Subscription();
-    this.subscription = this.compartidoService.getEmpresa(this.modeloEmpresa)
-    .subscribe((data: EmpresaModel[]) => {
+    this.subscription = this.seguridadService.getEmpresaConAccesoPorUsuario()
+    .subscribe((data: EmpresaPorUsuarioModel[]) => {
       this.listItemEmpresa = [];
       for (let item of data) {
-        this.listItemEmpresa.push({ label: item.descripcion, value: item.codigoEmpresa });
+        this.listItemEmpresa.push({ label: item.descripcionEmpresa, value: item.codigoEmpresa });
       }
     });
   }

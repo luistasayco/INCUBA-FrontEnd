@@ -8,6 +8,7 @@ import { OpcionPorPerfilModel } from '../models/opcion-por-perfil';
 import { environment } from 'src/environments/environment';
 import { UserContextService } from '../../../services/user-context.service';
 import { variableGlobal } from '../../../interface/variable-global.interface';
+import { EmpresaPorUsuarioModel } from '../models/empresa-por-usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -208,6 +209,23 @@ export class SeguridadService {
         url,
         param
     );
+  }
+
+  getEmpresaSinAccesoPorUsuario(idUsuario: number) {
+    let parametros = new HttpParams();
+    parametros = parametros.append('idUsuario', idUsuario.toString());
+
+    return this.http.get<EmpresaPorUsuarioModel[]>
+    (`${environment.url_api_seguridad}EmpresaPorUsuario/GetEmpresaSinAccesoPorUsuario/`, { params: parametros });
+  }
+
+  getEmpresaConAccesoPorUsuario() {
+    let idUsuario = this.userContextService.getIdUsuario();
+    let parametros = new HttpParams();
+    parametros = parametros.append('idUsuario', idUsuario.toString());
+
+    return this.http.get<EmpresaPorUsuarioModel[]>
+    (`${environment.url_api_seguridad}EmpresaPorUsuario/GetEmpresaConAccesoPorUsuario/`, { params: parametros });
   }
 
 }

@@ -2,19 +2,19 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ButtonAcces } from '../../../../models/acceso-button';
 import { GlobalsConstants } from '../../../modulo-compartido/models/globals-constants';
 import { SelectItem, ConfirmationService } from 'primeng';
-import { EmpresaModel } from '../../../modulo-compartido/models/empresa.model';
 import { TxExamenFisicoPollitoModel } from '../../models/tx-examen-fisico-pollito';
 import { Subscription } from 'rxjs';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
 import { SessionService } from '../../../../services/session.service';
 import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
-import { CompartidoService } from '../../../modulo-compartido/services/compartido.service';
 import { ExamenFisicoPollitoService } from '../../services/examen-fisico-pollito.service';
 import { MensajePrimeNgService } from '../../../modulo-compartido/services/mensaje-prime-ng.service';
 import { IMensajeResultadoApi } from '../../../modulo-compartido/models/mensaje-resultado-api';
 import { saveAs } from 'file-saver';
 import { Router } from '@angular/router';
 import { LanguageService } from '../../../../services/language.service';
+import { SeguridadService } from '../../../modulo-seguridad/services/seguridad.service';
+import { EmpresaPorUsuarioModel } from '../../../modulo-seguridad/models/empresa-por-usuario';
 
 @Component({
   selector: 'app-panel-tx-examen-fisico-pollito',
@@ -38,8 +38,6 @@ export class PanelTxExamenFisicoPollitoComponent implements OnInit, OnDestroy {
   // Variables de dato seleccionado
   selectedEmpresa: any;
 
-  modeloEmpresa: EmpresaModel = new EmpresaModel();
-
   // Opcion Buscar
   modeloItem: TxExamenFisicoPollitoModel;
   listModelo: TxExamenFisicoPollitoModel[];
@@ -52,12 +50,12 @@ export class PanelTxExamenFisicoPollitoComponent implements OnInit, OnDestroy {
   constructor(private breadcrumbService: BreadcrumbService,
               private sessionService: SessionService,
               private menuDinamicoService: MenuDinamicoService,
-              private compartidoService: CompartidoService,
               private examenFisicoPollitoService: ExamenFisicoPollitoService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private confirmationService: ConfirmationService,
               private router: Router,
-              public lenguageService: LanguageService) {
+              public lenguageService: LanguageService,
+              private seguridadService: SeguridadService) {
     this.breadcrumbService.setItems([
       { label: 'Modulo' },
       { label: 'Examen Fisico del Pollito', routerLink: ['module-ef/panel-tx-examen-fisico-pollito'] }
@@ -118,11 +116,11 @@ export class PanelTxExamenFisicoPollitoComponent implements OnInit, OnDestroy {
 
   getToObtieneEmpresa() {
     this.subscription$ = new Subscription();
-    this.subscription$ = this.compartidoService.getEmpresa(this.modeloEmpresa)
-    .subscribe((data: EmpresaModel[]) => {
+    this.subscription$ = this.seguridadService.getEmpresaConAccesoPorUsuario()
+    .subscribe((data: EmpresaPorUsuarioModel[]) => {
       this.listItemEmpresa = [];
       for (let item of data) {
-        this.listItemEmpresa.push({ label: item.descripcion, value: item.codigoEmpresa });
+        this.listItemEmpresa.push({ label: item.descripcionEmpresa, value: item.codigoEmpresa });
       }
     });
   }
@@ -186,10 +184,10 @@ export class PanelTxExamenFisicoPollitoComponent implements OnInit, OnDestroy {
 
     this.examenFisicoPollitoService.setPDFExamenFisicoPollito(modelo.idExamenFisico)
     .subscribe((resp: any) => {
-      let file = new window.Blob([resp], {type: 'application/pdf'});
-      // saveAs(new Blob([resp], {type: 'application/pdf'}), `ExamenFisico#${modelo.idExamenFisico.toString()}`);
-      let fileURL = window.URL.createObjectURL(file);
-      window.open(fileURL, '_blank');
+      // let file = new window.Blob([resp], {type: 'application/pdf'});
+      saveAs(new Blob([resp], {type: 'application/pdf'}), `ExamenFisico#${modelo.idExamenFisico.toString()}`);
+      // let fileURL = window.URL.createObjectURL(file);
+      // window.open(fileURL, '_blank');
     },
       (error) => {
         console.log('error', error);

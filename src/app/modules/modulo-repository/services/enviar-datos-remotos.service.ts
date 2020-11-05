@@ -6,6 +6,9 @@ import { NgxIndexedDBService } from 'ngx-indexed-db';
 import { ConstantesTablasIDB } from '../../../constants/constantes-tablas-indexdb';
 import { RegistroEquipoService } from '../../modulo-registro-equipo/services/registro-equipo.service';
 import { UserContextService } from '../../../services/user-context.service';
+import { TxExamenFisicoPollitoModel } from '../../modulo-examen-fisico-pollito/models/tx-examen-fisico-pollito';
+import { ExamenFisicoPollitoLocalService } from '../../modulo-examen-fisico-pollito/services/examen-fisico-pollito-local.service';
+import { ExamenFisicoPollitoService } from '../../modulo-examen-fisico-pollito/services/examen-fisico-pollito.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +17,7 @@ export class EnviarDatosRemotosService {
 
   constructor(private readonly servicioIndexedDB: NgxIndexedDBService,
               private readonly registroEquipoService: RegistroEquipoService,
+              private readonly examenFisicoPollitoService: ExamenFisicoPollitoService,
               private userContextService: UserContextService) { }
 
   public enviarDatosAServidorRemoto() {
@@ -27,7 +31,9 @@ export class EnviarDatosRemotosService {
       },
       error => {
         console.log('ERROR:', error);
-      }
+      },
+      () => {
+        console.log('TAREA COMPLETADA 2 DE ENVIAR DATOS AL SERVIDOR');      }
       );
     } else {
       console.log('USUARIO NO SE ENCUENTRA AUTENTIFICADO');
@@ -39,6 +45,14 @@ export class EnviarDatosRemotosService {
       if (variableGlobal.ESTADO_INTERNET) {
         this.enviarTxRegistroEquipo()
         .subscribe(resultadoEquipo => {
+          observer.next();
+        },
+        error => {
+          observer.error(error);
+        }
+        );
+        this.enviarExamenFisicoPollito()
+        .subscribe(resultadoExamenFisicoPollito => {
           observer.next();
         },
         error => {
@@ -64,7 +78,6 @@ export class EnviarDatosRemotosService {
           registros = registros
           .filter(x => x.flgMigrado === false)
           .filter(y => y.flgEnModificacion === false);
-
           if ( registros.length > 0 ) {
             registros.forEach( item => {
               this.registroEquipoService.setInsertTxRegistroEquipo(item)
@@ -74,7 +87,7 @@ export class EnviarDatosRemotosService {
                 this.servicioIndexedDB.update(ConstantesTablasIDB._TABLA_TXREGISTROEQUIPO, item);
               },
               errorFor => {
-                console.log('enviarTxRegistroEquipo', `Error al enviar Datos. Empleado Asignacion de Linea: ${errorFor}`, item);
+                console.log('enviarTxRegistroEquipo', `Error al enviar Datos. Registro de Equipo: ${errorFor}`, item);
               }
               );
             });
@@ -87,7 +100,47 @@ export class EnviarDatosRemotosService {
         }
       },
       error => {
-        console.log(`Error al enviar Datos. Empleado Asignacion de Linea: ${error}`);
+        console.log(`Error al enviar Datos. Registro de Equipo: ${error}`);
+        observer.next();
+      }
+      );
+    });
+    return obsProcesoTerminado;
+  }
+
+  private enviarExamenFisicoPollito() {
+    const obsProcesoTerminado = new Observable (observer => {
+      let registros: TxExamenFisicoPollitoModel[] = [];
+      this.servicioIndexedDB.getAll(ConstantesTablasIDB._TABLA_TXEXAMENFISICOPOLLITO)
+      .subscribe(resultado => {
+        if (resultado) {
+          registros = [...resultado];
+          registros = registros
+          .filter(x => x.flgMigrado === false)
+          .filter(y => y.flgEnModificacion === false);
+          if ( registros.length > 0 ) {
+            registros.forEach( item => {
+              this.examenFisicoPollitoService.setInsertExamenFisicoPollito(item)
+              .subscribe( result => {
+                item.flgMigrado = true;
+                console.log('enviarExamenFisicoPollito', `Se migro correctamente: `, item);
+                this.servicioIndexedDB.update(ConstantesTablasIDB._TABLA_TXEXAMENFISICOPOLLITO, item);
+              },
+              errorFor => {
+                console.log('enviarExamenFisicoPollito', `Error al enviar Datos. Examenes Fisicos de Pollitos: ${errorFor}`, item);
+              }
+              );
+            });
+            observer.next();
+          } else {
+            observer.next();
+          }
+        } else {
+          observer.next();
+        }
+      },
+      error => {
+        console.log(`Error al enviar Datos. Examenes Fisicos de Pollitos: ${error}`);
         observer.next();
       }
       );

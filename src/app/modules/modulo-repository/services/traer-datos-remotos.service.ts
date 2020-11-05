@@ -7,6 +7,10 @@ import { FunctionDBLocalService } from '../../modulo-base-datos-local/services/f
 import { CompartidoService } from '../../modulo-compartido/services/compartido.service';
 import { RegistroEquipoService } from '../../modulo-registro-equipo/services/registro-equipo.service';
 import { ConstantesTablasIDB } from '../../../constants/constantes-tablas-indexdb';
+import { SeguridadService } from '../../modulo-seguridad/services/seguridad.service';
+import { EmpresaModel } from 'src/app/modules/modulo-compartido/models/empresa.model';
+import { ExamenFisicoPollitoService } from '../../modulo-examen-fisico-pollito/services/examen-fisico-pollito.service';
+import { CalidadModel } from '../../modulo-examen-fisico-pollito/models/calidad.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,11 +21,15 @@ export class TraerDatosRemotosService {
   subscripcionDatosCargados: Subscription;
   public datosCargadosTotalmente: Subject<boolean>;
   private tablasCompletas: IEstadoTablasDelSistema;
+  private empresaModel: EmpresaModel = new EmpresaModel();
+  private listEmpresa: EmpresaModel[];
 
   constructor(private readonly formatoFecha: DatePipe,
               private readonly functionDBLocalService: FunctionDBLocalService,
               private compartidoService: CompartidoService,
-              private registroEquipoService: RegistroEquipoService) { }
+              private registroEquipoService: RegistroEquipoService,
+              private seguridadService: SeguridadService,
+              private examenFisicoPollitoService: ExamenFisicoPollitoService) { }
 
   private iniciarTablas() {
     this.tablasCompletas = {
@@ -33,6 +41,8 @@ export class TraerDatosRemotosService {
       tablaMstEquipo: false,
       tablaMstMantenimientoPorModelo: false,
       tablaMstRepuestoPorModelo: false,
+      tablaMstCalidad: false,
+      tablaTrxExamenFisicoPollitoDetalle: false
     };
   }
 
@@ -87,17 +97,28 @@ export class TraerDatosRemotosService {
     this.getEquipo('getEquipo', 'Equipo');
     this.getMantenimientoPorModelo('getMantenimientoPorModelo', 'MantenimientoPorModelo');
     this.getRepuestoPorModelo('getRepuestoPorModelo', 'RepuestoPorModelo');
+
+    // Modulo II
+    this.getCalidad('getCalidad', 'Calidad');
+    // Plantilla para el registro del examen fisico del pollito
+    this.getExamenFisicoPollitoDetalle('getExamenFisicoPollitoDetalle', 'ExamenFisicoPollitoDetalle');
   }
 
   private getEmpresas(nameProcedimiento: string, etiqueta: string) {
+    this.listEmpresa = [];
     this.informacionDelProceso(`Inicio de ${nameProcedimiento}`);
-    this.compartidoService.getEmpresa()
+    this.seguridadService.getEmpresaConAccesoPorUsuario()
     .subscribe(
         result => {
-            this.createDataIndexDB( ConstantesTablasIDB._TABLA_MSTEMPRESA, result, etiqueta);
-            this.procesoFinalizado(nameProcedimiento);
-            this.tablasCompletas.tablaMstEmpresa = true;
-            this.emitDatosCargados();
+
+          result.forEach(x => {
+            this.empresaModel = {codigoEmpresa: x.codigoEmpresa, descripcion: x.descripcionEmpresa};
+            this.listEmpresa.push(this.empresaModel);
+          });
+          this.createDataIndexDB( ConstantesTablasIDB._TABLA_MSTEMPRESA, this.listEmpresa, etiqueta);
+          this.procesoFinalizado(nameProcedimiento);
+          this.tablasCompletas.tablaMstEmpresa = true;
+          this.emitDatosCargados();
         }
     );
   }
@@ -193,6 +214,35 @@ export class TraerDatosRemotosService {
     );
   }
 
+  private getCalidad(nameProcedimiento: string, etiqueta: string) {
+    this.listEmpresa = [];
+    this.informacionDelProceso(`Inicio de ${nameProcedimiento}`);
+    let calidadModel: CalidadModel = new CalidadModel();
+    this.examenFisicoPollitoService.getCalidad(calidadModel)
+    .subscribe(
+        result => {
+          this.createDataIndexDB( ConstantesTablasIDB._TABLA_MSTCALIDAD, result, etiqueta);
+          this.procesoFinalizado(nameProcedimiento);
+          this.tablasCompletas.tablaMstCalidad = true;
+          this.emitDatosCargados();
+        }
+    );
+  }
+
+  private getExamenFisicoPollitoDetalle(nameProcedimiento: string, etiqueta: string) {
+    this.listEmpresa = [];
+    this.informacionDelProceso(`Inicio de ${nameProcedimiento}`);
+    this.examenFisicoPollitoService.getTxExamenFisicoPollitoDetalleNew()
+    .subscribe(
+        result => {
+          this.createDataIndexDB( ConstantesTablasIDB._TABLA_TXEXAMENFISICOPOLLITO_DETALLE, result, etiqueta);
+          this.procesoFinalizado(nameProcedimiento);
+          this.tablasCompletas.tablaTrxExamenFisicoPollitoDetalle = true;
+          this.emitDatosCargados();
+        }
+    );
+  }
+
   emitDatosCargados() {
     let resultado = false;
     if (this.tablasCompletas.tablaMstEmpresa && this.tablasCompletas.tablaMstPlanta &&
@@ -200,7 +250,9 @@ export class TraerDatosRemotosService {
         this.tablasCompletas.tablaMstRequerimientoEquipo &&
         this.tablasCompletas.tablaMstEquipo &&
         this.tablasCompletas.tablaMstMantenimientoPorModelo &&
-        this.tablasCompletas.tablaMstRepuestoPorModelo
+        this.tablasCompletas.tablaMstRepuestoPorModelo &&
+        this.tablasCompletas.tablaMstCalidad &&
+        this.tablasCompletas.tablaTrxExamenFisicoPollitoDetalle
         ){
       resultado = true;
       console.log('FIN DE LA SINCRONIZACION DE RECEPCION:', this.formatoFecha.transform(new Date(), 'dd/MM/yyyy HH:mm:ss'));

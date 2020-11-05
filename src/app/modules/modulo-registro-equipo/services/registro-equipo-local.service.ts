@@ -31,7 +31,7 @@ export class RegistroEquipoLocalService implements OnDestroy {
   }
 
   getModeloLocal() {
-    return this.dbService.getAll('mstModelo');
+    return this.dbService.getAll(ConstantesTablasIDB._TABLA_MSTMODELO);
   }
 
   getTxRegistroEquipoNewItem(codigoEmpresa: string, codigoPlanta: string, codigoModelo: string) {
@@ -44,15 +44,15 @@ export class RegistroEquipoLocalService implements OnDestroy {
 
     let item: IObservableLocal;
     let list: IObservableLocal[] = [];
-    item = { observable: this.dbService.getAll('mstEquipo'), nombreTabla: 'equipo' };
+    item = { observable: this.dbService.getAll(ConstantesTablasIDB._TABLA_MSTEQUIPO), nombreTabla: 'equipo' };
     list.push(item);
-    item = { observable: this.dbService.getAll('mstMantenimientoPorModelo'), nombreTabla: 'mantenimiento' };
+    item = { observable: this.dbService.getAll(ConstantesTablasIDB._TABLA_MSTMANTENIMIENTOPORMODELO), nombreTabla: 'mantenimiento' };
     list.push(item);
-    item = { observable: this.dbService.getAll('mstRepuestoPorModelo'), nombreTabla: 'repuesto' };
+    item = { observable: this.dbService.getAll(ConstantesTablasIDB._TABLA_MSTREPUESTOPORMODELO), nombreTabla: 'repuesto' };
     list.push(item);
-    item = { observable: this.dbService.getAll('mstCondicionLimpieza'), nombreTabla: 'limpieza' };
+    item = { observable: this.dbService.getAll(ConstantesTablasIDB._TABLA_MSTCONDICIONLIMPIEZA), nombreTabla: 'limpieza' };
     list.push(item);
-    item = { observable: this.dbService.getAll('mstRequerimientoEquipo'), nombreTabla: 'requerimiento' };
+    item = { observable: this.dbService.getAll(ConstantesTablasIDB._TABLA_MSTREQUERIMIENTOEQUIPO), nombreTabla: 'requerimiento' };
     list.push(item);
 
     return from(list)

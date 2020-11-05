@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GlobalsConstants } from '../../../../modulo-compartido/models/globals-constants';
 import { SelectItem } from 'primeng';
-import { EmpresaModel } from '../../../../modulo-compartido/models/empresa.model';
 import { PlantaModel } from '../../../../modulo-compartido/models/planta.model';
 import { ModeloModel } from '../../../../modulo-compartido/models/modelo.model';
 import { MensajePrimeNgService } from '../../../../modulo-compartido/services/mensaje-prime-ng.service';
@@ -10,10 +9,11 @@ import { TxRegistroEquipoDetalle5Model } from '../../../models/tx-registro-equip
 import { TxRegistroEquipoDetalle6Model } from '../../../models/tx-registro-equipo-detalle6.model';
 import { BreadcrumbService } from '../../../../../services/breadcrumb.service';
 import { Subscription } from 'rxjs';
-import { FunctionDBLocalService } from '../../../../modulo-base-datos-local/services/function-dblocal.service';
 import { Router } from '@angular/router';
 import { CompartidoService } from '../../../../modulo-compartido/services/compartido.service';
 import { RegistroEquipoService } from '../../../services/registro-equipo.service';
+import { SeguridadService } from '../../../../modulo-seguridad/services/seguridad.service';
+import { EmpresaPorUsuarioModel } from '../../../../modulo-seguridad/models/empresa-por-usuario';
 
 @Component({
   selector: 'app-registro-equipo-create',
@@ -44,7 +44,6 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
   selectedPlanta: any;
   selectedModelo: any;
 
-  modeloEmpresa: EmpresaModel = new EmpresaModel();
   modeloPlanta: PlantaModel = new PlantaModel();
   modeloModelo: ModeloModel = new ModeloModel();
 
@@ -74,6 +73,7 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
               private compartidoService: CompartidoService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService,
+              private seguridadService: SeguridadService,
               private router: Router) {
                 this.breadcrumbService.setItems([
                     { label: 'Modulo' },
@@ -128,11 +128,11 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
   // Obtiene las empresas de forma local
   getToObtieneEmpresa() {
     this.subscription$ = new Subscription();
-    this.subscription$ = this.compartidoService.getEmpresa()
-    .subscribe((data: EmpresaModel[]) => {
+    this.subscription$ = this.seguridadService.getEmpresaConAccesoPorUsuario()
+    .subscribe((data: EmpresaPorUsuarioModel[]) => {
       this.listItemEmpresa = [];
       for (let item of data) {
-        this.listItemEmpresa.push({ label: item.descripcion, value: item.codigoEmpresa });
+        this.listItemEmpresa.push({ label: item.descripcionEmpresa, value: item.codigoEmpresa });
       }
       });
   }

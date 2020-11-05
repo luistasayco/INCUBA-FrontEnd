@@ -26,7 +26,9 @@ export class TxExamenFisicoPollitoModel {
     listDetalleNew: TxExamenFisicoPollitoDetalleModelNew[];
     listDetalleFotos: TxExamenFisicoPollitoDetalleFotosModel[];
     listDetalleResumen: TxExamenFisicoPollitoResumenModel[];
-
+    usuarioCreacion: string;
+    flgMigrado: boolean;
+    flgEnModificacion: boolean;
     // Auditoria
     regUsuario?: number;
     regEstacion?: string;
@@ -55,6 +57,9 @@ export class TxExamenFisicoPollitoModel {
         this.listDetalleFotos = [];
         this.listDetalleResumen = [];
         this.uniformidad = 0;
+        this.usuarioCreacion = '';
+        this.flgMigrado = false;
+        this.flgEnModificacion = false;
         this.regUsuario = 0;
         this.regEstacion = '';
     }

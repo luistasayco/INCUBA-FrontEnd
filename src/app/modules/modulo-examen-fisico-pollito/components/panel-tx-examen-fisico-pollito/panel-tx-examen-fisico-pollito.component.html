@@ -41,7 +41,7 @@
                     <th *ngFor="let col of columns">
                         {{col.header}}
                     </th>
-                    <th colspan="4">Acciones</th>
+                    <th colspan="3">Acciones</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns">
@@ -65,8 +65,7 @@
                         <span class="ui-column-title">Usuario</span> {{rowData.usuarioCreacion}}
                     </td>
                     <td class="action-td">
-                        <button [disabled]="buttonAcces.btnEditar" *ngIf="!rowData.flgCerrado" pButton icon="{{globalConstants.icoEditar}}" (click)="onToUpdate(rowData)"></button>
-                        <button [disabled]="buttonAcces.btnEditar" *ngIf="rowData.flgCerrado" pButton icon="{{globalConstants.icoVisualizar}}" (click)="onToUpdate(rowData)"></button>
+                        <button [disabled]="buttonAcces.btnEditar" pButton icon="{{globalConstants.icoEditar}}" (click)="onToUpdate(rowData)"></button>
                     </td>
                     <td class="action-td">
                         <button [disabled]="buttonAcces.btnEliminar" pButton icon="{{globalConstants.icoEliminar}}" (click)="onConfirmEliminar(rowData)" class="ui-button-danger"></button>

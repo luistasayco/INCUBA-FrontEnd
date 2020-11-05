@@ -284,6 +284,7 @@ export class RegistroEquipoService {
     parametros = parametros.append('fecRegistroInicio', this.utils.fecha_AAAAMMDD(value.fecRegistroInicio));
     parametros = parametros.append('fecRegistroFin', this.utils.fecha_AAAAMMDD(value.fecRegistroFin));
     parametros = parametros.append('idRegistroEquipo', value.idRegistroEquipo.toString());
+    parametros = parametros.append('regUsuario', this.userContextService.getIdUsuario().toString());
 
     return this.http.get<TxRegistroEquipoModel[]>
     (`${environment.url_api}TxRegistroEquipo/GetAll/`, { params: parametros });

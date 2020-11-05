@@ -1,26 +1,27 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GlobalsConstants } from '../../../../modulo-compartido/models/globals-constants';
+import { SelectItem } from 'primeng';
+import { TxExamenFisicoPollitoModel } from '../../../models/tx-examen-fisico-pollito';
+import { EmpresaModel } from '../../../../modulo-compartido/models/empresa.model';
+import { CalidadModel } from '../../../models/calidad.model';
+import { ProcesoModel } from '../../../models/proceso.model';
+import { ProcesoDetalleModel } from '../../../models/proceso-detalle.model';
+import { TxExamenFisicoPollitoDetalleModel } from '../../../models/tx-examen-fisico-pollito-detalle';
+import { Subscription } from 'rxjs';
 import { MensajePrimeNgService } from '../../../../modulo-compartido/services/mensaje-prime-ng.service';
 import { BreadcrumbService } from '../../../../../services/breadcrumb.service';
-import { TxExamenFisicoPollitoModel } from '../../../models/tx-examen-fisico-pollito';
-import { ExamenFisicoPollitoService } from '../../../services/examen-fisico-pollito.service';
-import { ProcesoDetalleModel } from '../../../models/proceso-detalle.model';
-import { ProcesoModel } from '../../../models/proceso.model';
-import { TxExamenFisicoPollitoDetalleModel } from '../../../models/tx-examen-fisico-pollito-detalle';
-import { CompartidoService } from '../../../../modulo-compartido/services/compartido.service';
-import { EmpresaModel } from '../../../../modulo-compartido/models/empresa.model';
-import { SelectItem } from 'primeng';
-
-import { CalidadModel } from '../../../models/calidad.model';
+import { ExamenFisicoPollitoLocalService } from '../../../services/examen-fisico-pollito-local.service';
+import { CompartidoLocalService } from 'src/app/modules/modulo-compartido/services/compartido-local.service';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { TxExamenFisicoPollitoDetalleModelNew } from '../../../models/tx-examen-fisico-pollito-detalle-new';
+import { UtilService } from '../../../../modulo-compartido/services/util.service';
 
 @Component({
-  selector: 'app-tx-examen-fisico-pollito-create',
-  templateUrl: './tx-examen-fisico-pollito-create.component.html',
-  styleUrls: ['./tx-examen-fisico-pollito-create.component.css']
+  selector: 'app-tx-examen-fisico-pollito-offline-create',
+  templateUrl: './tx-examen-fisico-pollito-offline-create.component.html',
+  styleUrls: ['./tx-examen-fisico-pollito-offline-create.component.css']
 })
-export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
+export class TxExamenFisicoPollitoOfflineCreateComponent implements OnInit, OnDestroy {
 
   titulo = 'Examen Fisico';
   value: boolean;
@@ -50,15 +51,16 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
 
   constructor(public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService,
-              private examenFisicoPollitoService: ExamenFisicoPollitoService,
-              private compartidoService: CompartidoService,
-              private router: Router) {
+              private examenFisicoPollitoLocalService: ExamenFisicoPollitoLocalService,
+              private compartidoLocalService: CompartidoLocalService,
+              private router: Router,
+              private utilService: UtilService) {
                 this.breadcrumbService.setItems([
                   { label: 'Modulo' },
-                  { label: 'Examen Fisico del Pollito', routerLink: ['module-ef/panel-tx-examen-fisico-pollito'] },
-                  { label: 'Nuevo Examen Fisico'}
+                  { label: 'Examen Fisico del Pollito Offline', routerLink: ['module-ef/panel-tx-examen-fisico-pollito-offline'] },
+                  { label: 'Nuevo Examen Fisico Offline'}
               ]);
-              }
+  }
 
   ngOnInit(): void {
     this.listCalidad = [];
@@ -71,13 +73,13 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
     this.getToObtieneSexo();
 
     this.subscription$ = new Subscription();
-    this.subscription$ = this.examenFisicoPollitoService.getTxExamenFisicoPollitoPorIdNew()
-    .subscribe((data: TxExamenFisicoPollitoModel) => {
-      this.modeloItem = data;
+    this.subscription$ = this.examenFisicoPollitoLocalService.getExamenFisicoPollitoDetalleNew()
+    .subscribe((data: TxExamenFisicoPollitoDetalleModelNew[]) => {
+      this.modeloItem.listDetalleNew = data;
     });
 
     this.subscription$ = new Subscription();
-    this.subscription$ = this.examenFisicoPollitoService.getCalidad(this.modeloCalidad)
+    this.subscription$ = this.examenFisicoPollitoLocalService.getCalidad()
     .subscribe((data: CalidadModel[]) => {
       this.listCalidad = data;
     });
@@ -91,7 +93,7 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
 
   getToObtieneEmpresa() {
     this.subscription$ = new Subscription();
-    this.subscription$ = this.compartidoService.getEmpresa(this.modeloEmpresa)
+    this.subscription$ = this.compartidoLocalService.getEmpresa()
     .subscribe((data: EmpresaModel[]) => {
       this.listItemEmpresa = [];
       for (let item of data) {
@@ -108,6 +110,7 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
     ];
   }
 
+  
   onCalcular() {
     this.modeloItem.calificacion = this.onCalcularCalificacion();
     let uniformidad = this.onCalcularPesoPromedio();
@@ -179,7 +182,6 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
         countUniformidad += 1;
       }
     });
-
     return countUniformidad;
   }
 
@@ -201,6 +203,7 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
       return;
     }
     this.modeloItem.codigoEmpresa = this.selectEmpresa.value;
+    this.modeloItem.descripcionEmpresa = this.selectEmpresa.label;
     if (!this.modeloItem.unidadPlanta) {
       this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Ingresar Unidad - Planta');
       return;
@@ -242,26 +245,29 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
       this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Ingresar Responsable Planta');
       return;
     }
-
     this.modeloItem.idExamenFisico = 0;
-
+    this.modeloItem.fecHoraRegistro = new Date();
+    this.modeloItem.fecRegistro = this.utilService.fechaApi_POST();
+    this.modeloItem.flgMigrado = false;
+    this.modeloItem.flgEnModificacion = false;
     this.modeloItem.listDetalleNew
     .map(x => {
       x.valor = Number(x.valor);
     });
-    console.log('modeloItem', this.modeloItem);
     this.subscription$ = new Subscription();
-    this.subscription$ = this.examenFisicoPollitoService.setInsertExamenFisicoPollito(this.modeloItem)
+    this.subscription$ = this.examenFisicoPollitoLocalService.setInsertTxExamenFisicoPollito(this.modeloItem)
     .subscribe(() =>  {
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
       this.onBack();
     },
       (error) => {
+        console.log(error);
         this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, error);
     });
   }
 
   onBack() {
-    this.router.navigate(['/main/module-ef/panel-tx-examen-fisico-pollito']);
+    this.router.navigate(['/main/module-ef/panel-tx-examen-fisico-pollito-offline']);
   }
+
 }

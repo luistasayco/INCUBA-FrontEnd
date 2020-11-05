@@ -46,6 +46,27 @@ export class IndiceCrear {
                 nombreIndice: 'idxnombreFormulario', campoIndice: 'nombreFormulario', unico: false  };
         }
 
+        if ( version === 6 ) {
+            indice = { tabla: ConstantesTablasIDB._TABLA_TXEXAMENFISICOPOLLITO,
+                nombreIndice: 'idxidExamenFisico', campoIndice: 'idExamenFisico', unico: false  };
+            indice = { tabla: ConstantesTablasIDB._TABLA_SEGMENU,
+                nombreIndice: 'idxcodigoEmpresa', campoIndice: 'codigoEmpresa', unico: false  };
+        }
+
+        if ( version === 7 ) {
+            indice = { tabla: ConstantesTablasIDB._TABLA_MSTCALIDAD,
+                nombreIndice: 'idxidCalidad', campoIndice: 'idCalidad', unico: true  };
+            indice = { tabla: ConstantesTablasIDB._TABLA_SEGMENU,
+                nombreIndice: 'idxdescripcion', campoIndice: 'descripcion', unico: false  };
+        }
+
+        if ( version === 8 ) {
+            indice = { tabla: ConstantesTablasIDB._TABLA_TXEXAMENFISICOPOLLITO_DETALLE,
+                nombreIndice: 'idxnumeroPollitos', campoIndice: 'numeroPollitos', unico: false  };
+            indice = { tabla: ConstantesTablasIDB._TABLA_SEGMENU,
+                nombreIndice: 'idxidProceso', campoIndice: 'idProceso', unico: false  };
+        }
+
         return this.indices;
     }
 }

@@ -1,4 +1,5 @@
 import { UsuarioModel } from './usuario.model';
+import { EmpresaPorUsuarioModel } from './empresa-por-usuario';
 export class PersonaModel {
     idPersona?: number;
     nombre: string;
@@ -10,6 +11,7 @@ export class PersonaModel {
     nroTelefono?: string;
     flgActivo?: boolean;
     entidadUsuario?: UsuarioModel;
+    listEmpresaPorUsuario?: EmpresaPorUsuarioModel[];
 
     // Auditoria
     regUsuario?: number;
@@ -25,6 +27,7 @@ export class PersonaModel {
         this.nroDocumento = '';
         this.nroTelefono = '';
         this.flgActivo = true;
+        this.listEmpresaPorUsuario = [];
         this.regUsuario = 0;
         this.regEstacion = '';
     }

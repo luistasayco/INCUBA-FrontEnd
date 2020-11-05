@@ -11,6 +11,7 @@ import { SelectItem } from 'primeng';
 import { PerfilModel } from '../../../models/pefil.model';
 import { UsuarioModel } from '../../../models/usuario.model';
 import { Subscription } from 'rxjs';
+import { EmpresaPorUsuarioModel } from '../../../models/empresa-por-usuario';
 
 @Component({
   selector: 'app-persona-create',
@@ -38,6 +39,9 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
   sellersPermitString: string;
   sellersPermitFile;
 
+  listEmpresaPorSeleccionado: EmpresaPorUsuarioModel[];
+  listEmpresaSeleccionado: EmpresaPorUsuarioModel[];
+
   subscription: Subscription;
 
   constructor(private fb: FormBuilder,
@@ -54,12 +58,14 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
               }
 
   ngOnInit() {
-
+    this.listEmpresaPorSeleccionado = [];
+    this.listEmpresaSeleccionado = [];
     this.themes = [
       {label: 'green'}
     ];
 
     this.getToObtienePerfil();
+    this.getEmpresaSinAccesoPorUsuario();
 
     this.modeloForm = this.fb.group(
       {
@@ -92,6 +98,15 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
       for (let item of data) {
         this.listItemPerfil.push({ label: item.descripcionPerfil, value: item.idPerfil });
       }
+    });
+  }
+
+  getEmpresaSinAccesoPorUsuario() {
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.getEmpresaSinAccesoPorUsuario(0)
+    .subscribe((data: EmpresaPorUsuarioModel[]) => {
+      this.listEmpresaPorSeleccionado = [];
+      this.listEmpresaPorSeleccionado = data;
     });
   }
 
@@ -135,6 +150,7 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
   }
 
   onClickSave() {
+    this.modelo.listEmpresaPorUsuario = this.listEmpresaSeleccionado;
     this.modelo.apellidoPaterno = this.modeloForm.controls['apellidoPaterno'].value;
     this.modelo.apellidoMaterno = this.modeloForm.controls['apellidoMaterno'].value;
     this.modelo.nombre = this.modeloForm.controls['nombre'].value;

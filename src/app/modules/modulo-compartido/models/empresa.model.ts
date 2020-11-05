@@ -1,9 +1,9 @@
 export class EmpresaModel {
-    codigoEmpresa?: number;
+    codigoEmpresa?: string;
     descripcion: string;
 
     constructor(){
-        this.codigoEmpresa = 0;
+        this.codigoEmpresa = '';
         this.descripcion = '';
     }
 }

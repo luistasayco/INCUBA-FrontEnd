@@ -13,6 +13,9 @@ import { TxExamenFisicoPollitoCreateComponent } from './components/panel-tx-exam
 import { TxExamenFisicoPollitoUpdateComponent } from './components/panel-tx-examen-fisico-pollito/tx-examen-fisico-pollito-update/tx-examen-fisico-pollito-update.component';
 import { FirmaDigitalModule } from '../modulo-compartido/components/panel-firma-digital/panel-firma-digital.module';
 import { GaleriaImagenModule } from '../modulo-compartido/components/galeria-imagen/galeria-imagen.module';
+import { PanelTxExamenFisicoPollitoOfflineComponent } from './components/panel-tx-examen-fisico-pollito-offline/panel-tx-examen-fisico-pollito-offline.component';
+import { TxExamenFisicoPollitoOfflineCreateComponent } from './components/panel-tx-examen-fisico-pollito-offline/tx-examen-fisico-pollito-offline-create/tx-examen-fisico-pollito-offline-create.component';
+import { TxExamenFisicoPollitoOfflineUpdateComponent } from './components/panel-tx-examen-fisico-pollito-offline/tx-examen-fisico-pollito-offline-update/tx-examen-fisico-pollito-offline-update.component';
 
 @NgModule({
     declarations: [ PanelCalidadComponent,
@@ -22,7 +25,10 @@ import { GaleriaImagenModule } from '../modulo-compartido/components/galeria-ima
                     ProcesoDetalleCreateComponent,
                     PanelTxExamenFisicoPollitoComponent,
                     TxExamenFisicoPollitoCreateComponent,
-                    TxExamenFisicoPollitoUpdateComponent],
+                    TxExamenFisicoPollitoUpdateComponent,
+                    PanelTxExamenFisicoPollitoOfflineComponent,
+                    TxExamenFisicoPollitoOfflineCreateComponent,
+                    TxExamenFisicoPollitoOfflineUpdateComponent],
     imports: [ CommonModule,
         ExamenFisicoPollitoPrimeNgModule,
         ExamenFisicoPollitoRoutingModule,

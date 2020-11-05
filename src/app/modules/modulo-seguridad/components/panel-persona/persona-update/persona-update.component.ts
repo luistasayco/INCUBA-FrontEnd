@@ -10,6 +10,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { BreadcrumbService } from '../../../../../services/breadcrumb.service';
 import { LayoutComponent } from '../../../../../layout/layout.component';
 import { Subscription } from 'rxjs';
+import { EmpresaPorUsuarioModel } from '../../../models/empresa-por-usuario';
 
 @Component({
   selector: 'app-persona-update',
@@ -38,6 +39,9 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
   // Imagen
   sellersPermitString: string;
   sellersPermitFile;
+
+  listEmpresaPorSeleccionado: EmpresaPorUsuarioModel[];
+  listEmpresaSeleccionado: EmpresaPorUsuarioModel[];
 
   subscription: Subscription;
 
@@ -115,6 +119,12 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
       this.modeloForm.controls['dark'].setValue(this.modelo.entidadUsuario.themeDark);
       this.modeloForm.controls['menu'].setValue(this.modelo.entidadUsuario.typeMenu);
       this.modeloForm.controls['theme'].setValue(this.modelo.entidadUsuario.themeColor);
+      if (this.modelo.listEmpresaPorUsuario) {
+        this.listEmpresaSeleccionado = this.modelo.listEmpresaPorUsuario;
+      } else {
+        this.listEmpresaSeleccionado = [];
+      }
+      this.getEmpresaSinAccesoPorUsuario();
     });
   }
 
@@ -129,6 +139,14 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
     });
   }
 
+  getEmpresaSinAccesoPorUsuario() {
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.getEmpresaSinAccesoPorUsuario(this.modelo.entidadUsuario.idUsuario)
+    .subscribe((data: EmpresaPorUsuarioModel[]) => {
+      this.listEmpresaPorSeleccionado = [];
+      this.listEmpresaPorSeleccionado = data;
+    });
+  }
 
   onBasicUpload(event: any) {
     let fileList: FileList = event.files;
@@ -170,6 +188,7 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
   }
 
   onClickSave() {
+    this.modelo.listEmpresaPorUsuario = this.listEmpresaSeleccionado;
     this.modelo.apellidoPaterno = this.modeloForm.controls['apellidoPaterno'].value;
     this.modelo.apellidoMaterno = this.modeloForm.controls['apellidoMaterno'].value;
     this.modelo.nombre = this.modeloForm.controls['nombre'].value;

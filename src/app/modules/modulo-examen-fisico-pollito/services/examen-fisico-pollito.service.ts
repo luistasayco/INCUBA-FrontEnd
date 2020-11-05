@@ -8,6 +8,7 @@ import { UserContextService } from '../../../services/user-context.service';
 import { variableGlobal } from '../../../interface/variable-global.interface';
 import { UtilService } from '../../modulo-compartido/services/util.service';
 import { TxExamenFisicoPollitoModel } from '../models/tx-examen-fisico-pollito';
+import { TxExamenFisicoPollitoDetalleModelNew } from '../models/tx-examen-fisico-pollito-detalle-new';
 
 @Injectable({
   providedIn: 'root'
@@ -155,6 +156,7 @@ export class ExamenFisicoPollitoService {
     parametros = parametros.append('codigoEmpresa', codigoEmpresa);
     parametros = parametros.append('fecRegistroInicio', this.utils.fecha_AAAAMMDD(fecInicio));
     parametros = parametros.append('fecRegistroFin', this.utils.fecha_AAAAMMDD(fecFin));
+    parametros = parametros.append('regUsuario', this.userContextService.getIdUsuario().toString());
     return this.http.get<TxExamenFisicoPollitoModel[]>
     (`${environment.url_api}TxExamenFisicoPollito/GetAll/`, { params: parametros });
   }
@@ -167,6 +169,11 @@ export class ExamenFisicoPollitoService {
   getTxExamenFisicoPollitoPorIdNew() {
     return this.http.get<TxExamenFisicoPollitoModel>
     (`${environment.url_api}TxExamenFisicoPollito/GetByIdTxExamenFisicoPollitoNew`);
+  }
+
+  getTxExamenFisicoPollitoDetalleNew() {
+    return this.http.get<TxExamenFisicoPollitoDetalleModelNew>
+    (`${environment.url_api}TxExamenFisicoPollito/GetByDetalleNew`);
   }
 
   setInsertExamenFisicoPollito(value: TxExamenFisicoPollitoModel) {

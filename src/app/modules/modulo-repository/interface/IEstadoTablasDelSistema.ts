@@ -7,4 +7,6 @@ export interface IEstadoTablasDelSistema {
     tablaMstEquipo: boolean;
     tablaMstMantenimientoPorModelo: boolean;
     tablaMstRepuestoPorModelo: boolean;
+    tablaMstCalidad: boolean;
+    tablaTrxExamenFisicoPollitoDetalle: boolean;
   }
