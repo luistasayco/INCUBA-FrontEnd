@@ -39,7 +39,7 @@ export class ProcesoDetalleCreateComponent implements OnInit, OnDestroy {
     this.maestroForm = this.fb.group(
       {
         'descripcion' : new FormControl('', Validators.compose([Validators.required, Validators.maxLength(100), Validators.minLength(4)])),
-        'factor' : new FormControl('', Validators.compose([Validators.required, Validators.max(100), Validators.min(0)])),
+        'flgDefault' : new FormControl(false, Validators.compose([Validators.required])),
         'orden' : new FormControl('', Validators.compose([Validators.required, Validators.max(1000), Validators.min(0)])),
       }
     );
@@ -47,7 +47,7 @@ export class ProcesoDetalleCreateComponent implements OnInit, OnDestroy {
 
   onClickSave() {
     this.modelo.descripcionProcesoDetalle = this.maestroForm.controls['descripcion'].value;
-    this.modelo.factor = this.maestroForm.controls['factor'].value;
+    this.modelo.flgDefault = this.maestroForm.controls['flgDefault'].value;
     this.modelo.orden = this.maestroForm.controls['orden'].value;
     this.subscription = new Subscription();
     this.subscription = this.examenFisicoPollitoService.setInsertProcesoDetalle(this.modelo)

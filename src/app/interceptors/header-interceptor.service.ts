@@ -40,19 +40,30 @@ export class HeaderInterceptorService {
     const user = this.userContextService.user$.getValue();
 
     console.log('user', user);
+    console.log('req', req.reportProgress);
 
     if (user) {
       const TOKEN = localStorage.getItem('token');
-
-      updateReq = req.clone(
-        {
-          headers: new HttpHeaders({
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${TOKEN}`,
-            'dbName': this._DATABASESELECCIONADA
-          })
-        }
-      );
+      if (req.reportProgress) {
+        updateReq = req.clone(
+          {
+            headers: new HttpHeaders({
+              'Authorization': `Bearer ${TOKEN}`,
+              'dbName': this._DATABASESELECCIONADA
+            })
+          }
+        );
+      } else {
+        updateReq = req.clone(
+          {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${TOKEN}`,
+              'dbName': this._DATABASESELECCIONADA
+            })
+          }
+        );
+      }
     } else {
       if ( this._FLGDATABASESELECCIONADA ) {
         updateReq = req.clone(

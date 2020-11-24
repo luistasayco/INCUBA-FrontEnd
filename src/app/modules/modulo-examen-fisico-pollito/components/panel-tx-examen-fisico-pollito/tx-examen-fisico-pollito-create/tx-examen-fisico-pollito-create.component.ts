@@ -14,6 +14,9 @@ import { SelectItem } from 'primeng';
 import { CalidadModel } from '../../../models/calidad.model';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { SeguridadService } from '../../../../modulo-seguridad/services/seguridad.service';
+import { EmpresaPorUsuarioModel } from '../../../../modulo-seguridad/models/empresa-por-usuario';
+import { UserContextService } from '../../../../../services/user-context.service';
 
 @Component({
   selector: 'app-tx-examen-fisico-pollito-create',
@@ -51,8 +54,9 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
   constructor(public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService,
               private examenFisicoPollitoService: ExamenFisicoPollitoService,
-              private compartidoService: CompartidoService,
-              private router: Router) {
+              private router: Router,
+              private seguridadService: SeguridadService,
+              private userContextService: UserContextService) {
                 this.breadcrumbService.setItems([
                   { label: 'Modulo' },
                   { label: 'Examen Fisico del Pollito', routerLink: ['module-ef/panel-tx-examen-fisico-pollito'] },
@@ -74,6 +78,7 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
     this.subscription$ = this.examenFisicoPollitoService.getTxExamenFisicoPollitoPorIdNew()
     .subscribe((data: TxExamenFisicoPollitoModel) => {
       this.modeloItem = data;
+      this.modeloItem.responsableInvetsa = this.userContextService.getNombreCompletoUsuario();
     });
 
     this.subscription$ = new Subscription();
@@ -91,11 +96,11 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
 
   getToObtieneEmpresa() {
     this.subscription$ = new Subscription();
-    this.subscription$ = this.compartidoService.getEmpresa(this.modeloEmpresa)
-    .subscribe((data: EmpresaModel[]) => {
+    this.subscription$ = this.seguridadService.getEmpresaConAccesoPorUsuario()
+    .subscribe((data: EmpresaPorUsuarioModel[]) => {
       this.listItemEmpresa = [];
       for (let item of data) {
-        this.listItemEmpresa.push({ label: item.descripcion, value: item.codigoEmpresa });
+        this.listItemEmpresa.push({ label: item.descripcionEmpresa, value: item.codigoEmpresa });
       }
       });
   }
@@ -151,7 +156,7 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
       sumaTotal += final.obtenido;
     });
     sumaTotalFinal = sumaTotal / 10;
-    return sumaTotalFinal;
+    return parseInt(sumaTotalFinal.toFixed(2));
   }
 
   onCalcularPesoPromedio(): number {
@@ -163,7 +168,9 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
         pesoPromedio = pesoPromedio + x.valor;
     });
 
-    return pesoPromedio / 100;
+    let peso = pesoPromedio / 100;
+
+    return parseInt(peso.toFixed(2));
   }
 
   onCalcularUniformidad(pesoPromedio: number): number {
@@ -180,7 +187,7 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
       }
     });
 
-    return countUniformidad;
+    return parseInt(countUniformidad.toFixed(2));
   }
 
   listUpdate(event: any[]) {

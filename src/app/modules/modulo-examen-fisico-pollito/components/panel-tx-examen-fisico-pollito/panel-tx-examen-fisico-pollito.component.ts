@@ -47,6 +47,11 @@ export class PanelTxExamenFisicoPollitoComponent implements OnInit, OnDestroy {
 
   subscription$: Subscription;
 
+  // Variables para eliminar
+  displayDatosCierre: boolean;
+
+  modeloDatosCierre: TxExamenFisicoPollitoModel = new TxExamenFisicoPollitoModel();
+
   constructor(private breadcrumbService: BreadcrumbService,
               private sessionService: SessionService,
               private menuDinamicoService: MenuDinamicoService,
@@ -92,6 +97,7 @@ export class PanelTxExamenFisicoPollitoComponent implements OnInit, OnDestroy {
       if (this.sessionService.getItemDecrypt('filter-ef-selectedEmpresa') !== 'null') {
         this.selectedEmpresa = this.sessionService.getItemDecrypt('filter-ef-selectedEmpresa');
       }
+      this.onListar();
     }
 
     this.columnas = [
@@ -147,7 +153,51 @@ export class PanelTxExamenFisicoPollitoComponent implements OnInit, OnDestroy {
     );
   }
 
-  onConfirmEliminar(data: any) {
+  onConfirmCerrar(data: TxExamenFisicoPollitoModel) {
+
+    if (data.flgCerrado) {
+      this.mensajePrimeNgService.onToInfoMsg(null, 'Registro seleccionado se encuentra CERRADO!!!');
+      return;
+    }
+
+    this.confirmationService.confirm({
+        message: this.globalConstants.subTitleCierre,
+        header: this.globalConstants.titleCierre,
+        icon: 'pi pi-info-circle',
+        acceptLabel: 'Si',
+        rejectLabel: 'No',
+        accept: () => {
+          this.onToCerrar(data);
+        },
+        reject: () => {
+          this.mensajePrimeNgService.onToCancelMsg(this.globalConstants.msgCancelSummary, this.globalConstants.msgCancelDetail);
+        }
+    });
+  }
+
+  onToCerrar(data: TxExamenFisicoPollitoModel) {
+    this.subscription$ = new Subscription();
+    data.flgCerrado = true;
+    this.subscription$ = this.examenFisicoPollitoService.setUpdateStatusTxExamenFisicoPollito(data)
+    .subscribe((resp: IMensajeResultadoApi) => {
+        this.listModelo.find(x => x.idExamenFisico === data.idExamenFisico).flgCerrado = true;
+        this.listModelo.find(x => x.idExamenFisico === data.idExamenFisico).fecCierre = new Date();
+        this.listModelo
+        .find(x => x.idExamenFisico === data.idExamenFisico)
+        .usuarioCierre = this.sessionService.getItemDecrypt('usuario');
+
+        this.mensajePrimeNgService.onToExitoMsg(null, resp);
+      },
+      (error) => {
+        this.listModelo.find(x => x.idExamenFisico === data.idExamenFisico).flgCerrado = false;
+        this.listModelo.find(x => x.idExamenFisico === data.idExamenFisico).fecCierre = null;
+        this.listModelo.find(x => x.idExamenFisico === data.idExamenFisico).usuarioCierre = '';
+        this.mensajePrimeNgService.onToErrorMsg(null, error);
+      }
+    );
+  }
+
+  onConfirmEliminar(data: TxExamenFisicoPollitoModel) {
     if (data.flgCerrado) {
       this.mensajePrimeNgService.onToInfoMsg(null, 'Registro seleccionado se encuentra CERRADO!!!');
       return;
@@ -201,5 +251,10 @@ export class PanelTxExamenFisicoPollitoComponent implements OnInit, OnDestroy {
 
   onToUpdate(data: TxExamenFisicoPollitoModel) {
     this.router.navigate(['/main/module-ef/update-tx-examen-fisico-pollito', data.idExamenFisico]);
+  }
+
+  onDatosCierre(data: TxExamenFisicoPollitoModel) {
+    this.displayDatosCierre = true;
+    this.modeloDatosCierre = data;
   }
 }

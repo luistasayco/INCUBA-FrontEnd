@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { LanguageService } from '../../../../services/language.service';
 import { SeguridadService } from '../../../modulo-seguridad/services/seguridad.service';
 import { IMensajeResultadoApi } from '../../../modulo-compartido/models/mensaje-resultado-api';
+import { UserContextService } from '../../../../services/user-context.service';
 
 @Component({
   selector: 'app-panel-tx-examen-fisico-pollito-offline',
@@ -36,6 +37,13 @@ export class PanelTxExamenFisicoPollitoOfflineComponent implements OnInit, OnDes
 
   subscription$: Subscription;
 
+  // Variables para eliminar
+  displayDatosCierre: boolean;
+
+  modeloDatosCierre: TxExamenFisicoPollitoModel = new TxExamenFisicoPollitoModel();
+
+  interval;
+
   constructor(private breadcrumbService: BreadcrumbService,
               private sessionService: SessionService,
               private menuDinamicoService: MenuDinamicoService,
@@ -44,7 +52,7 @@ export class PanelTxExamenFisicoPollitoOfflineComponent implements OnInit, OnDes
               private confirmationService: ConfirmationService,
               private router: Router,
               public lenguageService: LanguageService,
-              private seguridadService: SeguridadService) {
+              public userContextService: UserContextService) {
     this.breadcrumbService.setItems([
     { label: 'Modulo' },
     { label: 'Examen Fisico del Pollito Offline', routerLink: ['module-ef/panel-tx-examen-fisico-pollito-offline'] }
@@ -73,6 +81,7 @@ export class PanelTxExamenFisicoPollitoOfflineComponent implements OnInit, OnDes
   }
 
   ngOnDestroy(): void {
+    clearInterval(this.interval);
     if (this.subscription$) {
       this.subscription$.unsubscribe();
     }
@@ -83,8 +92,9 @@ export class PanelTxExamenFisicoPollitoOfflineComponent implements OnInit, OnDes
     this.subscription$ = this.examenFisicoPollitoLocalService.getExamenFisicoPollito()
     .subscribe(resp => {
       if (resp) {
-        console.log(resp);
-        this.listModelo = resp;
+        let filterData = [...resp].filter(x => x.flgMigrado === false);
+        this.listModelo = filterData;
+        // this.listModelo = resp;
         }
       },
       (error) => {
@@ -93,7 +103,54 @@ export class PanelTxExamenFisicoPollitoOfflineComponent implements OnInit, OnDes
     );
   }
 
+  onConfirmCerrar(data: TxExamenFisicoPollitoModel) {
+
+    if (data.flgCerrado) {
+      this.mensajePrimeNgService.onToInfoMsg(null, 'Registro seleccionado se encuentra CERRADO!!!');
+      return;
+    }
+
+    this.confirmationService.confirm({
+        message: this.globalConstants.subTitleCierre,
+        header: this.globalConstants.titleCierre,
+        icon: 'pi pi-info-circle',
+        acceptLabel: 'Si',
+        rejectLabel: 'No',
+        accept: () => {
+          this.onToCerrar(data);
+        },
+        reject: () => {
+          this.mensajePrimeNgService.onToCancelMsg(this.globalConstants.msgCancelSummary, this.globalConstants.msgCancelDetail);
+        }
+    });
+  }
+
+  onToCerrar(data: any) {
+    this.subscription$ = new Subscription();
+    data.flgCerrado = true;
+    data.fecCierre = new Date();
+    data.idUsuarioCierre = this.userContextService.getIdUsuario();
+    data.usuarioCierre = this.sessionService.getItemDecrypt('usuario');
+    this.subscription$ = this.examenFisicoPollitoLocalService.setUpdateTxExamenFisicoPollito(data)
+    .subscribe(resp => {
+        if (resp) {
+          this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
+        }
+      },
+      (error) => {
+        this.listModelo.find((x: any) => x.id === data.id).flgCerrado = false;
+        this.listModelo.find(x => x.idExamenFisico === data.idExamenFisico).fecCierre = null;
+        this.listModelo.find(x => x.idExamenFisico === data.idExamenFisico).usuarioCierre = '';
+        this.mensajePrimeNgService.onToErrorMsg(null, error);
+      }
+    );
+  }
+
   onConfirmEliminar(data: any) {
+    if (data.flgCerrado) {
+      this.mensajePrimeNgService.onToInfoMsg(null, 'Registro seleccionado se encuentra CERRADO!!!');
+      return;
+    }
     this.confirmationService.confirm({
         message: this.globalConstants.subTitleEliminar,
         header: this.globalConstants.titleEliminar,
@@ -143,5 +200,19 @@ export class PanelTxExamenFisicoPollitoOfflineComponent implements OnInit, OnDes
         this.mensajePrimeNgService.onToErrorMsg(null, error);
       }
     );
+  }
+
+  onDatosCierre(data: TxExamenFisicoPollitoModel) {
+    this.displayDatosCierre = true;
+    this.modeloDatosCierre = data;
+  }
+
+  onUpdateDataVistaUsuario() {
+    clearInterval(this.interval);
+
+    this.interval = setInterval(() => {
+    console.log('consulta data local');
+    this.onListar();
+    }, 60000);
   }
 }

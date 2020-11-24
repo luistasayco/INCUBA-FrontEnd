@@ -31,7 +31,6 @@ import { ModuloBaseDatosLocalModule } from './modules/modulo-base-datos-local/mo
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
-
 import { LoginModule } from './login/login.module';
 
 registerLocaleData(localePy, 'es');

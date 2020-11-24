@@ -14,6 +14,7 @@ import { CompartidoService } from '../../../../modulo-compartido/services/compar
 import { RegistroEquipoService } from '../../../services/registro-equipo.service';
 import { SeguridadService } from '../../../../modulo-seguridad/services/seguridad.service';
 import { EmpresaPorUsuarioModel } from '../../../../modulo-seguridad/models/empresa-por-usuario';
+import { UserContextService } from '../../../../../services/user-context.service';
 
 @Component({
   selector: 'app-registro-equipo-create',
@@ -74,7 +75,8 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
               public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService,
               private seguridadService: SeguridadService,
-              private router: Router) {
+              private router: Router,
+              private userContextService: UserContextService) {
                 this.breadcrumbService.setItems([
                     { label: 'Modulo' },
                     { label: 'Registro de Equipo', routerLink: ['module-re/panel-registro-equipo'] },
@@ -188,7 +190,7 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
       .subscribe(resp => {
         if (resp) {
           this.modeloItem  = resp;
-          console.log(this.modeloItem );
+          this.modeloItem.responsableIncuba = this.userContextService.getNombreCompletoUsuario();
           this.updateRowGroupMetaData();
           this.updateRowGroupMetaDataDetalle2();
           this.onLlenarRepuestoNoPredeterminado();

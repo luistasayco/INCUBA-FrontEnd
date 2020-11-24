@@ -18,6 +18,7 @@ import { Router } from '@angular/router';
 import { UtilService } from '../../../../modulo-compartido/services/util.service';
 import { SessionService } from '../../../../../services/session.service';
 import { ConstantesTablasIDB } from '../../../../../constants/constantes-tablas-indexdb';
+import { UserContextService } from '../../../../../services/user-context.service';
 
 @Component({
   selector: 'app-registro-equipo-create-off-line',
@@ -83,7 +84,8 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
               private functionDBLocalService: FunctionDBLocalService,
               private router: Router,
               private utilService: UtilService,
-              private sessionService: SessionService) {
+              private sessionService: SessionService,
+              private userContextService: UserContextService) {
                 this.breadcrumbService.setItems([
                     { label: 'Modulo' },
                     { label: 'Registro de Equipo (Offline)', routerLink: ['module-re/panel-registro-equipo-offline'] },
@@ -208,7 +210,7 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
       newRegistroEquipo.codigoModelo = codigoModelo;
       newRegistroEquipo.descripcionModelo = descripcionModelo;
       newRegistroEquipo.flgCerrado = false;
-
+      
       this.subscription$ = new Subscription();
       this.subscription$ = this.registroEquipoLocalService.getTxRegistroEquipoNewItem(codigoEmpresa, codigoPlanta, codigoModelo)
       .subscribe(resp => {
@@ -241,6 +243,7 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
             this.registroEquipoLocalService.setRequerimientoEquipo(resp);
 
             this.modeloItem  = newRegistroEquipo;
+            this.modeloItem.responsableIncuba = this.userContextService.getNombreCompletoUsuario();
             this.modeloItem.txRegistroEquipoDetalle7 = [];
             this.updateRowGroupMetaData();
             this.updateRowGroupMetaDataDetalle2();

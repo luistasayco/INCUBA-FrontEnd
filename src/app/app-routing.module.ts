@@ -24,6 +24,9 @@ const routes: Routes = [
       canActivate: [AuthGuard]},
       { path: 'module-si' , loadChildren:
       () => import('./modules/modulo-sincronizacion/modulo-sincronizacion.module').then(m => m.SincronizacionModule),
+      canActivate: [AuthGuard]},
+      { path: 'module-ex' , loadChildren:
+      () => import('./modules/modulo-extranet/modulo-extranet.module').then(m => m.ExtranetModule),
       canActivate: [AuthGuard]}
     ]
   },

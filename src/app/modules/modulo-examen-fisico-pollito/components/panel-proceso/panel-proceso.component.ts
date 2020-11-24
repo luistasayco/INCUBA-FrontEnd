@@ -78,7 +78,7 @@ export class PanelProcesoComponent implements OnInit, OnDestroy {
     this.columnasDetalle = [
       { header: 'Codigo' },
       { header: 'Descripcion' },
-      { header: 'Factor' },
+      { header: 'Default' },
       { header: 'Orden' }
     ];
 

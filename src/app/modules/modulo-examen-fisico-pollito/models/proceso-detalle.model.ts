@@ -3,7 +3,7 @@ export class ProcesoDetalleModel {
     idProceso: number;
     descripcionProceso?: string;
     descripcionProcesoDetalle?: string;
-    factor?: number;
+    flgDefault?: boolean;
     orden?: number;
     tipoControl?: string;
     etiqueta?: string;
@@ -17,7 +17,7 @@ export class ProcesoDetalleModel {
         this.idProceso = 0;
         this.descripcionProceso = '';
         this.descripcionProcesoDetalle = '';
-        this.factor = 0;
+        this.flgDefault = false;
         this.orden = 0;
         this.tipoControl = '';
         this.etiqueta = '';

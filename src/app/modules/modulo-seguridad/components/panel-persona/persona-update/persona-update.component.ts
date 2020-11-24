@@ -11,6 +11,7 @@ import { BreadcrumbService } from '../../../../../services/breadcrumb.service';
 import { LayoutComponent } from '../../../../../layout/layout.component';
 import { Subscription } from 'rxjs';
 import { EmpresaPorUsuarioModel } from '../../../models/empresa-por-usuario';
+import { SubTipoExplotacionPorUsuarioModel } from '../../../models/sub-tipo-explotacion-por-usuario.model';
 
 @Component({
   selector: 'app-persona-update',
@@ -42,6 +43,9 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
 
   listEmpresaPorSeleccionado: EmpresaPorUsuarioModel[];
   listEmpresaSeleccionado: EmpresaPorUsuarioModel[];
+
+  listSubTipoExplotacionPorSeleccionado: SubTipoExplotacionPorUsuarioModel[];
+  lisSubTipoExplotacionSeleccionado: SubTipoExplotacionPorUsuarioModel[];
 
   subscription: Subscription;
 
@@ -119,12 +123,18 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
       this.modeloForm.controls['dark'].setValue(this.modelo.entidadUsuario.themeDark);
       this.modeloForm.controls['menu'].setValue(this.modelo.entidadUsuario.typeMenu);
       this.modeloForm.controls['theme'].setValue(this.modelo.entidadUsuario.themeColor);
-      if (this.modelo.listEmpresaPorUsuario) {
+      if (this.modelo.listEmpresaPorUsuario.length > 0) {
         this.listEmpresaSeleccionado = this.modelo.listEmpresaPorUsuario;
       } else {
         this.listEmpresaSeleccionado = [];
       }
+      if (this.modelo.listSubTipoExplosionPorUsuario.length > 0) {
+        this.lisSubTipoExplotacionSeleccionado = this.modelo.listSubTipoExplosionPorUsuario;
+      } else {
+        this.lisSubTipoExplotacionSeleccionado = [];
+      }
       this.getEmpresaSinAccesoPorUsuario();
+      this.getToObtieneSubTipoExplotacion();
     });
   }
 
@@ -145,6 +155,15 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
     .subscribe((data: EmpresaPorUsuarioModel[]) => {
       this.listEmpresaPorSeleccionado = [];
       this.listEmpresaPorSeleccionado = data;
+    });
+  }
+
+  getToObtieneSubTipoExplotacion() {
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.getSubTipoExplotacionSinAccesoPorUsuario(this.modelo.entidadUsuario.idUsuario)
+    .subscribe((data: SubTipoExplotacionPorUsuarioModel[]) => {
+      this.listSubTipoExplotacionPorSeleccionado = [];
+      this.listSubTipoExplotacionPorSeleccionado = data;
     });
   }
 
@@ -189,6 +208,7 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
 
   onClickSave() {
     this.modelo.listEmpresaPorUsuario = this.listEmpresaSeleccionado;
+    this.modelo.listSubTipoExplosionPorUsuario = this.lisSubTipoExplotacionSeleccionado;
     this.modelo.apellidoPaterno = this.modeloForm.controls['apellidoPaterno'].value;
     this.modelo.apellidoMaterno = this.modeloForm.controls['apellidoMaterno'].value;
     this.modelo.nombre = this.modeloForm.controls['nombre'].value;

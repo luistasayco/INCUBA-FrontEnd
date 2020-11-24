@@ -27,6 +27,7 @@ export class GlobalsConstants {
     icoCerrado: string;
     icoAbierto: string;
     icoVisualizar: string;
+    icoDownload: string;
 
     // Variables titulos
     titleEliminar: string;
@@ -77,6 +78,7 @@ export class GlobalsConstants {
         this.icoCerrado = 'fa fa-lock';
         this.icoAbierto = 'fa fa-unlock';
         this.icoVisualizar = 'fa fa-eye';
+        this.icoDownload = 'fa fa-download';
 
         // Titulo
         this.titleEliminar = 'Confimación de Eliminación';

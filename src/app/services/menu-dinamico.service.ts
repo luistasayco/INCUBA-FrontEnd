@@ -171,6 +171,12 @@ export class MenuDinamicoService {
             if (element.keyOpcion === 'btn-adicionar-eliminar-repuesto') {
               this.buttonAcces.btnAdicionarEliminarRepuesto = false;
             }
+            if (element.keyOpcion === 'btn-download') {
+              this.buttonAcces.btnDownload = false;
+            }
+            if (element.keyOpcion === 'btn-visualizar') {
+              this.buttonAcces.btnVisualizar = false;
+            }
           });
 
           observer.next(this.buttonAcces);

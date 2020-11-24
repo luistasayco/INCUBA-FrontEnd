@@ -15,6 +15,7 @@ import { CompartidoLocalService } from 'src/app/modules/modulo-compartido/servic
 import { Router } from '@angular/router';
 import { TxExamenFisicoPollitoDetalleModelNew } from '../../../models/tx-examen-fisico-pollito-detalle-new';
 import { UtilService } from '../../../../modulo-compartido/services/util.service';
+import { UserContextService } from '../../../../../services/user-context.service';
 
 @Component({
   selector: 'app-tx-examen-fisico-pollito-offline-create',
@@ -54,7 +55,8 @@ export class TxExamenFisicoPollitoOfflineCreateComponent implements OnInit, OnDe
               private examenFisicoPollitoLocalService: ExamenFisicoPollitoLocalService,
               private compartidoLocalService: CompartidoLocalService,
               private router: Router,
-              private utilService: UtilService) {
+              private utilService: UtilService,
+              private userContextService: UserContextService) {
                 this.breadcrumbService.setItems([
                   { label: 'Modulo' },
                   { label: 'Examen Fisico del Pollito Offline', routerLink: ['module-ef/panel-tx-examen-fisico-pollito-offline'] },
@@ -76,6 +78,7 @@ export class TxExamenFisicoPollitoOfflineCreateComponent implements OnInit, OnDe
     this.subscription$ = this.examenFisicoPollitoLocalService.getExamenFisicoPollitoDetalleNew()
     .subscribe((data: TxExamenFisicoPollitoDetalleModelNew[]) => {
       this.modeloItem.listDetalleNew = data;
+      this.modeloItem.responsableInvetsa = this.userContextService.getNombreCompletoUsuario();
     });
 
     this.subscription$ = new Subscription();
@@ -154,7 +157,7 @@ export class TxExamenFisicoPollitoOfflineCreateComponent implements OnInit, OnDe
       sumaTotal += final.obtenido;
     });
     sumaTotalFinal = sumaTotal / 10;
-    return sumaTotalFinal;
+    return parseInt(sumaTotalFinal.toFixed(2));
   }
 
   onCalcularPesoPromedio(): number {
@@ -165,8 +168,8 @@ export class TxExamenFisicoPollitoOfflineCreateComponent implements OnInit, OnDe
     cloneList.forEach(x => {
         pesoPromedio = pesoPromedio + x.valor;
     });
-
-    return pesoPromedio / 100;
+    let peso = pesoPromedio / 100;
+    return parseInt(peso.toFixed(2));
   }
 
   onCalcularUniformidad(pesoPromedio: number): number {
@@ -248,6 +251,7 @@ export class TxExamenFisicoPollitoOfflineCreateComponent implements OnInit, OnDe
     this.modeloItem.idExamenFisico = 0;
     this.modeloItem.fecHoraRegistro = new Date();
     this.modeloItem.fecRegistro = this.utilService.fechaApi_POST();
+    this.modeloItem.flgCerrado = false;
     this.modeloItem.flgMigrado = false;
     this.modeloItem.flgEnModificacion = false;
     this.modeloItem.listDetalleNew

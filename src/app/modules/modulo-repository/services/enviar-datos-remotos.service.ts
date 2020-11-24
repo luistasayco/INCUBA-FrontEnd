@@ -7,7 +7,6 @@ import { ConstantesTablasIDB } from '../../../constants/constantes-tablas-indexd
 import { RegistroEquipoService } from '../../modulo-registro-equipo/services/registro-equipo.service';
 import { UserContextService } from '../../../services/user-context.service';
 import { TxExamenFisicoPollitoModel } from '../../modulo-examen-fisico-pollito/models/tx-examen-fisico-pollito';
-import { ExamenFisicoPollitoLocalService } from '../../modulo-examen-fisico-pollito/services/examen-fisico-pollito-local.service';
 import { ExamenFisicoPollitoService } from '../../modulo-examen-fisico-pollito/services/examen-fisico-pollito.service';
 
 @Injectable({
@@ -15,50 +14,92 @@ import { ExamenFisicoPollitoService } from '../../modulo-examen-fisico-pollito/s
 })
 export class EnviarDatosRemotosService {
 
+  private tablasAEnviar = {
+    envioTablaTrxRegistroEquipo: false,
+    envioTablaTrxExamenFisicoPollito: false};
+
   constructor(private readonly servicioIndexedDB: NgxIndexedDBService,
               private readonly registroEquipoService: RegistroEquipoService,
               private readonly examenFisicoPollitoService: ExamenFisicoPollitoService,
               private userContextService: UserContextService) { }
 
+  private ponerEstadoDefecto() {
+    this.tablasAEnviar.envioTablaTrxExamenFisicoPollito = false;
+    this.tablasAEnviar.envioTablaTrxRegistroEquipo = false;
+  }
+
+  private validarProcesoCompletado(): boolean {
+    if (this.tablasAEnviar.envioTablaTrxExamenFisicoPollito &&
+    this.tablasAEnviar.envioTablaTrxRegistroEquipo) {
+      return true;
+    }
+    return false;
+  }
+
   public enviarDatosAServidorRemoto() {
 
-    const user = this.userContextService.user$.getValue();
+    console.log(variableGlobal._FLAG_ENVIANDO_DATOS_A_SERVIDOR === false ?
+      'Ninguna tarea de envío en progreso' : 'Tarea de envío en progreso. Se enviará luego');
 
-    if (user) {
+    if (!variableGlobal._FLAG_ENVIANDO_DATOS_A_SERVIDOR) {
+
+      this.actualizarFlagEnvio(true);
+      console.log('Envío de información a Servidor en progreso !');
       this.enviarDatosAlServidor()
       .subscribe(resultados => {
+        this.actualizarFlagEnvio(false);
         console.log('TAREA COMPLETADA 1 DE ENVIAR DATOS AL SERVIDOR');
       },
       error => {
+        this.actualizarFlagEnvio(false);
         console.log('ERROR:', error);
       },
       () => {
+        this.actualizarFlagEnvio(false);
         console.log('TAREA COMPLETADA 2 DE ENVIAR DATOS AL SERVIDOR');      }
       );
     } else {
-      console.log('USUARIO NO SE ENCUENTRA AUTENTIFICADO');
+      console.log('No se iniciará una tarea de envío a Servidor porque hay otra tarea de envío en progreso');
     }
   }
 
+  actualizarFlagEnvio(enviando) {
+    variableGlobal._FLAG_ENVIANDO_DATOS_A_SERVIDOR = enviando;
+    variableGlobal._FLAG_OBSERVADOR_ENVIANDO_DATOS_A_SERVIDOR$.next(enviando);
+  }
+
   private enviarDatosAlServidor(): Observable<any> {
+
+    const user = this.userContextService.user$.getValue();
+
+    this.ponerEstadoDefecto();
+
     const obsEnviar = new Observable(observer => {
       if (variableGlobal.ESTADO_INTERNET) {
-        this.enviarTxRegistroEquipo()
-        .subscribe(resultadoEquipo => {
-          observer.next();
-        },
-        error => {
-          observer.error(error);
+        if (user) {
+          this.enviarTxRegistroEquipo().subscribe(
+            resultadoEquipo => {
+            this.tablasAEnviar.envioTablaTrxRegistroEquipo = true;
+            if (this.validarProcesoCompletado()) { observer.next(); }
+          },
+          error => {
+            observer.error(error);
+          }
+          );
+          this.enviarExamenFisicoPollito()
+          .subscribe(resultadoExamenFisicoPollito => {
+            this.tablasAEnviar.envioTablaTrxExamenFisicoPollito = true;
+            if (this.validarProcesoCompletado()) { observer.next(); }
+          },
+          error => {
+            observer.error(error);
+          }
+          );
+        } else {
+          this.tablasAEnviar.envioTablaTrxRegistroEquipo = true;
+          this.tablasAEnviar.envioTablaTrxExamenFisicoPollito = true;
+          if (this.validarProcesoCompletado()) { observer.next(); }
         }
-        );
-        this.enviarExamenFisicoPollito()
-        .subscribe(resultadoExamenFisicoPollito => {
-          observer.next();
-        },
-        error => {
-          observer.error(error);
-        }
-        );
       } else {
         console.log('enviarDatosAlServidor: Sin Acceso a Internet. No se enviará los datos');
         observer.complete();
@@ -76,6 +117,7 @@ export class EnviarDatosRemotosService {
         if (resultado) {
           registros = [...resultado];
           registros = registros
+          .filter(z => z.flgCerrado === true)
           .filter(x => x.flgMigrado === false)
           .filter(y => y.flgEnModificacion === false);
           if ( registros.length > 0 ) {
@@ -116,6 +158,7 @@ export class EnviarDatosRemotosService {
         if (resultado) {
           registros = [...resultado];
           registros = registros
+          .filter(z => z.flgCerrado === true)
           .filter(x => x.flgMigrado === false)
           .filter(y => y.flgEnModificacion === false);
           if ( registros.length > 0 ) {

@@ -22,6 +22,7 @@ export class SessionService {
   getItemDecrypt(key: string) {
     // Obtenemos el dato encriptado
     let value = this.getItem(key);
+    // console.log(key, value);
     let valueEncrypt = this.cifrarDataService.decrypt(value);
     return valueEncrypt;
   }

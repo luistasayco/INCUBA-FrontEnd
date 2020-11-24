@@ -22,7 +22,7 @@ export class AppComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.iniciarTimerEnvioDataAServidor();
       this.limpiarDataMigrada();
-    }, 10000);
+    }, 30000);
   }
 
   ngOnDestroy(){

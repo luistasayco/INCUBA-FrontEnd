@@ -31,6 +31,10 @@ export class UserContextService {
     return Number(this.sessionService.getItemDecrypt('idUsuario'));
   }
 
+  public getNombreCompletoUsuario(): string {
+    return this.sessionService.getItemDecrypt('nombre');
+  }
+
   public getUsuario() {
     return this.sessionService.getItemDecrypt('usuario');
   }

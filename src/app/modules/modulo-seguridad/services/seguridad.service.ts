@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 import { UserContextService } from '../../../services/user-context.service';
 import { variableGlobal } from '../../../interface/variable-global.interface';
 import { EmpresaPorUsuarioModel } from '../models/empresa-por-usuario';
+import { SubTipoExplotacionPorUsuarioModel } from '../models/sub-tipo-explotacion-por-usuario.model';
 
 @Injectable({
   providedIn: 'root'
@@ -226,6 +227,14 @@ export class SeguridadService {
 
     return this.http.get<EmpresaPorUsuarioModel[]>
     (`${environment.url_api_seguridad}EmpresaPorUsuario/GetEmpresaConAccesoPorUsuario/`, { params: parametros });
+  }
+
+  getSubTipoExplotacionSinAccesoPorUsuario(idUsuario: number) {
+    let parametros = new HttpParams();
+    parametros = parametros.append('idUsuario', idUsuario.toString());
+
+    return this.http.get<SubTipoExplotacionPorUsuarioModel[]>
+    (`${environment.url_api_seguridad}SubTipoExplosionPorUsuario/GetAllSinAcceso/`, { params: parametros });
   }
 
 }

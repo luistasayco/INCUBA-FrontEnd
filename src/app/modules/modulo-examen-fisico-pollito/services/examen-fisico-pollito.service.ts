@@ -198,6 +198,18 @@ export class ExamenFisicoPollitoService {
     );
   }
 
+  setUpdateStatusTxExamenFisicoPollito(value: TxExamenFisicoPollitoModel) {
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.idUsuarioCierre = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
+    const url = environment.url_api + 'TxExamenFisicoPollito/UpdateStatus';
+    const param: string = JSON.stringify(value);
+    return this.http.put(
+        url,
+        param
+    );
+  }
+
   setDeleteExamenFisicoPollito(value: TxExamenFisicoPollitoModel) {
     value.regUsuario = this.userContextService.getIdUsuario();
     value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;

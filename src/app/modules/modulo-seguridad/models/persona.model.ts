@@ -1,5 +1,6 @@
 import { UsuarioModel } from './usuario.model';
 import { EmpresaPorUsuarioModel } from './empresa-por-usuario';
+import { SubTipoExplotacionPorUsuarioModel } from './sub-tipo-explotacion-por-usuario.model';
 export class PersonaModel {
     idPersona?: number;
     nombre: string;
@@ -12,6 +13,7 @@ export class PersonaModel {
     flgActivo?: boolean;
     entidadUsuario?: UsuarioModel;
     listEmpresaPorUsuario?: EmpresaPorUsuarioModel[];
+    listSubTipoExplosionPorUsuario?: SubTipoExplotacionPorUsuarioModel[];
 
     // Auditoria
     regUsuario?: number;
@@ -28,6 +30,7 @@ export class PersonaModel {
         this.nroTelefono = '';
         this.flgActivo = true;
         this.listEmpresaPorUsuario = [];
+        this.listSubTipoExplosionPorUsuario = [];
         this.regUsuario = 0;
         this.regEstacion = '';
     }

@@ -301,7 +301,7 @@ export class PanelRegistroEquipoOffLineComponent implements OnInit, OnDestroy {
     this.interval = setInterval(() => {
     console.log('consulta data local');
     this.onListar();
-    }, 20000);
+    }, 60000);
   }
 
   onDatosCierre(data: TxRegistroEquipoModel) {

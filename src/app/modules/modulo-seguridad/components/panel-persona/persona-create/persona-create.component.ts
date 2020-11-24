@@ -12,6 +12,10 @@ import { PerfilModel } from '../../../models/pefil.model';
 import { UsuarioModel } from '../../../models/usuario.model';
 import { Subscription } from 'rxjs';
 import { EmpresaPorUsuarioModel } from '../../../models/empresa-por-usuario';
+import { TipoExplotacionModel } from '../../../../modulo-extranet/models/tipo-explotacion.model';
+import { SubTipoExplotacionModel } from '../../../../modulo-extranet/models/sub-tipo-explotacion.model';
+import { ExtranetService } from '../../../../modulo-extranet/services/extranet.service';
+import { SubTipoExplotacionPorUsuarioModel } from '../../../models/sub-tipo-explotacion-por-usuario.model';
 
 @Component({
   selector: 'app-persona-create',
@@ -42,6 +46,9 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
   listEmpresaPorSeleccionado: EmpresaPorUsuarioModel[];
   listEmpresaSeleccionado: EmpresaPorUsuarioModel[];
 
+  listSubTipoExplotacionPorSeleccionado: SubTipoExplotacionPorUsuarioModel[];
+  lisSubTipoExplotacionSeleccionado: SubTipoExplotacionPorUsuarioModel[];
+
   subscription: Subscription;
 
   constructor(private fb: FormBuilder,
@@ -49,7 +56,7 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
               public mensajePrimeNgService: MensajePrimeNgService,
               private router: Router,
               private breadcrumbService: BreadcrumbService,
-              public app: LayoutComponent) {
+              public app: LayoutComponent,) {
                 this.breadcrumbService.setItems([
                     { label: 'Modulo Seguridad' },
                     { label: 'Usuario', routerLink: ['module-se/panel-persona'] },
@@ -60,12 +67,14 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.listEmpresaPorSeleccionado = [];
     this.listEmpresaSeleccionado = [];
+    this.lisSubTipoExplotacionSeleccionado = [];
     this.themes = [
       {label: 'green'}
     ];
 
     this.getToObtienePerfil();
     this.getEmpresaSinAccesoPorUsuario();
+    this.getToObtieneSubTipoExplotacion();
 
     this.modeloForm = this.fb.group(
       {
@@ -110,6 +119,15 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
     });
   }
 
+  getToObtieneSubTipoExplotacion() {
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.getSubTipoExplotacionSinAccesoPorUsuario(0)
+    .subscribe((data: SubTipoExplotacionPorUsuarioModel[]) => {
+      this.listSubTipoExplotacionPorSeleccionado = [];
+      this.listSubTipoExplotacionPorSeleccionado = data;
+    });
+  }
+
   onBasicUpload(event: any) {
     let fileList: FileList = event.files;
     if (fileList.length > 0) {
@@ -151,6 +169,7 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
 
   onClickSave() {
     this.modelo.listEmpresaPorUsuario = this.listEmpresaSeleccionado;
+    this.modelo.listSubTipoExplosionPorUsuario = this.lisSubTipoExplotacionSeleccionado;
     this.modelo.apellidoPaterno = this.modeloForm.controls['apellidoPaterno'].value;
     this.modelo.apellidoMaterno = this.modeloForm.controls['apellidoMaterno'].value;
     this.modelo.nombre = this.modeloForm.controls['nombre'].value;

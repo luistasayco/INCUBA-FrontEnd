@@ -139,7 +139,7 @@
                 </div>
             </div>
             <div class="ui-g-12 ui-md-6">
-                <button pButton type="button" label="{{globalConstants.cGrabar}}" icon="{{globalConstants.icoGrabar}}" (click)="onGrabar()"></button>
+                <button [disabled]="modeloItem.flgCerrado" pButton type="button" label="{{globalConstants.cGrabar}}" icon="{{globalConstants.icoGrabar}}" (click)="onGrabar()"></button>
             </div>
             <div class="ui-g-12 ui-md-6">
                 <button pButton type="button" label="{{globalConstants.cRegresar}}" icon="{{globalConstants.icoRegresar}}" (click)="onBack()"></button>

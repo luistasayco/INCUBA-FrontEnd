@@ -289,10 +289,10 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
 
   onToRowSelectPDF(modelo: any) {
 
-    if (!modelo.flgCerrado) {
-      this.mensajePrimeNgService.onToInfoMsg(null, 'Registro seleccionado se encuentra CERRADO!!!');
-      return;
-    }
+    // if (!modelo.flgCerrado) {
+    //   this.mensajePrimeNgService.onToInfoMsg(null, 'Registro seleccionado se encuentra CERRADO!!!');
+    //   return;
+    // }
 
     this.registroEquipoService.setPDFTxRegistroEquipo(modelo.idRegistroEquipo)
     .subscribe((resp: any) => {

@@ -12,9 +12,9 @@ export class TxExamenFisicoPollitoModel {
     responsableInvetsa: string;
     responsablePlanta: string;
     numeroNacedora: number;
-    lote: number;
+    lote: string;
     pesoPromedio: number;
-    edadReproductora: number;
+    edadReproductora: string;
     sexo: string;
     lineaGenetica: string;
     calificacion: number;
@@ -29,6 +29,12 @@ export class TxExamenFisicoPollitoModel {
     usuarioCreacion: string;
     flgMigrado: boolean;
     flgEnModificacion: boolean;
+    // Cierre
+    flgCerrado: boolean;
+    fecCierre: Date;
+    usuarioCierre: string;
+    idUsuarioCierre: number;
+
     // Auditoria
     regUsuario?: number;
     regEstacion?: string;
@@ -43,9 +49,9 @@ export class TxExamenFisicoPollitoModel {
         this.responsableInvetsa = '';
         this.responsablePlanta = '';
         this.numeroNacedora = 0;
-        this.lote = 0;
+        this.lote = '';
         this.pesoPromedio = 0;
-        this.edadReproductora = 0;
+        this.edadReproductora = '';
         this.sexo = '';
         this.lineaGenetica = '';
         this.calificacion = 0;
@@ -60,6 +66,10 @@ export class TxExamenFisicoPollitoModel {
         this.usuarioCreacion = '';
         this.flgMigrado = false;
         this.flgEnModificacion = false;
+        this.flgCerrado = false;
+        this.fecCierre = null;
+        this.usuarioCierre = '';
+        this.idUsuarioCierre = 0;
         this.regUsuario = 0;
         this.regEstacion = '';
     }

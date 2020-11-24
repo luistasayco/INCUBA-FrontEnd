@@ -17,6 +17,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { AccordionModule } from 'primeng/accordion';
 import { CheckboxModule } from 'primeng/checkbox';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { DialogModule } from 'primeng/dialog';
 // Sevices
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
@@ -38,7 +39,8 @@ import { MessageService } from 'primeng/api';
             CalendarModule,
             AccordionModule,
             CheckboxModule,
-            RadioButtonModule],
+            RadioButtonModule,
+            DialogModule],
     providers: [MessageService, ConfirmationService],
 })
 export class ExamenFisicoPollitoPrimeNgModule {}
