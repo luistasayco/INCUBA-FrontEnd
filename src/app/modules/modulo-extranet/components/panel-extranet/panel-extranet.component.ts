@@ -23,6 +23,8 @@ import { SubTipoExplotacionModel } from '../../models/sub-tipo-explotacion.model
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { LayoutComponent } from '../../../../layout/layout.component';
 import { ProgressStatusEnum, ProgressStatus } from '../../interfaces/progress-status';
+import { UserContextService } from '../../../../services/user-context.service';
+import { variableGlobal } from '../../../../interface/variable-global.interface';
 
 @Component({
   selector: 'app-panel-extranet',
@@ -77,12 +79,12 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
               public lenguageService: LanguageService,
               private breadcrumbService: BreadcrumbService,
               private confirmationService: ConfirmationService,
-              private sessionService: SessionService,
+              private userContextService: UserContextService,
               private menuDinamicoService: MenuDinamicoService,
               private seguridadService: SeguridadService,
               public app: LayoutComponent ) {
     this.breadcrumbService.setItems([
-        { label: 'Mod. Extranet' },
+        { label: 'Módulo Extranet' },
         { label: 'Registro Documentos', routerLink: ['module-ex/panel-extranet'] }
     ]);
   }
@@ -234,16 +236,10 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
   onListar() {
     this.modeloFind.idSubTipoExplotacion = this.selectedSubTipoExplotacion === null ? 0 : Number(this.selectedSubTipoExplotacion.value);
 
-    if (this.modeloFind.idSubTipoExplotacion === 0) {
-      this.mensajePrimeNgService.onToInfoMsg(null, 'Seleccionar Sub Tipo Explotación');
-      return;
-    }
-
     this.modeloFind.codigoEmpresa = this.selectedEmpresa === null ? '' : this.selectedEmpresa.value;
     this.modeloFind.codigoPlanta = this.selectedPlanta === null ? '' : this.selectedPlanta.value;
     this.subscription$ = new Subscription();
     this.subscription$ = this.extranetService.getTxRegistroDocumento(this.modeloFind)
-    // this.subscription$ = this.extranetService.getTxRegistroDocumentoDrive()
     .subscribe(resp => {
       if (resp) {
           this.listModelo = resp;
@@ -297,6 +293,9 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
     modeloRegistroDocumento.descripcionEmpresa = this.selectedEmpresa.label;
     modeloRegistroDocumento.codigoPlanta = this.selectedPlanta.value;
     modeloRegistroDocumento.descripcionPlanta = this.selectedPlanta.label;
+    modeloRegistroDocumento.regUsuario = this.userContextService.getIdUsuario();
+    modeloRegistroDocumento.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
+    modeloRegistroDocumento.flgCerrado = false;
     const apiFinal = JSON.stringify(modeloRegistroDocumento);
     this.registerReq(apiFinal, this.uploadedFiles);
   }
@@ -316,18 +315,19 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
               console.log('Se ha recibido el encabezado de respuesta!');
               break;
             case HttpEventType.UploadProgress:
-              this.progress = Math.round((event.loaded / event.total) * 100);
+              this.progress = Math.round((event.loaded / event.total) * 100) - 25;
               console.log(`Uploaded! ${this.progress}%`);
               break;
             case HttpEventType.Response:
               this.isEnvioArchivo = false;
+              this.progress = 100;
+              this.isNuveo = false;
               this.mensajePrimeNgService.onToExitoMsg(null, event.body);
               setTimeout(() => {
                 this.progress = 0;
                 this.onListar();
               }, 1500);
           }
-          this.isNuveo = false;
         },
         (error) => {
           this.isEnvioArchivo = false;
@@ -338,7 +338,47 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
       );
   }
 
+  onConfirmCerrar(data: TxRegistroDocumentoModel) {
+    if (data.flgCerrado) {
+      this.mensajePrimeNgService.onToInfoMsg(null, 'Registro seleccionado se encuentra CERRADO!!!');
+      return;
+    }
+    this.confirmationService.confirm({
+        message: this.globalConstants.subTitleCierre,
+        header: this.globalConstants.titleCierre,
+        icon: 'pi pi-info-circle',
+        acceptLabel: 'Si',
+        rejectLabel: 'No',
+        accept: () => {
+          this.onToCerrar(data);
+        },
+        reject: () => {
+          this.mensajePrimeNgService.onToCancelMsg(this.globalConstants.msgCancelSummary, this.globalConstants.msgCancelDetail);
+        }
+    });
+  }
+
+  onToCerrar(data: TxRegistroDocumentoModel) {
+    this.subscription$ = new Subscription();
+
+    this.subscription$ = this.extranetService.setUpdateStatusTxRegistroDocumento(data)
+    .subscribe(resp => {
+      this.listModelo.find((x: TxRegistroDocumentoModel) => x.idDocumento === data.idDocumento).flgCerrado = true;
+
+      this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
+      },
+      (error) => {
+        this.listModelo.find((x: TxRegistroDocumentoModel) => x.idDocumento === data.idDocumento).flgCerrado = false;
+        this.mensajePrimeNgService.onToErrorMsg(null, error);
+      }
+    );
+  }
+
   onConfirmEliminar(data: TxRegistroDocumentoModel) {
+    if (data.flgCerrado) {
+      this.mensajePrimeNgService.onToInfoMsg(null, 'Registro seleccionado se encuentra CERRADO!!!');
+      return;
+    }
     this.confirmationService.confirm({
         message: this.globalConstants.subTitleEliminar,
         header: this.globalConstants.titleEliminar,
@@ -381,7 +421,9 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
           break;
         case HttpEventType.Response:
           this.mensajePrimeNgService.onToInfoMsg(null, 'DESCARGA COMPLETA');
+          console.log(resp);
           let file = new window.Blob([resp.body], {type: resp.body.type});
+          console.log(file);
           // saveAs(new Blob([resp], {type: 'application/pdf'}), 'Registros');
           // saveAs(new Blob([resp], {type: 'application/pdf'}), `RegistroEquipo#${modelo.idRegistroEquipo.toString()}`);
           let fileURL = window.URL.createObjectURL(file);

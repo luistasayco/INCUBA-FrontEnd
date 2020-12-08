@@ -15,6 +15,7 @@ import { RegistroEquipoService } from '../../../services/registro-equipo.service
 import { SeguridadService } from '../../../../modulo-seguridad/services/seguridad.service';
 import { EmpresaPorUsuarioModel } from '../../../../modulo-seguridad/models/empresa-por-usuario';
 import { UserContextService } from '../../../../../services/user-context.service';
+import { UtilService } from '../../../../modulo-compartido/services/util.service';
 
 @Component({
   selector: 'app-registro-equipo-create',
@@ -76,11 +77,12 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
               private breadcrumbService: BreadcrumbService,
               private seguridadService: SeguridadService,
               private router: Router,
-              private userContextService: UserContextService) {
+              private userContextService: UserContextService,
+              private utilService: UtilService) {
                 this.breadcrumbService.setItems([
-                    { label: 'Modulo' },
+                    { label: 'Módulo Registro Equipo' },
                     { label: 'Registro de Equipo', routerLink: ['module-re/panel-registro-equipo'] },
-                    { label: 'Nuevo registro de equipo'}
+                    { label: 'Nuevo'}
                 ]);
               }
 
@@ -191,6 +193,7 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
         if (resp) {
           this.modeloItem  = resp;
           this.modeloItem.responsableIncuba = this.userContextService.getNombreCompletoUsuario();
+          this.modeloItem.emailFrom = this.userContextService.getEmail();
           this.updateRowGroupMetaData();
           this.updateRowGroupMetaDataDetalle2();
           this.onLlenarRepuestoNoPredeterminado();
@@ -396,6 +399,23 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
 
     if (this.modeloItem.firmaPlanta === '') {
       this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, `Ingresar ${this.globalConstants.cFirma2}`);
+      return;
+    }
+
+    if (this.modeloItem.responsablePlanta === '') {
+      this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, `Ingresar Responsable de Planta`);
+      return;
+    }
+
+    if (this.modeloItem.emailTo === '') {
+      this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, `Ingresar Email de Planta`);
+      return;
+    }
+
+    let msgList = this.utilService.validaListEmail(this.modeloItem.emailTo);
+
+    if (msgList !== '') {
+      this.mensajePrimeNgService.onToInfoMsg('Revisar Email Invalidos..', msgList);
       return;
     }
 

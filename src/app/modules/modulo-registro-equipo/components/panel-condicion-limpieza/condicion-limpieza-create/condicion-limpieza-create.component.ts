@@ -33,9 +33,9 @@ export class CondicionLimpiezaCreateComponent implements OnInit, OnDestroy {
               private router: Router,
               private breadcrumbService: BreadcrumbService) {
                 this.breadcrumbService.setItems([
-                    { label: 'Modulo' },
+                    { label: 'Módulo Registro Equipo' },
                     { label: 'Condición de limpieza', routerLink: ['module-re/panel-condicion-limpieza'] },
-                    { label: 'Nuevo Condición de limpieza'}
+                    { label: 'Nuevo'}
                 ]);
               }
 

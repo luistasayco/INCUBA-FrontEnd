@@ -87,9 +87,9 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
               private sessionService: SessionService,
               private userContextService: UserContextService) {
                 this.breadcrumbService.setItems([
-                    { label: 'Modulo' },
+                    { label: 'Módulo Registro Equipo' },
                     { label: 'Registro de Equipo (Offline)', routerLink: ['module-re/panel-registro-equipo-offline'] },
-                    { label: 'Nuevo registro de equipo (Offline)'}
+                    { label: 'Nuevo'}
                 ]);
               }
 
@@ -244,6 +244,7 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
 
             this.modeloItem  = newRegistroEquipo;
             this.modeloItem.responsableIncuba = this.userContextService.getNombreCompletoUsuario();
+            this.modeloItem.emailFrom = this.userContextService.getEmail();
             this.modeloItem.txRegistroEquipoDetalle7 = [];
             this.updateRowGroupMetaData();
             this.updateRowGroupMetaDataDetalle2();
@@ -459,7 +460,19 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let usuario =  this.sessionService.getItemDecrypt('usuario');
+    if (this.modeloItem.emailTo === '') {
+      this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, `Ingresar Email de Planta`);
+      return;
+    }
+
+    let msgList = this.utilService.validaListEmail(this.modeloItem.emailTo);
+
+    if (msgList !== '') {
+      this.mensajePrimeNgService.onToInfoMsg('Revisar Email Invalidos..', msgList);
+      return;
+    }
+    
+    let usuario =  this.userContextService.getUsuario();
 
     this.modeloItem.flgMigrado = false;
     this.modeloItem.fecHoraRegistro = this.utilService.fechaApi_POST();

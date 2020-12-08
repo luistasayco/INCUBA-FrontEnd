@@ -14,9 +14,10 @@ export class TxRegistroDocumentoModel {
     idGoogleDrive: string;
     nombreArchivo: string;
     tipoArchivo: string;
-    flgActivo: boolean;
+    flgCerrado: boolean;
     fecRegistro: Date;
     fecHoraRegistro: Date;
+    idGoogleDriveFolder: string;
 
     fecInicio: Date;
     fecFin: Date;
@@ -38,9 +39,10 @@ export class TxRegistroDocumentoModel {
         this.idGoogleDrive = '';
         this.nombreArchivo = '';
         this.tipoArchivo = '';
-        this.flgActivo = false;
+        this.flgCerrado = false;
         this.fecRegistro = null;
         this.fecHoraRegistro = null;
+        this.idGoogleDriveFolder = '';
 
         this.fecInicio = null;
         this.fecFin = null;

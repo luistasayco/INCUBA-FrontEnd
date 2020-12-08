@@ -33,9 +33,9 @@ export class RequerimientoEquipoCreateComponent implements OnInit, OnDestroy {
               private router: Router,
               private breadcrumbService: BreadcrumbService) {
                 this.breadcrumbService.setItems([
-                    { label: 'Modulo' },
+                    { label: 'Módulo Registro Equipo' },
                     { label: 'Requerimiento equipo', routerLink: ['module-re/panel-requerimiento-equipo'] },
-                    { label: 'Nuevo requerimiento equipo'}
+                    { label: 'Nuevo'}
                 ]);
               }
 

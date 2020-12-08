@@ -16,7 +16,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 })
 export class TxExamenFisicoPollitoOfflineUpdateComponent implements OnInit, OnDestroy {
 
-  titulo = 'Examen Fisico Nro:';
+  titulo = 'Examen Físico Nro:';
   value: boolean;
   // Name de los botones de accion
   globalConstants: GlobalsConstants = new GlobalsConstants();
@@ -42,9 +42,9 @@ export class TxExamenFisicoPollitoOfflineUpdateComponent implements OnInit, OnDe
               private router: Router,
               private readonly route: ActivatedRoute) {
                 this.breadcrumbService.setItems([
-                  { label: 'Modulo' },
-                  { label: 'Examen Fisico del Pollito Offline', routerLink: ['module-ef/panel-tx-examen-fisico-pollito-offline'] },
-                  { label: 'Actualizar Examen Fisico Offline'}
+                  { label: 'Módulo Examen Físico' },
+                  { label: 'Examen Físico (Offline)', routerLink: ['module-ef/panel-tx-examen-fisico-pollito-offline'] },
+                  { label: 'Actualizar'}
               ]);
               }
 

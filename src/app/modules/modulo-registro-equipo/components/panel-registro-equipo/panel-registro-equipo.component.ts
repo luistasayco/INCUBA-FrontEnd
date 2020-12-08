@@ -71,7 +71,7 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
               private menuDinamicoService: MenuDinamicoService,
               private seguridadService: SeguridadService) {
     this.breadcrumbService.setItems([
-        { label: 'Modulo' },
+        { label: 'Módulo Registro Equipo' },
         { label: 'Registro de Equipo', routerLink: ['module-re/panel-registro-equipo'] }
     ]);
   }
@@ -132,6 +132,8 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
     .subscribe(acces => {
       this.buttonAcces = acces;
     });
+
+    this.onListar();
   }
 
   onToBuscar() {
@@ -169,7 +171,7 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
       }
       if (this.sessionService.getItem('filter-re-selectedPlanta')) {
         this.selectedPlanta = this.sessionService.getItemDecrypt('filter-re-selectedPlanta');
-        this.onListar();
+        // this.onListar();
       }
     });
   }

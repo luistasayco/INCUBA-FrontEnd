@@ -6,7 +6,8 @@ export class TxExamenFisicoPollitoModel {
     idExamenFisico: number;
     codigoEmpresa: string;
     descripcionEmpresa: string;
-    unidadPlanta: string;
+    codigoPlanta: string;
+    descripcionPlanta: string;
     fecRegistro: Date;
     fecHoraRegistro: Date;
     responsableInvetsa: string;
@@ -35,6 +36,9 @@ export class TxExamenFisicoPollitoModel {
     usuarioCierre: string;
     idUsuarioCierre: number;
 
+    emailFrom: string;
+    emailTo: string;
+
     // Auditoria
     regUsuario?: number;
     regEstacion?: string;
@@ -43,7 +47,8 @@ export class TxExamenFisicoPollitoModel {
         this.idExamenFisico = 0;
         this.codigoEmpresa = '';
         this.descripcionEmpresa = '';
-        this.unidadPlanta = '';
+        this.codigoPlanta = '';
+        this.descripcionPlanta = '';
         this.fecRegistro = null;
         this.fecHoraRegistro = null;
         this.responsableInvetsa = '';
@@ -69,6 +74,8 @@ export class TxExamenFisicoPollitoModel {
         this.flgCerrado = false;
         this.fecCierre = null;
         this.usuarioCierre = '';
+        this.emailFrom = '';
+        this.emailTo = '';
         this.idUsuarioCierre = 0;
         this.regUsuario = 0;
         this.regEstacion = '';

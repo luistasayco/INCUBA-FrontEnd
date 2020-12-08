@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ExtranetCreateComponent } from './extranet-create.component';
+import { PanelSistemaComponent } from './panel-sistema.component';
 
-describe('ExtranetCreateComponent', () => {
-  let component: ExtranetCreateComponent;
-  let fixture: ComponentFixture<ExtranetCreateComponent>;
+describe('PanelSistemaComponent', () => {
+  let component: PanelSistemaComponent;
+  let fixture: ComponentFixture<PanelSistemaComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ExtranetCreateComponent ]
+      declarations: [ PanelSistemaComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ExtranetCreateComponent);
+    fixture = TestBed.createComponent(PanelSistemaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

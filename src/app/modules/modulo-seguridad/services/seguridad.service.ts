@@ -10,6 +10,7 @@ import { UserContextService } from '../../../services/user-context.service';
 import { variableGlobal } from '../../../interface/variable-global.interface';
 import { EmpresaPorUsuarioModel } from '../models/empresa-por-usuario';
 import { SubTipoExplotacionPorUsuarioModel } from '../models/sub-tipo-explotacion-por-usuario.model';
+import { ParametroSistemaModel } from '../models/parametro-sistema.model';
 
 @Injectable({
   providedIn: 'root'
@@ -237,4 +238,30 @@ export class SeguridadService {
     (`${environment.url_api_seguridad}SubTipoExplosionPorUsuario/GetAllSinAcceso/`, { params: parametros });
   }
 
+  getParametroSistemaPorId() {
+    return this.http.get<ParametroSistemaModel>
+    (`${environment.url_api_seguridad}ParametroSistema/GetbyIdParametroSistema/${0}`);
+  }
+
+  setInsertParametroSistema(value: ParametroSistemaModel) {
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
+    const url = environment.url_api_seguridad + 'ParametroSistema/Create';
+    const param: string = JSON.stringify(value);
+    return this.http.post(
+        url,
+        param
+    );
+  }
+
+  setUpdateParametroSistema(value: ParametroSistemaModel) {
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
+    const url = environment.url_api_seguridad + 'ParametroSistema/Update';
+    const param: string = JSON.stringify(value);
+    return this.http.put(
+        url,
+        param
+    );
+  }
 }

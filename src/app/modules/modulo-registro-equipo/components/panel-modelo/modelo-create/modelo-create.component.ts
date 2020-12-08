@@ -29,7 +29,7 @@ export class ModeloCreateComponent implements OnInit {
               private router: Router,
               private breadcrumbService: BreadcrumbService) {
                 this.breadcrumbService.setItems([
-                    { label: 'Modulo' },
+                    { label: 'Módulo Registro Equipo' },
                     { label: 'Modelo', routerLink: ['module-re/panel-modelo'] },
                     { label: 'Nuevo modelo'}
                 ]);

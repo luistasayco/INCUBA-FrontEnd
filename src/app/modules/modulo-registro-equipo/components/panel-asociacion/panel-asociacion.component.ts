@@ -68,7 +68,7 @@ export class PanelAsociacionComponent implements OnInit, OnDestroy {
               private menuDinamicoService: MenuDinamicoService,
               private seguridadService: SeguridadService) {
                 this.breadcrumbService.setItems([
-                    { label: 'Modulo' },
+                    { label: 'Módulo Registro Equipo' },
                     { label: 'Asociación', routerLink: ['module-re/panel-asociacion'] }
                 ]);
               }

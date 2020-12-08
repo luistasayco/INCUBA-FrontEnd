@@ -49,7 +49,7 @@ export class PanelMantenimientoComponent implements OnInit, OnDestroy {
               private breadcrumbService: BreadcrumbService,
               private menuDinamicoService: MenuDinamicoService) {
                 this.breadcrumbService.setItems([
-                    { label: 'Modulo' },
+                    { label: 'Módulo Registro Equipo' },
                     { label: 'Mantenimiento', routerLink: ['module-re/panel-mantenimiento'] }
                 ]);
               }

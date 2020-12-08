@@ -23,7 +23,7 @@ import { UserContextService } from '../../../../services/user-context.service';
 export class PanelTxExamenFisicoPollitoOfflineComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
-  titulo = 'Examen Fisico del Pollito';
+  titulo = 'Examen Físico (Offline)';
   // Acceso de botones
   buttonAcces: ButtonAcces = new ButtonAcces();
   // Name de los botones de accion
@@ -54,8 +54,8 @@ export class PanelTxExamenFisicoPollitoOfflineComponent implements OnInit, OnDes
               public lenguageService: LanguageService,
               public userContextService: UserContextService) {
     this.breadcrumbService.setItems([
-    { label: 'Modulo' },
-    { label: 'Examen Fisico del Pollito Offline', routerLink: ['module-ef/panel-tx-examen-fisico-pollito-offline'] }
+    { label: 'Módulo Examen Físico' },
+    { label: 'Examen Físico (Offline)', routerLink: ['module-ef/panel-tx-examen-fisico-pollito-offline'] }
     ]);
   }
 

@@ -7,6 +7,7 @@ import { variableGlobal } from '../../../interface/variable-global.interface';
 import { SubTipoExplotacionModel } from '../models/sub-tipo-explotacion.model';
 import { TxRegistroDocumentoModel } from '../models/tx-registro-documento.model';
 import { UtilService } from '../../modulo-compartido/services/util.service';
+import { GoogleDriveFilesModel } from '../models/google-drive-files.model';
 
 @Injectable({
   providedIn: 'root'
@@ -123,7 +124,7 @@ export class ExtranetService {
     parametros = parametros.append('codigoPlanta', value.codigoPlanta);
     parametros = parametros.append('fecInicio', this.utilService.fecha_AAAAMMDD(value.fecInicio));
     parametros = parametros.append('fecFin', this.utilService.fecha_AAAAMMDD(value.fecFin));
-    // parametros = parametros.append('regUsuario', this.userContextService.getIdUsuario().toString());
+    parametros = parametros.append('regUsuario', this.userContextService.getIdUsuario().toString());
     return this.http.get<TxRegistroDocumentoModel[]>
     (`${environment.url_api}TxRegistroDocumento/GetAll/`, { params: parametros });
   }
@@ -175,6 +176,16 @@ export class ExtranetService {
     );
   }
 
+  setUpdateStatusTxRegistroDocumento(value: TxRegistroDocumentoModel) {
+    value = this.setAsignaValoresAuditabilidad<TxRegistroDocumentoModel>(value);
+    const url = environment.url_api + 'TxRegistroDocumento/UpdateStatus';
+    const param: string = JSON.stringify(value);
+    return this.http.put(
+        url,
+        param
+    );
+  }
+
   getDownloadTxRegistroDocumento(id: string) {
     return this.http.get
     (`${environment.url_api}TxRegistroDocumento/GetDownloadFile/${id}`,
@@ -185,5 +196,16 @@ export class ExtranetService {
     data.regUsuario = this.userContextService.getIdUsuario();
     data.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     return data;
+  }
+
+  getAllEmpresaPorUsuario() {
+    let id = Number(this.userContextService.getIdUsuario());
+    return this.http.get<GoogleDriveFilesModel[]>
+    (`${environment.url_api}TxRegistroDocumento/GetAllEmpresaPorUsuario/${id}`);
+  }
+
+  getGoogleDriveFilesPorId(id: string) {
+    return this.http.get<GoogleDriveFilesModel[]>
+    (`${environment.url_api}TxRegistroDocumento/GetGoogleDriveFilesPorId/${id}`);
   }
 }

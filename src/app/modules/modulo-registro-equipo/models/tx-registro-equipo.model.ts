@@ -40,6 +40,9 @@ export class TxRegistroEquipoModel {
     txRegistroEquipoDetalle7: TxRegistroEquipoDetalle7Model[];
     flgMigrado: boolean;
     flgEnModificacion: boolean;
+
+    emailFrom: string;
+    emailTo: string;
     // Auditoria
     regUsuario?: number;
     regEstacion?: string;
@@ -76,6 +79,8 @@ export class TxRegistroEquipoModel {
         this.txRegistroEquipoDetalle6Repuestos = [];
         this.txRegistroEquipoDetalle7 = [];
         this.flgMigrado = false;
+        this.emailFrom = '';
+        this.emailTo = '';
         this.regUsuario = 0;
         this.regEstacion = '';
     }

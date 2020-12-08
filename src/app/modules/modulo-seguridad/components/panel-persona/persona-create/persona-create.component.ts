@@ -58,9 +58,9 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
               private breadcrumbService: BreadcrumbService,
               public app: LayoutComponent,) {
                 this.breadcrumbService.setItems([
-                    { label: 'Modulo Seguridad' },
+                    { label: 'Módulo Seguridad' },
                     { label: 'Usuario', routerLink: ['module-se/panel-persona'] },
-                    { label: 'Nuevo Usuario'}
+                    { label: 'Nuevo'}
                 ]);
               }
 

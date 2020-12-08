@@ -53,8 +53,8 @@ export class PanelOpcionComponent implements OnInit, OnDestroy {
               private breadcrumbService: BreadcrumbService,
               private menuDinamicoService: MenuDinamicoService) {
                 this.breadcrumbService.setItems([
-                  { label: 'Modulo Seguridad' },
-                  { label: 'Opcion', routerLink: ['module-se/panel-opcion'] }
+                  { label: 'Módulo Seguridad' },
+                  { label: 'Opción', routerLink: ['module-se/panel-opcion'] }
               ]);
               }
 
@@ -63,7 +63,8 @@ export class PanelOpcionComponent implements OnInit, OnDestroy {
 
       this.columnas = [
         { header: 'Codigo' },
-        { header: 'Descripcion' }
+        { header: 'Descripcion' },
+        { header: 'KeyOpcion' }
       ];
 
       this.subscription = new Subscription();

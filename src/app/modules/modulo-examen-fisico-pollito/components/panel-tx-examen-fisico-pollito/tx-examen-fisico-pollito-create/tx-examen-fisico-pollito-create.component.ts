@@ -7,7 +7,6 @@ import { ExamenFisicoPollitoService } from '../../../services/examen-fisico-poll
 import { ProcesoDetalleModel } from '../../../models/proceso-detalle.model';
 import { ProcesoModel } from '../../../models/proceso.model';
 import { TxExamenFisicoPollitoDetalleModel } from '../../../models/tx-examen-fisico-pollito-detalle';
-import { CompartidoService } from '../../../../modulo-compartido/services/compartido.service';
 import { EmpresaModel } from '../../../../modulo-compartido/models/empresa.model';
 import { SelectItem } from 'primeng';
 
@@ -17,6 +16,9 @@ import { Subscription } from 'rxjs';
 import { SeguridadService } from '../../../../modulo-seguridad/services/seguridad.service';
 import { EmpresaPorUsuarioModel } from '../../../../modulo-seguridad/models/empresa-por-usuario';
 import { UserContextService } from '../../../../../services/user-context.service';
+import { PlantaModel } from '../../../../modulo-compartido/models/planta.model';
+import { CompartidoService } from '../../../../modulo-compartido/services/compartido.service';
+import { UtilService } from '../../../../modulo-compartido/services/util.service';
 
 @Component({
   selector: 'app-tx-examen-fisico-pollito-create',
@@ -25,13 +27,14 @@ import { UserContextService } from '../../../../../services/user-context.service
 })
 export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
 
-  titulo = 'Examen Fisico';
+  titulo = 'Examen Físico';
   value: boolean;
   // Name de los botones de accion
   globalConstants: GlobalsConstants = new GlobalsConstants();
 
   // Opciones de busqueda
   listItemEmpresa: SelectItem[];
+  listItemPlanta: SelectItem[];
   listItemSexo: SelectItem[];
 
   modeloItem: TxExamenFisicoPollitoModel = new TxExamenFisicoPollitoModel();
@@ -47,6 +50,7 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
   columnas: any[];
 
   selectEmpresa: any;
+  selectedPlanta: any;
   selectSexo: any;
 
   subscription$: Subscription;
@@ -56,11 +60,13 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
               private examenFisicoPollitoService: ExamenFisicoPollitoService,
               private router: Router,
               private seguridadService: SeguridadService,
-              private userContextService: UserContextService) {
+              private userContextService: UserContextService,
+              private compartidoService: CompartidoService,
+              private utilService: UtilService) {
                 this.breadcrumbService.setItems([
-                  { label: 'Modulo' },
-                  { label: 'Examen Fisico del Pollito', routerLink: ['module-ef/panel-tx-examen-fisico-pollito'] },
-                  { label: 'Nuevo Examen Fisico'}
+                  { label: 'Módulo Examen Físico' },
+                  { label: this.titulo, routerLink: ['module-ef/panel-tx-examen-fisico-pollito'] },
+                  { label: 'Nuevo'}
               ]);
               }
 
@@ -79,6 +85,7 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
     .subscribe((data: TxExamenFisicoPollitoModel) => {
       this.modeloItem = data;
       this.modeloItem.responsableInvetsa = this.userContextService.getNombreCompletoUsuario();
+      this.modeloItem.emailFrom = this.userContextService.getEmail();
     });
 
     this.subscription$ = new Subscription();
@@ -103,6 +110,27 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
         this.listItemEmpresa.push({ label: item.descripcionEmpresa, value: item.codigoEmpresa });
       }
       });
+  }
+
+  getOnChangeEmpresa() {
+    if (this.selectEmpresa !== null) {
+      this.getToObtienePlantaPorEmpresa(this.selectEmpresa.value);
+    } else {
+      this.listItemPlanta = [];
+    }
+  }
+
+  getToObtienePlantaPorEmpresa(value: string) {
+    let modeloPlanta = new PlantaModel();
+    modeloPlanta.codigoEmpresa = value;
+    this.subscription$ = new Subscription();
+    this.subscription$ = this.compartidoService.getPlantaPorEmpresa(modeloPlanta)
+    .subscribe((data: PlantaModel[]) => {
+      this.listItemPlanta = [];
+      for (let item of data) {
+        this.listItemPlanta.push({ label: item.descripcion, value: item.codigoPlanta });
+      }
+    });
   }
 
   getToObtieneSexo() {
@@ -208,10 +236,11 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
       return;
     }
     this.modeloItem.codigoEmpresa = this.selectEmpresa.value;
-    if (!this.modeloItem.unidadPlanta) {
-      this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Ingresar Unidad - Planta');
+    if (!this.selectedPlanta) {
+      this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Seleccionar - Planta');
       return;
     }
+    this.modeloItem.codigoPlanta = this.selectedPlanta.value;
     if (!this.selectSexo) {
       this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Seleccionar Sexo');
       return;
@@ -247,6 +276,18 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
     }
     if (!this.modeloItem.responsablePlanta) {
       this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Ingresar Responsable Planta');
+      return;
+    }
+
+    if (this.modeloItem.emailTo === '') {
+      this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgExitoSummary, `Ingresar Email de Planta`);
+      return;
+    }
+
+    let msgList = this.utilService.validaListEmail(this.modeloItem.emailTo);
+
+    if (msgList !== '') {
+      this.mensajePrimeNgService.onToInfoMsg('Revisar Email Invalidos..', msgList);
       return;
     }
 

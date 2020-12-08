@@ -47,7 +47,7 @@ export class PanelPerfilComponent implements OnInit, OnDestroy {
               private breadcrumbService: BreadcrumbService,
               private menuDinamicoService: MenuDinamicoService) {
                 this.breadcrumbService.setItems([
-                    { label: 'Modulo' },
+                    { label: 'Módulo Seguridad' },
                     { label: 'Perfil', routerLink: ['module-se/panel-perfil'] }
                 ]);
               }

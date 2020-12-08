@@ -62,8 +62,8 @@ export class PanelTxExamenFisicoPollitoComponent implements OnInit, OnDestroy {
               public lenguageService: LanguageService,
               private seguridadService: SeguridadService) {
     this.breadcrumbService.setItems([
-      { label: 'Modulo' },
-      { label: 'Examen Fisico del Pollito', routerLink: ['module-ef/panel-tx-examen-fisico-pollito'] }
+      { label: 'Módulo Examen Físico' },
+      { label: 'Examen Físico del Pollito', routerLink: ['module-ef/panel-tx-examen-fisico-pollito'] }
   ]);
   }
 

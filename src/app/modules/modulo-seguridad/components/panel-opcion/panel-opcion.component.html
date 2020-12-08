@@ -38,6 +38,19 @@
                                         </ng-template>
                                     </p-cellEditor>
                                 </td>
+                                <td class="ui-fluid">
+                                    <span class="ui-column-title">KeyOpcion</span>
+                                    <p-cellEditor>
+                                        <ng-template pTemplate="input">
+                                            <span class="p-float-label">
+                                                {{modelo.keyOpcion}}
+                                            </span>
+                                        </ng-template>
+                                        <ng-template pTemplate="output">
+                                            {{modelo.keyOpcion}}
+                                        </ng-template>
+                                    </p-cellEditor>
+                                </td>
                                 <td class="action-td-action">
                                     <button [disabled]="buttonAcces.btnEditar" *ngIf="!editing" pButton type="button" pInitEditableRow icon="{{globalConstants.icoEditar}}" (click)="onRowEditInit(modelo)"></button>
                                     <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="{{globalConstants.icoGrabar}}" class="ui-button-success" (click)="onRowEditSave(modelo)"></button>

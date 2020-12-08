@@ -38,7 +38,7 @@ export class PanelModeloComponent implements OnInit, OnDestroy {
               public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService) {
                 this.breadcrumbService.setItems([
-                    { label: 'Modulo' },
+                    { label: 'Módulo Registro Equipo' },
                     { label: 'Modelo', routerLink: ['module-re/panel-modelo'] }
                 ]);
               }

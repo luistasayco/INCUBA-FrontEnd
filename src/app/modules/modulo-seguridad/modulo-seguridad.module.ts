@@ -12,6 +12,8 @@ import { PanelMenuComponent } from './components/panel-menu/panel-menu.component
 import { PanelOpcionComponent } from './components/panel-opcion/panel-opcion.component';
 import { OpcionCreateComponent } from './components/panel-opcion/opcion-create/opcion-create.component';
 import { PanelOpcionPorPerfilComponent } from './components/panel-opcion-por-perfil/panel-opcion-por-perfil.component';
+import { PanelSistemaComponent } from './components/panel-sistema/panel-sistema.component';
+import { PanelConexionComponent } from './components/panel-conexion/panel-conexion.component';
 
 @NgModule({
     declarations: [PanelPerfilComponent,
@@ -22,7 +24,9 @@ import { PanelOpcionPorPerfilComponent } from './components/panel-opcion-por-per
         PanelMenuComponent,
         PanelOpcionComponent,
         OpcionCreateComponent,
-        PanelOpcionPorPerfilComponent],
+        PanelOpcionPorPerfilComponent,
+        PanelConexionComponent,
+        PanelSistemaComponent],
     imports: [ CommonModule,
         SeguridadPrimeNgModule,
         SeguridadRoutingModule,

@@ -5,14 +5,6 @@
     <p-panel header="Opción de busqueda de {{titulo}}" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
         <div class="ui-g ui-fluid">
             <div class="ui-g-12 ui-md-4">
-                <label class="label-custom" for="dropdown-tipo">Tipo: </label>
-                <p-dropdown id="dropdown-tipo" class="ui dropdown-item-text" [options]="listItemTipoExplotacion" [(ngModel)]="selectedTipoExplotacion" (onChange)="getOnChangeTipoExplotacion()" placeholder="Select Tipo" optionLabel="label" [showClear]="true"></p-dropdown>
-            </div>
-            <div class="ui-g-12 ui-md-4">
-                <label class="label-custom" for="dropdown-sub-tipo">Sub Tipo: </label>
-                <p-dropdown id="dropdown-sub-tipo" class="ui dropdown-item-text" [options]="listItemSubTipoExplotacion" [(ngModel)]="selectedSubTipoExplotacion" placeholder="Select Sub Tipo" optionLabel="label" [showClear]="true"></p-dropdown>
-            </div>
-            <div class="ui-g-12 ui-md-4">
                 <label class="label-custom" for="dropdown-empresa">Empresa: </label>
                 <p-dropdown id="dropdown-empresa" class="ui dropdown-item-text" [options]="listItemEmpresa" [(ngModel)]="selectedEmpresa" (onChange)="getOnChangeEmpresa()" placeholder="Select Compañia" optionLabel="label" [showClear]="true"></p-dropdown>
             </div>
@@ -20,6 +12,15 @@
                 <label class="label-custom" for="dropdown-planta">Planta: </label>
                 <p-dropdown id="dropdown-planta" class="ui dropdown-item-text" [options]="listItemPlanta" [(ngModel)]="selectedPlanta" (onChange)="getOnChangePlanta()" placeholder="Select Planta" optionLabel="label" [showClear]="true"></p-dropdown>
             </div>
+            <div class="ui-g-12 ui-md-4">
+                <label class="label-custom" for="dropdown-tipo">Tipo: </label>
+                <p-dropdown id="dropdown-tipo" class="ui dropdown-item-text" [options]="listItemTipoExplotacion" [(ngModel)]="selectedTipoExplotacion" (onChange)="getOnChangeTipoExplotacion()" placeholder="Select Tipo" optionLabel="label" [showClear]="true"></p-dropdown>
+            </div>
+            <div class="ui-g-12 ui-md-4">
+                <label class="label-custom" for="dropdown-sub-tipo">Sub Tipo: </label>
+                <p-dropdown id="dropdown-sub-tipo" class="ui dropdown-item-text" [options]="listItemSubTipoExplotacion" [(ngModel)]="selectedSubTipoExplotacion" placeholder="Select Sub Tipo" optionLabel="label" [showClear]="true"></p-dropdown>
+            </div>
+
             <div class="ui-g-12 ui-md-2">
                 <label class="label-custom" for="float-input-fecha-ini">Fec. Inicio: </label>
                 <p-calendar id="float-input-fecha-ini" [(ngModel)]="modeloFind.fecInicio" placeholder="Seleccionar Fecha Inicio" [showButtonBar]="true" [locale]="lenguageService.es" dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
@@ -30,7 +31,7 @@
             </div>
 
             <div class="ui-g-12 ui-md-6">
-                <button pButton type="button" label="{{globalConstants.cBuscar}}" icon="{{globalConstants.icoBuscar}}" (click)="onToBuscar()" class="btn btn-block"></button>
+                <button *ngIf="!isNuveo" pButton type="button" label="{{globalConstants.cBuscar}}" icon="{{globalConstants.icoBuscar}}" (click)="onToBuscar()" class="btn btn-block"></button>
             </div>
             <div class="ui-g-12 ui-md-6">
                 <button *ngIf="!isNuveo" [disabled]="buttonAcces.btnNuevo" pButton type="button" label="{{globalConstants.cNuevo}}" icon="{{globalConstants.icoNuevo}}" (click)="onToCreate()"></button>
@@ -101,7 +102,10 @@
                         <span class="ui-column-title">Modelo</span> {{rowData.nombreArchivo}}
                     </td>
                     <td class="action-td">
-                        <button [disabled]="buttonAcces.btnVisualizar" pButton icon="{{globalConstants.icoVisualizar}}" (click)="onToVisualizar(rowData)"></button>
+                        <!-- <button [disabled]="buttonAcces.btnVisualizar" pButton icon="{{globalConstants.icoVisualizar}}" (click)="onToVisualizar(rowData)"></button> -->
+                        <button *ngIf="!rowData.flgCerrado" pButton icon="{{globalConstants.icoAbierto}}" (click)="onConfirmCerrar(rowData)"></button>
+                        <button *ngIf="rowData.flgCerrado" pButton icon="{{globalConstants.icoCerrado}}" class="ui-button-danger"></button>
+
                     </td>
                     <td class="action-td">
                         <button [disabled]="buttonAcces.btnDownload" pButton icon="{{globalConstants.icoDownload}}" (click)="onToRowDownload(rowData)"></button>

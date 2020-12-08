@@ -6,6 +6,7 @@ import { ExamenFisicoPollitoService } from '../../../services/examen-fisico-poll
 import { MensajePrimeNgService } from 'src/app/modules/modulo-compartido/services/mensaje-prime-ng.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { BreadcrumbService } from '../../../../../services/breadcrumb.service';
 
 @Component({
   selector: 'app-proceso-detalle-create',
@@ -30,7 +31,14 @@ export class ProcesoDetalleCreateComponent implements OnInit, OnDestroy {
               private examenFisicoPollitoService: ExamenFisicoPollitoService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private router: Router,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private breadcrumbService: BreadcrumbService) {
+    this.breadcrumbService.setItems([
+      { label: 'Módulo Examen Físico' },
+      { label: this.titulo, routerLink: ['module-ef/panel-proceso'] },
+      { label: 'Nuevo'}
+    ]);
+  }
 
   ngOnInit() {
 

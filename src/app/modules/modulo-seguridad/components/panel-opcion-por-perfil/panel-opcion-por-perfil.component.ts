@@ -6,7 +6,6 @@ import { SeguridadService } from '../../services/seguridad.service';
 import { MensajePrimeNgService } from '../../../modulo-compartido/services/mensaje-prime-ng.service';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
 import { MenuModel } from '../../models/menu.model';
-import { environment } from 'src/environments/environment';
 import { OpcionPorPerfilModel } from '../../models/opcion-por-perfil';
 import { PerfilModel } from '../../models/pefil.model';
 import { Subscription } from 'rxjs';
@@ -51,8 +50,8 @@ export class PanelOpcionPorPerfilComponent implements OnInit, OnDestroy {
               private menuDinamicoService: MenuDinamicoService,
               private userContextService: UserContextService) {
                 this.breadcrumbService.setItems([
-                  { label: 'Modulo Seguridad' },
-                  { label: 'Opcion por Perfil', routerLink: ['module-se/panel-opcion-por-perfil'] }
+                  { label: 'Módulo Seguridad' },
+                  { label: 'Opción por Perfil', routerLink: ['module-se/panel-opcion-por-perfil'] }
               ]);
               }
 

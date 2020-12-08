@@ -9,6 +9,7 @@ import { MensajePrimeNgService } from '../../../modulo-compartido/services/mensa
 import { Subscription, Observable } from 'rxjs';
 import { ButtonAcces } from '../../../../models/acceso-button';
 import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
+import { BreadcrumbService } from '../../../../services/breadcrumb.service';
 
 @Component({
   selector: 'app-panel-menu',
@@ -39,7 +40,13 @@ export class PanelMenuComponent implements OnInit, OnDestroy {
   constructor(private seguridadService: SeguridadService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private fb: FormBuilder,
-              private menuDinamicoService: MenuDinamicoService) { }
+              private menuDinamicoService: MenuDinamicoService,
+              private breadcrumbService: BreadcrumbService) {
+    this.breadcrumbService.setItems([
+      { label: 'Módulo Seguridad' },
+      { label: 'Menu', routerLink: ['module-se/panel-menu'] }
+    ]);
+  }
 
   ngOnInit() {
     this.getListaMenu();

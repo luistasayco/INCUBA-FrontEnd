@@ -6,6 +6,7 @@ import { MensajePrimeNgService } from 'src/app/modules/modulo-compartido/service
 import { Router } from '@angular/router';
 import { ExamenFisicoPollitoService } from '../../../services/examen-fisico-pollito.service';
 import { Subscription } from 'rxjs';
+import { BreadcrumbService } from '../../../../../services/breadcrumb.service';
 
 @Component({
   selector: 'app-proceso-create',
@@ -29,7 +30,14 @@ export class ProcesoCreateComponent implements OnInit, OnDestroy {
   constructor(private fb: FormBuilder,
               private examenFisicoPollitoService: ExamenFisicoPollitoService,
               public mensajePrimeNgService: MensajePrimeNgService,
-              private router: Router) { }
+              private router: Router,
+              private breadcrumbService: BreadcrumbService) {
+    this.breadcrumbService.setItems([
+      { label: 'Módulo Examen Físico' },
+      { label: this.titulo, routerLink: ['module-ef/panel-proceso'] },
+      { label: 'Nuevo'}
+    ]);
+  }
 
   ngOnInit() {
     this.maestroForm = this.fb.group(

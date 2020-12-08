@@ -33,9 +33,9 @@ export class MantenimientoCreateComponent implements OnInit, OnDestroy {
               private router: Router,
               private breadcrumbService: BreadcrumbService) {
                 this.breadcrumbService.setItems([
-                    { label: 'Modulo' },
+                    { label: 'Módulo Registro Equipo' },
                     { label: 'Mantenimiento', routerLink: ['module-re/panel-mantenimiento'] },
-                    { label: 'Nuevo mantenimiento'}
+                    { label: 'Nuevo'}
                 ]);
               }
 

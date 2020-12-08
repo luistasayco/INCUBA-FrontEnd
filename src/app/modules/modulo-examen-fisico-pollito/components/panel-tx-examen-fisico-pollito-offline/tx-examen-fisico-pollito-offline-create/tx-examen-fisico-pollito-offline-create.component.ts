@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 import { TxExamenFisicoPollitoDetalleModelNew } from '../../../models/tx-examen-fisico-pollito-detalle-new';
 import { UtilService } from '../../../../modulo-compartido/services/util.service';
 import { UserContextService } from '../../../../../services/user-context.service';
+import { PlantaModel } from '../../../../modulo-compartido/models/planta.model';
 
 @Component({
   selector: 'app-tx-examen-fisico-pollito-offline-create',
@@ -24,13 +25,14 @@ import { UserContextService } from '../../../../../services/user-context.service
 })
 export class TxExamenFisicoPollitoOfflineCreateComponent implements OnInit, OnDestroy {
 
-  titulo = 'Examen Fisico';
+  titulo = 'Examen Físico';
   value: boolean;
   // Name de los botones de accion
   globalConstants: GlobalsConstants = new GlobalsConstants();
 
   // Opciones de busqueda
   listItemEmpresa: SelectItem[];
+  listItemPlanta: SelectItem[];
   listItemSexo: SelectItem[];
 
   modeloItem: TxExamenFisicoPollitoModel = new TxExamenFisicoPollitoModel();
@@ -46,6 +48,7 @@ export class TxExamenFisicoPollitoOfflineCreateComponent implements OnInit, OnDe
   columnas: any[];
 
   selectEmpresa: any;
+  selectedPlanta: any;
   selectSexo: any;
 
   subscription$: Subscription;
@@ -58,9 +61,9 @@ export class TxExamenFisicoPollitoOfflineCreateComponent implements OnInit, OnDe
               private utilService: UtilService,
               private userContextService: UserContextService) {
                 this.breadcrumbService.setItems([
-                  { label: 'Modulo' },
-                  { label: 'Examen Fisico del Pollito Offline', routerLink: ['module-ef/panel-tx-examen-fisico-pollito-offline'] },
-                  { label: 'Nuevo Examen Fisico Offline'}
+                  { label: 'Módulo Examen Físico' },
+                  { label: 'Examen Físico (Offline)', routerLink: ['module-ef/panel-tx-examen-fisico-pollito-offline'] },
+                  { label: 'Nuevo'}
               ]);
   }
 
@@ -79,6 +82,7 @@ export class TxExamenFisicoPollitoOfflineCreateComponent implements OnInit, OnDe
     .subscribe((data: TxExamenFisicoPollitoDetalleModelNew[]) => {
       this.modeloItem.listDetalleNew = data;
       this.modeloItem.responsableInvetsa = this.userContextService.getNombreCompletoUsuario();
+      this.modeloItem.emailFrom = this.userContextService.getEmail();
     });
 
     this.subscription$ = new Subscription();
@@ -103,6 +107,26 @@ export class TxExamenFisicoPollitoOfflineCreateComponent implements OnInit, OnDe
         this.listItemEmpresa.push({ label: item.descripcion, value: item.codigoEmpresa });
       }
       });
+  }
+
+  getOnChangeEmpresa() {
+    if (this.selectEmpresa !== null) {
+      this.getToObtienePlantaPorEmpresa(this.selectEmpresa.value);
+    } else {
+      this.listItemPlanta = [];
+    }
+  }
+
+  getToObtienePlantaPorEmpresa(value: string) {
+    this.subscription$ = new Subscription();
+    this.subscription$ = this.compartidoLocalService.getPlantaPorEmpresa()
+    .subscribe((data: PlantaModel[]) => {
+      let dataFilter = [...data].filter(x => x.codigoEmpresa === value);
+      this.listItemPlanta = [];
+      for (let item of dataFilter) {
+        this.listItemPlanta.push({ label: item.descripcion, value: item.codigoPlanta });
+      }
+    });
   }
 
   getToObtieneSexo() {
@@ -207,10 +231,12 @@ export class TxExamenFisicoPollitoOfflineCreateComponent implements OnInit, OnDe
     }
     this.modeloItem.codigoEmpresa = this.selectEmpresa.value;
     this.modeloItem.descripcionEmpresa = this.selectEmpresa.label;
-    if (!this.modeloItem.unidadPlanta) {
+    if (!this.selectedPlanta) {
       this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Ingresar Unidad - Planta');
       return;
     }
+    this.modeloItem.codigoPlanta = this.selectedPlanta.value;
+    this.modeloItem.descripcionPlanta = this.selectedPlanta.label;
     if (!this.selectSexo) {
       this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Seleccionar Sexo');
       return;

@@ -9,7 +9,7 @@
             </div>
             <div class="ui-g-12 ui-md-6">
                 <label class="label-custom" for="unidad">Unidad - Planta</label>
-                <input id="unidad" type="text" [disabled]="true" [(ngModel)]="modeloItem.unidadPlanta" pInputText>
+                <input id="unidad" type="text" [disabled]="true" [(ngModel)]="modeloItem.descripcionPlanta" pInputText>
             </div>
         </div>
     </p-panel>
@@ -136,6 +136,8 @@
                 <div class="p-field">
                     <label for="nombreInvetsa">Responsable Invetsa:</label>
                     <input id="nombreInvetsa" [disabled]="true" [(ngModel)]="modeloItem.responsableInvetsa" type="text" pInputText>
+                    <label for="emailInvetsa">Email:</label>
+                    <input [disabled]="true" id="emailInvetsa" [(ngModel)]="modeloItem.emailFrom" type="text" pInputText>
                 </div>
             </div>
 
@@ -143,6 +145,8 @@
                 <div class="p-field">
                     <label for="nombrePlanta">Responsable Planta:</label>
                     <input id="nombrePlanta" [disabled]="true" [(ngModel)]="modeloItem.responsablePlanta" type="text" pInputText>
+                    <label for="emailPlanta">Email:</label>
+                    <input [disabled]="true" id="emailPlanta" [(ngModel)]="modeloItem.emailTo" type="text" pInputText>
                 </div>
             </div>
             <div class="ui-g-12 ui-md-6">

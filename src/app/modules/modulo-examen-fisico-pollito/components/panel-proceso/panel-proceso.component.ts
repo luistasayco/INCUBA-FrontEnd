@@ -10,6 +10,7 @@ import { ProcesoDetalleModel } from '../../models/proceso-detalle.model';
 import { Subscription } from 'rxjs';
 import { ButtonAcces } from '../../../../models/acceso-button';
 import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
+import { BreadcrumbService } from '../../../../services/breadcrumb.service';
 
 @Component({
   selector: 'app-panel-proceso',
@@ -65,7 +66,13 @@ export class PanelProcesoComponent implements OnInit, OnDestroy {
               public mensajePrimeNgService: MensajePrimeNgService,
               private router: Router,
               private confirmationService: ConfirmationService,
-              private menuDinamicoService: MenuDinamicoService) { }
+              private menuDinamicoService: MenuDinamicoService,
+              private breadcrumbService: BreadcrumbService) {
+    this.breadcrumbService.setItems([
+      { label: 'Módulo Examen Físico' },
+      { label: this.titulo, routerLink: ['module-ef/panel-proceso'] }
+    ]);
+  }
 
   ngOnInit() {
     this.columnas = [

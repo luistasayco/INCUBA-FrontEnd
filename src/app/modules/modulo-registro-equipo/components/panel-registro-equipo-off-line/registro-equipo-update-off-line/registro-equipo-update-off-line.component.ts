@@ -1,13 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GlobalsConstants } from '../../../../modulo-compartido/models/globals-constants';
-import { SelectItem, ConfirmationService } from 'primeng';
+import { SelectItem } from 'primeng';
 import { EmpresaModel } from '../../../../modulo-compartido/models/empresa.model';
 import { PlantaModel } from '../../../../modulo-compartido/models/planta.model';
 import { ModeloModel } from '../../../../modulo-compartido/models/modelo.model';
 import { TxRegistroEquipoModel } from '../../../models/tx-registro-equipo.model';
 import { TxRegistroEquipoDetalle5Model } from '../../../models/tx-registro-equipo-detalle5.model';
 import { TxRegistroEquipoDetalle6Model } from '../../../models/tx-registro-equipo-detalle6.model';
-import { RegistroEquipoService } from '../../../services/registro-equipo.service';
 import { MensajePrimeNgService } from '../../../../modulo-compartido/services/mensaje-prime-ng.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { BreadcrumbService } from '../../../../../services/breadcrumb.service';
@@ -66,9 +65,9 @@ export class RegistroEquipoUpdateOffLineComponent implements OnInit, OnDestroy {
               private readonly route: ActivatedRoute,
               private breadcrumbService: BreadcrumbService) {
     this.breadcrumbService.setItems([
-        { label: 'Modulo' },
+        { label: 'Módulo Registro Equipo' },
         { label: 'Registro de Equipo', routerLink: ['module-re/panel-registro-equipo'] },
-        { label: 'Actualizar registro de equipo'}
+        { label: 'Actualizar'}
     ]);
   }
   ngOnDestroy() {

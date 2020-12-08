@@ -68,9 +68,9 @@ export class RegistroEquipoUpdateComponent implements OnInit, OnDestroy {
               private readonly route: ActivatedRoute,
               private breadcrumbService: BreadcrumbService) {
     this.breadcrumbService.setItems([
-        { label: 'Modulo' },
+        { label: 'Módulo Registro Equipo' },
         { label: 'Registro de Equipo', routerLink: ['module-re/panel-registro-equipo'] },
-        { label: 'Actualizar registro de equipo'}
+        { label: 'Actualizar'}
     ]);
   }
 

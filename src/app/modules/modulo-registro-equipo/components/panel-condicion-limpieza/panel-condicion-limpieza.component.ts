@@ -47,7 +47,7 @@ export class PanelCondicionLimpiezaComponent implements OnInit, OnDestroy {
               private breadcrumbService: BreadcrumbService,
               private menuDinamicoService: MenuDinamicoService) {
                 this.breadcrumbService.setItems([
-                    { label: 'Modulo' },
+                    { label: 'Módulo Registro Equipo' },
                     { label: 'Condición de limpieza', routerLink: ['module-re/panel-condicion-limpieza'] }
                 ]);
               }

@@ -4,11 +4,11 @@
         <div class="ui-g ui-fluid">
             <div class="ui-g-12 ui-md-6">
                 <label class="label-custom" for="dropdown-empresa">Empresa: </label>
-                <p-dropdown id="dropdown-empresa" class="ui dropdown-item-text" [(ngModel)]="selectEmpresa" [options]="listItemEmpresa" placeholder="Select Compañia" optionLabel="label" [showClear]="true"></p-dropdown>
+                <p-dropdown id="dropdown-empresa" class="ui dropdown-item-text" [(ngModel)]="selectEmpresa" [options]="listItemEmpresa" placeholder="Select Compañia" (onChange)="getOnChangeEmpresa()" optionLabel="label" [showClear]="true"></p-dropdown>
             </div>
             <div class="ui-g-12 ui-md-6">
-                <label class="label-custom" for="unidad">Unidad - Planta</label>
-                <input id="unidad" type="text" [(ngModel)]="modeloItem.unidadPlanta" pInputText>
+                <label class="label-custom" for="unidad">Planta</label>
+                <p-dropdown id="dropdown" class="ui dropdown-item-text" [options]="listItemPlanta" [(ngModel)]="selectedPlanta" placeholder="Select Planta" optionLabel="label" [showClear]="true"></p-dropdown>
             </div>
         </div>
     </p-panel>
@@ -126,7 +126,9 @@
             <div class="ui-g-12 ui-md-6">
                 <div class="p-field">
                     <label for="nombreInvetsa">Responsable Invetsa:</label>
-                    <input id="nombreInvetsa" [(ngModel)]="modeloItem.responsableInvetsa" type="text" pInputText>
+                    <input [disabled]="true" id="nombreInvetsa" [(ngModel)]="modeloItem.responsableInvetsa" type="text" pInputText>
+                    <label for="emailInvetsa">Email:</label>
+                    <input [disabled]="true" id="emailInvetsa" [(ngModel)]="modeloItem.emailFrom" type="text" pInputText>
                 </div>
             </div>
 
@@ -134,6 +136,8 @@
                 <div class="p-field">
                     <label for="nombrePlanta">Responsable Planta:</label>
                     <input id="nombrePlanta" [(ngModel)]="modeloItem.responsablePlanta" type="text" pInputText>
+                    <label for="emailPlanta">Email:</label>
+                    <input id="emailPlanta" [(ngModel)]="modeloItem.emailTo" type="text" pInputText>
                 </div>
             </div>
             <div class="ui-g-12 ui-md-6">

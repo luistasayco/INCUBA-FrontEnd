@@ -35,6 +35,10 @@ export class UserContextService {
     return this.sessionService.getItemDecrypt('nombre');
   }
 
+  public getEmail(): string {
+    return this.sessionService.getItemDecrypt('email');
+  }
+
   public getUsuario() {
     return this.sessionService.getItemDecrypt('usuario');
   }

@@ -9,6 +9,7 @@ import { ExamenFisicoPollitoService } from '../../services/examen-fisico-pollito
 import { Subscription } from 'rxjs';
 import { ButtonAcces } from '../../../../models/acceso-button';
 import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
+import { BreadcrumbService } from '../../../../services/breadcrumb.service';
 
 @Component({
   selector: 'app-panel-calidad',
@@ -45,7 +46,13 @@ export class PanelCalidadComponent implements OnInit, OnDestroy {
               public mensajePrimeNgService: MensajePrimeNgService,
               private router: Router,
               private confirmationService: ConfirmationService,
-              private menuDinamicoService: MenuDinamicoService) { }
+              private menuDinamicoService: MenuDinamicoService,
+              private breadcrumbService: BreadcrumbService) {
+    this.breadcrumbService.setItems([
+      { label: 'Módulo Examen Físico' },
+      { label: 'Calidad', routerLink: ['module-ef/panel-calidad'] }
+  ]);
+  }
 
   ngOnInit() {
     this.columnas = [

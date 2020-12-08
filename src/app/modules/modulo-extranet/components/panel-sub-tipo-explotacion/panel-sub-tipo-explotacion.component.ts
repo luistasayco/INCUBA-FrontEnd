@@ -56,7 +56,7 @@ export class PanelSubTipoExplotacionComponent implements OnInit, OnDestroy {
               private breadcrumbService: BreadcrumbService,
               private menuDinamicoService: MenuDinamicoService) {
                 this.breadcrumbService.setItems([
-                    { label: 'Mod. Extranet' },
+                    { label: 'Módulo Extranet' },
                     { label: 'Sub Tipo Explotación', routerLink: ['module-ex/panel-sub-tipo-explotacion'] }
                 ]);
               }

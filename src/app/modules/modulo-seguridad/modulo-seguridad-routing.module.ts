@@ -9,6 +9,8 @@ import { PanelMenuComponent } from './components/panel-menu/panel-menu.component
 import { PanelOpcionComponent } from './components/panel-opcion/panel-opcion.component';
 import { OpcionCreateComponent } from './components/panel-opcion/opcion-create/opcion-create.component';
 import { PanelOpcionPorPerfilComponent } from './components/panel-opcion-por-perfil/panel-opcion-por-perfil.component';
+import { PanelConexionComponent } from './components/panel-conexion/panel-conexion.component';
+import { PanelSistemaComponent } from './components/panel-sistema/panel-sistema.component';
 
 const routes: Routes = [
     { path: 'panel-perfil', component: PanelPerfilComponent },
@@ -19,7 +21,9 @@ const routes: Routes = [
     { path: 'panel-menu', component: PanelMenuComponent},
     { path: 'panel-opcion', component: PanelOpcionComponent},
     { path: 'opcion-create/:id', component: OpcionCreateComponent},
-    { path: 'panel-opcion-x-perfil', component: PanelOpcionPorPerfilComponent}
+    { path: 'panel-opcion-x-perfil', component: PanelOpcionPorPerfilComponent},
+    { path: 'panel-parametro-conexion', component: PanelConexionComponent},
+    { path: 'panel-parametro-sistema', component: PanelSistemaComponent}
 ];
 
 @NgModule({

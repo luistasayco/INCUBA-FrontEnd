@@ -361,15 +361,19 @@
 
                 <div class="ui-g-12 ui-md-6">
                     <div class="p-field">
-                        <label for="nombreInvetsa">Nombre:</label>
+                        <label for="nombreInvetsa">Responsable Invetsa:</label>
                         <input id="nombreInvetsa" type="text" [(ngModel)]="modeloItem.responsableIncuba" pInputText>
+                        <label for="emailInvetsa">Email:</label>
+                        <input [disabled]="true" id="emailInvetsa" [(ngModel)]="modeloItem.emailFrom" type="text" pInputText>
                     </div>
                 </div>
 
                 <div class="ui-g-12 ui-md-6">
                     <div class="p-field">
-                        <label for="nombrePlanta">Nombre:</label>
+                        <label for="nombrePlanta">Responsable Planta:</label>
                         <input id="nombrePlanta" type="text" [(ngModel)]="modeloItem.responsablePlanta" pInputText>
+                        <label for="emailPlanta">Email:</label>
+                        <input id="emailPlanta" [(ngModel)]="modeloItem.emailTo" type="text" pInputText>
                     </div>
                 </div>
 

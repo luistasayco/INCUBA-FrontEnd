@@ -16,6 +16,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CalendarModule } from 'primeng/calendar';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { FileUploadModule } from 'primeng/fileupload';
+import { CardModule } from 'primeng/card';
 // Sevices
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
@@ -36,7 +37,8 @@ import { MessageService } from 'primeng/api';
         InputTextareaModule,
         CalendarModule,
         TabMenuModule,
-        FileUploadModule],
+        FileUploadModule,
+        CardModule],
     providers: [ConfirmationService, MessageService],
 })
 export class ExtranetPrimeNgModule {}

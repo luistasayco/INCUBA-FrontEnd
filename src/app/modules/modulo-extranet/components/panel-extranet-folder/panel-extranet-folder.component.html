@@ -1,0 +1,18 @@
+<div class="card card-w-title">
+    <h1><strong>{{titulo}}</strong></h1>
+    <p-messages [(value)]="mensajePrimeNgService.msgs"></p-messages>
+    <p-panel header="Opción de busqueda de {{titulo}}" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
+        <div class="ui-grid ui-fluid">
+
+            <div *ngFor="let item of listModelo" [ngClass]="[item.mimeType === 'application/vnd.google-apps.folder' ? 'ui-g-12 ui-md-4': 'ui-g-12 ui-md-12']">
+                <p-card styleClass="ui-card-shadow">
+                    <div style="text-align: center;">
+                        <button *ngIf="item.mimeType === 'application/vnd.google-apps.folder'" icon="fa fa-folder" pButton type="button" label="{{item.names}}" class="ui-button-secondary ui-button-block" (click)="onListarChildern(item)"></button>
+
+                        <button *ngIf="item.mimeType !== 'application/vnd.google-apps.folder'" icon="fa fa-file" pButton type="button" label="{{item.names}}" class="ui-button-secondary ui-button-block" (click)="onListarChildern(item)"></button>
+                    </div>
+                </p-card>
+            </div>
+        </div>
+    </p-panel>
+</div>

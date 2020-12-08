@@ -57,9 +57,9 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
               public app: LayoutComponent,
               private readonly route: ActivatedRoute) {
                 this.breadcrumbService.setItems([
-                    { label: 'Modulo Seguridad' },
+                    { label: 'Módulo Seguridad' },
                     { label: 'Usuario', routerLink: ['module-se/panel-persona'] },
-                    { label: 'Actualizar Usuario'}
+                    { label: 'Actualizar'}
                 ]);
               }
 

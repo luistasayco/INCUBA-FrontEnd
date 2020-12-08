@@ -37,9 +37,9 @@ export class OpcionCreateComponent implements OnInit, OnDestroy {
               private breadcrumbService: BreadcrumbService,
               private route: ActivatedRoute) {
                 this.breadcrumbService.setItems([
-                    { label: 'Modulo Seguridad' },
-                    { label: 'Opcion', routerLink: ['module-se/panel-opcion'] },
-                    { label: 'Nuevo Opcion'}
+                    { label: 'Módulo Seguridad' },
+                    { label: 'Opción', routerLink: ['module-se/panel-opcion'] },
+                    { label: 'Nuevo'}
                 ]);
               }
 
@@ -52,6 +52,7 @@ export class OpcionCreateComponent implements OnInit, OnDestroy {
     this.maestroForm = this.fb.group(
       {
         'descripcion' : new FormControl('', Validators.compose([Validators.required, Validators.maxLength(100), Validators.minLength(4)])),
+        'keyOpcion' : new FormControl(''),
       }
     );
   }
@@ -59,6 +60,7 @@ export class OpcionCreateComponent implements OnInit, OnDestroy {
   onClickSave() {
     this.modelo.idMenu = Number(this.idMenu);
     this.modelo.descripcionOpcion = this.maestroForm.controls['descripcion'].value;
+    this.modelo.keyOpcion = this.maestroForm.controls['keyOpcion'].value;
     this.subscription = new Subscription();
     this.subscription = this.seguridadService.setInsertOpcion(this.modelo)
     .subscribe(() =>  {

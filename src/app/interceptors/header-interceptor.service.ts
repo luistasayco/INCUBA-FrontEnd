@@ -39,9 +39,6 @@ export class HeaderInterceptorService {
 
     const user = this.userContextService.user$.getValue();
 
-    console.log('user', user);
-    console.log('req', req.reportProgress);
-
     if (user) {
       const TOKEN = localStorage.getItem('token');
       if (req.reportProgress) {

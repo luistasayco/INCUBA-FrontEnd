@@ -11,9 +11,7 @@ import { LanguageService } from '../../../../services/language.service';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
 import { RegistroEquipoLocalService } from '../../services/registro-equipo-local.service';
 import { CompartidoLocalService } from '../../../modulo-compartido/services/compartido-local.service';
-import { Subscription, Observable } from 'rxjs';
-import { SessionService } from '../../../../services/session.service';
-import { environment } from '../../../../../environments/environment.prod';
+import { Subscription } from 'rxjs';
 import { UtilService } from '../../../modulo-compartido/services/util.service';
 import { ButtonAcces } from '../../../../models/acceso-button';
 import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
@@ -26,7 +24,7 @@ import { UserContextService } from '../../../../services/user-context.service';
 })
 export class PanelRegistroEquipoOffLineComponent implements OnInit, OnDestroy {
   // Titulo del componente
-  titulo = 'Registros de Equipos';
+  titulo = 'Registros de Equipos (Offline)';
   // Acceso de botones
   buttonAcces: ButtonAcces = new ButtonAcces();
   // Name de los botones de accion
@@ -75,8 +73,8 @@ export class PanelRegistroEquipoOffLineComponent implements OnInit, OnDestroy {
               private menuDinamicoService: MenuDinamicoService,
               private userContextService: UserContextService) {
     this.breadcrumbService.setItems([
-        { label: 'Modulo' },
-        { label: 'Registro de Equipo', routerLink: ['module-re/panel-registro-equipo-offline'] }
+        { label: 'Módulo Registro Equipo' },
+        { label: 'Registro de Equipo (Offline)', routerLink: ['module-re/panel-registro-equipo-offline'] }
     ]);
   }
   ngOnDestroy() {

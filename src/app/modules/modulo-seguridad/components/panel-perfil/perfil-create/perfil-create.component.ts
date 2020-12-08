@@ -33,9 +33,9 @@ export class PerfilCreateComponent implements OnInit, OnDestroy {
               private router: Router,
               private breadcrumbService: BreadcrumbService) {
                 this.breadcrumbService.setItems([
-                    { label: 'Modulo' },
+                    { label: 'Módulo Seguridad' },
                     { label: 'Perfil', routerLink: ['module-se/panel-perfil'] },
-                    { label: 'Nuevo perfil'}
+                    { label: 'Nuevo'}
                 ]);
               }
 
