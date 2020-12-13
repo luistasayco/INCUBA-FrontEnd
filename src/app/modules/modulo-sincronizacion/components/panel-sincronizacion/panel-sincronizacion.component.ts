@@ -26,13 +26,13 @@ export class PanelSincronizacionComponent implements OnInit, OnDestroy {
     this.servicioTraerDatos.datosCargadosTotalmente.subscribe(
       resultado => {
         if (resultado) {
-          console.log('Datos obtenidos desde el Servidor. Completado: ' );
+          // console.log('Datos obtenidos desde el Servidor. Completado: ' );
         } else {
           // console.log('AUN NO TERMINA LA SINCRONIZACION');
         }
       },
       error => {
-        console.log('Error en mostrarSiguienteVista()' + error);
+        // console.log('Error en mostrarSiguienteVista()' + error);
       }
     );
   }

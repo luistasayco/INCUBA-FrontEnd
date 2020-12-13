@@ -211,8 +211,7 @@ export class PanelTxExamenFisicoPollitoOfflineComponent implements OnInit, OnDes
     clearInterval(this.interval);
 
     this.interval = setInterval(() => {
-    console.log('consulta data local');
-    this.onListar();
+      this.onListar();
     }, 60000);
   }
 }

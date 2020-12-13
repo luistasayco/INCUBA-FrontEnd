@@ -143,7 +143,6 @@ export class PanelTxExamenFisicoPollitoComponent implements OnInit, OnDestroy {
       this.fecRegistroFin)
     .subscribe(resp => {
       if (resp) {
-        console.log(resp);
           this.listModelo = resp;
         }
       },
@@ -231,16 +230,12 @@ export class PanelTxExamenFisicoPollitoComponent implements OnInit, OnDestroy {
   }
 
   onToRowSelectPDF(modelo: TxExamenFisicoPollitoModel) {
-
-    this.examenFisicoPollitoService.setPDFExamenFisicoPollito(modelo.idExamenFisico)
+    this.subscription$ = new Subscription();
+    this.subscription$ = this.examenFisicoPollitoService.setPDFExamenFisicoPollito(modelo.idExamenFisico)
     .subscribe((resp: any) => {
-      // let file = new window.Blob([resp], {type: 'application/pdf'});
-      saveAs(new Blob([resp], {type: 'application/pdf'}), `ExamenFisico#${modelo.idExamenFisico.toString()}`);
-      // let fileURL = window.URL.createObjectURL(file);
-      // window.open(fileURL, '_blank');
+      saveAs(new Blob([resp], {type: 'application/pdf'}), modelo.nombreArchivo);
     },
       (error) => {
-        console.log('error', error);
         this.mensajePrimeNgService.onToErrorMsg(null, error);
       });
   }

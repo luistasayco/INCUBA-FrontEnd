@@ -38,28 +38,29 @@ export class EnviarDatosRemotosService {
 
   public enviarDatosAServidorRemoto() {
 
-    console.log(variableGlobal._FLAG_ENVIANDO_DATOS_A_SERVIDOR === false ?
-      'Ninguna tarea de envío en progreso' : 'Tarea de envío en progreso. Se enviará luego');
+    // console.log(variableGlobal._FLAG_ENVIANDO_DATOS_A_SERVIDOR === false ?
+    //   'Ninguna tarea de envío en progreso' : 'Tarea de envío en progreso. Se enviará luego');
 
     if (!variableGlobal._FLAG_ENVIANDO_DATOS_A_SERVIDOR) {
 
       this.actualizarFlagEnvio(true);
-      console.log('Envío de información a Servidor en progreso !');
+      // console.log('Envío de información a Servidor en progreso !');
       this.enviarDatosAlServidor()
       .subscribe(resultados => {
         this.actualizarFlagEnvio(false);
-        console.log('TAREA COMPLETADA 1 DE ENVIAR DATOS AL SERVIDOR');
+        // console.log('TAREA COMPLETADA 1 DE ENVIAR DATOS AL SERVIDOR');
       },
       error => {
         this.actualizarFlagEnvio(false);
-        console.log('ERROR:', error);
+        // console.log('ERROR:', error);
       },
       () => {
         this.actualizarFlagEnvio(false);
-        console.log('TAREA COMPLETADA 2 DE ENVIAR DATOS AL SERVIDOR');      }
+        // console.log('TAREA COMPLETADA 2 DE ENVIAR DATOS AL SERVIDOR');
+        }
       );
     } else {
-      console.log('No se iniciará una tarea de envío a Servidor porque hay otra tarea de envío en progreso');
+      // console.log('No se iniciará una tarea de envío a Servidor porque hay otra tarea de envío en progreso');
     }
   }
 
@@ -101,7 +102,7 @@ export class EnviarDatosRemotosService {
           if (this.validarProcesoCompletado()) { observer.next(); }
         }
       } else {
-        console.log('enviarDatosAlServidor: Sin Acceso a Internet. No se enviará los datos');
+        // console.log('enviarDatosAlServidor: Sin Acceso a Internet. No se enviará los datos');
         observer.complete();
       }
     });
@@ -125,11 +126,11 @@ export class EnviarDatosRemotosService {
               this.registroEquipoService.setInsertTxRegistroEquipo(item)
               .subscribe( result => {
                 item.flgMigrado = true;
-                console.log('enviarTxRegistroEquipo', `Se migro correctamente: `, item);
+                // console.log('enviarTxRegistroEquipo', `Se migro correctamente: `, item);
                 this.servicioIndexedDB.update(ConstantesTablasIDB._TABLA_TXREGISTROEQUIPO, item);
               },
               errorFor => {
-                console.log('enviarTxRegistroEquipo', `Error al enviar Datos. Registro de Equipo: ${errorFor}`, item);
+                // console.log('enviarTxRegistroEquipo', `Error al enviar Datos. Registro de Equipo: ${errorFor}`, item);
               }
               );
             });
@@ -142,7 +143,7 @@ export class EnviarDatosRemotosService {
         }
       },
       error => {
-        console.log(`Error al enviar Datos. Registro de Equipo: ${error}`);
+        // console.log(`Error al enviar Datos. Registro de Equipo: ${error}`);
         observer.next();
       }
       );
@@ -166,11 +167,11 @@ export class EnviarDatosRemotosService {
               this.examenFisicoPollitoService.setInsertExamenFisicoPollito(item)
               .subscribe( result => {
                 item.flgMigrado = true;
-                console.log('enviarExamenFisicoPollito', `Se migro correctamente: `, item);
+                // console.log('enviarExamenFisicoPollito', `Se migro correctamente: `, item);
                 this.servicioIndexedDB.update(ConstantesTablasIDB._TABLA_TXEXAMENFISICOPOLLITO, item);
               },
               errorFor => {
-                console.log('enviarExamenFisicoPollito', `Error al enviar Datos. Examenes Fisicos de Pollitos: ${errorFor}`, item);
+                // console.log('enviarExamenFisicoPollito', `Error al enviar Datos. Examenes Fisicos de Pollitos: ${errorFor}`, item);
               }
               );
             });
@@ -183,7 +184,7 @@ export class EnviarDatosRemotosService {
         }
       },
       error => {
-        console.log(`Error al enviar Datos. Examenes Fisicos de Pollitos: ${error}`);
+        // console.log(`Error al enviar Datos. Examenes Fisicos de Pollitos: ${error}`);
         observer.next();
       }
       );

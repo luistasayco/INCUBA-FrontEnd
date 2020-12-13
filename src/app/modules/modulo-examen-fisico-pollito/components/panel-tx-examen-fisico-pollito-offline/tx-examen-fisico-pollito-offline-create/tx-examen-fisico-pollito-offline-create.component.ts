@@ -291,7 +291,6 @@ export class TxExamenFisicoPollitoOfflineCreateComponent implements OnInit, OnDe
       this.onBack();
     },
       (error) => {
-        console.log(error);
         this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, error);
     });
   }

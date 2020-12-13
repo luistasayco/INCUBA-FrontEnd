@@ -4,10 +4,12 @@ export class ParametroConexionModel {
     aplicacionBaseDatos: string;
     aplicacionUsuario: string;
     aplicacionPassword: string;
+    aplicacionPasswordOriginal: string;
     sapServidor: string;
     sapBaseDatos: string;
     sapUsuario: string;
     sapPassword: string;
+    sapPasswordOriginal: string;
 
     // Auditoria
     regUsuario?: number;
@@ -19,10 +21,12 @@ export class ParametroConexionModel {
         this.aplicacionBaseDatos = '';
         this.aplicacionUsuario = '';
         this.aplicacionPassword = '';
+        this.aplicacionPasswordOriginal = '';
         this.sapServidor = '';
         this.sapBaseDatos = '';
         this.sapUsuario = '';
         this.sapPassword = '';
+        this.sapPasswordOriginal = '';
         this.regUsuario = 0;
         this.regEstacion = '';
     }

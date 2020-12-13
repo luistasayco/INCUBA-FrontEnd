@@ -42,11 +42,11 @@
                             <label class="label-custom" for="float-input-apli-password">Contraseña: </label>
                             <div class="ui-inputgroup">
                                 <span class="ui-inputgroup-addon"><i class="fa fa-key"></i></span>
-                                <input id="float-input-apli-password" type="password" placeholder="Contraseña" size="20" formControlName="aplicacionPassword" required pPassword>
+                                <input id="float-input-apli-password" type="password" placeholder="Contraseña" size="20" formControlName="aplicacionPasswordOriginal" required pPassword>
                             </div>
-                            <div *ngIf="modeloForm.controls['aplicacionPassword'].errors && modeloForm.controls['aplicacionPassword'].dirty">
-                                <p-message severity="error" text="Base Datos es requerido" *ngIf="modeloForm.controls['aplicacionPassword'].errors['required']"></p-message>
-                                <p-message severity="error" text="Tener un min. de 5 y max. de 100 caractares" *ngIf="modeloForm.controls['aplicacionPassword'].errors['minlength'] || modeloForm.controls['aplicacionPassword'].errors['maxlength'] "></p-message>
+                            <div *ngIf="modeloForm.controls['aplicacionPasswordOriginal'].errors && modeloForm.controls['aplicacionPasswordOriginal'].dirty">
+                                <p-message severity="error" text="Base Datos es requerido" *ngIf="modeloForm.controls['aplicacionPasswordOriginal'].errors['required']"></p-message>
+                                <p-message severity="error" text="Tener un min. de 5 y max. de 100 caractares" *ngIf="modeloForm.controls['aplicacionPasswordOriginal'].errors['minlength'] || modeloForm.controls['aplicacionPasswordOriginal'].errors['maxlength'] "></p-message>
                             </div>
                         </div>
 
@@ -90,11 +90,11 @@
                             <label class="label-custom" for="float-input-sap-password">Contraseña: </label>
                             <div class="ui-inputgroup">
                                 <span class="ui-inputgroup-addon"><i class="fa fa-key"></i></span>
-                                <input id="float-input-sap-password" type="password" placeholder="Contraseña" size="20" formControlName="sapPassword" required pPassword>
+                                <input id="float-input-sap-password" type="password" placeholder="Contraseña" size="20" formControlName="sapPasswordOriginal" required pPassword>
                             </div>
-                            <div *ngIf="modeloForm.controls['sapPassword'].errors && modeloForm.controls['sapPassword'].dirty">
-                                <p-message severity="error" text="Base Datos es requerido" *ngIf="modeloForm.controls['sapPassword'].errors['required']"></p-message>
-                                <p-message severity="error" text="Tener un min. de 5 y max. de 100 caractares" *ngIf="modeloForm.controls['sapPassword'].errors['minlength'] || modeloForm.controls['sapPassword'].errors['maxlength'] "></p-message>
+                            <div *ngIf="modeloForm.controls['sapPasswordOriginal'].errors && modeloForm.controls['sapPasswordOriginal'].dirty">
+                                <p-message severity="error" text="Base Datos es requerido" *ngIf="modeloForm.controls['sapPasswordOriginal'].errors['required']"></p-message>
+                                <p-message severity="error" text="Tener un min. de 5 y max. de 100 caractares" *ngIf="modeloForm.controls['sapPasswordOriginal'].errors['minlength'] || modeloForm.controls['sapPasswordOriginal'].errors['maxlength'] "></p-message>
                             </div>
                         </div>
                     </p-fieldset>

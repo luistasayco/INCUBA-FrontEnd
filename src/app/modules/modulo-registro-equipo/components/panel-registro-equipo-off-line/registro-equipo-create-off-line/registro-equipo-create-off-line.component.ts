@@ -485,7 +485,6 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
     },
       (error) => {
-        console.log('error', error);
         this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, error);
     });
   }

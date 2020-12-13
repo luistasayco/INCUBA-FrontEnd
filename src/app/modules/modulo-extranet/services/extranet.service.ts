@@ -135,14 +135,11 @@ export class ExtranetService {
   }
 
   setInsertTxRegistroDocumento(value: string, filesToUpload: any[]) {
-    console.log('filesToUpload', filesToUpload);
     let formData: FormData = new FormData();
     formData.append('value', value);
-    console.log('formData', formData);
     filesToUpload.forEach((element: any) => {
       formData.append('archivo', element);
     });
-    console.log('formData', formData);
 
     const url = environment.url_api + 'TxRegistroDocumento/Create';
     // const param: string = JSON.stringify(value);

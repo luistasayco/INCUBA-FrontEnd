@@ -22,7 +22,6 @@ export class SessionService {
   getItemDecrypt(key: string) {
     // Obtenemos el dato encriptado
     let value = this.getItem(key);
-    // console.log(key, value);
     let valueEncrypt = this.cifrarDataService.decrypt(value);
     return valueEncrypt;
   }
@@ -31,14 +30,15 @@ export class SessionService {
    * set session storage item
    */
   setItem(key: string, value: any) {
-    sessionStorage.setItem(key, JSON.stringify(value));
+    localStorage.setItem(key, JSON.stringify(value));
+    
   }
 
   /**
    * get session storage item
    */
   getItem(key: string): any {
-    let value = sessionStorage.getItem(key);
+    let value = localStorage.getItem(key);
     return JSON.parse(value);
   }
 
@@ -46,13 +46,13 @@ export class SessionService {
    * remove session storage item
    */
   removeItem(key: string) {
-    sessionStorage.removeItem(key);
+    localStorage.removeItem(key);
   }
 
   /**
    * remove all session storage items
    */
   clear() {
-      sessionStorage.clear();
+    // localStorage.clear();
   }
 }

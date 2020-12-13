@@ -275,7 +275,7 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
     });
   }
 
-  onToEliminar(data: any) {
+  onToEliminar(data: TxRegistroEquipoModel) {
     this.subscription$ = new Subscription();
     this.subscription$ = this.registroEquipoService.setDeleteTxRegistroEquipo(data)
     .subscribe((resp: IMensajeResultadoApi) => {
@@ -289,26 +289,13 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
     );
   }
 
-  onToRowSelectPDF(modelo: any) {
-
-    // if (!modelo.flgCerrado) {
-    //   this.mensajePrimeNgService.onToInfoMsg(null, 'Registro seleccionado se encuentra CERRADO!!!');
-    //   return;
-    // }
-
-    this.registroEquipoService.setPDFTxRegistroEquipo(modelo.idRegistroEquipo)
+  onToRowSelectPDF(modelo: TxRegistroEquipoModel) {
+    this.subscription$ = new Subscription();
+    this.subscription$ = this.registroEquipoService.setPDFTxRegistroEquipo(modelo.idRegistroEquipo)
     .subscribe((resp: any) => {
-
-      console.log(resp);
-
-      // let file = new window.Blob([resp], {type: 'application/pdf'});
-      // saveAs(new Blob([resp], {type: 'application/pdf'}), 'Registros');
-      saveAs(new Blob([resp], {type: 'application/pdf'}), `RegistroEquipo#${modelo.idRegistroEquipo.toString()}`);
-      // let fileURL = window.URL.createObjectURL(file);
-      // window.open(fileURL, '_blank');
+      saveAs(new Blob([resp], {type: 'application/pdf'}), modelo.nombreArchivo);
     },
       (error) => {
-        console.log('error', error);
         this.mensajePrimeNgService.onToErrorMsg(null, error);
       });
   }

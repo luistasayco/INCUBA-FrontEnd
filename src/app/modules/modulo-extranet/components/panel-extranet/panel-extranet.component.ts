@@ -127,32 +127,10 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
     this.modeloFind.fecInicio = new Date();
     this.modeloFind.fecFin = new Date();
 
-    // if (this.sessionService.getItem('filter-ex-selectedTipoExplotacion')) {
-    //   console.log('this.selectedTipoExplotacion', this.sessionService.getItemDecrypt('filter-ex-selectedTipoExplotacion'));
-    //   if (this.sessionService.getItemDecrypt('filter-ex-selectedTipoExplotacion') !== 'null') {
-    //     this.selectedTipoExplotacion = this.sessionService.getItemDecrypt('filter-ex-selectedTipoExplotacion');
-    //     if (this.selectedTipoExplotacion) {
-    //       console.log('this.selectedTipoExplotacion', this.selectedTipoExplotacion);
-    //       this.getOnChangeTipoExplotacion();
-    //     }
-    //   }
-
-    //   this.modeloFind.fecInicio = new Date(this.sessionService.getItemDecrypt('filter-ex-fecha-inicio'));
-    //   this.modeloFind.fecFin = new Date(this.sessionService.getItemDecrypt('filter-ex-fecha-fin'));
-    //   if (this.sessionService.getItemDecrypt('filter-ex-selectedEmpresa') !== 'null') {
-    //     this.selectedEmpresa = this.sessionService.getItemDecrypt('filter-ex-selectedEmpresa');
-    //     if (this.selectedEmpresa) {
-    //       this.getOnChangeEmpresa();
-    //     }
-    //   }
-    // }
-
     this.columnas = [
-      // { field: 'idDocumento', header: 'Nro' },
       { field: 'fecRegistro', header: 'Fecha' },
       { field: 'codigoEmpresa', header: 'Empresa'},
       { field: 'codigoPlanta', header: 'Planta'},
-      // { field: 'subTipoExplotacion', header: 'Sub Tipo Explotación'},
       { field: 'nombreDocumento', header: 'Nombre Documento' }
     ];
 
@@ -309,14 +287,14 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
           switch (event.type) {
             case HttpEventType.Sent:
               this.isEnvioArchivo = true;
-              console.log('Solicitud ha sido hecha!');
+              // console.log('Solicitud ha sido hecha!');
               break;
             case HttpEventType.ResponseHeader:
-              console.log('Se ha recibido el encabezado de respuesta!');
+              // console.log('Se ha recibido el encabezado de respuesta!');
               break;
             case HttpEventType.UploadProgress:
               this.progress = Math.round((event.loaded / event.total) * 100) - 25;
-              console.log(`Uploaded! ${this.progress}%`);
+              // console.log(`Uploaded! ${this.progress}%`);
               break;
             case HttpEventType.Response:
               this.isEnvioArchivo = false;
@@ -409,8 +387,8 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
   }
 
   onToRowDownload(modelo: TxRegistroDocumentoModel) {
-    console.log('modelo', modelo);
-    this.extranetService.getDownloadTxRegistroDocumento(modelo.idGoogleDrive)
+    this.subscription$ = new Subscription();
+    this.subscription$ = this.extranetService.getDownloadTxRegistroDocumento(modelo.idGoogleDrive)
     .subscribe((resp: any) => {
       switch (resp.type) {
         case HttpEventType.DownloadProgress:
@@ -421,18 +399,13 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
           break;
         case HttpEventType.Response:
           this.mensajePrimeNgService.onToInfoMsg(null, 'DESCARGA COMPLETA');
-          console.log(resp);
           let file = new window.Blob([resp.body], {type: resp.body.type});
-          console.log(file);
-          // saveAs(new Blob([resp], {type: 'application/pdf'}), 'Registros');
-          // saveAs(new Blob([resp], {type: 'application/pdf'}), `RegistroEquipo#${modelo.idRegistroEquipo.toString()}`);
           let fileURL = window.URL.createObjectURL(file);
           window.open(fileURL, '_blank');
           break;
       }
     },
       (error) => {
-        console.log('error', error);
         this.mensajePrimeNgService.onToErrorMsg(null, error);
       });
   }

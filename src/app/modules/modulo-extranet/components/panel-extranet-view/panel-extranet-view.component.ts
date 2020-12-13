@@ -47,18 +47,15 @@ export class PanelExtranetViewComponent implements OnInit {
     .subscribe((resp: GoogleDriveFilesModel[]) => {
       if (resp) {
           this.listModelo = resp;
-          console.log('this.listModelo ', this.listModelo );
         }
       },
       (error) => {
-        console.log('error', error);
         this.mensajePrimeNgService.onToErrorMsg(null, error);
       }
     );
   }
 
   goGetFolderPorId(data: GoogleDriveFilesModel) {
-    console.log(data);
     this.router.navigate(['/main/module-ex/panel-extranet-folder', data.idGoogleDrive]);
   }
 

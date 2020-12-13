@@ -9,4 +9,5 @@ export interface IEstadoTablasDelSistema {
   tablaMstRepuestoPorModelo: boolean;
   tablaMstCalidad: boolean;
   tablaTrxExamenFisicoPollitoDetalle: boolean;
+  tablaMsSociedades: boolean;
 }

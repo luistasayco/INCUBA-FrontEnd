@@ -12,6 +12,7 @@ import { LayoutComponent } from '../../../../../layout/layout.component';
 import { Subscription } from 'rxjs';
 import { EmpresaPorUsuarioModel } from '../../../models/empresa-por-usuario';
 import { SubTipoExplotacionPorUsuarioModel } from '../../../models/sub-tipo-explotacion-por-usuario.model';
+import { CifrarDataService } from '../../../../../services/cifrar-data.service';
 
 @Component({
   selector: 'app-persona-update',
@@ -55,7 +56,8 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
               private router: Router,
               private breadcrumbService: BreadcrumbService,
               public app: LayoutComponent,
-              private readonly route: ActivatedRoute) {
+              private readonly route: ActivatedRoute,
+              private readonly cifrarDataService: CifrarDataService) {
                 this.breadcrumbService.setItems([
                     { label: 'Módulo Seguridad' },
                     { label: 'Usuario', routerLink: ['module-se/panel-persona'] },
@@ -112,7 +114,7 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
       this.modeloForm.controls['numeroTelefono'].setValue(this.modelo.nroTelefono);
       this.modeloForm.controls['flgEstado'].setValue(this.modelo.flgActivo);
       this.modeloForm.controls['usuario'].setValue(this.modelo.entidadUsuario.usuario);
-      this.modeloForm.controls['password'].setValue(this.modelo.entidadUsuario.claveOrigen);
+      this.modeloForm.controls['password'].setValue(this.cifrarDataService.decrypt(this.modelo.entidadUsuario.claveOrigen));
       this.modeloForm.controls['email'].setValue(this.modelo.entidadUsuario.email);
       this.modeloForm.controls['perfil'].setValue(
         {
@@ -217,7 +219,7 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
     this.modelo.flgActivo = this.modeloForm.controls['flgEstado'].value;
     this.modelo.entidadUsuario.imagen = this.modeloForm.controls['foto'].value;
     this.modelo.entidadUsuario.usuario = this.modeloForm.controls['usuario'].value;
-    this.modelo.entidadUsuario.claveOrigen = this.modeloForm.controls['password'].value;
+    this.modelo.entidadUsuario.claveOrigen = this.cifrarDataService.encrypt(this.modeloForm.controls['password'].value);
     this.modelo.entidadUsuario.email = this.modeloForm.controls['email'].value;
     if (this.modeloForm.controls['perfil'].value) {
       let itemPerfil = this.modeloForm.controls['perfil'].value;

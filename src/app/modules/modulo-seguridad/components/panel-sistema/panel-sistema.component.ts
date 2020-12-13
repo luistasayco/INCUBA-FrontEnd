@@ -6,6 +6,7 @@ import { ParametroSistemaModel } from '../../models/parametro-sistema.model';
 import { MensajePrimeNgService } from '../../../modulo-compartido/services/mensaje-prime-ng.service';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
 import { SeguridadService } from '../../services/seguridad.service';
+import { CifrarDataService } from '../../../../services/cifrar-data.service';
 
 @Component({
   selector: 'app-panel-sistema',
@@ -29,7 +30,8 @@ export class PanelSistemaComponent implements OnInit, OnDestroy {
   constructor(private fb: FormBuilder,
               public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService,
-              private seguridadService: SeguridadService) {
+              private seguridadService: SeguridadService,
+              private cifrarDataService: CifrarDataService) {
     this.breadcrumbService.setItems([
       { label: 'Modulo Seguridad' },
       { label: 'Parametro Sistema', routerLink: ['module-se/panel-parametro-sistema'] }
@@ -75,7 +77,7 @@ export class PanelSistemaComponent implements OnInit, OnDestroy {
 
   setRegistroObtenido() {
     this.modeloForm.controls['sendEmail'].setValue(this.modelo.sendEmail);
-    this.modeloForm.controls['sendEmailPasswordOrigen'].setValue(this.modelo.sendEmailPasswordOrigen);
+    this.modeloForm.controls['sendEmailPasswordOrigen'].setValue(this.cifrarDataService.decrypt(this.modelo.sendEmailPasswordOrigen));
     this.modeloForm.controls['sendEmailPort'].setValue(this.modelo.sendEmailPort);
     this.modeloForm.controls['sendEmailEnabledSSL'].setValue(this.modelo.sendEmailEnabledSSL);
     this.modeloForm.controls['sendEmailHost'].setValue(this.modelo.sendEmailHost);
@@ -83,7 +85,7 @@ export class PanelSistemaComponent implements OnInit, OnDestroy {
 
   onClickSave() {
     this.modelo.sendEmail = this.modeloForm.controls['sendEmail'].value;
-    this.modelo.sendEmailPasswordOrigen = this.modeloForm.controls['sendEmailPasswordOrigen'].value;
+    this.modelo.sendEmailPasswordOrigen = this.cifrarDataService.encrypt(this.modeloForm.controls['sendEmailPasswordOrigen'].value);
     this.modelo.sendEmailPort = this.modeloForm.controls['sendEmailPort'].value;
     this.modelo.sendEmailEnabledSSL = this.modeloForm.controls['sendEmailEnabledSSL'].value;
     this.modelo.sendEmailHost = this.modeloForm.controls['sendEmailHost'].value;

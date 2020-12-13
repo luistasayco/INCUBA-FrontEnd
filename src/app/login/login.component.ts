@@ -16,6 +16,9 @@ import { Subscription } from 'rxjs';
 import { variableGlobal } from '../interface/variable-global.interface';
 import { FunctionDBLocalService } from '../modules/modulo-base-datos-local/services/function-dblocal.service';
 import { ConstantesTablasIDB } from '../constants/constantes-tablas-indexdb';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
+import { reducer } from '../modules/modulo-estado-internet/store/reducers/network.reducer';
+import { CifrarDataService } from '../services/cifrar-data.service';
 
 @Component({
   selector: 'app-login',
@@ -46,7 +49,9 @@ export class LoginComponent implements OnInit, OnDestroy {
               private readonly fb: FormBuilder,
               private readonly servicioTraerDatos: TraerDatosRemotosService,
               private readonly servicioInternet: estadoInternetService,
-              private readonly functionDBLocalService: FunctionDBLocalService) { }
+              private readonly functionDBLocalService: FunctionDBLocalService,
+              private readonly dbService: NgxIndexedDBService,
+              private readonly cifrarDataService: CifrarDataService) { }
 
   ngOnInit(): void {
     this.sessionService.setItemEncrypt('FLGDATABASESELECCIONADA', false);
@@ -55,22 +60,43 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.iniciarObservableEstadoInternet();
     this.instanciarFormulario();
 
-    this.subscripcion = new Subscription();
-    this.subscripcion = this.loginService.getDataBaseAll()
-    .subscribe((resultado: DataBaseModel[]) => {
-      this.listItemDataBase = [];
-      for (let item of resultado) {
-        this.listItemDataBase.push({ label: item.descripcionDataBase, value: item.idDataBase });
-      }
-    });
+    
   }
 
   iniciarObservableEstadoInternet() {
     this.subscripcionInternet = this.servicioInternet._ESTADO_INTERNET$.subscribe(
       estado => {
         variableGlobal.ESTADO_INTERNET = estado;
+        if (variableGlobal.ESTADO_INTERNET) {
+          this.onObtieneDataBase();
+        } else {
+          this.onObtieneDataBaseLocal();
+        }
       }
     );
+  }
+
+  onObtieneDataBase() {
+    this.subscripcion = new Subscription();
+    this.subscripcion = this.loginService.getDataBaseAll()
+    .subscribe((resultado: DataBaseModel[]) => {
+      this.setRegistrosListaDataBase(resultado);
+    });
+  }
+
+  onObtieneDataBaseLocal() {
+    this.subscripcion = new Subscription();
+    this.subscripcion = this.dbService.getAll(ConstantesTablasIDB._TABLA_SOCIEDAD)
+    .subscribe((resultado: DataBaseModel[]) => {
+      this.setRegistrosListaDataBase(resultado);
+    });
+  }
+
+  setRegistrosListaDataBase(data: DataBaseModel[]) {
+    this.listItemDataBase = [];
+    for (let item of data) {
+      this.listItemDataBase.push({ label: item.descripcionDataBase, value: item.idDataBase });
+    }
   }
 
   instanciarFormulario() {
@@ -96,10 +122,19 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   onClickLogin()
   {
+
     this.displayTraeData = true;
     this.modeloLogin.usuario = this.formularioLogin.value.login;
-    this.modeloLogin.clave = this.formularioLogin.value.password;
+    this.modeloLogin.clave = this.cifrarDataService.encrypt(this.formularioLogin.value.password);
+    if (variableGlobal.ESTADO_INTERNET) {
+      this.onLoginOnline();
+    } else  {
+      this.onLoginOffline();
+    }
+    
+  }
 
+  onLoginOnline () {
     this.subscripcion = new Subscription();
     this.subscripcion = this.loginService.autentica(this.modeloLogin)
     .subscribe((res: any) => {
@@ -110,11 +145,21 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.onSetDataLocal(res);
       },
       (err) => {
-        console.log('err', err);
         this.displayTraeData = false;
         this.mensajePrimeNgService.onToErrorMsg('Login', err.error);
       }
     );
+  }
+
+  onLoginOffline() {
+    let usuOffline = this.formularioLogin.value.login;
+    let usuLocal = this.sessionService.getItemDecrypt('usuario');
+    let claveOffline = this.cifrarDataService.encrypt(this.formularioLogin.value.password);
+    let claveLocal = this.sessionService.getItem('pass');
+
+    if (usuOffline === usuLocal && claveOffline === claveLocal) {
+      this.router.navigate(['/main/dashboard']);
+    }
   }
 
   onFinalizaProceso() {
@@ -132,7 +177,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.sessionService.setItemEncrypt('nombre', res.nombre);
     this.sessionService.setItemEncrypt('usuario', res.usuario);
     this.sessionService.setItemEncrypt('email', res.email);
-    this.sessionService.setItemEncrypt('pass', this.modeloLogin.clave);
+    this.sessionService.setItem('pass', this.modeloLogin.clave);
     this.userContextService.setUser(res.usuario);
   }
 
@@ -150,15 +195,15 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.onFinalizaProceso();
           this.displayMensaje = 'Fin => Sincronizando Información';
 
-          console.log('Datos obtenidos desde el Servidor. Completado: ' );
+          // console.log('Datos obtenidos desde el Servidor. Completado: ' );
         } else {
-          console.log('AUN NO TERMINA LA SINCRONIZACION');
+          // console.log('AUN NO TERMINA LA SINCRONIZACION');
         }
       },
       error => {
         this.displayTraeData = false;
         this.userContextService.logout();
-        console.log('Error en mostrarSiguienteVista()' + error);
+        // console.log('Error en mostrarSiguienteVista()' + error);
       }
     );
   }

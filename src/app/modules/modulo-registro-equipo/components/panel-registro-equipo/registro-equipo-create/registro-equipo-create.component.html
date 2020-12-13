@@ -362,7 +362,7 @@
                 <div class="ui-g-12 ui-md-6">
                     <div class="p-field">
                         <label for="nombreInvetsa">Responsable Invetsa:</label>
-                        <input id="nombreInvetsa" type="text" [(ngModel)]="modeloItem.responsableIncuba" pInputText>
+                        <input [disabled]="true" id="nombreInvetsa" type="text" [(ngModel)]="modeloItem.responsableIncuba" pInputText>
                         <label for="emailInvetsa">Email:</label>
                         <input [disabled]="true" id="emailInvetsa" [(ngModel)]="modeloItem.emailFrom" type="text" pInputText>
                     </div>

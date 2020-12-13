@@ -181,6 +181,14 @@ export const estructuraBD = {
           { name: 'orden', keypath: 'orden', options: { unique: false } },
           { name: 'valorDefault', keypath: 'valorDefault', options: { unique: false } }
         ]
+      },
+      {
+        store: ConstantesTablasIDB._TABLA_SOCIEDAD,
+        storeConfig: { keyPath: 'id', autoIncrement: true },
+        storeSchema: [
+          { name: 'IdDataBase', keypath: 'IdDataBase', options: { unique:true } },
+          { name: 'DescripcionDataBase', keypath: 'DescripcionDataBase', options: { unique: false } }
+        ]
       }
     ]
 }

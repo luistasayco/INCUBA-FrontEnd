@@ -11,6 +11,8 @@ import { SeguridadService } from '../../modulo-seguridad/services/seguridad.serv
 import { EmpresaModel } from 'src/app/modules/modulo-compartido/models/empresa.model';
 import { ExamenFisicoPollitoService } from '../../modulo-examen-fisico-pollito/services/examen-fisico-pollito.service';
 import { CalidadModel } from '../../modulo-examen-fisico-pollito/models/calidad.model';
+import { LoginService } from '../../../services/login.service';
+import { DataBaseModel } from '../../modulo-seguridad/models/data-base';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +31,8 @@ export class TraerDatosRemotosService {
               private compartidoService: CompartidoService,
               private registroEquipoService: RegistroEquipoService,
               private seguridadService: SeguridadService,
-              private examenFisicoPollitoService: ExamenFisicoPollitoService) { }
+              private examenFisicoPollitoService: ExamenFisicoPollitoService,
+              private loginService: LoginService) { }
 
   private iniciarTablas() {
     this.tablasCompletas = {
@@ -42,14 +45,15 @@ export class TraerDatosRemotosService {
       tablaMstMantenimientoPorModelo: false,
       tablaMstRepuestoPorModelo: false,
       tablaMstCalidad: false,
-      tablaTrxExamenFisicoPollitoDetalle: false
+      tablaTrxExamenFisicoPollitoDetalle: false,
+      tablaMsSociedades: false
     };
   }
 
   private informacionDelProceso(descripcion: string, objeto?: any) {
     // return; // DESCOMENTAR PARA PRUEBAS
     const hora = new Date();
-    console.log('[' + hora.toString() + ']' + ' ' + descripcion, objeto ? objeto : '');
+    // console.log('[' + hora.toString() + ']' + ' ' + descripcion, objeto ? objeto : '');
   }
 
   private procesoFinalizado(nameProcedimiento: string) {
@@ -61,7 +65,7 @@ export class TraerDatosRemotosService {
     this.usuarioLogueado = usuario;
     this.iniciarTablas();
     if (variableGlobal.ESTADO_INTERNET) {
-        console.log('INICIO DE RECEPCION DE DATOS:', this.formatoFecha.transform(new Date(), 'dd/MM/yyyy HH:mm:ss'));
+        // console.log('INICIO DE RECEPCION DE DATOS:', this.formatoFecha.transform(new Date(), 'dd/MM/yyyy HH:mm:ss'));
         this.getUsuario(this.usuarioLogueado);
     } else {
         this.informacionDelProceso('obtenerDatosDesdeServidor: Sin Acceso a Internet');
@@ -89,6 +93,7 @@ export class TraerDatosRemotosService {
   }
 
   private obtenerDatosRemotos() {
+    this.getSociedades('getSociedades','Sociedad');
     this.getEmpresas('getEmpresas', 'Empresa');
     this.getPlantaPorEmpresa('getPlantaPorEmpresa', 'PlantaPorEmpresa');
     this.getModelo('getModelo', 'Modelo');
@@ -102,6 +107,23 @@ export class TraerDatosRemotosService {
     this.getCalidad('getCalidad', 'Calidad');
     // Plantilla para el registro del examen fisico del pollito
     this.getExamenFisicoPollitoDetalle('getExamenFisicoPollitoDetalle', 'ExamenFisicoPollitoDetalle');
+
+  }
+
+  private getSociedades(nameProcedimiento: string, etiqueta: string) {
+    var tablaSociedades: DataBaseModel[] = [];
+    this.informacionDelProceso(`Inicio de ${nameProcedimiento}`);
+    this.loginService.getDataBaseAll()
+    .subscribe(
+        result => {
+          console.log(result);
+          tablaSociedades = result;
+          this.createDataIndexDB( ConstantesTablasIDB._TABLA_SOCIEDAD, tablaSociedades, etiqueta);
+          this.procesoFinalizado(nameProcedimiento);
+          this.tablasCompletas.tablaMsSociedades = true;
+          this.emitDatosCargados();
+        }
+    );
   }
 
   private getEmpresas(nameProcedimiento: string, etiqueta: string) {
@@ -252,10 +274,11 @@ export class TraerDatosRemotosService {
         this.tablasCompletas.tablaMstMantenimientoPorModelo &&
         this.tablasCompletas.tablaMstRepuestoPorModelo &&
         this.tablasCompletas.tablaMstCalidad &&
-        this.tablasCompletas.tablaTrxExamenFisicoPollitoDetalle
+        this.tablasCompletas.tablaTrxExamenFisicoPollitoDetalle &&
+        this.tablasCompletas.tablaMsSociedades
         ){
       resultado = true;
-      console.log('FIN DE LA SINCRONIZACION DE RECEPCION:', this.formatoFecha.transform(new Date(), 'dd/MM/yyyy HH:mm:ss'));
+      // console.log('FIN DE LA SINCRONIZACION DE RECEPCION:', this.formatoFecha.transform(new Date(), 'dd/MM/yyyy HH:mm:ss'));
     }
     this.datosCargadosTotalmente.next(resultado);
     if (resultado) {

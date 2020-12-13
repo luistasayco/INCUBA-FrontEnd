@@ -12,10 +12,8 @@ import { PerfilModel } from '../../../models/pefil.model';
 import { UsuarioModel } from '../../../models/usuario.model';
 import { Subscription } from 'rxjs';
 import { EmpresaPorUsuarioModel } from '../../../models/empresa-por-usuario';
-import { TipoExplotacionModel } from '../../../../modulo-extranet/models/tipo-explotacion.model';
-import { SubTipoExplotacionModel } from '../../../../modulo-extranet/models/sub-tipo-explotacion.model';
-import { ExtranetService } from '../../../../modulo-extranet/services/extranet.service';
 import { SubTipoExplotacionPorUsuarioModel } from '../../../models/sub-tipo-explotacion-por-usuario.model';
+import { CifrarDataService } from '../../../../../services/cifrar-data.service';
 
 @Component({
   selector: 'app-persona-create',
@@ -56,7 +54,8 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
               public mensajePrimeNgService: MensajePrimeNgService,
               private router: Router,
               private breadcrumbService: BreadcrumbService,
-              public app: LayoutComponent,) {
+              public app: LayoutComponent,
+              private cifrarDataService: CifrarDataService) {
                 this.breadcrumbService.setItems([
                     { label: 'Módulo Seguridad' },
                     { label: 'Usuario', routerLink: ['module-se/panel-persona'] },
@@ -179,7 +178,7 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
     this.modelo.entidadUsuario = new UsuarioModel();
     this.modelo.entidadUsuario.imagen = this.modeloForm.controls['foto'].value;
     this.modelo.entidadUsuario.usuario = this.modeloForm.controls['usuario'].value;
-    this.modelo.entidadUsuario.claveOrigen = this.modeloForm.controls['password'].value;
+    this.modelo.entidadUsuario.claveOrigen = this.cifrarDataService.encrypt(this.modeloForm.controls['password'].value);
     this.modelo.entidadUsuario.email = this.modeloForm.controls['email'].value;
     if (this.modeloForm.controls['perfil'].value) {
       let itemPerfil = this.modeloForm.controls['perfil'].value;

@@ -22,7 +22,7 @@ export function migrationFactory() {
              }
             );
         } catch (e) {
-            console.log('Error al crear los indices', e);
+            // console.log('Error al crear los indices', e);
         }
       },
       2: (db, transaction) => {
@@ -35,7 +35,7 @@ export function migrationFactory() {
              }
             );
         } catch (e) {
-            console.log('Error al crear los indices', e);
+            // console.log('Error al crear los indices', e);
         }
       },
       3: (db, transaction) => {
@@ -48,7 +48,7 @@ export function migrationFactory() {
              }
             );
         } catch (e) {
-            console.log('Error al crear los indices', e);
+            // console.log('Error al crear los indices', e);
         }
       },
       4: (db, transaction) => {
@@ -61,7 +61,7 @@ export function migrationFactory() {
              }
             );
         } catch (e) {
-            console.log('Error al crear los indices', e);
+            // console.log('Error al crear los indices', e);
         }
       },
       5: (db, transaction) => {
@@ -74,7 +74,7 @@ export function migrationFactory() {
              }
             );
         } catch (e) {
-            console.log('Error al crear los indices', e);
+            // console.log('Error al crear los indices', e);
         }
       },
       6: (db, transaction) => {
@@ -87,7 +87,7 @@ export function migrationFactory() {
              }
             );
         } catch (e) {
-            console.log('Error al crear los indices', e);
+            // console.log('Error al crear los indices', e);
         }
       },
       7: (db, transaction) => {
@@ -100,7 +100,7 @@ export function migrationFactory() {
              }
             );
         } catch (e) {
-            console.log('Error al crear los indices', e);
+            // console.log('Error al crear los indices', e);
         }
       },
       8: (db, transaction) => {
@@ -113,7 +113,20 @@ export function migrationFactory() {
              }
             );
         } catch (e) {
-            console.log('Error al crear los indices', e);
+            // console.log('Error al crear los indices', e);
+        }
+      },
+      9: (db, transaction) => {
+        try {
+            arrayIndices = IndiceCrear.armarIndices(9);
+
+            arrayIndices.forEach( idx => {
+                store = transaction.objectStore( idx.tabla );
+                store.createIndex(idx.nombreIndice, idx.campoIndice, { unique: idx.unico });
+             }
+            );
+        } catch (e) {
+            // console.log('Error al crear los indices', e);
         }
       }
     };

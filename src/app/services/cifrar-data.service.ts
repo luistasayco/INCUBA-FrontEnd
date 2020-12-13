@@ -8,10 +8,21 @@ export class CifrarDataService {
 
   private tokenFromUI = '123456$#@$^@1INV';
 
-  encrypt(request: any): any {
+  // Declare this key and iv values in declaration
+  
+
+  encrypt(data: any): any {
+    // Modelo 1
+    if (!data) {
+      return '';
+    }
+    if (data.toString() === '') {
+      return '';
+    }
+
     let vkey = CryptoJS.enc.Utf8.parse(this.tokenFromUI);
     let viv = CryptoJS.enc.Utf8.parse(this.tokenFromUI);
-    var encrypted = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(request), vkey,
+    var encrypted = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(data), vkey,
     {
         keySize: 128 / 8,
         iv: viv,
@@ -20,13 +31,20 @@ export class CifrarDataService {
     });
 
     return encrypted.toString();
+
   }
 
-  decrypt(requestEncrypted: any): any {
+  decrypt(data: any): any {
+    if (!data) {
+      return '';
+    }
+    if (data.toString() === '') {
+      return '';
+    }
     let vkey = CryptoJS.enc.Utf8.parse(this.tokenFromUI);
     let viv = CryptoJS.enc.Utf8.parse(this.tokenFromUI);
     var decrypted = CryptoJS.AES.decrypt(
-      requestEncrypted, vkey, {
+      data, vkey, {
         keySize: 128 / 8,
         iv: viv,
         mode: CryptoJS.mode.CBC,
@@ -34,5 +52,6 @@ export class CifrarDataService {
       });
 
     return decrypted.toString(CryptoJS.enc.Utf8);
+
   }
 }

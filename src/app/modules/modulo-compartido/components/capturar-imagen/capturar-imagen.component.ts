@@ -43,7 +43,6 @@ export class CapturarImagenComponent implements OnInit {
   }
 
   loadImageFailed() {
-      console.log('Load failed');
   }
 
   rotateLeft() {

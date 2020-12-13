@@ -30,6 +30,7 @@ export class TxExamenFisicoPollitoModel {
     usuarioCreacion: string;
     flgMigrado: boolean;
     flgEnModificacion: boolean;
+    nombreArchivo?: string;
     // Cierre
     flgCerrado: boolean;
     fecCierre: Date;
@@ -73,6 +74,7 @@ export class TxExamenFisicoPollitoModel {
         this.flgEnModificacion = false;
         this.flgCerrado = false;
         this.fecCierre = null;
+        this.nombreArchivo = '';
         this.usuarioCierre = '';
         this.emailFrom = '';
         this.emailTo = '';

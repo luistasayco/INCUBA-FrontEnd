@@ -297,7 +297,6 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
     .map(x => {
       x.valor = Number(x.valor);
     });
-    console.log('modeloItem', this.modeloItem);
     this.subscription$ = new Subscription();
     this.subscription$ = this.examenFisicoPollitoService.setInsertExamenFisicoPollito(this.modeloItem)
     .subscribe(() =>  {

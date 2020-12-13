@@ -21,4 +21,5 @@ export class ConstantesTablasIDB {
 
     // Tablas de seguridad
     public static _TABLA_SEGMENU = 'segMenu';
+    public static _TABLA_SOCIEDAD = 'segSociedad'
 }

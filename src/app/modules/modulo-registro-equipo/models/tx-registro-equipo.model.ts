@@ -25,7 +25,8 @@ export class TxRegistroEquipoModel {
     idUsuarioCierre?: number;
     fecCierre?: Date;
     usuarioCreacion?: string;
-    //Varibles para el filtro
+    nombreArchivo?: string;
+    // Varibles para el filtro
     fecRegistroInicio?: Date;
     fecRegistroFin?: Date;
 
@@ -69,6 +70,7 @@ export class TxRegistroEquipoModel {
         this.idUsuarioCierre = 0;
         this.fecCierre = null;
         this.usuarioCreacion = '';
+        this.nombreArchivo = '';
         this.txRegistroEquipoDetalle1 = [];
         this.txRegistroEquipoDetalle2 = [];
         this.txRegistroEquipoDetalle2NoPredeterminado = [];

@@ -48,11 +48,9 @@ export class PanelExtranetFolderComponent implements OnInit {
     .subscribe((resp: GoogleDriveFilesModel[]) => {
       if (resp) {
           this.listModelo = resp;
-          console.log('this.listModelo ', this.listModelo );
         }
       },
       (error) => {
-        console.log('error', error);
         this.mensajePrimeNgService.onToErrorMsg(null, error);
       }
     );
@@ -67,8 +65,8 @@ export class PanelExtranetFolderComponent implements OnInit {
   }
 
   onToRowDownload(modelo: GoogleDriveFilesModel) {
-    console.log('modelo', modelo);
-    this.extranetService.getDownloadTxRegistroDocumento(modelo.idGoogleDrive)
+    this.subscription$ = new Subscription();
+    this.subscription$ = this.extranetService.getDownloadTxRegistroDocumento(modelo.idGoogleDrive)
     .subscribe((resp: any) => {
       switch (resp.type) {
         case HttpEventType.DownloadProgress:
@@ -79,9 +77,7 @@ export class PanelExtranetFolderComponent implements OnInit {
           break;
         case HttpEventType.Response:
           this.mensajePrimeNgService.onToInfoMsg(null, 'DESCARGA COMPLETA');
-          console.log(resp);
           let file = new window.Blob([resp.body], {type: resp.body.type});
-          console.log(file);
           // saveAs(new Blob([resp], {type: 'application/pdf'}), 'Registros');
           // saveAs(new Blob([resp], {type: 'application/pdf'}), `RegistroEquipo#${modelo.idRegistroEquipo.toString()}`);
           let fileURL = window.URL.createObjectURL(file);
@@ -90,7 +86,6 @@ export class PanelExtranetFolderComponent implements OnInit {
       }
     },
       (error) => {
-        console.log('error', error);
         this.mensajePrimeNgService.onToErrorMsg(null, error);
       });
   }
