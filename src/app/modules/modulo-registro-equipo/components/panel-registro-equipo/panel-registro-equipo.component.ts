@@ -57,8 +57,11 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
   subscription$: Subscription;
 
   displayDatosCierre: boolean;
+  displayCierre: boolean;
 
   modeloDatosCierre: TxRegistroEquipoModel  = new TxRegistroEquipoModel();
+  
+  saveFiltros: any[];
 
   constructor(private registroEquipoService: RegistroEquipoService,
               private compartidoService: CompartidoService,
@@ -75,22 +78,28 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
         { label: 'Registro de Equipo', routerLink: ['module-re/panel-registro-equipo'] }
     ]);
   }
+  
   ngOnDestroy() {
     if (this.subscription$) {
       this.subscription$.unsubscribe();
     }
 
     // Guardar los filtros en la session
-    this.sessionService.setItemEncrypt('filter-re-idRegistroEquipo', this.modeloFind.idRegistroEquipo);
-    this.sessionService.setItemEncrypt('filter-re-fecRegistroInicio', this.modeloFind.fecRegistroInicio);
-    this.sessionService.setItemEncrypt('filter-re-fecRegistroFin', this.modeloFind.fecRegistroFin);
-    this.sessionService.setItemEncrypt('filter-re-selectedEmpresa', this.selectedEmpresa);
-    this.sessionService.setItemEncrypt('filter-re-selectedPlanta', this.selectedPlanta);
-    this.sessionService.setItemEncrypt('filter-re-selectedModelo', this.selectedModelo);
+    this.saveFiltros = [];
+    this.saveFiltros.push(
+      { idRegistroEquipo: this.modeloFind.idRegistroEquipo,
+        fecRegistroInicio: this.modeloFind.fecRegistroInicio,
+        fecRegistroFin: this.modeloFind.fecRegistroFin,
+        selectedEmpresa: this.selectedEmpresa,
+        selectedPlanta: this.selectedPlanta,
+        selectedModelo: this.selectedModelo
+    });
+
+    this.sessionService.setItem('filter-re', this.saveFiltros);
   }
 
   ngOnInit() {
-
+    
     this.getToObtieneEmpresa();
     this.getToObtieneModelo();
 
@@ -101,21 +110,20 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
     this.modeloFind.fecRegistroInicio = new Date();
     this.modeloFind.fecRegistroFin = new Date();
 
-    if (this.sessionService.getItem('filter-re-idRegistroEquipo')) {
-
-
-      this.modeloFind.idRegistroEquipo = this.sessionService.getItemDecrypt('filter-re-idRegistroEquipo');
-      this.modeloFind.fecRegistroInicio = new Date(this.sessionService.getItemDecrypt('filter-re-fecRegistroInicio'));
-      this.modeloFind.fecRegistroFin = new Date(this.sessionService.getItemDecrypt('filter-re-fecRegistroFin'));
-      if (this.sessionService.getItemDecrypt('filter-re-selectedEmpresa') !== 'null') {
-        this.selectedEmpresa = this.sessionService.getItemDecrypt('filter-re-selectedEmpresa');
-        if (this.selectedEmpresa) {
-          this.getOnChangeEmpresa();
-        }
+    if (this.sessionService.getItem('filter-re')) {
+      this.saveFiltros = this.sessionService.getItem('filter-re');
+      this.modeloFind.idRegistroEquipo = this.saveFiltros[0].idRegistroEquipo;
+      this.modeloFind.fecRegistroInicio = new Date(this.saveFiltros[0].fecRegistroInicio);
+      this.modeloFind.fecRegistroFin = new Date(this.saveFiltros[0].fecRegistroFin);
+      this.selectedEmpresa = this.saveFiltros[0].selectedEmpresa === undefined ? null : this.saveFiltros[0].selectedEmpresa ;
+      this.selectedModelo = this.saveFiltros[0].selectedModelo === undefined ? null : this.saveFiltros[0].selectedModelo ;
+      if (this.selectedEmpresa !== null) {
+        this.getOnChangeEmpresa();
+      } else {
+        this.selectedPlanta = this.saveFiltros[0].selectedPlanta === undefined ? null : this.saveFiltros[0].selectedPlanta ;
       }
-      if ( this.sessionService.getItemDecrypt('filter-re-selectedModelo') !== 'null') {
-        this.selectedModelo = this.sessionService.getItemDecrypt('filter-re-selectedModelo');
-      }
+
+      this.onListar();
     }
 
     this.columnas = [
@@ -169,9 +177,9 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
       for (let item of data) {
         this.listItemPlanta.push({ label: item.descripcion, value: item.codigoPlanta });
       }
-      if (this.sessionService.getItem('filter-re-selectedPlanta')) {
-        this.selectedPlanta = this.sessionService.getItemDecrypt('filter-re-selectedPlanta');
-        // this.onListar();
+      if (this.saveFiltros.length > 0) {
+
+        this.selectedPlanta = this.saveFiltros[0].selectedPlanta === undefined ? null : this.saveFiltros[0].selectedPlanta ;
       }
     });
   }
@@ -234,6 +242,7 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
   }
 
   onToCerrar(data: TxRegistroEquipoModel) {
+    this.displayCierre = true;
     this.subscription$ = new Subscription();
     data.flgCerrado = true;
     this.subscription$ = this.registroEquipoService.setUpdateStatusTxRegistroEquipo(data)
@@ -243,10 +252,11 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
         this.listModelo
         .find(x => x.idRegistroEquipo === data.idRegistroEquipo)
         .usuarioCierre = this.sessionService.getItemDecrypt('usuario');
-
+        this.displayCierre = false;
         this.mensajePrimeNgService.onToExitoMsg(null, resp);
       },
       (error) => {
+        this.displayCierre = false;
         this.listModelo.find(x => x.idRegistroEquipo === data.idRegistroEquipo).flgCerrado = false;
         this.listModelo.find(x => x.idRegistroEquipo === data.idRegistroEquipo).fecCierre = null;
         this.listModelo.find(x => x.idRegistroEquipo === data.idRegistroEquipo).usuarioCierre = '';

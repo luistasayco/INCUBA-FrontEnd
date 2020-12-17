@@ -1,0 +1,40 @@
+<div class="card card-w-title">
+    <h1><strong>{{titulo}}</strong></h1>
+    <!-- Filtros -->
+    <!-- Filtros -->
+    <p-panel header="{{titulo}}" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-md-5">
+                <label class="label-custom" for="dropdown-planta">Empresa/Planta: </label>
+                <p-multiSelect id="dropdown-planta" class="ui-multiselect-item" [options]="listItemPlanta" [(ngModel)]="selectedPlanta" filterPlaceHolder="Select Planta" optionLabel="label"></p-multiSelect>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom" for="dropdown-tipo">Tipo: </label>
+                <p-dropdown id="dropdown-tipo" class="ui dropdown-item-text" [options]="listItemTipoExplotacion" [(ngModel)]="selectedTipoExplotacion" (onChange)="getOnChangeTipoExplotacion()" placeholder="Select Tipo" optionLabel="label" [showClear]="true"></p-dropdown>
+            </div>
+            <div class="ui-g-12 ui-md-4">
+                <label class="label-custom" for="dropdown-sub-tipo">Sub Tipo: </label>
+                <p-dropdown id="dropdown-sub-tipo" class="ui dropdown-item-text" [options]="listItemSubTipoExplotacion" [(ngModel)]="selectedSubTipoExplotacion" placeholder="Select Sub Tipo" optionLabel="label" [showClear]="true"></p-dropdown>
+            </div>
+        </div>
+
+
+    </p-panel>
+
+    <p-messages [(value)]="mensajePrimeNgService.msgs"></p-messages>
+
+    <p-panel header="Subir Archivos">
+        <p-fileUpload name="myfile[]" chooseLabel="Añadir" [showCancelButton]="false" uploadLabel="Subir" cancelLabel="Cancelar" multiple="true" fileLimit="3" customUpload="true" (uploadHandler)="myUploader($event)" invalidFileLimitMessageSummary="Archivos excedidos">
+        </p-fileUpload>
+    </p-panel>
+
+    <div class="barra-progreso">
+        <ng-container *ngIf="isEnvioArchivo && progress === 0">
+            <p-progressBar mode="indeterminate" [style]="{ height: '6px', margin: '10px 0 0 0' }"></p-progressBar>
+            <h3 style="text-align: center;">Enviando solicitud...</h3>
+        </ng-container>
+        <p-progressBar *ngIf="progress > 0" [value]="progress" [style]="{ margin: '10px 0 15px 0' }">
+        </p-progressBar>
+    </div>
+
+</div>

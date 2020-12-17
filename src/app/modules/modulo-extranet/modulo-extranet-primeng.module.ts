@@ -17,6 +17,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { FileUploadModule } from 'primeng/fileupload';
 import { CardModule } from 'primeng/card';
+import { MultiSelectModule } from 'primeng/multiselect';
 // Sevices
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
@@ -38,7 +39,8 @@ import { MessageService } from 'primeng/api';
         CalendarModule,
         TabMenuModule,
         FileUploadModule,
-        CardModule],
+        CardModule,
+        MultiSelectModule],
     providers: [ConfirmationService, MessageService],
 })
 export class ExtranetPrimeNgModule {}

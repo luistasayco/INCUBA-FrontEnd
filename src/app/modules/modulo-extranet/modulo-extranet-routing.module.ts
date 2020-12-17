@@ -8,6 +8,7 @@ import { PanelSubTipoExplotacionComponent } from './components/panel-sub-tipo-ex
 import { TipoSubExplotacionCreateComponent } from './components/panel-sub-tipo-explotacion/tipo-sub-explotacion-create/tipo-sub-explotacion-create.component';
 import { PanelExtranetViewComponent } from './components/panel-extranet-view/panel-extranet-view.component';
 import { PanelExtranetFolderComponent } from './components/panel-extranet-folder/panel-extranet-folder.component';
+import { PanelExtranetMasivoComponent } from './components/panel-extranet-masivo/panel-extranet-masivo.component';
 
 const routes: Routes = [
     { path: 'panel-extranet', component: PanelExtranetComponent },
@@ -17,7 +18,8 @@ const routes: Routes = [
     { path: 'panel-tipo-explotacion', component: PanelTipoExplotacionComponent },
     { path: 'tipo-explotacion-create', component: TipoExplotacionCreateComponent },
     { path: 'panel-sub-tipo-explotacion', component: PanelSubTipoExplotacionComponent },
-    { path: 'sub-tipo-explotacion-create/:id', component: TipoSubExplotacionCreateComponent }
+    { path: 'sub-tipo-explotacion-create/:id', component: TipoSubExplotacionCreateComponent },
+    { path: 'panel-extranet-masivo', component: PanelExtranetMasivoComponent },
 
 ];
 

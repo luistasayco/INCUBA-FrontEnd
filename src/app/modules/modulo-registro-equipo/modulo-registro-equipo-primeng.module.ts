@@ -20,6 +20,7 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { DialogModule } from 'primeng/dialog';
 import { ListboxModule } from 'primeng/listbox';
 import { TooltipModule } from 'primeng/tooltip';
+import { ProgressBarModule } from 'primeng/progressbar';
 // Sevices
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
@@ -44,7 +45,8 @@ import { MessageService } from 'primeng/api';
             ToggleButtonModule,
             DialogModule,
             ListboxModule,
-            TooltipModule],
+            TooltipModule,
+            ProgressBarModule],
     providers: [MessageService, ConfirmationService],
 })
 export class RegistroEquipoPrimeNgModule {}

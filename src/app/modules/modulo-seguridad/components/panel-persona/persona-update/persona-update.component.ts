@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 import { EmpresaPorUsuarioModel } from '../../../models/empresa-por-usuario';
 import { SubTipoExplotacionPorUsuarioModel } from '../../../models/sub-tipo-explotacion-por-usuario.model';
 import { CifrarDataService } from '../../../../../services/cifrar-data.service';
+import { AprobarSubTipoExplotacionPorUsuarioModel } from '../../../models/aprobar-sub-tipo-explotacion-por-usuario';
 
 @Component({
   selector: 'app-persona-update',
@@ -47,6 +48,9 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
 
   listSubTipoExplotacionPorSeleccionado: SubTipoExplotacionPorUsuarioModel[];
   lisSubTipoExplotacionSeleccionado: SubTipoExplotacionPorUsuarioModel[];
+
+  listAprobarSubTipoExplotacionPorSeleccionado: AprobarSubTipoExplotacionPorUsuarioModel[];
+  listAprobarSubTipoExplotacionSeleccionado: AprobarSubTipoExplotacionPorUsuarioModel[];
 
   subscription: Subscription;
 
@@ -135,8 +139,14 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
       } else {
         this.lisSubTipoExplotacionSeleccionado = [];
       }
+      if (this.modelo.listAprobarSubTipoExplosionPorUsuario.length > 0) {
+        this.listAprobarSubTipoExplotacionSeleccionado = this.modelo.listAprobarSubTipoExplosionPorUsuario;
+      } else {
+        this.listAprobarSubTipoExplotacionSeleccionado = [];
+      }
       this.getEmpresaSinAccesoPorUsuario();
       this.getToObtieneSubTipoExplotacion();
+      this.getToObtieneAprobarSubTipoExplotacion();
     });
   }
 
@@ -166,6 +176,15 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
     .subscribe((data: SubTipoExplotacionPorUsuarioModel[]) => {
       this.listSubTipoExplotacionPorSeleccionado = [];
       this.listSubTipoExplotacionPorSeleccionado = data;
+    });
+  }
+
+  getToObtieneAprobarSubTipoExplotacion() {
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.getAprobarSubTipoExplotacionSinAccesoPorUsuario(0)
+    .subscribe((data: AprobarSubTipoExplotacionPorUsuarioModel[]) => {
+      this.listAprobarSubTipoExplotacionPorSeleccionado = [];
+      this.listAprobarSubTipoExplotacionPorSeleccionado = data;
     });
   }
 
@@ -211,6 +230,10 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
   onClickSave() {
     this.modelo.listEmpresaPorUsuario = this.listEmpresaSeleccionado;
     this.modelo.listSubTipoExplosionPorUsuario = this.lisSubTipoExplotacionSeleccionado;
+    this.listAprobarSubTipoExplotacionSeleccionado.map(x => {
+      x.flgAprobar = true;
+    });
+    this.modelo.listAprobarSubTipoExplosionPorUsuario = this.listAprobarSubTipoExplotacionSeleccionado;
     this.modelo.apellidoPaterno = this.modeloForm.controls['apellidoPaterno'].value;
     this.modelo.apellidoMaterno = this.modeloForm.controls['apellidoMaterno'].value;
     this.modelo.nombre = this.modeloForm.controls['nombre'].value;
@@ -229,7 +252,7 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
     this.modelo.entidadUsuario.themeDark = Boolean(this.modeloForm.controls['dark'].value);
     this.modelo.entidadUsuario.typeMenu = this.modeloForm.controls['menu'].value;
     this.modelo.entidadUsuario.themeColor = this.modeloForm.controls['theme'].value;
-
+    console.log(this.modelo);
     this.subscription = new Subscription();
     this.subscription = this.seguridadService.setUpdatePersona(this.modelo)
     .subscribe(() =>  {

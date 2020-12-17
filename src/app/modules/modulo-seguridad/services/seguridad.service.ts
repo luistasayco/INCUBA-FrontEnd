@@ -12,6 +12,7 @@ import { EmpresaPorUsuarioModel } from '../models/empresa-por-usuario';
 import { SubTipoExplotacionPorUsuarioModel } from '../models/sub-tipo-explotacion-por-usuario.model';
 import { ParametroSistemaModel } from '../models/parametro-sistema.model';
 import { ParametroConexionModel } from '../models/parametro-conexion.model';
+import { AprobarSubTipoExplotacionPorUsuarioModel } from '../models/aprobar-sub-tipo-explotacion-por-usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -237,6 +238,14 @@ export class SeguridadService {
 
     return this.http.get<SubTipoExplotacionPorUsuarioModel[]>
     (`${environment.url_api_seguridad}SubTipoExplosionPorUsuario/GetAllSinAcceso/`, { params: parametros });
+  }
+
+  getAprobarSubTipoExplotacionSinAccesoPorUsuario(idUsuario: number) {
+    let parametros = new HttpParams();
+    parametros = parametros.append('idUsuario', idUsuario.toString());
+
+    return this.http.get<AprobarSubTipoExplotacionPorUsuarioModel[]>
+    (`${environment.url_api_seguridad}AprobarSubTipoExplotacionPorUsuario/GetAllSinAcceso/`, { params: parametros });
   }
 
   getParametroSistemaPorId() {

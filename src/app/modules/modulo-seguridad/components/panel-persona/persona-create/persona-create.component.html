@@ -123,13 +123,29 @@
                                 </p-pickList>
                             </div>
                         </p-fieldset>
+
+                        <p-fieldset legend="Aprobación por Tipo Explotación" [toggleable]="true" [collapsed]="true">
+                            <div class="ui-g-12">
+                                <p-pickList [source]="listAprobarSubTipoExplotacionPorSeleccionado" [target]="listAprobarSubTipoExplotacionSeleccionado" sourceHeader="Lista" targetHeader="Seleccionado" [responsive]="true" filterBy="descripcionSubTipoExplotacion" dragdrop="true" showSourceControls='false'
+                                    sourceFilterPlaceholder="Search by Tipo Explotación" targetFilterPlaceholder="Search by Tipo Explotación" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}" [showSourceControls]="false" [showTargetControls]="false">
+                                    <ng-template let-aprobarSubTipoExplosion pTemplate="item">
+                                        <div class="ui-helper-clearfix">
+                                            <!-- <p-toggleButton onIcon="pi pi-check" formControlName="aprobarSubTipoExplosion.flgAprobar" offIcon="pi pi-times" [style]="{'width':'150px'}" onLabel="Aprobar" offLabel="Aprobar"></p-toggleButton> -->
+                                            <!-- <p-toggleButton onIcon="pi pi-check" [(ngModel)]="subTipoExplosion.flgRechazar" offIcon="pi pi-times" [style]="{'width':'150px'}" onLabel="Rechazar" offLabel="Rechazar"></p-toggleButton> -->
+                                            <div style="font-size:14px;float:left;margin:5px 5px 0 0">{{aprobarSubTipoExplosion.descripcionSubTipoExplotacion}}</div>
+                                        </div>
+                                    </ng-template>
+                                </p-pickList>
+                            </div>
+                        </p-fieldset>
+
                         <p-fieldset legend="Datos Adicionales">
                             <p-fieldset legend="Foto" [toggleable]="true" [collapsed]="true">
                                 <div class="ui-g-12 ui-md-4">
                                     <img [src]="sellersPermitString" style="width: 100%; display: block;">
                                 </div>
                                 <div class="ui-g-12 ui-md-8">
-                                    <p-fileUpload name="demo[]" accept="image/*" [showUploadButton]="false" (onSelect)="onBasicUpload($event)" (onClear)="onClearUpload()">
+                                    <p-fileUpload name="demo[]" chooseLabel="Seleccionar" cancelLabel="Cancelar" accept="image/*" [showUploadButton]="false" (onSelect)="onBasicUpload($event)" (onClear)="onClearUpload()">
                                     </p-fileUpload>
                                 </div>
                             </p-fieldset>

@@ -11,6 +11,7 @@ import { PanelSubTipoExplotacionComponent } from './components/panel-sub-tipo-ex
 import { TipoSubExplotacionCreateComponent } from './components/panel-sub-tipo-explotacion/tipo-sub-explotacion-create/tipo-sub-explotacion-create.component';
 import { PanelExtranetViewComponent } from './components/panel-extranet-view/panel-extranet-view.component';
 import { PanelExtranetFolderComponent } from './components/panel-extranet-folder/panel-extranet-folder.component';
+import { PanelExtranetMasivoComponent } from './components/panel-extranet-masivo/panel-extranet-masivo.component';
 
 @NgModule({
     declarations: [ PanelExtranetComponent,
@@ -20,7 +21,8 @@ import { PanelExtranetFolderComponent } from './components/panel-extranet-folder
         PanelSubTipoExplotacionComponent,
         TipoSubExplotacionCreateComponent,
         PanelExtranetViewComponent,
-        PanelExtranetFolderComponent],
+        PanelExtranetFolderComponent,
+        PanelExtranetMasivoComponent],
     imports: [ CommonModule,
         ExtranetPrimeNgModule,
         ExtranetRoutingModule,

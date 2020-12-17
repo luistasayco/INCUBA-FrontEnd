@@ -5,6 +5,8 @@ export class ParametroSistemaModel {
     sendEmailPort: number;
     sendEmailEnabledSSL: boolean;
     sendEmailHost: string;
+    emailGoogleDrive: string;
+    emailPassword: string;
 
     // Auditoria
     regUsuario?: number;
@@ -17,6 +19,8 @@ export class ParametroSistemaModel {
         this.sendEmailPort = 0;
         this.sendEmailEnabledSSL = false;
         this.sendEmailHost = '';
+        this.emailGoogleDrive = '';
+        this.emailPassword = '';
         this.regUsuario = 0;
         this.regEstacion = '';
     }

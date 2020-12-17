@@ -18,7 +18,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { TreeModule } from 'primeng/tree';
 import { PickListModule } from 'primeng/picklist';
 import { FileUploadModule } from 'primeng/fileupload';
-
+import { ToggleButtonModule } from 'primeng/togglebutton';
 
 // Sevices
 import { ConfirmationService } from 'primeng/api';
@@ -42,7 +42,8 @@ import { MessageService } from 'primeng/api';
             DropdownModule,
             TreeModule,
             PickListModule,
-            FileUploadModule],
+            FileUploadModule,
+            ToggleButtonModule],
     providers: [MessageService, ConfirmationService],
 })
 export class SeguridadPrimeNgModule {}

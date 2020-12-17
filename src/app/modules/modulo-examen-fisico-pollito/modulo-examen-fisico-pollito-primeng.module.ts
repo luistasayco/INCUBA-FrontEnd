@@ -18,6 +18,7 @@ import { AccordionModule } from 'primeng/accordion';
 import { CheckboxModule } from 'primeng/checkbox';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { DialogModule } from 'primeng/dialog';
+import { ProgressBarModule } from 'primeng/progressbar';
 // Sevices
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
@@ -40,7 +41,8 @@ import { MessageService } from 'primeng/api';
             AccordionModule,
             CheckboxModule,
             RadioButtonModule,
-            DialogModule],
+            DialogModule,
+            ProgressBarModule],
     providers: [MessageService, ConfirmationService],
 })
 export class ExamenFisicoPollitoPrimeNgModule {}

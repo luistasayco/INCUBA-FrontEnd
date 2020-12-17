@@ -37,7 +37,7 @@
                                 <p-message severity="error" text="Puerto es requerido" *ngIf="modeloForm.controls['sendEmailPort'].errors['required']"></p-message>
                             </div>
                         </div>
-                        <div class="ui-g-12 ui-md-3">
+                        <div class="ui-g-12 ui-md-2">
                             <label class="label-custom" for="float-input-apli-servidor">Servidor: </label>
                             <div class="ui-inputgroup">
                                 <span class="ui-inputgroup-addon"><i class="fa fa-cog"></i></span>
@@ -49,7 +49,7 @@
                             </div>
                         </div>
 
-                        <div class="ui-g-12 ui-md-3">
+                        <div class="ui-g-12 ui-md-1">
                             <label class="label-custom" for="float-input-apli-port">SSL: </label>
                             <div class="ui-inputgroup">
                                 <span class="ui-inputgroup-addon"><i class="fa fa-cog"></i></span>
@@ -57,6 +57,32 @@
                             </div>
                         </div>
 
+                    </p-fieldset>
+
+                    <p-fieldset legend="Configuración Google Drive" [toggleable]="true">
+
+                        <div class="ui-g-12 ui-md-4">
+                            <label class="label-custom" for="float-input-apli-email">Email: </label>
+                            <div class="ui-inputgroup">
+                                <span class="ui-inputgroup-addon"><i class="fa fa-envelope-o"></i></span>
+                                <input id="float-input-apli-email" type="email" placeholder="Email" size="100" formControlName="emailGoogleDrive" required pInputText>
+                            </div>
+                            <div *ngIf="modeloForm.controls['emailGoogleDrive'].errors && modeloForm.controls['emailGoogleDrive'].dirty">
+                                <p-message severity="error" text="Email es requerido" *ngIf="modeloForm.controls['emailGoogleDrive'].errors['required']"></p-message>
+                                <p-message severity="error" text="Tener un min. de 5 y max. de 100 caractares" *ngIf="modeloForm.controls['emailGoogleDrive'].errors['minlength'] || modeloForm.controls['emailGoogleDrive'].errors['maxlength'] "></p-message>
+                            </div>
+                        </div>
+                        <div class="ui-g-12 ui-md-3">
+                            <label class="label-custom" for="float-input-apli-password">Contraseña: </label>
+                            <div class="ui-inputgroup">
+                                <span class="ui-inputgroup-addon"><i class="fa fa-key"></i></span>
+                                <input id="float-input-apli-password" type="password" placeholder="Contraseña" size="30" formControlName="emailPassword" required pPassword>
+                            </div>
+                            <div *ngIf="modeloForm.controls['emailPassword'].errors && modeloForm.controls['emailPassword'].dirty">
+                                <p-message severity="error" text="Contraseña es requerido" *ngIf="modeloForm.controls['emailPassword'].errors['required']"></p-message>
+                                <p-message severity="error" text="Tener un min. de 5 y max. de 100 caractares" *ngIf="modeloForm.controls['emailPassword'].errors['minlength'] || modeloForm.controls['emailPassword'].errors['maxlength'] "></p-message>
+                            </div>
+                        </div>
                     </p-fieldset>
                 </div>
             </form>

@@ -4,7 +4,6 @@ import { LayoutComponent } from './layout/layout.component';
 import { AuthGuard } from './guards/auth.guard';
 import { LoginComponent } from './login/login.component';
 
-
 const routes: Routes = [
   {path: 'login',  component: LoginComponent},
   {path: 'main',

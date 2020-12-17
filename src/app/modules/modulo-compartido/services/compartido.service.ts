@@ -6,13 +6,14 @@ import { PlantaModel } from '../models/planta.model';
 import { EquipoModel } from '../models/equipo.model';
 import { RepuestoPorModeloModel } from '../../modulo-registro-equipo/models/repuesto-por-modelo.model';
 import { MantenimientoPorModeloModel } from '../../modulo-registro-equipo/models/mantenimiento-por-modelo.model';
+import { UserContextService } from '../../../services/user-context.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompartidoService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private userContextService: UserContextService) {}
 
   // title:  Metodos para Empresa
   // Author: Luis Tasayco
@@ -34,6 +35,15 @@ export class CompartidoService {
 
     return this.http.get<PlantaModel[]>
     (`${environment.url_api}Planta/GetAllPlantaPorEmpesa/`, { params: parametros });
+  }
+
+  getPlantaAll() {
+    let parametros = new HttpParams();
+    let idUsuario = this.userContextService.getIdUsuario();
+    parametros = parametros.append('regUsuario', idUsuario.toString());
+
+    return this.http.get<PlantaModel[]>
+    (`${environment.url_api}Planta/GetAllPlanta/`, { params: parametros });
   }
 
   // title:  Metodos para obtener planta por empresa

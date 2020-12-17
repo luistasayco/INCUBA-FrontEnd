@@ -129,6 +129,13 @@ export class ExtranetService {
     (`${environment.url_api}TxRegistroDocumento/GetAll/`, { params: parametros });
   }
 
+  getTxRegistroDocumentoId(id: number) {
+    let parametros = new HttpParams();
+    parametros = parametros.append('idDocumento', id.toString());
+    return this.http.get<TxRegistroDocumentoModel[]>
+    (`${environment.url_api}TxRegistroDocumento/GetByIdDocumento/${id}`);
+  }
+
   getTxRegistroDocumentoDrive() {
    return this.http.get<TxRegistroDocumentoModel[]>
     (`${environment.url_api}TxRegistroDocumento/GetFileGoogleDrive`);
@@ -142,6 +149,25 @@ export class ExtranetService {
     });
 
     const url = environment.url_api + 'TxRegistroDocumento/Create';
+    // const param: string = JSON.stringify(value);
+    return this.http.post(
+        url,
+        formData,
+        {
+          reportProgress: true,
+          observe: 'events'
+        }
+    );
+  }
+
+  setInsertTxRegistroDocumentoList(value: string, filesToUpload: any[]) {
+    let formData: FormData = new FormData();
+    formData.append('value', value);
+    filesToUpload.forEach((element: any) => {
+      formData.append('archivo', element);
+    });
+
+    const url = environment.url_api + 'TxRegistroDocumento/CreateFiles';
     // const param: string = JSON.stringify(value);
     return this.http.post(
         url,

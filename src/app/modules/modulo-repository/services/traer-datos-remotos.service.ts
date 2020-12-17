@@ -116,7 +116,6 @@ export class TraerDatosRemotosService {
     this.loginService.getDataBaseAll()
     .subscribe(
         result => {
-          console.log(result);
           tablaSociedades = result;
           this.createDataIndexDB( ConstantesTablasIDB._TABLA_SOCIEDAD, tablaSociedades, etiqueta);
           this.procesoFinalizado(nameProcedimiento);

@@ -55,6 +55,7 @@ export class PanelPersonaComponent implements OnInit, OnDestroy {
       { header: 'Usuario' },
       { header: 'Apellidos y Nombres' },
       { header: 'Nro Documento' },
+      { header: 'Perfil' },
       { header: 'Activo' }
     ];
     this.subscription = new Subscription();

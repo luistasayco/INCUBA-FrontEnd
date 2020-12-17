@@ -49,8 +49,11 @@ export class PanelTxExamenFisicoPollitoComponent implements OnInit, OnDestroy {
 
   // Variables para eliminar
   displayDatosCierre: boolean;
+  displayCierre: boolean;
 
   modeloDatosCierre: TxExamenFisicoPollitoModel = new TxExamenFisicoPollitoModel();
+
+  saveFiltros: any[];
 
   constructor(private breadcrumbService: BreadcrumbService,
               private sessionService: SessionService,
@@ -73,10 +76,15 @@ export class PanelTxExamenFisicoPollitoComponent implements OnInit, OnDestroy {
     }
 
     // Guardar los filtros en la session
-    this.sessionService.setItemEncrypt('filter-ef-idExamenFisico', this.modeloItem.idExamenFisico);
-    this.sessionService.setItemEncrypt('filter-ef-fecRegistroInicio', this.fecRegistroInicio);
-    this.sessionService.setItemEncrypt('filter-ef-fecRegistroFin', this.fecRegistroFin);
-    this.sessionService.setItemEncrypt('filter-ef-selectedEmpresa', this.selectedEmpresa);
+    this.saveFiltros = [];
+    this.saveFiltros.push(
+      { idExamenFisico: this.modeloItem.idExamenFisico,
+        fecRegistroInicio: this.fecRegistroInicio,
+        fecRegistroFin: this.fecRegistroFin,
+        selectedEmpresa: this.selectedEmpresa
+    });
+    
+    this.sessionService.setItem('filter-ef', this.saveFiltros);
   }
 
   ngOnInit(): void {
@@ -90,13 +98,12 @@ export class PanelTxExamenFisicoPollitoComponent implements OnInit, OnDestroy {
     this.fecRegistroInicio = new Date();
     this.fecRegistroFin = new Date();
 
-    if (this.sessionService.getItem('filter-ef-idExamenFisico')) {
-      this.modeloItem.idExamenFisico = this.sessionService.getItemDecrypt('filter-ef-idExamenFisico');
-      this.fecRegistroInicio = new Date(this.sessionService.getItemDecrypt('filter-ef-fecRegistroInicio'));
-      this.fecRegistroFin = new Date(this.sessionService.getItemDecrypt('filter-ef-fecRegistroFin'));
-      if (this.sessionService.getItemDecrypt('filter-ef-selectedEmpresa') !== 'null') {
-        this.selectedEmpresa = this.sessionService.getItemDecrypt('filter-ef-selectedEmpresa');
-      }
+    if (this.sessionService.getItem('filter-ef')) {
+      this.saveFiltros = this.sessionService.getItem('filter-ef');
+      this.modeloItem.idExamenFisico = this.saveFiltros[0].idExamenFisico;
+      this.fecRegistroInicio = new Date(this.saveFiltros[0].fecRegistroInicio);
+      this.fecRegistroFin = new Date(this.saveFiltros[0].fecRegistroFin);
+      this.selectedEmpresa = this.saveFiltros[0].selectedEmpresa === undefined ? null : this.saveFiltros[0].selectedEmpresa ;
       this.onListar();
     }
 
@@ -175,6 +182,7 @@ export class PanelTxExamenFisicoPollitoComponent implements OnInit, OnDestroy {
   }
 
   onToCerrar(data: TxExamenFisicoPollitoModel) {
+    this.displayCierre = true;
     this.subscription$ = new Subscription();
     data.flgCerrado = true;
     this.subscription$ = this.examenFisicoPollitoService.setUpdateStatusTxExamenFisicoPollito(data)
@@ -184,10 +192,11 @@ export class PanelTxExamenFisicoPollitoComponent implements OnInit, OnDestroy {
         this.listModelo
         .find(x => x.idExamenFisico === data.idExamenFisico)
         .usuarioCierre = this.sessionService.getItemDecrypt('usuario');
-
+        this.displayCierre = false;
         this.mensajePrimeNgService.onToExitoMsg(null, resp);
       },
       (error) => {
+        this.displayCierre = false;
         this.listModelo.find(x => x.idExamenFisico === data.idExamenFisico).flgCerrado = false;
         this.listModelo.find(x => x.idExamenFisico === data.idExamenFisico).fecCierre = null;
         this.listModelo.find(x => x.idExamenFisico === data.idExamenFisico).usuarioCierre = '';

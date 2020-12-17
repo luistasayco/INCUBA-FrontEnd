@@ -73,6 +73,8 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
   // Variables para agregar files
   isNuveo = false;
 
+  saveFiltros: any[];
+
   constructor(private extranetService: ExtranetService,
               private compartidoService: CompartidoService,
               public mensajePrimeNgService: MensajePrimeNgService,
@@ -81,41 +83,34 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
               private confirmationService: ConfirmationService,
               private userContextService: UserContextService,
               private menuDinamicoService: MenuDinamicoService,
-              private seguridadService: SeguridadService,
-              public app: LayoutComponent ) {
+              private sessionService: SessionService,
+              private seguridadService: SeguridadService ) {
     this.breadcrumbService.setItems([
         { label: 'Módulo Extranet' },
         { label: 'Registro Documentos', routerLink: ['module-ex/panel-extranet'] }
     ]);
   }
   ngOnDestroy() {
-
-    // Guardar los filtros en la session
-    // this.sessionService.setItemEncrypt('filter-ex-fecha-inicio', this.modeloFind.fecInicio);
-    // this.sessionService.setItemEncrypt('filter-ex-fecha-fin', this.modeloFind.fecFin);
-
-    // if (this.selectedTipoExplotacion !== null) {
-    //   this.sessionService.setItemEncrypt('filter-ex-selectedTipoExplotacion', this.selectedTipoExplotacion);
-    // }
-    // if (this.selectedSubTipoExplotacion !== null) {
-    //   this.sessionService.setItemEncrypt('filter-ex-selectedSubTipoExplotacion', this.selectedSubTipoExplotacion);
-    // }
-    // if (this.selectedEmpresa !== null) {
-    //   this.sessionService.setItemEncrypt('filter-ex-selectedEmpresa', this.selectedEmpresa);
-    // }
-    // if (this.selectedPlanta !== null) {
-    //   this.sessionService.setItemEncrypt('filter-ex-selectedPlanta', this.selectedPlanta);
-    // }
-
-    // this.app.menuMode = 'static';
-
     if (this.subscription$) {
       this.subscription$.unsubscribe();
     }
+
+    // Guardar los filtros en la session
+    this.saveFiltros = [];
+    this.saveFiltros.push(
+      { fecInicio: this.modeloFind.fecInicio,
+        fecFin: this.modeloFind.fecFin,
+        selectedEmpresa: this.selectedEmpresa,
+        selectedPlanta: this.selectedPlanta,
+        selectedTipoExplotacion: this.selectedTipoExplotacion,
+        selectedSubTipoExplotacion: this.selectedSubTipoExplotacion
+    });
+
+    this.sessionService.setItem('filter-ex', this.saveFiltros);
+
   }
 
   ngOnInit() {
-    // this.app.menuMode = 'overlay';
     this.getToObtieneTipoExplotacion();
     this.getToObtieneEmpresa();
 
@@ -139,6 +134,30 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
     .subscribe(acces => {
       this.buttonAcces = acces;
     });
+  
+    if (this.sessionService.getItem('filter-ex')) {
+      this.saveFiltros = this.sessionService.getItem('filter-ex');
+      this.modeloFind.fecInicio = new Date(this.saveFiltros[0].fecInicio);
+      this.modeloFind.fecFin = new Date(this.saveFiltros[0].fecFin);
+      this.selectedEmpresa = this.saveFiltros[0].selectedEmpresa === undefined ? null : this.saveFiltros[0].selectedEmpresa;
+      this.selectedTipoExplotacion = this.saveFiltros[0].selectedTipoExplotacion === undefined ? null : this.saveFiltros[0].selectedTipoExplotacion ;
+      
+
+      if (this.selectedEmpresa !== null) {
+        this.getOnChangeEmpresa();
+      } else {
+        this.selectedPlanta = this.saveFiltros[0].selectedPlanta === undefined ? null : this.saveFiltros[0].selectedPlanta ;
+      }
+
+      if (this.selectedTipoExplotacion !== null) {
+        this.getToObtieneSubTipoExplotacion();
+      } else {
+        this.selectedSubTipoExplotacion = this.saveFiltros[0].selectedSubTipoExplotacion === undefined ? null : this.saveFiltros[0].selectedSubTipoExplotacion ;
+      }
+
+      this.onListar();
+    }
+  
   }
 
   onToBuscar() {
@@ -170,6 +189,11 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
       for (let item of data) {
         this.listItemSubTipoExplotacion.push({ label: item.descripcionSubTipoExplotacion, value: item.idSubTipoExplotacion });
       }
+
+      if (this.saveFiltros.length > 0) {
+        this.selectedSubTipoExplotacion = this.saveFiltros[0].selectedSubTipoExplotacion === undefined ? null : this.saveFiltros[0].selectedSubTipoExplotacion ;
+      }
+
     });
   }
 
@@ -202,6 +226,11 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
       for (let item of data) {
         this.listItemPlanta.push({ label: item.descripcion, value: item.codigoPlanta });
       }
+
+      if (this.saveFiltros.length > 0) {
+        this.selectedPlanta = this.saveFiltros[0].selectedPlanta === undefined ? null : this.saveFiltros[0].selectedPlanta ;
+      }
+
     });
   }
 

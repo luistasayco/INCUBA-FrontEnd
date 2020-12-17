@@ -119,3 +119,14 @@
         <button type="button" pButton icon="pi pi-check" (click)="displayDatosCierre=false" label="Ok"></button>
     </p-footer>
 </p-dialog>
+
+<p-dialog header="Cierre" [(visible)]="displayCierre" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+
+    Realizando el cierre del registro seleccionado...!!!
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>
+        </div>
+    </div>
+
+</p-dialog>

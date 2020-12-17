@@ -1,6 +1,7 @@
 import { UsuarioModel } from './usuario.model';
 import { EmpresaPorUsuarioModel } from './empresa-por-usuario';
 import { SubTipoExplotacionPorUsuarioModel } from './sub-tipo-explotacion-por-usuario.model';
+import { AprobarSubTipoExplotacionPorUsuarioModel } from './aprobar-sub-tipo-explotacion-por-usuario';
 export class PersonaModel {
     idPersona?: number;
     nombre: string;
@@ -11,9 +12,11 @@ export class PersonaModel {
     nroDocumento?: string;
     nroTelefono?: string;
     flgActivo?: boolean;
+    descripcionPerfil?: string;
     entidadUsuario?: UsuarioModel;
     listEmpresaPorUsuario?: EmpresaPorUsuarioModel[];
     listSubTipoExplosionPorUsuario?: SubTipoExplotacionPorUsuarioModel[];
+    listAprobarSubTipoExplosionPorUsuario?: AprobarSubTipoExplotacionPorUsuarioModel[];
 
     // Auditoria
     regUsuario?: number;
@@ -29,8 +32,10 @@ export class PersonaModel {
         this.nroDocumento = '';
         this.nroTelefono = '';
         this.flgActivo = true;
+        this.descripcionPerfil = '';
         this.listEmpresaPorUsuario = [];
         this.listSubTipoExplosionPorUsuario = [];
+        this.listAprobarSubTipoExplosionPorUsuario = [];
         this.regUsuario = 0;
         this.regEstacion = '';
     }

@@ -14,6 +14,8 @@ import { Subscription } from 'rxjs';
 import { EmpresaPorUsuarioModel } from '../../../models/empresa-por-usuario';
 import { SubTipoExplotacionPorUsuarioModel } from '../../../models/sub-tipo-explotacion-por-usuario.model';
 import { CifrarDataService } from '../../../../../services/cifrar-data.service';
+import { AprobarSubTipoExplotacionPorUsuarioModel } from '../../../models/aprobar-sub-tipo-explotacion-por-usuario';
+import { ConstantesVarios } from '../../../../../constants/constantes-varios';
 
 @Component({
   selector: 'app-persona-create',
@@ -47,6 +49,9 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
   listSubTipoExplotacionPorSeleccionado: SubTipoExplotacionPorUsuarioModel[];
   lisSubTipoExplotacionSeleccionado: SubTipoExplotacionPorUsuarioModel[];
 
+  listAprobarSubTipoExplotacionPorSeleccionado: AprobarSubTipoExplotacionPorUsuarioModel[];
+  listAprobarSubTipoExplotacionSeleccionado: AprobarSubTipoExplotacionPorUsuarioModel[];
+
   subscription: Subscription;
 
   constructor(private fb: FormBuilder,
@@ -64,9 +69,11 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
               }
 
   ngOnInit() {
+    this.sellersPermitString = '';
     this.listEmpresaPorSeleccionado = [];
     this.listEmpresaSeleccionado = [];
     this.lisSubTipoExplotacionSeleccionado = [];
+    this.listAprobarSubTipoExplotacionSeleccionado = [];
     this.themes = [
       {label: 'green'}
     ];
@@ -74,6 +81,7 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
     this.getToObtienePerfil();
     this.getEmpresaSinAccesoPorUsuario();
     this.getToObtieneSubTipoExplotacion();
+    this.getToObtieneAprobarSubTipoExplotacion();
 
     this.modeloForm = this.fb.group(
       {
@@ -87,7 +95,7 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
         'numeroTelefono' : new FormControl(''),
         'flgEstado' : new FormControl({value: true, disabled: true}, Validators.compose([Validators.required])),
         'usuario' : new FormControl('', Validators.compose([Validators.required, Validators.maxLength(20), Validators.minLength(2)])),
-        'password' : new FormControl('', Validators.compose([Validators.required, Validators.maxLength(15), Validators.minLength(6)])),
+        'password' : new FormControl('', Validators.compose([Validators.required, Validators.maxLength(15), Validators.minLength(4)])),
         'email' : new FormControl('', Validators.compose([Validators.required, Validators.email])),
         'perfil' : new FormControl('', Validators.compose([Validators.required])),
         'foto' : new FormControl(''),
@@ -124,6 +132,15 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
     .subscribe((data: SubTipoExplotacionPorUsuarioModel[]) => {
       this.listSubTipoExplotacionPorSeleccionado = [];
       this.listSubTipoExplotacionPorSeleccionado = data;
+    });
+  }
+
+  getToObtieneAprobarSubTipoExplotacion() {
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.getAprobarSubTipoExplotacionSinAccesoPorUsuario(0)
+    .subscribe((data: AprobarSubTipoExplotacionPorUsuarioModel[]) => {
+      this.listAprobarSubTipoExplotacionPorSeleccionado = [];
+      this.listAprobarSubTipoExplotacionPorSeleccionado = data;
     });
   }
 
@@ -169,6 +186,10 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
   onClickSave() {
     this.modelo.listEmpresaPorUsuario = this.listEmpresaSeleccionado;
     this.modelo.listSubTipoExplosionPorUsuario = this.lisSubTipoExplotacionSeleccionado;
+    this.listAprobarSubTipoExplotacionSeleccionado.map(x => {
+      x.flgAprobar = true;
+    });
+    this.modelo.listAprobarSubTipoExplosionPorUsuario = this.listAprobarSubTipoExplotacionSeleccionado;
     this.modelo.apellidoPaterno = this.modeloForm.controls['apellidoPaterno'].value;
     this.modelo.apellidoMaterno = this.modeloForm.controls['apellidoMaterno'].value;
     this.modelo.nombre = this.modeloForm.controls['nombre'].value;
@@ -180,14 +201,22 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
     this.modelo.entidadUsuario.usuario = this.modeloForm.controls['usuario'].value;
     this.modelo.entidadUsuario.claveOrigen = this.cifrarDataService.encrypt(this.modeloForm.controls['password'].value);
     this.modelo.entidadUsuario.email = this.modeloForm.controls['email'].value;
+    
     if (this.modeloForm.controls['perfil'].value) {
       let itemPerfil = this.modeloForm.controls['perfil'].value;
       this.modelo.entidadUsuario.idPerfil = itemPerfil.value;
     }
-    this.modelo.entidadUsuario.imagen = this.modeloForm.controls['foto'].value;
+
+    if(this.sellersPermitString === '') {
+      this.modelo.entidadUsuario.imagen = ConstantesVarios._IMAGEDEFAULT;
+    } else {
+      this.modelo.entidadUsuario.imagen = this.modeloForm.controls['foto'].value;
+    }
+    
     this.modelo.entidadUsuario.themeDark = Boolean(this.modeloForm.controls['dark'].value);
     this.modelo.entidadUsuario.typeMenu = this.modeloForm.controls['menu'].value;
     this.modelo.entidadUsuario.themeColor = this.modeloForm.controls['theme'].value;
+    
     this.subscription = new Subscription();
     this.subscription = this.seguridadService.setInsertPersona(this.modelo)
     .subscribe(() =>  {

@@ -123,6 +123,18 @@
                                 </p-pickList>
                             </div>
                         </p-fieldset>
+                        <p-fieldset legend="Aprobación por Tipo Explotación" [toggleable]="true" [collapsed]="true">
+                            <div class="ui-g-12">
+                                <p-pickList [source]="listAprobarSubTipoExplotacionPorSeleccionado" [target]="listAprobarSubTipoExplotacionSeleccionado" sourceHeader="Lista" targetHeader="Seleccionado" [responsive]="true" filterBy="descripcionSubTipoExplotacion" dragdrop="true" showSourceControls='false'
+                                    sourceFilterPlaceholder="Search by Tipo Explotación" targetFilterPlaceholder="Search by Tipo Explotación" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}" [showSourceControls]="false" [showTargetControls]="false">
+                                    <ng-template let-aprobarSubTipoExplosion pTemplate="item">
+                                        <div class="ui-helper-clearfix">
+                                            <div style="font-size:14px;float:left;margin:5px 5px 0 0">{{aprobarSubTipoExplosion.descripcionSubTipoExplotacion}}</div>
+                                        </div>
+                                    </ng-template>
+                                </p-pickList>
+                            </div>
+                        </p-fieldset>
                         <p-fieldset legend="Datos Adicionales">
                             <p-fieldset legend="Foto" [toggleable]="true" [collapsed]="true">
                                 <div class="ui-g-12 ui-md-4">

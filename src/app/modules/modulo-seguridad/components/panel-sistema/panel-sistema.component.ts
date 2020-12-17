@@ -55,6 +55,10 @@ export class PanelSistemaComponent implements OnInit, OnDestroy {
       [Validators.required])),
       sendEmailHost : new FormControl('', Validators.compose(
       [Validators.required, Validators.maxLength(100), Validators.minLength(5)])),
+      emailGoogleDrive : new FormControl('', Validators.compose(
+        [Validators.required, Validators.maxLength(100), Validators.minLength(5)])),
+      emailPassword : new FormControl('', Validators.compose(
+        [Validators.required, Validators.maxLength(30), Validators.minLength(3)])),
       });
   }
 
@@ -81,6 +85,8 @@ export class PanelSistemaComponent implements OnInit, OnDestroy {
     this.modeloForm.controls['sendEmailPort'].setValue(this.modelo.sendEmailPort);
     this.modeloForm.controls['sendEmailEnabledSSL'].setValue(this.modelo.sendEmailEnabledSSL);
     this.modeloForm.controls['sendEmailHost'].setValue(this.modelo.sendEmailHost);
+    this.modeloForm.controls['emailGoogleDrive'].setValue(this.modelo.emailGoogleDrive);
+    this.modeloForm.controls['emailPassword'].setValue(this.modelo.emailPassword);
   }
 
   onClickSave() {
@@ -89,6 +95,9 @@ export class PanelSistemaComponent implements OnInit, OnDestroy {
     this.modelo.sendEmailPort = this.modeloForm.controls['sendEmailPort'].value;
     this.modelo.sendEmailEnabledSSL = this.modeloForm.controls['sendEmailEnabledSSL'].value;
     this.modelo.sendEmailHost = this.modeloForm.controls['sendEmailHost'].value;
+
+    this.modelo.emailGoogleDrive = this.modeloForm.controls['emailGoogleDrive'].value;
+    this.modelo.emailPassword = this.cifrarDataService.encrypt(this.modeloForm.controls['emailPassword'].value);
 
     this.subscription$ = new Subscription();
     let observ = new Observable();

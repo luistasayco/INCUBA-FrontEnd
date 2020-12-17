@@ -122,8 +122,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   onClickLogin()
   {
-
-    this.displayTraeData = true;
     this.modeloLogin.usuario = this.formularioLogin.value.login;
     this.modeloLogin.clave = this.cifrarDataService.encrypt(this.formularioLogin.value.password);
     if (variableGlobal.ESTADO_INTERNET) {
@@ -135,6 +133,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   onLoginOnline () {
+    this.displayTraeData = true;
     this.subscripcion = new Subscription();
     this.subscripcion = this.loginService.autentica(this.modeloLogin)
     .subscribe((res: any) => {
