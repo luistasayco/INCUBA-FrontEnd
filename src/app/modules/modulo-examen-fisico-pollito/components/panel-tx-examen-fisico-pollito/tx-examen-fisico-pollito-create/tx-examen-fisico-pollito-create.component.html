@@ -151,3 +151,14 @@
 
 </div>
 <p-messages [(value)]="mensajePrimeNgService.msgs"></p-messages>
+
+<p-dialog header="Grabar" [(visible)]="displaySave" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+
+    Guardando Informacion...!!!
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>
+        </div>
+    </div>
+
+</p-dialog>

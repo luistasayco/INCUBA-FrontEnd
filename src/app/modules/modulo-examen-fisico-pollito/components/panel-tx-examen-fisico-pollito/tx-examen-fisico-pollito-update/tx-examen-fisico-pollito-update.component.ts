@@ -36,6 +36,8 @@ export class TxExamenFisicoPollitoUpdateComponent implements OnInit, OnDestroy {
   listIma: any[];
   cloneListImagen: TxExamenFisicoPollitoDetalleFotosModel[] = [];
 
+  displaySave: boolean;
+
   constructor(public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService,
               private examenFisicoPollitoService: ExamenFisicoPollitoService,
@@ -116,13 +118,16 @@ export class TxExamenFisicoPollitoUpdateComponent implements OnInit, OnDestroy {
     .map(x => {
       x.valor = Number(x.valor);
     });
+    this.displaySave = true;
     this.subscription$ = new Subscription();
     this.subscription$ = this.examenFisicoPollitoService.setUpdateTxExamenFisicoPollito(this.modeloItem)
     .subscribe(() =>  {
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
+      this.displaySave = false;
       this.onBack();
     },
       (error) => {
+        this.displaySave = false;
         this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, error);
     });
   }

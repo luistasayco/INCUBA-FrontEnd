@@ -55,6 +55,8 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
 
   subscription$: Subscription;
 
+  displaySave: boolean;s
+
   constructor(public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService,
               private examenFisicoPollitoService: ExamenFisicoPollitoService,
@@ -297,13 +299,16 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
     .map(x => {
       x.valor = Number(x.valor);
     });
+    this.displaySave = true;
     this.subscription$ = new Subscription();
     this.subscription$ = this.examenFisicoPollitoService.setInsertExamenFisicoPollito(this.modeloItem)
     .subscribe(() =>  {
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
+      this.displaySave = false;
       this.onBack();
     },
       (error) => {
+        this.displaySave = false;
         this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, error);
     });
   }

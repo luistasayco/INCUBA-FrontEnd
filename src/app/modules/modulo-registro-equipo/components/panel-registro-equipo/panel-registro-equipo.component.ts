@@ -58,6 +58,7 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
 
   displayDatosCierre: boolean;
   displayCierre: boolean;
+  displayDescarga: boolean;
 
   modeloDatosCierre: TxRegistroEquipoModel  = new TxRegistroEquipoModel();
   
@@ -300,12 +301,15 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
   }
 
   onToRowSelectPDF(modelo: TxRegistroEquipoModel) {
+    this.displayDescarga = true;
     this.subscription$ = new Subscription();
     this.subscription$ = this.registroEquipoService.setPDFTxRegistroEquipo(modelo.idRegistroEquipo)
     .subscribe((resp: any) => {
       saveAs(new Blob([resp], {type: 'application/pdf'}), modelo.nombreArchivo);
+      this.displayDescarga = false;
     },
       (error) => {
+        this.displayDescarga = false;
         this.mensajePrimeNgService.onToErrorMsg(null, error);
       });
   }

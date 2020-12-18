@@ -50,7 +50,7 @@ export class PanelTxExamenFisicoPollitoComponent implements OnInit, OnDestroy {
   // Variables para eliminar
   displayDatosCierre: boolean;
   displayCierre: boolean;
-
+  displayDescarga: boolean;
   modeloDatosCierre: TxExamenFisicoPollitoModel = new TxExamenFisicoPollitoModel();
 
   saveFiltros: any[];
@@ -239,13 +239,16 @@ export class PanelTxExamenFisicoPollitoComponent implements OnInit, OnDestroy {
   }
 
   onToRowSelectPDF(modelo: TxExamenFisicoPollitoModel) {
+    this.displayDescarga = true;
     this.subscription$ = new Subscription();
     this.subscription$ = this.examenFisicoPollitoService.setPDFExamenFisicoPollito(modelo.idExamenFisico)
     .subscribe((resp: any) => {
       saveAs(new Blob([resp], {type: 'application/pdf'}), modelo.nombreArchivo);
+      this.displayDescarga = false;
     },
       (error) => {
         this.mensajePrimeNgService.onToErrorMsg(null, error);
+        this.displayDescarga = false;
       });
   }
 

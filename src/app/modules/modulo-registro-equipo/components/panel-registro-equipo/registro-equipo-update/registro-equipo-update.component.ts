@@ -62,6 +62,8 @@ export class RegistroEquipoUpdateComponent implements OnInit, OnDestroy {
 
   cloneListImagen: TxRegistroEquipoDetalle7Model[] = [];
 
+  displaySave: boolean;
+
   constructor(private registroEquipoService: RegistroEquipoService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private router: Router,
@@ -197,13 +199,17 @@ export class RegistroEquipoUpdateComponent implements OnInit, OnDestroy {
   }
 
   onToGrabar() {
+    
+    this.displaySave = true;
     this.subscription$ = new Subscription();
     this.subscription$ = this.registroEquipoService.setUpdateTxRegistroEquipo(this.modeloItem)
     .subscribe(() =>  {
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
+      this.displaySave = false;
       this.back();
     },
       (error) => {
+        this.displaySave = false;
         this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, error);
     });
   }

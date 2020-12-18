@@ -71,6 +71,8 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
 
   selectedRepuesto: string[];
 
+  displaySave: boolean;
+
   constructor(private registroEquipoService: RegistroEquipoService,
               private compartidoService: CompartidoService,
               public mensajePrimeNgService: MensajePrimeNgService,
@@ -418,15 +420,18 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
       this.mensajePrimeNgService.onToInfoMsg('Revisar Email Invalidos..', msgList);
       return;
     }
-
+    this.displaySave = true;
     this.subscription$ = new Subscription();
     this.modeloItem.flgCerrado = false;
     this.subscription$  = this.registroEquipoService.setInsertTxRegistroEquipo( this.modeloItem )
     .subscribe(() =>  {
-      this.back();
+     
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
+      this.displaySave = false;
+      this.back();
     },
       (error) => {
+        this.displaySave = false;
         this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, error);
     });
   }

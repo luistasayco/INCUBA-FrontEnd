@@ -62,6 +62,7 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
   subscription$: Subscription;
 
   displayDatosCierre: boolean;
+  displayDescarga: boolean;
 
   modeloDatosCierre: TxRegistroDocumentoModel  = new TxRegistroDocumentoModel();
 
@@ -366,6 +367,7 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
   }
 
   onToCerrar(data: TxRegistroDocumentoModel) {
+    this.displayDatosCierre = true;
     this.subscription$ = new Subscription();
 
     this.subscription$ = this.extranetService.setUpdateStatusTxRegistroDocumento(data)
@@ -373,10 +375,12 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
       this.listModelo.find((x: TxRegistroDocumentoModel) => x.idDocumento === data.idDocumento).flgCerrado = true;
 
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
+      this.displayDatosCierre = false;
       },
       (error) => {
         this.listModelo.find((x: TxRegistroDocumentoModel) => x.idDocumento === data.idDocumento).flgCerrado = false;
         this.mensajePrimeNgService.onToErrorMsg(null, error);
+        this.displayDatosCierre = false;
       }
     );
   }
@@ -416,6 +420,7 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
   }
 
   onToRowDownload(modelo: TxRegistroDocumentoModel) {
+    this.displayDescarga = true;
     this.subscription$ = new Subscription();
     this.subscription$ = this.extranetService.getDownloadTxRegistroDocumento(modelo.idGoogleDrive)
     .subscribe((resp: any) => {
@@ -431,10 +436,12 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
           let file = new window.Blob([resp.body], {type: resp.body.type});
           let fileURL = window.URL.createObjectURL(file);
           window.open(fileURL, '_blank');
+          this.displayDescarga = false;
           break;
       }
     },
       (error) => {
+        this.displayDescarga = false;
         this.mensajePrimeNgService.onToErrorMsg(null, error);
       });
   }

@@ -30,6 +30,8 @@ export class PanelExtranetFolderComponent implements OnInit {
 
   typeFile: 'application/vnd.google-apps.folder';
 
+  displayDescarga: boolean;
+
   constructor(private extranetService: ExtranetService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private router: Router,
@@ -65,6 +67,7 @@ export class PanelExtranetFolderComponent implements OnInit {
   }
 
   onToRowDownload(modelo: GoogleDriveFilesModel) {
+    this.displayDescarga = true;
     this.subscription$ = new Subscription();
     this.subscription$ = this.extranetService.getDownloadTxRegistroDocumento(modelo.idGoogleDrive)
     .subscribe((resp: any) => {
@@ -82,10 +85,12 @@ export class PanelExtranetFolderComponent implements OnInit {
           // saveAs(new Blob([resp], {type: 'application/pdf'}), `RegistroEquipo#${modelo.idRegistroEquipo.toString()}`);
           let fileURL = window.URL.createObjectURL(file);
           window.open(fileURL, '_blank');
+          this.displayDescarga = false;
           break;
       }
     },
       (error) => {
+        this.displayDescarga = false;
         this.mensajePrimeNgService.onToErrorMsg(null, error);
       });
   }
