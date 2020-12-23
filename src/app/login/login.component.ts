@@ -17,7 +17,6 @@ import { variableGlobal } from '../interface/variable-global.interface';
 import { FunctionDBLocalService } from '../modules/modulo-base-datos-local/services/function-dblocal.service';
 import { ConstantesTablasIDB } from '../constants/constantes-tablas-indexdb';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
-import { reducer } from '../modules/modulo-estado-internet/store/reducers/network.reducer';
 import { CifrarDataService } from '../services/cifrar-data.service';
 
 @Component({
@@ -39,6 +38,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   subscripcionInternet: Subscription;
   subscripcion: Subscription;
+
+  displayValida: boolean;
 
   constructor(private readonly loginService: LoginService,
               private readonly router: Router,
@@ -203,6 +204,31 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.displayTraeData = false;
         this.userContextService.logout();
         // console.log('Error en mostrarSiguienteVista()' + error);
+      }
+    );
+  }
+
+  onRecuperarContrasena() {
+    this.displayValida = true;
+    if (this.formularioLogin.value.dataBase === '') {
+      this.mensajePrimeNgService.onToInfoMsg(null, 'Seleccionar Sociedad');
+      return;
+    }
+
+    if (this.formularioLogin.value.login === '') {
+      this.mensajePrimeNgService.onToInfoMsg(null, 'Ingresar Usuario');
+      return;
+    }
+    this.modeloLogin.usuario = this.formularioLogin.value.login;
+    this.subscripcion = new Subscription();
+    this.subscripcion = this.loginService.RecuperarPassword(this.modeloLogin)
+    .subscribe((res: any) => {
+      this.displayValida = false;
+      this.mensajePrimeNgService.onToExitoMsg('Mensaje de Éxito : ', 'Se envio email con su nueva contraseña...!!!');
+      },
+      (err) => {
+        this.displayValida = false;
+        this.mensajePrimeNgService.onToErrorMsg('Login', err.error);
       }
     );
   }

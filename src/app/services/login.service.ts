@@ -21,6 +21,15 @@ export class LoginService {
     );
   }
 
+  RecuperarPassword(login: LoginModel) {
+    const url = environment.url_api_seguridad + 'Autenticar/RecuperarPassword';
+    const param: string = JSON.stringify(login);
+    return this.http.put(
+        url,
+        param
+    );
+  }
+
   getDataBaseAll() {
     return this.http.get<DataBaseModel[]>
     (`${environment.url_api_seguridad}DataBase/GetAll/`);

@@ -24,7 +24,8 @@ export class HeaderBreadcrumbComponent implements OnDestroy, OnInit {
 
     constructor(public breadcrumbService: BreadcrumbService,
                 private userContextService: UserContextService,
-                private readonly servicioInternet: estadoInternetService) {
+                private readonly servicioInternet: estadoInternetService,
+                private readonly router: Router) {
         this.subscription = breadcrumbService.itemsHandler.subscribe(response => {
             this.items = response;
         });
@@ -35,6 +36,10 @@ export class HeaderBreadcrumbComponent implements OnDestroy, OnInit {
 
     logout() {
         this.userContextService.logout();
+    }
+
+    cambiarPassword() {
+        this.router.navigate(['/main/module-se/panel-recuperar-clave']);
     }
 
     iniciarObservableEstadoInternet() {

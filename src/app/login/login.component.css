@@ -25,3 +25,14 @@
         width: 75vw !important;
     }
 }
+
+.example {
+    text-decoration: none;
+    color: #6ebc3b;
+}
+
+.example:hover {
+    color: #6ebc3b;
+    text-decoration: underline;
+    cursor: pointer;
+}

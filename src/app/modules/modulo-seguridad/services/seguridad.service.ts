@@ -13,6 +13,7 @@ import { SubTipoExplotacionPorUsuarioModel } from '../models/sub-tipo-explotacio
 import { ParametroSistemaModel } from '../models/parametro-sistema.model';
 import { ParametroConexionModel } from '../models/parametro-conexion.model';
 import { AprobarSubTipoExplotacionPorUsuarioModel } from '../models/aprobar-sub-tipo-explotacion-por-usuario';
+import { UsuarioModel } from '../models/usuario.model';
 
 @Injectable({
   providedIn: 'root'
@@ -295,6 +296,18 @@ export class SeguridadService {
     value.regUsuario = this.userContextService.getIdUsuario();
     value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
     const url = environment.url_api_seguridad + 'ParametroSistema/Update';
+    const param: string = JSON.stringify(value);
+    return this.http.put(
+        url,
+        param
+    );
+  }
+
+  setUpdatePasswordUsuario(value: UsuarioModel) {
+    value.idUsuario = this.userContextService.getIdUsuario();
+    value.regUsuario = this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
+    const url = environment.url_api_seguridad + 'Usuario/UpdatePassword';
     const param: string = JSON.stringify(value);
     return this.http.put(
         url,

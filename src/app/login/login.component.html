@@ -47,6 +47,9 @@
                             <div class="ui-g-12">
                                 <p-messages [(value)]="mensajePrimeNgService.msgs"></p-messages>
                             </div>
+                            <div class="ui-g-12 ui-lg-6 password-container">
+                                <span class="example" (click)="onRecuperarContrasena()">¿Olvidaste tu contraseña?  </span>
+                            </div>
                             <div class="ui-g-12 ui-lg-6">
                                 <button type="submit" [disabled]="!formularioLogin.valid" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only green-btn" (click)="onClickLogin()" pButton>
                                   <span class="ui-button-text ui-c">
@@ -55,9 +58,7 @@
                                   </span>
                                 </button>
                             </div>
-                            <!-- <div class="ui-g-12 ui-lg-6 password-container">
-                                <a href="#">¿Olvidaste tu contraseña?</a>
-                            </div> -->
+
                         </div>
                     </div>
                 </div>
@@ -77,4 +78,15 @@
     <p-footer>
         <p>{{displayMensaje}}</p>
     </p-footer>
+</p-dialog>
+
+<p-dialog header="Enviando" [(visible)]="displayValida" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+
+    Enviando nuevas credenciales...!!!
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>
+        </div>
+    </div>
+
 </p-dialog>

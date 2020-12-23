@@ -19,10 +19,13 @@
         <!-- <a routerLink="/" title="Backup">
             <i class="fa fa-cloud-upload"></i>
         </a>-->
-        <a title="Network">
+        <a title="Red">
             <i class="fa fa-wifi" [ngStyle]="{'color':isNetwork ? 'green' : 'red' }"></i>
         </a>
-        <a title="Logout" (click)="logout()">
+        <a title="Cambiar Contraseña" (click)="cambiarPassword()">
+            <i class="fa fa-key"></i>
+        </a>
+        <a title="Cerrar Sesión" (click)="logout()">
             <i class="fa fa-sign-out"></i>
         </a>
     </div>

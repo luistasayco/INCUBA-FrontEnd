@@ -11,6 +11,7 @@ import { OpcionCreateComponent } from './components/panel-opcion/opcion-create/o
 import { PanelOpcionPorPerfilComponent } from './components/panel-opcion-por-perfil/panel-opcion-por-perfil.component';
 import { PanelConexionComponent } from './components/panel-conexion/panel-conexion.component';
 import { PanelSistemaComponent } from './components/panel-sistema/panel-sistema.component';
+import { PanelRecuperarClaveComponent } from './components/panel-recuperar-clave/panel-recuperar-clave.component';
 
 const routes: Routes = [
     { path: 'panel-perfil', component: PanelPerfilComponent },
@@ -23,7 +24,8 @@ const routes: Routes = [
     { path: 'opcion-create/:id', component: OpcionCreateComponent},
     { path: 'panel-opcion-x-perfil', component: PanelOpcionPorPerfilComponent},
     { path: 'panel-parametro-conexion', component: PanelConexionComponent},
-    { path: 'panel-parametro-sistema', component: PanelSistemaComponent}
+    { path: 'panel-parametro-sistema', component: PanelSistemaComponent},
+    { path: 'panel-recuperar-clave', component: PanelRecuperarClaveComponent}
 ];
 
 @NgModule({

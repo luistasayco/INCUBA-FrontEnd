@@ -14,6 +14,7 @@ import { OpcionCreateComponent } from './components/panel-opcion/opcion-create/o
 import { PanelOpcionPorPerfilComponent } from './components/panel-opcion-por-perfil/panel-opcion-por-perfil.component';
 import { PanelSistemaComponent } from './components/panel-sistema/panel-sistema.component';
 import { PanelConexionComponent } from './components/panel-conexion/panel-conexion.component';
+import { PanelRecuperarClaveComponent } from './components/panel-recuperar-clave/panel-recuperar-clave.component';
 
 @NgModule({
     declarations: [PanelPerfilComponent,
@@ -26,7 +27,8 @@ import { PanelConexionComponent } from './components/panel-conexion/panel-conexi
         OpcionCreateComponent,
         PanelOpcionPorPerfilComponent,
         PanelConexionComponent,
-        PanelSistemaComponent],
+        PanelSistemaComponent,
+        PanelRecuperarClaveComponent],
     imports: [ CommonModule,
         SeguridadPrimeNgModule,
         SeguridadRoutingModule,
