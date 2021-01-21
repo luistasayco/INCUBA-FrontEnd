@@ -212,11 +212,13 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.displayValida = true;
     if (this.formularioLogin.value.dataBase === '') {
       this.mensajePrimeNgService.onToInfoMsg(null, 'Seleccionar Sociedad');
+      this.displayValida = false;
       return;
     }
 
     if (this.formularioLogin.value.login === '') {
       this.mensajePrimeNgService.onToInfoMsg(null, 'Ingresar Usuario');
+      this.displayValida = false;
       return;
     }
     this.modeloLogin.usuario = this.formularioLogin.value.login;

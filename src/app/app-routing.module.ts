@@ -26,6 +26,12 @@ const routes: Routes = [
       canActivate: [AuthGuard]},
       { path: 'module-ex' , loadChildren:
       () => import('./modules/modulo-extranet/modulo-extranet.module').then(m => m.ExtranetModule),
+      canActivate: [AuthGuard]},
+      { path: 'module-sp' , loadChildren:
+      () => import('./modules/modulo-vacunacion-spray/modulo-vacunacion-spray.module').then(m => m.VacunacionSprayModule),
+      canActivate: [AuthGuard]},
+      { path: 'module-su' , loadChildren:
+      () => import('./modules/modulo-vacunacion-subcutanea/modulo-vacunacion-subcutanea.module').then(m => m.VacunacionSubCutaneaModule),
       canActivate: [AuthGuard]}
     ]
   },
