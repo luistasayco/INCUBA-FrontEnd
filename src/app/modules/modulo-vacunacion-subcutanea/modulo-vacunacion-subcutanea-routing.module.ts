@@ -20,10 +20,10 @@ const routes: Routes = [
     { path: 'panel-proceso-subcutanea', component: PanelProcesoSubcutaneaComponent },
     { path: 'proceso-subcutanea-create', component: ProcesoSubcutaneaCreateComponent },
     { path: 'panel-proceso-detalle-subcutanea', component: PanelProcesoDetalleSubcutaneaComponent },
-    { path: 'proceso-detalle-subcutanea-create', component: ProcesoDetalleSubcutaneaCreateComponent },
+    { path: 'proceso-detalle-subcutanea-create/:id', component: ProcesoDetalleSubcutaneaCreateComponent },
     { path: 'panel-vacunacion-subcutanea', component: PanelVacunacionSubcutaneaComponent },
     { path: 'vacunacion-subcutanea-create', component: VacunacionSubcutaneaCreateComponent },
-    { path: 'vacunacion-subcutanea-update', component: VacunacionSubcutaneaUpdateComponent }
+    { path: 'vacunacion-subcutanea-update/:id', component: VacunacionSubcutaneaUpdateComponent }
 ];
 
 @NgModule({

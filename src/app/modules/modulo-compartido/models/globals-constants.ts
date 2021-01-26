@@ -7,6 +7,7 @@ export class GlobalsConstants {
     cGrabar: string;
     cCancelar: string;
     cRegresar: string;
+    cCalcular: string;
 
     // Variables de Etiquetas para la Firma Digital
     cFirma1: string;
@@ -28,6 +29,7 @@ export class GlobalsConstants {
     icoAbierto: string;
     icoVisualizar: string;
     icoDownload: string;
+    icoCalcular: string;
 
     // Variables titulos
     titleEliminar: string;
@@ -59,6 +61,7 @@ export class GlobalsConstants {
         this.cCancelar = 'Cancelar';
         this.cEliminar = 'Eliminar';
         this.cRegresar = 'Regresar';
+        this.cCalcular = 'Calcular';
 
         this.cFirmaOk1 = 'Firma Invetsa Finalizada';
         this.cFirmaOk2 = 'Firma Planta Finalizada';
@@ -79,6 +82,7 @@ export class GlobalsConstants {
         this.icoAbierto = 'fa fa-unlock';
         this.icoVisualizar = 'fa fa-eye';
         this.icoDownload = 'fa fa-download';
+        this.icoCalcular = 'fa fa-calculator';
 
         // Titulo
         this.titleEliminar = 'Confimación de Eliminación';

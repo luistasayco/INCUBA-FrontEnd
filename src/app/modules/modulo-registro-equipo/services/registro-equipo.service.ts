@@ -179,6 +179,16 @@ export class RegistroEquipoService {
     (`${environment.url_api}EquipoPorModelo/GetAllSeleccionado/`, { params: parametros });
   }
 
+  getEquipoPorFiltros(value: EquipoPorModeloModel) {
+    let parametros = new HttpParams();
+    parametros = parametros.append('codigoEmpresa', value.codigoEmpresa);
+    parametros = parametros.append('codigoPlanta', value.codigoPlanta);
+    parametros = parametros.append('codigoModelo', value.codigoModelo);
+
+    return this.http.get<EquipoPorModeloModel[]>
+    (`${environment.url_api}Equipo/GetAllPorFiltros/`, { params: parametros });
+  }
+
   // title:  Metodos de mantenimiento
   // Author: Luis Tasayco
   // Date:   08/09/2020

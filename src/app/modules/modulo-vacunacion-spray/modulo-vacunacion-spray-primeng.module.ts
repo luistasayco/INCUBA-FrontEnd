@@ -21,6 +21,9 @@ import { DialogModule } from 'primeng/dialog';
 import { ListboxModule } from 'primeng/listbox';
 import { TooltipModule } from 'primeng/tooltip';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { FieldsetModule } from 'primeng/fieldset';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { MultiSelectModule } from 'primeng/multiselect';
 // Sevices
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
@@ -46,7 +49,10 @@ import { MessageService } from 'primeng/api';
         DialogModule,
         ListboxModule,
         TooltipModule,
-        ProgressBarModule],
+        ProgressBarModule,
+        FieldsetModule,
+        RadioButtonModule,
+        MultiSelectModule],
     providers: [MessageService, ConfirmationService],
 })
 export class VacunacionSprayPrimeNgModule {}

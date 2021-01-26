@@ -10,6 +10,7 @@ import { PanelProcesoDetalleSprayComponent } from './components/panel-proceso-de
 import { ProcesoDetalleSprayCreateComponent } from './components/panel-proceso-detalle-spray/proceso-detalle-spray-create/proceso-detalle-spray-create.component';
 import { PanelVacunacionSprayComponent } from './components/panel-vacunacion-spray/panel-vacunacion-spray.component';
 import { VacunacionSprayCreateComponent } from './components/panel-vacunacion-spray/vacunacion-spray-create/vacunacion-spray-create.component';
+import { VacunacionSprayUpdateComponent } from './components/panel-vacunacion-spray/vacunacion-spray-update/vacunacion-spray-update.component';
 
 const routes: Routes = [
     { path: 'panel-boquilla', component: PanelBoquillaComponent },
@@ -17,12 +18,12 @@ const routes: Routes = [
     { path: 'panel-proceso-spray', component: PanelProcesoSprayComponent },
     { path: 'proceso-spray-create', component: ProcesoSprayCreateComponent },
     { path: 'panel-proceso-detalle-spray', component: PanelProcesoDetalleSprayComponent },
-    { path: 'proceso-detalle-spray-create', component: ProcesoDetalleSprayCreateComponent },
+    { path: 'proceso-detalle-spray-create/:id', component: ProcesoDetalleSprayCreateComponent },
     { path: 'panel-vacuna', component: PanelVacunaComponent },
     { path: 'vacuna-create', component: VacunaCreateComponent },
     { path: 'panel-vacunacion-spray', component: PanelVacunacionSprayComponent },
     { path: 'vacunacion-spray-create', component: VacunacionSprayCreateComponent },
-    { path: 'vacunacion-spray-update', component: VacunacionSprayCreateComponent }
+    { path: 'vacunacion-spray-update/:id', component: VacunacionSprayUpdateComponent }
 ];
 
 @NgModule({
