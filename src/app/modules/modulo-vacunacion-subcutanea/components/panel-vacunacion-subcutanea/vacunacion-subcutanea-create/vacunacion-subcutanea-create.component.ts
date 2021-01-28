@@ -91,6 +91,7 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
   nombreVacunadorControlEficiencia: any;
 
   modeloControlEficiencia: TxVacunacionSubCutaneaControlEficienciaModel = new TxVacunacionSubCutaneaControlEficienciaModel();
+  listControlEficienciaPromedio: TxVacunacionSubCutaneaControlEficienciaModel[];
   
 
   clonedVacuna: { [s: string]: TxVacunacionSubCutaneayVacunaModel; } = {};
@@ -128,6 +129,7 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
     this.selectModelo = null;
     this.selectEquipo = [];
     this.nombreVacunadorControlEficiencia = null;
+    this.listControlEficienciaPromedio = [];
 
     this.nombreVacuna = '';
     this.columnasMaquina = [
@@ -278,7 +280,6 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
     });
   }
 
-
   getToObtieneProceso() {
     let modeloProcesoSubCutanea: ProcesoSubCutaneaModel = new ProcesoSubCutaneaModel();
     this.subscription$ = new Subscription();
@@ -369,8 +370,8 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
     this.modeloItem.listarTxVacunacionSubCutaneaFotos = [];
     event.forEach(x => {
       this.modeloItem.listarTxVacunacionSubCutaneaFotos.push({
-        idVacunacionSprayDetalle: 0,
-        idVacunacionSpray: 0,
+        idVacunacionSubCutaneaDetalle: 0,
+        idVacunacionSubCutanea: 0,
         foto: x.imagen
       });
     });
@@ -473,6 +474,127 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
     });
 
     this.modeloItem.listarTxVacunacionSubCutaneaResultado = [...clonedResultadoFilanCalcular];
+
+    if (this.modeloItem.flgPorcentajeViabilidad) {
+      this.modeloItem.listarTxVacunacionSubCutaneaResultado.find(xFila => xFila.idProcesoAgrupador ===2).valorObtenido = 0.5;
+    }
+
+    // Calculamos puntaje Final de Irregularidad
+
+    let IrregularidadPuntajeFinal: any[]
+    IrregularidadPuntajeFinal =[];
+
+    this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.forEach(xFila => {
+      let dataIrregularidad = [...this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad].filter(yFila => yFila.nombreVacunador === xFila.nombreVacunador);
+      let puntejaPorVacunador = 1;
+      dataIrregularidad.forEach(zFila => {
+        puntejaPorVacunador -= zFila.valor
+      });
+        
+      IrregularidadPuntajeFinal.push({nombreVacunado: xFila.nombreVacunador, puntaje: puntejaPorVacunador});
+    });
+
+    let counIrregularidadPorVacunado = IrregularidadPuntajeFinal.length;
+    let totalIrregularidadPorVacunador = 0;
+    if (IrregularidadPuntajeFinal.length > 0) {
+      IrregularidadPuntajeFinal.forEach(xFila => {
+        totalIrregularidadPorVacunador += xFila.puntaje;
+      });
+
+      this.modeloItem.listarTxVacunacionSubCutaneaResultado.find(xFila => xFila.idProcesoAgrupador === 3).valorObtenido = totalIrregularidadPorVacunador/ counIrregularidadPorVacunado;
+
+    } else {
+      this.modeloItem.listarTxVacunacionSubCutaneaResultado.find(xFila => xFila.idProcesoAgrupador === 3).valorObtenido = 0;
+    }
+
+
+    
+
+    let sumarControldeEficiencia: TxVacunacionSubCutaneaControlEficienciaModel = new TxVacunacionSubCutaneaControlEficienciaModel();
+    let promedioControldeEficiencia: TxVacunacionSubCutaneaControlEficienciaModel = new TxVacunacionSubCutaneaControlEficienciaModel();
+
+    this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.forEach(xFila => {
+      sumarControldeEficiencia.idVacunacionSubCutaneaDetalle = 0,
+      sumarControldeEficiencia.idVacunacionSubCutanea = 0,
+      sumarControldeEficiencia.nombreVacunador = 'Sumatoria',
+      sumarControldeEficiencia.vacunadoPorHora += xFila.vacunadoPorHora;
+      sumarControldeEficiencia.puntajeProductividad += xFila.puntajeProductividad;
+      sumarControldeEficiencia.controlados += xFila.controlados;
+      sumarControldeEficiencia.sinVacunar += xFila.sinVacunar;
+      sumarControldeEficiencia.heridos += xFila.heridos;
+      sumarControldeEficiencia.mojados += xFila.mojados;
+      sumarControldeEficiencia.malaPosicion += xFila.malaPosicion;
+      sumarControldeEficiencia.vacunadoCorrectos += xFila.vacunadoCorrectos;
+      sumarControldeEficiencia.porcentajeEficiencia += xFila.porcentajeEficiencia;
+      sumarControldeEficiencia.puntajeEficiencia += xFila.puntajeEficiencia;
+    });
+
+    
+    let countLineasControlEficiencia = this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.length;
+
+    promedioControldeEficiencia.idVacunacionSubCutaneaDetalle = 0;
+    promedioControldeEficiencia.idVacunacionSubCutanea = 0;
+    promedioControldeEficiencia.nombreVacunador = 'Promedio';
+    promedioControldeEficiencia.vacunadoPorHora = sumarControldeEficiencia.vacunadoPorHora / countLineasControlEficiencia;
+    promedioControldeEficiencia.puntajeProductividad = sumarControldeEficiencia.puntajeProductividad / countLineasControlEficiencia;
+    promedioControldeEficiencia.controlados = sumarControldeEficiencia.controlados / countLineasControlEficiencia;
+    promedioControldeEficiencia.sinVacunar = sumarControldeEficiencia.sinVacunar / countLineasControlEficiencia;
+    promedioControldeEficiencia.heridos = sumarControldeEficiencia.heridos / countLineasControlEficiencia;
+    promedioControldeEficiencia.mojados = sumarControldeEficiencia.mojados / countLineasControlEficiencia;
+    promedioControldeEficiencia.malaPosicion = sumarControldeEficiencia.malaPosicion / countLineasControlEficiencia;
+    promedioControldeEficiencia.vacunadoCorrectos = sumarControldeEficiencia.vacunadoCorrectos / countLineasControlEficiencia;
+    promedioControldeEficiencia.porcentajeEficiencia = sumarControldeEficiencia.porcentajeEficiencia / countLineasControlEficiencia;
+    promedioControldeEficiencia.puntajeEficiencia = sumarControldeEficiencia.puntajeEficiencia / countLineasControlEficiencia;
+    
+
+    
+    
+    
+    let valorInicio = 0;
+    let valorFin = 0;
+
+    this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.map(xFila => {
+      //•	+50% y -10% del promedio de Vacunados hora 1punto
+      valorInicio = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.1)
+      valorFin = promedioControldeEficiencia.vacunadoPorHora + (promedioControldeEficiencia.vacunadoPorHora * 0.5)
+
+      if (xFila.vacunadoPorHora >= valorInicio && xFila.vacunadoPorHora <= valorFin) {
+        xFila.puntajeProductividad = 1;
+      }
+      //•	Entre -10 a -20% del promedio 0.5 puntos
+      valorInicio = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.2)
+      valorFin = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.1)
+
+      if (xFila.vacunadoPorHora >= valorInicio && xFila.vacunadoPorHora <= valorFin) {
+        xFila.puntajeProductividad = 0.5;
+      }
+      //•	21% a más por debajo de la media 0 puntos
+      valorInicio = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0)
+      valorFin = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.21)
+
+      if (xFila.vacunadoPorHora >= valorInicio && xFila.vacunadoPorHora <= valorFin) {
+        xFila.puntajeProductividad = 0;
+      }
+
+    });
+
+    this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.forEach(xFila => {
+      sumarControldeEficiencia.puntajeProductividad += xFila.puntajeProductividad;
+    });
+
+    this.listControlEficienciaPromedio.push(sumarControldeEficiencia);
+    promedioControldeEficiencia.puntajeProductividad = sumarControldeEficiencia.puntajeProductividad / countLineasControlEficiencia;
+    this.listControlEficienciaPromedio.push(promedioControldeEficiencia);
+
+    this.listIndiceEficiencia.forEach(xFilaEficiencia => {
+      if (promedioControldeEficiencia.porcentajeEficiencia >= xFilaEficiencia.rangoInicial && promedioControldeEficiencia.porcentajeEficiencia <= xFilaEficiencia.rangoFinal) {
+        promedioControldeEficiencia.puntajeEficiencia = xFilaEficiencia.puntaje;
+      }
+    });
+
+    this.modeloItem.listarTxVacunacionSubCutaneaResultado.find(xFila => xFila.idProcesoAgrupador === 4).valorObtenido = promedioControldeEficiencia.puntajeEficiencia;
+    this.modeloItem.listarTxVacunacionSubCutaneaResultado.find(xFila => xFila.idProcesoAgrupador === 5).valorObtenido = promedioControldeEficiencia.puntajeProductividad;
+
   }
 
   onToRowSelectDeleteVacunaMaquina(data : TxVacunacionSubCutaneaMaquinaModel) {
@@ -551,17 +673,19 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
   }
 
   onRowEditSave(data: TxVacunacionSubCutaneaControlEficienciaModel) {
-      this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.map(xFila => {
-        xFila.vacunadoPorHora = xFila.cantidadFinal - xFila.cantidadInicial;
-        xFila.vacunadoCorrectos = xFila.controlados - (xFila.sinVacunar + xFila.heridos + xFila.mojados + xFila.malaPosicion);
-        xFila.porcentajeEficiencia = (xFila.vacunadoCorrectos / xFila.controlados) *100;
 
-        this.listIndiceEficiencia.forEach(xFilaEficiencia => {
-          if (xFila.porcentajeEficiencia >= xFilaEficiencia.rangoInicial && xFila.porcentajeEficiencia <= xFilaEficiencia.rangoFinal) {
-            xFila.puntajeEficiencia = xFilaEficiencia.puntaje;
-          }
-        });
+    this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.map(xFila => {
+      xFila.vacunadoPorHora = xFila.cantidadFinal - xFila.cantidadInicial;
+      xFila.vacunadoCorrectos = xFila.controlados - (xFila.sinVacunar + xFila.heridos + xFila.mojados + xFila.malaPosicion);
+      xFila.porcentajeEficiencia = (xFila.vacunadoCorrectos / xFila.controlados) *100;
+
+      this.listIndiceEficiencia.forEach(xFilaEficiencia => {
+        if (xFila.porcentajeEficiencia >= xFilaEficiencia.rangoInicial && xFila.porcentajeEficiencia <= xFilaEficiencia.rangoFinal) {
+          xFila.puntajeEficiencia = xFilaEficiencia.puntaje;
+        }
       });
+    }); 
+
   }
 
   onRowEditCancel(data: TxVacunacionSubCutaneaControlEficienciaModel, i: number) {
@@ -640,6 +764,11 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
     this.modeloItem.fecRegistro = null;
     this.modeloItem.fecHoraRegistro = null;
     this.modeloItem.flgCerrado = false;
+
+    if (this.modeloItem.flgPorcentajeViabilidad) {
+      this.modeloItem.puntajePorcentajeViabilidad = 0.5;
+    }
+
     console.log('this.modeloItem', this.modeloItem);
     this.subscription$ = new Subscription();
     this.subscription$ = this.vacunacionSubcutaneaService.setInsertTxVacunacionSubCutanea(this.modeloItem)

@@ -12,11 +12,11 @@
             </div>
             <div class="ui-g-12 ui-md-3">
                 <label class="label-custom-unidad" for="dropdown-unidad">Unidad: </label>
-                <input id="label-custom-unidad" type="text" [(ngModel)]="modeloItem.unidad" pInputText>
+                <input disabled id="label-custom-unidad" type="text" [(ngModel)]="modeloItem.unidad" pInputText>
             </div>
             <div class="ui-g-12 ui-md-3">
                 <label class="label-custom-responsable-incubadora" for="dropdown-responsable">Responsable Incubadora: </label>
-                <input id="label-custom-responsable-incubadora" type="text" [(ngModel)]="modeloItem.responsableIncubadora" pInputText>
+                <input disabled id="label-custom-responsable-incubadora" type="text" [(ngModel)]="modeloItem.responsableIncubadora" pInputText>
             </div>
         </div>
     </p-panel>
@@ -25,53 +25,53 @@
         <p-fieldset legend="Línea Genética">
             <div class="ui-g ui-fluid">
                 <div class="ui-g-12 ui-md-1">
-                    <p-checkbox [(ngModel)]="modeloItem.flgHyLine" label="HyLine" binary="true"></p-checkbox>
+                    <p-checkbox disabled [(ngModel)]="modeloItem.flgHyLine" label="HyLine" binary="true"></p-checkbox>
                 </div>
                 <div class="ui-g-12 ui-md-1">
-                    <p-checkbox [(ngModel)]="modeloItem.flgLohman" label="Lohman" binary="true"></p-checkbox>
+                    <p-checkbox disabled [(ngModel)]="modeloItem.flgLohman" label="Lohman" binary="true"></p-checkbox>
                 </div>
                 <div class="ui-g-12 ui-md-1">
-                    <p-checkbox [(ngModel)]="modeloItem.flgRoss" label="Ross" binary="true"></p-checkbox>
+                    <p-checkbox disabled [(ngModel)]="modeloItem.flgRoss" label="Ross" binary="true"></p-checkbox>
                 </div>
                 <div class="ui-g-12 ui-md-1">
-                    <p-checkbox [(ngModel)]="modeloItem.flgCobb" label="Cobb" binary="true"></p-checkbox>
+                    <p-checkbox disabled [(ngModel)]="modeloItem.flgCobb" label="Cobb" binary="true"></p-checkbox>
                 </div>
                 <div class="ui-g-12 ui-md-1">
-                    <p-checkbox [(ngModel)]="modeloItem.flgOtros" label="Otros" binary="true"></p-checkbox>
+                    <p-checkbox disabled [(ngModel)]="modeloItem.flgOtros" label="Otros" binary="true"></p-checkbox>
                 </div>
                 <div class="ui-g-12 ui-md-7">
-                    <input id="observacionOtros" type="text" [(ngModel)]="modeloItem.observacionOtros" pInputText>
+                    <input disabled id="observacionOtros" type="text" [(ngModel)]="modeloItem.observacionOtros" pInputText>
                 </div>
             </div>
         </p-fieldset>
         <p-fieldset legend="N° de Nacimientos / Semana">
             <div class="ui-g ui-fluid">
                 <div class="ui-g-12 ui-md-1">
-                    <p-checkbox [(ngModel)]="modeloItem.flgLunes" label="Lunes" binary="true"></p-checkbox>
+                    <p-checkbox disabled [(ngModel)]="modeloItem.flgLunes" label="Lunes" binary="true"></p-checkbox>
                 </div>
                 <div class="ui-g-12 ui-md-1">
-                    <p-checkbox [(ngModel)]="modeloItem.flgMartes" label="Martes" binary="true"></p-checkbox>
+                    <p-checkbox disabled [(ngModel)]="modeloItem.flgMartes" label="Martes" binary="true"></p-checkbox>
                 </div>
                 <div class="ui-g-12 ui-md-1">
-                    <p-checkbox [(ngModel)]="modeloItem.flgMiercoles" label="Miercoles" binary="true"></p-checkbox>
+                    <p-checkbox disabled [(ngModel)]="modeloItem.flgMiercoles" label="Miercoles" binary="true"></p-checkbox>
                 </div>
                 <div class="ui-g-12 ui-md-1">
-                    <p-checkbox [(ngModel)]="modeloItem.flgJueves" label="Jueves" binary="true"></p-checkbox>
+                    <p-checkbox disabled [(ngModel)]="modeloItem.flgJueves" label="Jueves" binary="true"></p-checkbox>
                 </div>
                 <div class="ui-g-12 ui-md-1">
-                    <p-checkbox [(ngModel)]="modeloItem.flgViernes" label="Viernes" binary="true"></p-checkbox>
+                    <p-checkbox disabled [(ngModel)]="modeloItem.flgViernes" label="Viernes" binary="true"></p-checkbox>
                 </div>
                 <div class="ui-g-12 ui-md-1">
-                    <p-checkbox [(ngModel)]="modeloItem.flgSabado" label="Sabado" binary="true"></p-checkbox>
+                    <p-checkbox disabled [(ngModel)]="modeloItem.flgSabado" label="Sabado" binary="true"></p-checkbox>
                 </div>
                 <div class="ui-g-12 ui-md-1">
-                    <p-checkbox [(ngModel)]="modeloItem.flgDomingo" label="Domingo" binary="true"></p-checkbox>
+                    <p-checkbox disabled [(ngModel)]="modeloItem.flgDomingo" label="Domingo" binary="true"></p-checkbox>
                 </div>
                 <div class="ui-g-12 ui-md-2">
                     <label class="label-custom" for="lote">Pollos/día(promedio): </label>
                 </div>
                 <div class="ui-g-12 ui-md-3">
-                    <input id="promedioPollos" type="number" [(ngModel)]="modeloItem.promedioPollos" pInputText>
+                    <input disabled id="promedioPollos" type="number" [(ngModel)]="modeloItem.promedioPollos" pInputText>
                 </div>
             </div>
         </p-fieldset>
@@ -129,17 +129,17 @@
 
                     <div class="ui-grid ui-fluid">
                         <div class="ui-g-12  ui-md-4">
-                            <p-checkbox id="dropdown-antibiotico" [(ngModel)]="modeloItem.flgAntibiotico" binary="true" label="Antibiótico"></p-checkbox>
+                            <p-checkbox disabled id="dropdown-antibiotico" [(ngModel)]="modeloItem.flgAntibiotico" binary="true" label="Antibiótico"></p-checkbox>
                             <label *ngIf="modeloItem.flgAntibiotico" class="label-custom" for="dropdown-antibiotico"> => SI </label>
                             <label *ngIf="!modeloItem.flgAntibiotico" class="label-custom" for="dropdown-antibiotico"> => NO </label>
                         </div>
                         <div class="ui-g-12  ui-md-4">
                             <label class="label-custom" for="dropdown-responsable">Nombre: </label>
-                            <input id="label-custom-nombre-antibiotico" type="text" [(ngModel)]="modeloItem.nombreAntibiotico" pInputText>
+                            <input disabled id="label-custom-nombre-antibiotico" type="text" [(ngModel)]="modeloItem.nombreAntibiotico" pInputText>
                         </div>
                         <div class="ui-g-12  ui-md-4">
                             <label class="label-custom" for="dropdown-responsable">Dósis: </label>
-                            <input id="label-custom-dosis-antibiotico" type="text" [(ngModel)]="modeloItem.dosisAntibiotico" pInputText>
+                            <input disabled id="label-custom-dosis-antibiotico" type="text" [(ngModel)]="modeloItem.dosisAntibiotico" pInputText>
                         </div>
                     </div>
                 </p-footer>
@@ -178,7 +178,7 @@
                                         <label *ngIf="!rowData.valor" class="label-custom" for="float-input-corta">NO </label>
                                     </td>
                                     <td>
-                                        <p-checkbox [(ngModel)]="rowData.valor" binary="true"></p-checkbox>
+                                        <p-checkbox disabled [(ngModel)]="rowData.valor" binary="true"></p-checkbox>
                                     </td>
                                     <td>{{rowData.descripcionProcesoDetalleSubCutanea}}</td>
                                 </tr>
@@ -197,7 +197,7 @@
                         <label class="label-custom">Puntaje Máximo : 0.5 </label>
                     </div>
                     <div class="ui-g-12">
-                        <p-checkbox id="dropdown-antibiotico" [(ngModel)]="modeloItem.flgPorcentajeViabilidad" binary="true" label="Porcentaje de viabilidad mayor al 85%"></p-checkbox>
+                        <p-checkbox disabled id="dropdown-antibiotico" [(ngModel)]="modeloItem.flgPorcentajeViabilidad" binary="true" label="Porcentaje de viabilidad mayor al 85%"></p-checkbox>
                         <label *ngIf="modeloItem.flgPorcentajeViabilidad" class="label-custom" for="dropdown-antibiotico"> => SI </label>
                         <label *ngIf="!modeloItem.flgPorcentajeViabilidad" class="label-custom" for="dropdown-antibiotico"> => NO </label>
                     </div>
@@ -205,8 +205,11 @@
             </p-accordionTab>
             <p-accordionTab header="Mantenimiento y Limpieza de las vacunadoras subcutánea">
                 <div class="ui-g ui-fluid">
-                    <div class="ui-g-12">
+                    <div class="ui-g-12 ui-md-6">
                         <label class="label-custom">Asignar con una (X) las irregularidades encontradas segun la lista adjunta: </label>
+                    </div>
+                    <div class="ui-g-12 ui-md-6">
+                        <label class="label-custom">Puntaje Máximo : 1.0 </label>
                     </div>
                     <div class="ui-g-12">
                         <p-table [value]="modeloItem.listarTxVacunacionSubCutaneaIrregularidad" [columns]="columnasIrregularidad" [paginator]="true" [rows]="9" autoLayout="true" [responsive]="true">
@@ -215,7 +218,6 @@
                                     <th *ngFor="let col of columns">
                                         {{col.header}}
                                     </th>
-                                    <th colspan="1">Acciones</th>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri>
@@ -253,7 +255,6 @@
                                     <th *ngFor="let col of columns">
                                         {{col.header}}
                                     </th>
-                                    <th colspan="2">Acciones</th>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri let-editing="editing">
@@ -262,130 +263,34 @@
                                         <span class="ui-column-title">Nombre del Vacunador</span> {{rowData.nombreVacunador}}
                                     </td>
                                     <td class="action-td">
-                                        <span class="ui-column-title">Cantidad Inicial</span>
-                                        <p-cellEditor>
-                                            <ng-template pTemplate="input">
-                                                <span class="p-float-label">
-                                                    <input id="float-input" type="number" pInputText [(ngModel)]="rowData.cantidadInicial"> 
-                                                </span>
-                                            </ng-template>
-                                            <ng-template pTemplate="output">
-                                                {{rowData.cantidadInicial}}
-                                            </ng-template>
-                                        </p-cellEditor>
+                                        <span class="ui-column-title">Cantidad Inicial</span> {{rowData.cantidadInicial}}
                                     </td>
                                     <td class="action-td">
-                                        <span class="ui-column-title">Cantidad Final</span>
-                                        <p-cellEditor>
-                                            <ng-template pTemplate="input">
-                                                <span class="p-float-label">
-                                                    <input id="float-input" type="number" pInputText [(ngModel)]="rowData.cantidadFinal"> 
-                                                </span>
-                                            </ng-template>
-                                            <ng-template pTemplate="output">
-                                                {{rowData.cantidadFinal}}
-                                            </ng-template>
-                                        </p-cellEditor>
+                                        <span class="ui-column-title">Cantidad Final</span> {{rowData.cantidadFinal}}
                                     </td>
                                     <td class="action-td">
-                                        <span class="ui-column-title">Vac./Hora</span>
-                                        <p-cellEditor>
-                                            <ng-template pTemplate="input">
-                                                {{rowData.vacunadoPorHora}}
-                                            </ng-template>
-                                            <ng-template pTemplate="output">
-                                                {{rowData.vacunadoPorHora}}
-                                            </ng-template>
-                                        </p-cellEditor>
+                                        <span class="ui-column-title">Vac./Hora</span> {{rowData.vacunadoPorHora}}
                                     </td>
                                     <td class="action-td">
-                                        <span class="ui-column-title">Puntaje Productividad</span>
-                                        <p-cellEditor>
-                                            <ng-template pTemplate="input">
-                                                <span class="p-float-label">
-                                                    <input id="float-input" type="number" pInputText [(ngModel)]="rowData.puntajeProductividad"> 
-                                                </span>
-                                            </ng-template>
-                                            <ng-template pTemplate="output">
-                                                {{rowData.puntajeProductividad}}
-                                            </ng-template>
-                                        </p-cellEditor>
+                                        <span class="ui-column-title">Puntaje Productividad</span> {{rowData.puntajeProductividad}}
                                     </td>
                                     <td class="action-td">
-                                        <span class="ui-column-title">Controlados</span>
-                                        <p-cellEditor>
-                                            <ng-template pTemplate="input">
-                                                <span class="p-float-label">
-                                                    <input id="float-input" type="number" pInputText [(ngModel)]="rowData.controlados"> 
-                                                </span>
-                                            </ng-template>
-                                            <ng-template pTemplate="output">
-                                                {{rowData.controlados}}
-                                            </ng-template>
-                                        </p-cellEditor>
+                                        <span class="ui-column-title">Controlados</span> {{rowData.controlados}}
                                     </td>
                                     <td class="action-td">
-                                        <span class="ui-column-title">Sin Vacunar</span>
-                                        <p-cellEditor>
-                                            <ng-template pTemplate="input">
-                                                <span class="p-float-label">
-                                                    <input id="float-input" type="number" pInputText [(ngModel)]="rowData.sinVacunar"> 
-                                                </span>
-                                            </ng-template>
-                                            <ng-template pTemplate="output">
-                                                {{rowData.sinVacunar}}
-                                            </ng-template>
-                                        </p-cellEditor>
+                                        <span class="ui-column-title">Sin Vacunar</span> {{rowData.sinVacunar}}
                                     </td>
                                     <td class="action-td">
-                                        <span class="ui-column-title">Heridos</span>
-                                        <p-cellEditor>
-                                            <ng-template pTemplate="input">
-                                                <span class="p-float-label">
-                                                    <input id="float-input" type="number" pInputText [(ngModel)]="rowData.heridos"> 
-                                                </span>
-                                            </ng-template>
-                                            <ng-template pTemplate="output">
-                                                {{rowData.heridos}}
-                                            </ng-template>
-                                        </p-cellEditor>
+                                        <span class="ui-column-title">Heridos</span> {{rowData.heridos}}
                                     </td>
                                     <td class="action-td">
-                                        <span class="ui-column-title">Mojados</span>
-                                        <p-cellEditor>
-                                            <ng-template pTemplate="input">
-                                                <span class="p-float-label">
-                                                    <input id="float-input" type="number" pInputText [(ngModel)]="rowData.mojados"> 
-                                                </span>
-                                            </ng-template>
-                                            <ng-template pTemplate="output">
-                                                {{rowData.mojados}}
-                                            </ng-template>
-                                        </p-cellEditor>
+                                        <span class="ui-column-title">Mojados</span> {{rowData.mojados}}
                                     </td>
                                     <td class="action-td">
-                                        <span class="ui-column-title">Mala Posición</span>
-                                        <p-cellEditor>
-                                            <ng-template pTemplate="input">
-                                                <span class="p-float-label">
-                                                    <input id="float-input" type="number" pInputText [(ngModel)]="rowData.malaPosicion"> 
-                                                </span>
-                                            </ng-template>
-                                            <ng-template pTemplate="output">
-                                                {{rowData.malaPosicion}}
-                                            </ng-template>
-                                        </p-cellEditor>
+                                        <span class="ui-column-title">Mala Posición</span> {{rowData.malaPosicion}}
                                     </td>
                                     <td class="action-td">
-                                        <span class="ui-column-title">Vac. Correctamente</span>
-                                        <p-cellEditor>
-                                            <ng-template pTemplate="input">
-                                                {{rowData.vacunadoCorrectos}}
-                                            </ng-template>
-                                            <ng-template pTemplate="output">
-                                                {{rowData.vacunadoCorrectos}}
-                                            </ng-template>
-                                        </p-cellEditor>
+                                        <span class="ui-column-title">Vac. Correctamente</span> {{rowData.vacunadoCorrectos}}
                                     </td>
                                     <td class="action-td">
                                         <span class="ui-column-title">% de Eficiencia</span> {{rowData.porcentajeEficiencia}}
@@ -393,10 +298,46 @@
                                     <td class="action-td">
                                         <span class="ui-column-title">Puntaje de Eficiencia</span> {{rowData.puntajeEficiencia}}
                                     </td>
-
                                 </tr>
                             </ng-template>
                         </p-table>
+                    </div>
+                </div>
+            </p-accordionTab>
+            <p-accordionTab header="Productividad">
+                <div class="ui-grid ui-fluid">
+                    <div class="ui-g-12  ui-md-6">
+                        <label class="label-custom"> <strong>Productividad Pollos vacunados en 1 hora:</strong>  </label>
+                    </div>
+                    <div class="ui-g-12  ui-md-6">
+                        <label class="label-custom">Puntaje Máximo: 1.0 </label>
+                    </div>
+                    <div class="ui-g-12  ui-md-6">
+                        <label class="label-custom">Resultado dentro de +50% y -10% de la media: </label>
+                    </div>
+                    <div class="ui-g-12  ui-md-6">
+                        <label class="label-custom">1.0 punto</label>
+                    </div>
+                    <div class="ui-g-12  ui-md-6">
+                        <label class="label-custom">10 - 20 % por debajo de ma media: </label>
+                    </div>
+                    <div class="ui-g-12  ui-md-6">
+                        <label class="label-custom">0.5 punto</label>
+                    </div>
+                    <div class="ui-g-12  ui-md-6">
+                        <label class="label-custom">21% más por debajo de la media: </label>
+                    </div>
+                    <div class="ui-g-12  ui-md-6">
+                        <label class="label-custom">0.0 punto</label>
+                    </div>
+                    <div class="ui-g-12">
+                        <label class="label-custom"><strong>Recomendado</strong> </label>
+                    </div>
+                    <div class="ui-g-12">
+                        <label class="label-custom">Con una ajuga de 2500 a 2800 pollos/hora: </label>
+                    </div>
+                    <div class="ui-g-12">
+                        <label class="label-custom">Con una ajuga de 2000 a 2200 pollos/hora: </label>
                     </div>
                 </div>
             </p-accordionTab>
@@ -427,61 +368,61 @@
             <p-accordionTab header="Fotos">
                 <div class="ui-grid ui-fluid">
                     <div class="ui-g-12">
-                        <app-galeria-imagen (listUpdate)="listUpdate($event)"></app-galeria-imagen>
+                        <app-galeria-imagen (listUpdate)="listUpdate($event)" [(carouselCars)]="listIma"></app-galeria-imagen>
                     </div>
                 </div>
             </p-accordionTab>
         </p-accordion>
     </p-panel>
     <p-footer>
-        <div class="ui-grid ui-fluid">
-            <div class="ui-g-12 ui-md-6">
-                <label for="float-input-responsable-invetsa">Responsable Invetsa:</label>
-                <textarea id="float-input-responsable-invetsa" [(ngModel)]="modeloItem.observacionInvetsa" pInputTextarea autoResize="autoResize" placeholder="Ingresar Observación"> </textarea>
+        <div class="ui-grid ui-fluid ">
+            <div class="ui-g-12 ui-md-6 ">
+                <label for="float-input-responsable-invetsa ">Responsable Invetsa:</label>
+                <textarea disabled id="float-input-responsable-invetsa " [(ngModel)]="modeloItem.observacionInvetsa " pInputTextarea autoResize="autoResize " placeholder="Ingresar Observación "> </textarea>
             </div>
-            <div class="ui-g-12 ui-md-6">
-                <label for="float-input-responsable-planta">Responsable Planta:</label>
-                <textarea id="float-input-responsable-planta" [(ngModel)]="modeloItem.observacionPlanta" pInputTextarea autoResize="autoResize" placeholder="Ingresar Observación"> </textarea>
+            <div class="ui-g-12 ui-md-6 ">
+                <label for="float-input-responsable-planta ">Responsable Planta:</label>
+                <textarea disabled id="float-input-responsable-planta " [(ngModel)]="modeloItem.observacionPlanta " pInputTextarea autoResize="autoResize " placeholder="Ingresar Observación "> </textarea>
             </div>
-            <div class="ui-g-12 ui-md-6">
-                <img [src]="modeloItem.firmaInvetsa" *ngIf="modeloItem.firmaInvetsa" style="width: 100%; display: block;" />
+            <div class="ui-g-12 ui-md-6 ">
+                <img [src]="modeloItem.firmaInvetsa " *ngIf="modeloItem.firmaInvetsa " style="width: 100%; display: block; " />
             </div>
-            <div class="ui-g-12 ui-md-6">
-                <img [src]="modeloItem.firmaPlanta" *ngIf="modeloItem.firmaPlanta" style="width: 100%; display: block;" />
+            <div class="ui-g-12 ui-md-6 ">
+                <img [src]="modeloItem.firmaPlanta " *ngIf="modeloItem.firmaPlanta " style="width: 100%; display: block; " />
             </div>
-            <div class="ui-g-12 ui-md-6">
-                <div class="p-field">
-                    <label for="nombreInvetsa">Responsable Invetsa:</label>
-                    <input [disabled]="true" id="nombreInvetsa" [(ngModel)]="modeloItem.responsableInvetsa" type="text" pInputText>
-                    <label for="emailInvetsa">Email:</label>
-                    <input [disabled]="true" id="emailInvetsa" [(ngModel)]="modeloItem.emailFrom" type="text" pInputText>
+            <div class="ui-g-12 ui-md-6 ">
+                <div class="p-field ">
+                    <label for="nombreInvetsa ">Responsable Invetsa:</label>
+                    <input [disabled]="true " id="nombreInvetsa " [(ngModel)]="modeloItem.responsableInvetsa " type="text " pInputText>
+                    <label for="emailInvetsa ">Email:</label>
+                    <input [disabled]="true " id="emailInvetsa " [(ngModel)]="modeloItem.emailFrom " type="text " pInputText>
                 </div>
             </div>
-            <div class="ui-g-12 ui-md-6">
-                <div class="p-field">
-                    <label for="nombrePlanta">Responsable Planta:</label>
-                    <input id="nombrePlanta" [(ngModel)]="modeloItem.responsablePlanta" type="text" pInputText>
-                    <label for="emailPlanta">Email:</label>
-                    <input id="emailPlanta" [(ngModel)]="modeloItem.emailTo" type="text" pInputText>
+            <div class="ui-g-12 ui-md-6 ">
+                <div class="p-field ">
+                    <label for="nombrePlanta ">Responsable Planta:</label>
+                    <input disabled id="nombrePlanta " [(ngModel)]="modeloItem.responsablePlanta " type="text " pInputText>
+                    <label for="emailPlanta ">Email:</label>
+                    <input disabled id="emailPlanta " [(ngModel)]="modeloItem.emailTo " type="text " pInputText>
                 </div>
             </div>
-            <div class="ui-g-12 ui-md-6">
-                <button pButton type="button" label="{{globalConstants.cGrabar}}" icon="{{globalConstants.icoGrabar}}" (click)="onGrabar()"></button>
+            <div class="ui-g-12 ui-md-6 ">
+                <button [disabled]="modeloItem.flgCerrado" pButton type="button " label="{{globalConstants.cGrabar}} " icon="{{globalConstants.icoGrabar}} " (click)="onGrabar() "></button>
             </div>
-            <div class="ui-g-12 ui-md-6">
-                <button pButton type="button" label="{{globalConstants.cRegresar}}" icon="{{globalConstants.icoRegresar}}" (click)="onBack()"></button>
+            <div class="ui-g-12 ui-md-6 ">
+                <button pButton type="button " label="{{globalConstants.cRegresar}} " icon="{{globalConstants.icoRegresar}} " (click)="onBack() "></button>
             </div>
         </div>
     </p-footer>
 </div>
-<p-messages [(value)]="mensajePrimeNgService.msgs"></p-messages>
+<p-messages [(value)]="mensajePrimeNgService.msgs "></p-messages>
 
-<p-dialog header="Grabar" [(visible)]="displaySave" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+<p-dialog header="Grabar " [(visible)]="displaySave " [closable]="false " [modal]="true " [style]="{width: '50vw'} " [baseZIndex]="10000 " [draggable]="false " [resizable]="false ">
 
     Guardando Informacion...!!!
-    <div class="ui-g ui-fluid">
-        <div class="ui-g-12">
-            <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>
+    <div class="ui-g ui-fluid ">
+        <div class="ui-g-12 ">
+            <p-progressBar mode="indeterminate " [style]="{ 'height': '6px'} "></p-progressBar>
         </div>
     </div>
 

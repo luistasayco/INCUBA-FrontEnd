@@ -1,11 +1,11 @@
 export class TxVacunacionSubCutaneaFotosModel {
-    idVacunacionSprayDetalle: number;
-    idVacunacionSpray: number;
+    idVacunacionSubCutaneaDetalle: number;
+    idVacunacionSubCutanea: number;
     foto: string;
 
     constructor() {
-        this.idVacunacionSprayDetalle = 0;
-        this.idVacunacionSpray = 0;
+        this.idVacunacionSubCutaneaDetalle = 0;
+        this.idVacunacionSubCutanea = 0;
         this.foto  = '';
     }
 }

@@ -24,7 +24,7 @@ import { saveAs } from 'file-saver';
 export class PanelVacunacionSubcutaneaComponent implements OnInit, OnDestroy {
 
   // Titulo del componente
-  titulo = 'Vacunación SubCutanea';
+  titulo = 'Vacunación SubCutánea';
   // Acceso de botones
   buttonAcces: ButtonAcces = new ButtonAcces();
   // Name de los botones de accion
@@ -186,7 +186,7 @@ export class PanelVacunacionSubcutaneaComponent implements OnInit, OnDestroy {
     this.displayCierre = true;
     this.subscription$ = new Subscription();
     data.flgCerrado = true;
-    this.subscription$ = this.vacunacionSubcutaneaService.setUpdateTxVacunacionSubCutanea(data)
+    this.subscription$ = this.vacunacionSubcutaneaService.setUpdateStatusTxVacunacionSubCutanea(data)
     .subscribe((resp: IMensajeResultadoApi) => {
         this.listModelo.find(x => x.idVacunacionSubCutanea === data.idVacunacionSubCutanea).flgCerrado = true;
         this.listModelo.find(x => x.idVacunacionSubCutanea === data.idVacunacionSubCutanea).fecCierre = new Date();

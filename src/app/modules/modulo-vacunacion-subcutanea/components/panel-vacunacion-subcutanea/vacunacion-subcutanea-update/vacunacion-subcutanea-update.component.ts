@@ -4,14 +4,9 @@ import { Subscription } from 'rxjs';
 import { MensajePrimeNgService } from '../../../../modulo-compartido/services/mensaje-prime-ng.service';
 import { BreadcrumbService } from '../../../../../services/breadcrumb.service';
 import { VacunacionSubcutaneaService } from '../../../services/vacunacion-subcutanea.service';
-import { VacunacionSprayService } from '../../../../modulo-vacunacion-spray/services/vacunacion-spray.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { SeguridadService } from '../../../../modulo-seguridad/services/seguridad.service';
-import { UserContextService } from '../../../../../services/user-context.service';
-import { CompartidoService } from '../../../../modulo-compartido/services/compartido.service';
-import { RegistroEquipoService } from '../../../../modulo-registro-equipo/services/registro-equipo.service';
-import { UtilService } from '../../../../modulo-compartido/services/util.service';
 import { TxVacunacionSubCutaneaModel } from '../../../models/tx-vacunacion-subcutanea.model';
+import { TxVacunacionSubCutaneaFotosModel } from '../../../models/tx-vacunacion-subcutanea-fotos.model';
 
 @Component({
   selector: 'app-vacunacion-subcutanea-update',
@@ -40,6 +35,10 @@ export class VacunacionSubcutaneaUpdateComponent implements OnInit {
 
   modeloItem: TxVacunacionSubCutaneaModel = new TxVacunacionSubCutaneaModel();
   id: number;
+
+  listIma: any[];
+  cloneListImagen: TxVacunacionSubCutaneaFotosModel[] = [];
+
   constructor(public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService,
               private vacunacionSubcutaneaService: VacunacionSubcutaneaService,
@@ -56,14 +55,9 @@ export class VacunacionSubcutaneaUpdateComponent implements OnInit {
 
     this.route.params.subscribe((params: Params) => {
       this.id = params.id;
-      console.log(this.id);
-      this.subscription$ = new Subscription();
-      this.subscription$ = this.vacunacionSubcutaneaService.getTxVacunacionSubCutaneaPorId(this.id)
-      .subscribe((data: TxVacunacionSubCutaneaModel) => {
-        
-        this.modeloItem = data;
-        this.updateRowGroupMetaData();
-      });
+      
+      this.onObtieneVacunacionSubCutaneaId();
+      
     });
 
     this.columnasMaquina = [
@@ -127,6 +121,17 @@ export class VacunacionSubcutaneaUpdateComponent implements OnInit {
     }
   }
 
+  onObtieneVacunacionSubCutaneaId() {
+    this.subscription$ = new Subscription();
+      this.subscription$ = this.vacunacionSubcutaneaService.getTxVacunacionSubCutaneaPorId(this.id)
+      .subscribe((data: TxVacunacionSubCutaneaModel) => {
+        
+        this.modeloItem = data;
+        this.cloneListImagen = [...this.modeloItem.listarTxVacunacionSubCutaneaFotos];
+        this.listImagen();
+        this.updateRowGroupMetaData();
+      });
+  }
 
   updateRowGroupMetaData() {
     this.rowGroupMetadata = {};
@@ -149,14 +154,36 @@ export class VacunacionSubcutaneaUpdateComponent implements OnInit {
     }
   }
 
+  listImagen() {
+    this.listIma = [];
+    if (this.modeloItem.listarTxVacunacionSubCutaneaFotos.length > 0 ) {
+      this.modeloItem.listarTxVacunacionSubCutaneaFotos.forEach(x => {
+        this.listIma.push({imagen: x.foto});
+      });
+    }
+  }
+
   listUpdate(event: any[]) {
     this.modeloItem.listarTxVacunacionSubCutaneaFotos = [];
     event.forEach(x => {
-      this.modeloItem.listarTxVacunacionSubCutaneaFotos.push({
-        idVacunacionSprayDetalle: 0,
-        idVacunacionSpray: 0,
-        foto: x.imagen
-      });
+      if (this.cloneListImagen) {
+        let itemImagen = this.cloneListImagen.find(xFind => xFind.foto === x.imagen);
+        if (itemImagen) {
+          this.modeloItem.listarTxVacunacionSubCutaneaFotos.push(itemImagen);
+        } else {
+          this.modeloItem.listarTxVacunacionSubCutaneaFotos.push({
+            idVacunacionSubCutaneaDetalle: 0,
+            idVacunacionSubCutanea: 0,
+            foto: x.imagen
+          });
+        }
+      } else {
+        this.modeloItem.listarTxVacunacionSubCutaneaFotos.push({
+          idVacunacionSubCutaneaDetalle: 0,
+          idVacunacionSubCutanea: 0,
+          foto: x.imagen
+        });
+      }
     });
   }
 
