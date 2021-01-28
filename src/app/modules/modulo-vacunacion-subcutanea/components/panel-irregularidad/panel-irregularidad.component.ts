@@ -57,7 +57,8 @@ export class PanelIrregularidadComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.columnas = [
       { header: 'Codigo' },
-      { header: 'Descripcion' }
+      { header: 'Descripcion' },
+      { header: 'Valor' }
     ];
     this.onListar();
 
@@ -93,6 +94,7 @@ export class PanelIrregularidadComponent implements OnInit, OnDestroy {
   }
 
   onRowEditSave(modelo: IrregularidadModel) {
+    console.log('modelo', modelo);
     this.subscription = new Subscription();
     this.subscription = this.modeloService.setUpdateIrregularidad(modelo)
     .subscribe((resp: IMensajeResultadoApi) => {

@@ -43,12 +43,14 @@ export class IrregularidadCreateComponent implements OnInit {
     this.maestroForm = this.fb.group(
       {
         'descripcion' : new FormControl('', Validators.compose([Validators.required, Validators.maxLength(200), Validators.minLength(4)])),
+        'valor' : new FormControl(0, Validators.compose([Validators.required])),
       }
     );
   }
 
   onClickSave() {
     this.modelo.descripcionIrregularidad = this.maestroForm.controls['descripcion'].value;
+    this.modelo.valor = this.maestroForm.controls['valor'].value;
     this.subscription = new Subscription();
     this.subscription = this.modeloService.setInsertIrregularidad(this.modelo)
     .subscribe(() =>  {

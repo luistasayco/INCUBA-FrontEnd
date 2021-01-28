@@ -223,6 +223,20 @@ export class VacunacionSprayCreateComponent implements OnInit, OnDestroy{
   }
 
   getToObtieneAF() {
+
+    if (!this.selectEmpresa) {
+      this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Seleccionar Empresa');
+      return;
+    }
+    if (!this.selectedPlanta) {
+      this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Ingresar Planta');
+      return;
+    }
+
+    if (!this.selectModelo) {
+      return;
+    }
+
     let modeloEquipoPorModelo: EquipoPorModeloModel = new EquipoPorModeloModel();
     modeloEquipoPorModelo.codigoEmpresa = this.selectEmpresa === null ? '' : this.selectEmpresa.value;
     modeloEquipoPorModelo.codigoPlanta = this.selectedPlanta === null ? '' : this.selectedPlanta.value;

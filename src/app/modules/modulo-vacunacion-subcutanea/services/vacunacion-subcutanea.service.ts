@@ -9,6 +9,7 @@ import { ProcesoSubCutaneaModel } from '../models/proceso-subcutanea.model';
 import { IrregularidadModel } from '../models/irregularidad.model';
 import { ProcesoDetalleSubCutaneaModel } from '../models/proceso-detalle-subcutanea';
 import { TxVacunacionSubCutaneaModel } from '../models/tx-vacunacion-subcutanea.model';
+import { IndiceEficienciaModel } from '../models/indice-eficiencia.model';
 
 @Injectable({
   providedIn: 'root'
@@ -173,7 +174,12 @@ export class VacunacionSubcutaneaService {
     );
   }
 
-  
+  getIndiceEficiencia(value: IndiceEficienciaModel) {
+    let parametros = new HttpParams();
+    parametros = parametros.append('descripcionIndiceEficiencia', value.descripcionIndiceEficiencia);
+    return this.http.get<IndiceEficienciaModel[]>
+    (`${environment.url_api}IndiceEficiencia/GetAll/`, { params: parametros });
+  }
   // title:  Metodos para Vacunacion SubCutanea
   // Author: Luis Tasayco
   // Date:   04/09/2020
@@ -188,9 +194,9 @@ export class VacunacionSubcutaneaService {
     (`${environment.url_api}TxVacunacionSubCutanea/GetAll/`, { params: parametros });
   }
 
-  getTxVacunacionSprayPorId(id: number) {
+  getTxVacunacionSubCutaneaPorId(id: number) {
     return this.http.get<TxVacunacionSubCutaneaModel>
-    (`${environment.url_api}TxVacunacionSpray/GetByIdTxVacunacionSpray/${id}`);
+    (`${environment.url_api}TxVacunacionSubCutanea/GetByIdTxVacunacionSubCutanea/${id}`);
   }
 
   getTxVacunacionSubCutaneaPorIdNew() {
@@ -201,7 +207,7 @@ export class VacunacionSubcutaneaService {
   setInsertTxVacunacionSubCutanea(value: TxVacunacionSubCutaneaModel) {
     value.regUsuario = this.userContextService.getIdUsuario();
     value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
-    const url = environment.url_api + 'TxVacunacionSpray/Create';
+    const url = environment.url_api + 'TxVacunacionSubCutanea/Create';
     const param: string = JSON.stringify(value);
     return this.http.post(
         url,

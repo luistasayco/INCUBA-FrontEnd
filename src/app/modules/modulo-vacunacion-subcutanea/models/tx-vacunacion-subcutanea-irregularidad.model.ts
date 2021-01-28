@@ -4,6 +4,7 @@ export class TxVacunacionSubCutaneaIrregularidadModel {
     nombreVacunador: string;
     codigoEquipo: string;
     idIrregularidad: number;
+    descripcionIrregularidad: string;
     valor: number;
 
     constructor() {
@@ -12,6 +13,7 @@ export class TxVacunacionSubCutaneaIrregularidadModel {
         this.nombreVacunador = '';
         this.codigoEquipo = '';
         this.idIrregularidad = 0;
+        this.descripcionIrregularidad = '';
         this.valor = 0;
     }
 }

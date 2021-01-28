@@ -12,6 +12,8 @@ export class TxVacunacionSubCutaneaControlEficienciaModel {
     mojados?: number;
     malaPosicion?: number;
     vacunadoCorrectos?: number;
+    porcentajeEficiencia?: number;
+    puntajeEficiencia?: number;
 
     constructor () {
         this.idVacunacionSubCutaneaDetalle = 0;
@@ -27,5 +29,7 @@ export class TxVacunacionSubCutaneaControlEficienciaModel {
         this.mojados = 0;
         this.malaPosicion = 0;
         this.vacunadoCorrectos = 0;
+        this.porcentajeEficiencia = 0;
+        this.puntajeEficiencia = 0;
     }
 }

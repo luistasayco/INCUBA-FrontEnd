@@ -13,6 +13,12 @@
                             <p-message severity="error" text="La descripcion debe tener un maximo de 200 y un minimo de 4 caractares." *ngIf="maestroForm.controls['descripcion'].errors['maxlength'] || maestroForm.controls['descripcion'].errors['minlength']"></p-message>
                         </div>
                     </div>
+                    <div class="ui-g-12">
+                        <label class="label-custom" for="float-input-valor">Valor: </label>
+                    </div>
+                    <div class="ui-g-12">
+                        <input id="float-input-valor" type="number" formControlName="valor" pInputText>
+                    </div>
                 </div>
             </form>
         </div>
