@@ -2,16 +2,23 @@
     <h1><strong>{{titulo}}</strong></h1>
 
     <!-- Filtros -->
-    <p-panel header="Opción de busqueda" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
+    <p-panel header="Datos Principal" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
         <div class="ui-g ui-fluid">
-            <div class="ui-g-12 ui-md-4">
-                <p-dropdown id="dropdown" class="ui dropdown-item-text" [options]="listItemEmpresa" [(ngModel)]="selectedEmpresa" (onChange)="getOnChangeEmpresa()" placeholder="Select Compañia" optionLabel="label" [showClear]="true"></p-dropdown>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom" for="dropdown-empresa">Empresa</label>
+                <p-dropdown id="dropdown-empresa" class="ui dropdown-item-text" [options]="listItemEmpresa" [(ngModel)]="selectedEmpresa" (onChange)="getOnChangeEmpresa()" placeholder="Select Compañia" optionLabel="label" [showClear]="true"></p-dropdown>
             </div>
-            <div class="ui-g-12 ui-md-4">
-                <p-dropdown id="dropdown" class="ui dropdown-item-text" [options]="listItemPlanta" [(ngModel)]="selectedPlanta" (onChange)="getOnChangePlanta()" placeholder="Select Planta" optionLabel="label" [showClear]="true"></p-dropdown>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom" for="dropdown-planta">Planta</label>
+                <p-dropdown id="dropdown-planta" class="ui dropdown-item-text" [options]="listItemPlanta" [(ngModel)]="selectedPlanta" (onChange)="getOnChangePlanta()" placeholder="Select Planta" optionLabel="label" [showClear]="true"></p-dropdown>
             </div>
-            <div class="ui-g-12 ui-md-4">
-                <p-dropdown id="dropdown" class="ui dropdown-item-text" [options]="listItemModelo" [(ngModel)]="selectedModelo" (onChange)="getOnChangeModelo()" placeholder="Select Modelo" optionLabel="label" [showClear]="true"></p-dropdown>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom" for="dropdown-modelo">Modelo</label>
+                <p-dropdown id="dropdown-modelo" class="ui dropdown-item-text" [options]="listItemModelo" [(ngModel)]="selectedModelo" (onChange)="getOnChangeModelo()" placeholder="Select Modelo" optionLabel="label" [showClear]="true"></p-dropdown>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom" for="text-jefe-planta">Jefe Planta</label>
+                <input id="text-jefe-planta" type="text" [(ngModel)]="modeloItem.jefePlanta" pInputText>
             </div>
         </div>
     </p-panel>
@@ -127,7 +134,7 @@
             </p-accordionTab>
 
             <p-accordionTab header="D .- Resumen de Mantenimiento">
-                <p-table [value]="modeloItem.txRegistroEquipoDetalle5" [columns]="columnasDetalle5" [paginator]="true" [rows]="globalConstants.sizePage" dataKey="idRepuestoPorModelo" editMode="row" autoLayout="true" [responsive]="true">
+                <p-table [value]="modeloItem.txRegistroEquipoDetalle5" [columns]="columnasDetalle5" [paginator]="true" [rows]="globalConstants.sizePage" dataKey="idKeys" editMode="row" autoLayout="true" [responsive]="true">
                     <!-- Header -->
                     <ng-template pTemplate="header" let-columns>
                         <tr>
@@ -340,6 +347,13 @@
                         </tr>
                     </ng-template>
                 </p-table>
+                <!-- <p-footer>
+                    <div class="ui-grid ui-fluid">
+                        <div class="ui-g-12 ui-md-3">
+                            <button pButton type="button" label="{{globalConstants.cNuevo}}" icon="{{globalConstants.icoNuevo}}" (click)="displayNuevoInventarioRepuesto = true"></button>
+                        </div>
+                    </div>
+                </p-footer> -->
             </p-accordionTab>
 
             <p-accordionTab header="Galeria de Fotos">
@@ -352,6 +366,14 @@
         </p-accordion>
         <p-footer>
             <div class="ui-grid ui-fluid">
+                <div class="ui-g-12 ui-md-6">
+                    <label for="float-input-responsable-invetsa">Obervación Invetsa:</label>
+                    <textarea id="float-input-responsable-invetsa" [(ngModel)]="modeloItem.observacionesInvetsa" pInputTextarea autoResize="autoResize" placeholder="Ingresar Observación"> </textarea>
+                </div>
+                <div class="ui-g-12 ui-md-6">
+                    <label for="float-input-responsable-planta">Observación Planta:</label>
+                    <textarea id="float-input-responsable-planta" [(ngModel)]="modeloItem.observacionesPlanta" pInputTextarea autoResize="autoResize" placeholder="Ingresar Observación"> </textarea>
+                </div>
                 <div class="ui-g-12 ui-md-6">
                     <app-panel-firma-digital (vDataFirma)="modeloItem.firmaIncuba = $event" (vDataFirmaClear)="modeloItem.firmaIncuba = $event" [vFirmaOk]="globalConstants.cFirmaOk1" [vFirmaClear]="globalConstants.cFirmaClear"></app-panel-firma-digital>
                 </div>
@@ -370,7 +392,7 @@
 
                 <div class="ui-g-12 ui-md-6">
                     <div class="p-field">
-                        <label for="nombrePlanta">Responsable Planta:</label>
+                        <label for="nombrePlanta">Encargado Planta:</label>
                         <input id="nombrePlanta" type="text" [(ngModel)]="modeloItem.responsablePlanta" pInputText>
                         <label for="emailPlanta">Email:</label>
                         <input id="emailPlanta" [(ngModel)]="modeloItem.emailTo" type="text" pInputText>
@@ -392,12 +414,12 @@
 
 </div>
 
-<p-dialog header="Lista de Repuesto" [(visible)]="displayNuevoRepuesto" [modal]="true" [style]="{width: '30vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+<p-dialog header="Lista de Repuesto" [(visible)]="displayNuevoRepuesto" [modal]="true" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
     <div class="ui-g ui-fluid">
         <div class="ui-g-12">
             <p-listbox [options]="repuestosNoPredeterminado" [(ngModel)]="selectedRepuesto" [multiple]="true" [checkbox]="true" [filter]="true" optionLabel="label">
                 <p-header>
-                    Cars
+                    Repuestos
                 </p-header>
             </p-listbox>
         </div>
@@ -410,9 +432,39 @@
     </p-footer>
 </p-dialog>
 
+
+<p-dialog header="Lista de Repuesto" [(visible)]="displayNuevoInventarioRepuesto" [modal]="true" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <p-listbox [options]="nuevoRepuestosNoPredeterminado" [(ngModel)]="selectedNuveoRepuesto" [multiple]="true" [checkbox]="true" [filter]="true" optionLabel="label">
+                <p-header>
+                    Repuestos
+                </p-header>
+            </p-listbox>
+        </div>
+    </div>
+
+
+    <p-footer>
+        <button type="button" pButton icon="pi pi-check" (click)="onInsertarInventarioRepuesto()" label="Añadir"></button>
+        <button type="button" pButton icon="pi pi-times" (click)="displayNuevoInventarioRepuesto=false" label="Cancelar" class="ui-button-secondary"></button>
+    </p-footer>
+</p-dialog>
+
 <p-dialog header="Grabar" [(visible)]="displaySave" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
 
     Guardando Informacion...!!!
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>
+        </div>
+    </div>
+
+</p-dialog>
+
+<p-dialog header="Generando" [(visible)]="displayGenerandoInformacion" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+
+    {{mensajeGenerandoInformacion}}
     <div class="ui-g ui-fluid">
         <div class="ui-g-12">
             <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>

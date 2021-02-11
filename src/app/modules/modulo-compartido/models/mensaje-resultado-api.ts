@@ -1,5 +1,5 @@
 export interface IMensajeResultadoApi {
-    error?: IErrorMensajeResultadoApi;
+    error?: IErrorMensajeResultadoApi | IMensajeResultadoApiCustom;
     message: string;
     name: string;
     ok: boolean;
@@ -12,3 +12,12 @@ interface IErrorMensajeResultadoApi {
     ErrorMessage: string;
     StatusCode: number;
   }
+
+ interface IMensajeResultadoApiCustom {
+    idRegistro: number;
+    nombreEstacion: string;
+    resultadoAplicacion: string;
+    resultadoCodigo: number;
+    resultadoDescripcion: string;
+    resultadoMetodo: string;
+  } 

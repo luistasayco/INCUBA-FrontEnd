@@ -221,14 +221,14 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
           }
           case 1: {
             newRegistroEquipo.txRegistroEquipoDetalle1 =
-            this.registroEquipoLocalService.setMantenimientoPorModelo(newEquipo, resp, codigoModelo);
+            this.registroEquipoLocalService.setMantenimientoPorModelo(newEquipo, resp, codigoEmpresa, codigoPlanta, codigoModelo);
             break;
           }
           case 2: {
             newRegistroEquipo.txRegistroEquipoDetalle2 =
-            this.registroEquipoLocalService.setRepuestoPorModelo(newEquipo, resp, codigoModelo);
+            this.registroEquipoLocalService.setRepuestoPorModelo(newEquipo, resp, codigoEmpresa, codigoPlanta, codigoModelo);
             newRegistroEquipo.txRegistroEquipoDetalle2NoPredeterminado =
-            this.registroEquipoLocalService.setRepuestoPorModeloNoPredeterminado(newEquipo, resp, codigoModelo);
+            this.registroEquipoLocalService.setRepuestoPorModeloNoPredeterminado(newEquipo, resp, codigoEmpresa, codigoPlanta, codigoModelo);
             newRegistroEquipo.txRegistroEquipoDetalle6 =
             this.registroEquipoLocalService.setAccesorios(resp);
             break;
@@ -347,9 +347,11 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
         // Removeremos los registros que han sido deseleccionados
         for (let i = 0; i < cloneRevisionDetalle5.length; i++) {
           let rowDataRemove =  cloneRevisionDetalle5[i];
-          let rowPrimaryKeyRemove = rowDataRemove.idRepuestoPorModelo;
-          let findExistsRemove = v.find(xFind => xFind.idRepuestoPorModelo === rowPrimaryKeyRemove);
-          if ( findExistsRemove ) {
+          rowDataRemove.idKeys = rowDataRemove.codigoRepuesto + rowDataRemove.codigoEquipo;
+          let rowPrimaryKeyRemove = rowDataRemove.idKeys;
+          let findExistsRemove = v.filter(xFind => xFind.codigoRepuesto + xFind.codigoEquipo === rowPrimaryKeyRemove).length;
+          if ( findExistsRemove > 0 ) {
+
             this.modeloItem.txRegistroEquipoDetalle5.push(rowDataRemove);
           }
         }
@@ -357,20 +359,20 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
         for (let i = 0; i < cloneRevisionDetalle6.length; i++) {
           let rowDataRemove6 =  cloneRevisionDetalle6[i];
           let rowPrimaryKeyRemove6 = rowDataRemove6.codigoRepuesto;
-          let findExistsRemove6 = v.find(xFind => xFind.codigoRepuesto === rowPrimaryKeyRemove6);
-          if ( findExistsRemove6 ) {
+          let findExistsRemove6 = v.filter(xFind => xFind.codigoRepuesto === rowPrimaryKeyRemove6).length;
+          if ( findExistsRemove6 > 0 ) {
             this.modeloItem.txRegistroEquipoDetalle6Repuestos.push(rowDataRemove6);
           }
         }
       }
-
+      
       for (let i = 0; i < v.length; i++) {
         let rowData = v[i];
-        let rowPrimaryKey = rowData.idRepuestoPorModelo;
+        let rowPrimaryKey = rowData.codigoRepuesto + rowData.codigoEquipo;
         let rowPrimaryKeyRepuesto = rowData.codigoRepuesto;
 
         // Buscamos si existe el registro para no perder la observacion ingresado.
-        let findExists = this.modeloItem.txRegistroEquipoDetalle5.find(xFind => xFind.idRepuestoPorModelo === rowPrimaryKey);
+        let findExists = this.modeloItem.txRegistroEquipoDetalle5.find(xFind => xFind.idKeys === rowPrimaryKey);
 
         let findExistsRepuesto =
         this.modeloItem.txRegistroEquipoDetalle6Repuestos.find(xFind => xFind.codigoRepuesto === rowPrimaryKeyRepuesto);
@@ -382,7 +384,8 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
             idRepuestoPorModelo: rowData.idRepuestoPorModelo,
             codigoRepuesto: rowData.codigoRepuesto,
             codigoEquipo: rowData.codigoEquipo,
-            descripcion: rowData.descripcion
+            descripcion: rowData.descripcion,
+            idKeys: rowData.codigoRepuesto + rowData.codigoEquipo
           };
           this.modeloItem.txRegistroEquipoDetalle5.push(detalle5);
         }
@@ -412,15 +415,15 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
 
   // Eventos del Detalle 5
   onRowEditInitDetalle5(modelo: TxRegistroEquipoDetalle5Model) {
-    this.modelocloned[modelo.idRepuestoPorModelo] = {...modelo};
+    this.modelocloned[modelo.idKeys] = {...modelo};
   }
 
   onRowEditSaveDetalle5(modelo: TxRegistroEquipoDetalle5Model) {
   }
 
   onRowEditCancelDetalle5(modelo: TxRegistroEquipoDetalle5Model, index: number) {
-    this.modeloItem.txRegistroEquipoDetalle5[index] = this.modelocloned[modelo.idRepuestoPorModelo];
-    delete this.modelocloned[modelo.idRepuestoPorModelo];
+    this.modeloItem.txRegistroEquipoDetalle5[index] = this.modelocloned[modelo.idKeys];
+    delete this.modelocloned[modelo.idKeys];
   }
 
   // Eventos del Detalle 6

@@ -4,17 +4,21 @@
     <!-- Filtros -->
     <p-panel *ngIf="modeloItem" header="Principal" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
         <div class="ui-g ui-fluid">
-            <div class="ui-g-12 ui-md-4">
+            <div class="ui-g-12 ui-md-3">
                 <label for="empresa">Empresa</label>
                 <input id="empresa" type="text" pInputText [(ngModel)]="modeloItem.descripcionEmpresa" disabled="true" />
             </div>
-            <div class="ui-g-12 ui-md-4">
+            <div class="ui-g-12 ui-md-3">
                 <label for="planta">Planta</label>
                 <input id="planta" type="text" pInputText [(ngModel)]="modeloItem.descripcionPlanta" disabled="true" />
             </div>
-            <div class="ui-g-12 ui-md-4">
+            <div class="ui-g-12 ui-md-3">
                 <label for="modelo">Modelo</label>
                 <input id="modelo" type="text" pInputText [(ngModel)]="modeloItem.descripcionModelo" disabled="true" />
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom" for="text-jefe-planta">Jefe Planta </label>
+                <input disabled id="text-jefe-planta" type="text" [(ngModel)]="modeloItem.jefePlanta" pInputText>
             </div>
         </div>
     </p-panel>
@@ -222,6 +226,14 @@
         <p-footer>
             <div class="ui-grid ui-fluid">
                 <div class="ui-g-12 ui-md-6">
+                    <label for="float-input-responsable-invetsa">Obervación Invetsa:</label>
+                    <textarea disabled id="float-input-responsable-invetsa" [(ngModel)]="modeloItem.observacionesInvetsa" pInputTextarea autoResize="autoResize" placeholder="Ingresar Observación"> </textarea>
+                </div>
+                <div class="ui-g-12 ui-md-6">
+                    <label for="float-input-responsable-planta">Observación Planta:</label>
+                    <textarea disabled id="float-input-responsable-planta" [(ngModel)]="modeloItem.observacionesPlanta" pInputTextarea autoResize="autoResize" placeholder="Ingresar Observación"> </textarea>
+                </div>
+                <div class="ui-g-12 ui-md-6">
                     <div class="p-field" style="text-align: center;">
                         <img id="firma1" [src]="modeloItem.firmaIncuba" *ngIf="modeloItem.firmaIncuba" style="width: 100%; display: block;" />
                         <hr>
@@ -246,7 +258,7 @@
 
                 <div class="ui-g-12 ui-md-6">
                     <div class="p-field">
-                        <label for="nombrePlanta">Responsable Planta:</label>
+                        <label for="nombrePlanta">Encargado Planta:</label>
                         <input [disabled]="true" id="nombrePlanta" type="text" [(ngModel)]="modeloItem.responsablePlanta" pInputText>
                         <label for="emailPlanta">Email:</label>
                         <input [disabled]="true" id="emailPlanta" [(ngModel)]="modeloItem.emailTo" type="text" pInputText>

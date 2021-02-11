@@ -102,7 +102,7 @@
                             </div>
                         </p-fieldset>
                         <p-fieldset legend="Acceso por Socio de Negocio" [toggleable]="true" [collapsed]="true">
-                            <p-pickList [source]="listEmpresaPorSeleccionado" [target]="listEmpresaSeleccionado" sourceHeader="Lista" targetHeader="Seleccionado" [responsive]="true" filterBy="codigoEmpresa" dragdrop="true" showSourceControls='false' sourceFilterPlaceholder="Search by Socio Negocio"
+                            <p-pickList [source]="listEmpresaPorSeleccionado" [target]="listEmpresaSeleccionado" sourceHeader="Lista" targetHeader="Seleccionado" [responsive]="true" filterBy="descripcionEmpresa" dragdrop="true" showSourceControls='false' sourceFilterPlaceholder="Search by Socio Negocio"
                                 targetFilterPlaceholder="Search by Socio de Negocio" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}" [showSourceControls]="false" [showTargetControls]="false">
                                 <ng-template let-empresa pTemplate="item">
                                     <div class="ui-helper-clearfix">

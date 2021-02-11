@@ -103,8 +103,8 @@ export class GlobalsConstants {
         this.msgInfoSummary = 'Mensaje de Información : ';
         this.msgInfoDetail = 'Se informo con Éxito...!!!';
 
-        // Numero de Filas
-        this.sizePage = 10;
+        // Numero de Filas que mostrara en los modulos
+        this.sizePage = 20;
     }
 
 }

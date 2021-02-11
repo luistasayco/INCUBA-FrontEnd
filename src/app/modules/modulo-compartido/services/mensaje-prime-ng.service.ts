@@ -53,12 +53,12 @@ export class MensajePrimeNgService {
     }
   }
 
-  private mensajeApiError(titulo: string, mensaje?: IMensajeResultadoApi) {
+  private mensajeApiError(titulo: string, mensaje?: any) {
     this.msgs = [];
     this.msgs.push({severity: 'error',
                     summary: titulo ? titulo : this.globalConstants.msgErrorSummary,
                     detail:
-                      mensaje.error.ErrorMessage ? this.utils.recortarMensajeApiExito(mensaje.error.ErrorMessage) : 'Ocurrio un error'});
+                      mensaje.error.resultadoDescripcion ? this.utils.recortarMensajeApiExito(mensaje.error.resultadoDescripcion) : 'Ocurrio un error'});
     this.onToClearMsg();
   }
 

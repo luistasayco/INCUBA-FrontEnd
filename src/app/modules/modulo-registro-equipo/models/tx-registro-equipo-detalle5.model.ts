@@ -6,6 +6,7 @@ export class TxRegistroEquipoDetalle5Model {
     codigoEquipo?: string;
     descripcion?: string;
     observacion?: string;
+    idKeys?: string;
 
     // Auditoria
     regUsuario?: number;

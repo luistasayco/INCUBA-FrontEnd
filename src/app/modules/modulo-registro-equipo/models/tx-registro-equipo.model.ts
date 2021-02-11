@@ -26,6 +26,9 @@ export class TxRegistroEquipoModel {
     fecCierre?: Date;
     usuarioCreacion?: string;
     nombreArchivo?: string;
+    jefePlanta?: string;
+    observacionesInvetsa?: string;
+    observacionesPlanta?: string;
     // Varibles para el filtro
     fecRegistroInicio?: Date;
     fecRegistroFin?: Date;
@@ -41,7 +44,7 @@ export class TxRegistroEquipoModel {
     txRegistroEquipoDetalle7: TxRegistroEquipoDetalle7Model[];
     flgMigrado: boolean;
     flgEnModificacion: boolean;
-
+    
     emailFrom: string;
     emailTo: string;
     // Auditoria
@@ -71,6 +74,7 @@ export class TxRegistroEquipoModel {
         this.fecCierre = null;
         this.usuarioCreacion = '';
         this.nombreArchivo = '';
+        this.jefePlanta = '';
         this.txRegistroEquipoDetalle1 = [];
         this.txRegistroEquipoDetalle2 = [];
         this.txRegistroEquipoDetalle2NoPredeterminado = [];

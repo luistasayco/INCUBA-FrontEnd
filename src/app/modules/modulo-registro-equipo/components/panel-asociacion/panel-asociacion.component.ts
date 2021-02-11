@@ -3,11 +3,9 @@ import { GlobalsConstants } from 'src/app/modules/modulo-compartido/models/globa
 import { RegistroEquipoService } from '../../services/registro-equipo.service';
 import { MensajePrimeNgService } from 'src/app/modules/modulo-compartido/services/mensaje-prime-ng.service';
 import { CompartidoService } from 'src/app/modules/modulo-compartido/services/compartido.service';
-import { EmpresaModel } from 'src/app/modules/modulo-compartido/models/empresa.model';
 import { PlantaModel } from 'src/app/modules/modulo-compartido/models/planta.model';
 import { ModeloModel } from '../../models/modelo.model';
 import { EquipoPorModeloModel } from '../../models/equipo-por-modelo.model';
-import { environment } from 'src/environments/environment';
 import { MantenimientoPorModeloModel } from '../../models/mantenimiento-por-modelo.model';
 import { RepuestoPorModeloModel } from '../../models/repuesto-por-modelo.model';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
@@ -186,6 +184,7 @@ export class PanelAsociacionComponent implements OnInit, OnDestroy {
       this.subscription = this.registroEquipoService.getMantenimientoPorSeleccionar(this.modeloMantenimientoPorModelo)
       .subscribe(resp => {
         if (resp) {
+          console.log('listMantenimientoPorSeleccionado', resp);
             this.listMantenimientoPorSeleccionado = resp;
           }
         },
@@ -198,6 +197,7 @@ export class PanelAsociacionComponent implements OnInit, OnDestroy {
       this.subscription = this.registroEquipoService.getMantenimientoSeleccionados(this.modeloMantenimientoPorModelo)
       .subscribe(resp => {
         if (resp) {
+          console.log('listMantenimientoSeleccionado', resp);
             this.listMantenimientoSeleccionado = resp;
           }
         },

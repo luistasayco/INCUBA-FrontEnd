@@ -61,7 +61,7 @@ export class RegistroEquipoLocalService implements OnDestroy {
     );
   }
 
-  setMantenimientoPorModelo(lisEquipo: EquipoModel[], mantenimientoPorModelo: MantenimientoPorModeloModel[], codigoModelo: string) {
+  setMantenimientoPorModelo(lisEquipo: EquipoModel[], mantenimientoPorModelo: MantenimientoPorModeloModel[], codigoEmpresa: string, codigoPlanta: string, codigoModelo: string) {
 
     let txRegistroEquipoDetalle1: TxRegistroEquipoDetalle1Model[] = [];
 
@@ -69,9 +69,11 @@ export class RegistroEquipoLocalService implements OnDestroy {
 
       let newMantenimientoPorModelo = [...mantenimientoPorModelo].filter(filModelo => filModelo.codigoModelo === codigoModelo);
 
+      let newListEquipo = [...lisEquipo].filter(filModelo => filModelo.codigoEmpresa === codigoEmpresa &&  filModelo.codigoPlanta === codigoPlanta && filModelo.codigoModelo === codigoModelo);
+
       newMantenimientoPorModelo.forEach(fil => {
 
-        lisEquipo.forEach(filequipo => {
+        newListEquipo.forEach(filequipo => {
           txRegistroEquipoDetalle1.push({
             idRegistroEquipoDetalle: 0,
             idRegistroEquipo: 0,
@@ -87,7 +89,7 @@ export class RegistroEquipoLocalService implements OnDestroy {
     return txRegistroEquipoDetalle1;
   }
 
-  setRepuestoPorModelo(lisEquipo: EquipoModel[], repuestoPorModelo: RepuestoPorModeloModel[], codigoModelo: string) {
+  setRepuestoPorModelo(lisEquipo: EquipoModel[], repuestoPorModelo: RepuestoPorModeloModel[], codigoEmpresa: string, codigoPlanta: string, codigoModelo: string) {
     let txRegistroEquipoDetalle2: TxRegistroEquipoDetalle2Model[] = [];
 
     if (repuestoPorModelo) {
@@ -97,9 +99,11 @@ export class RegistroEquipoLocalService implements OnDestroy {
                            filModelo.flgPredeterminado === true &&
                            filModelo.flgAccesorio === false);
 
+      let newListEquipo = [...lisEquipo].filter(filModelo => filModelo.codigoEmpresa === codigoEmpresa &&  filModelo.codigoPlanta === codigoPlanta && filModelo.codigoModelo === codigoModelo);
+
       newRepuestoPorModelo.forEach(fil => {
 
-        lisEquipo.forEach(filequipo => {
+        newListEquipo.forEach(filequipo => {
           txRegistroEquipoDetalle2.push({
             idRegistroEquipoDetalle: 0,
             idRegistroEquipo: 0,
@@ -118,7 +122,7 @@ export class RegistroEquipoLocalService implements OnDestroy {
     return txRegistroEquipoDetalle2;
   }
 
-  setRepuestoPorModeloNoPredeterminado(lisEquipo: EquipoModel[], repuestoPorModelo: RepuestoPorModeloModel[], codigoModelo: string) {
+  setRepuestoPorModeloNoPredeterminado(lisEquipo: EquipoModel[], repuestoPorModelo: RepuestoPorModeloModel[], codigoEmpresa: string, codigoPlanta: string, codigoModelo: string) {
     let txRegistroEquipoDetalle2NoPredeterminado: TxRegistroEquipoDetalle2Model[] = [];
 
     if (repuestoPorModelo) {
@@ -127,10 +131,10 @@ export class RegistroEquipoLocalService implements OnDestroy {
       .filter(filModelo => filModelo.codigoModelo === codigoModelo &&
         filModelo.flgPredeterminado === false &&
         filModelo.flgAccesorio === false);
-
+      let newListEquipo = [...lisEquipo].filter(filModelo => filModelo.codigoEmpresa === codigoEmpresa &&  filModelo.codigoPlanta === codigoPlanta && filModelo.codigoModelo === codigoModelo);
       newRepuestoPorModelo.forEach(fil => {
 
-        lisEquipo.forEach(filequipo => {
+        newListEquipo.forEach(filequipo => {
           txRegistroEquipoDetalle2NoPredeterminado.push({
             idRegistroEquipoDetalle: 0,
             idRegistroEquipo: 0,

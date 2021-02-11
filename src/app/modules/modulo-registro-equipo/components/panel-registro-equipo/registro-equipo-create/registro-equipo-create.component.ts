@@ -61,17 +61,26 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
   modelocloned: { [s: string]: TxRegistroEquipoDetalle5Model; } = {};
   modeloclonedDetalle6: { [s: string]: TxRegistroEquipoDetalle6Model; } = {};
 
+  listClonedDetalle6Repuesto: TxRegistroEquipoDetalle6Model[];
+
   // Selected Combo del detalle 2
   selectedMP: any;
   selectedRFC: any;
 
   displayNuevoRepuesto: boolean = false;
+  displayNuevoInventarioRepuesto: boolean;
 
   repuestosNoPredeterminado: SelectItem[];
+  nuevoRepuestosNoPredeterminado: SelectItem[];
 
   selectedRepuesto: string[];
 
+  selectedNuveoRepuesto: any[];
+
   displaySave: boolean;
+
+  displayGenerandoInformacion: boolean;
+  mensajeGenerandoInformacion: string;
 
   constructor(private registroEquipoService: RegistroEquipoService,
               private compartidoService: CompartidoService,
@@ -95,7 +104,9 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
+    this.mensajeGenerandoInformacion = 'Generando Informacion...!!!';
+    this.listClonedDetalle6Repuesto = [];
+    this.selectedNuveoRepuesto = [];
     this.listMP = [
       {label: 'Perdido', value: 'P'},
       {label: 'Malogrado', value: 'M'}
@@ -189,20 +200,30 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
 
     if ( codigoEmpresa !== '' && codigoPlanta !== '' && codigoModelo !== '')
     {
+      this.displayGenerandoInformacion = true;
       this.subscription$ = new Subscription();
       this.subscription$ = this.registroEquipoService.getTxRegistroEquipoNewItem(codigoEmpresa, codigoPlanta, codigoModelo)
       .subscribe(resp => {
         if (resp) {
           this.modeloItem  = resp;
+
           this.modeloItem.responsableIncuba = this.userContextService.getNombreCompletoUsuario();
           this.modeloItem.emailFrom = this.userContextService.getEmail();
+          this.mensajeGenerandoInformacion = 'Generando Informacion - A.- Detalle de Mantenimiento...!!!';
           this.updateRowGroupMetaData();
+          this.mensajeGenerandoInformacion = 'Generando Informacion - B.- Check List de componentes...!!!';
           this.updateRowGroupMetaDataDetalle2();
           this.onLlenarRepuestoNoPredeterminado();
+          this.listClonedDetalle6Repuesto = this.modeloItem.txRegistroEquipoDetalle6Repuestos;
+          // this.onLlenarInventarioRepuestoNoPredeterminado();
+          this.modeloItem.txRegistroEquipoDetalle6Repuestos = [];
           }
+          this.mensajeGenerandoInformacion = 'Generando Informacion...!!!';
+          this.displayGenerandoInformacion = false;
         },
         (error) => {
           this.mensajePrimeNgService.onToErrorMsg(null, error);
+          this.displayGenerandoInformacion = false;
         }
       );
     }
@@ -255,7 +276,17 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
 
     this.modeloItem.txRegistroEquipoDetalle2NoPredeterminado.forEach( repu => {
       if (!this.repuestosNoPredeterminado.find( r => r.value === repu.codigoRepuesto) ) {
-        this.repuestosNoPredeterminado.push({ label: repu.codigoRepuesto, value: repu.codigoRepuesto });
+        this.repuestosNoPredeterminado.push({ label: repu.codigoRepuesto + '-' + repu.descripcion, value: repu.codigoRepuesto });
+      }
+    });
+  }
+
+  onLlenarInventarioRepuestoNoPredeterminado() {
+    this.nuevoRepuestosNoPredeterminado = [];
+
+    this.listClonedDetalle6Repuesto.forEach( repu => {
+      if (!this.nuevoRepuestosNoPredeterminado.find( r => r.value === repu.codigoRepuesto) ) {
+        this.nuevoRepuestosNoPredeterminado.push({ label: repu.codigoRepuesto + '-' + repu.descripcion, value: repu.codigoRepuesto });
       }
     });
   }
@@ -272,6 +303,18 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
     this.onLlenarRepuestoNoPredeterminado();
     this.updateRowGroupMetaDataDetalle2();
     this.displayNuevoRepuesto = false;
+  }
+
+
+  onInsertarInventarioRepuesto() {
+
+    this.modeloItem.txRegistroEquipoDetalle6Repuestos = [];
+
+    if (this.selectedNuveoRepuesto.length > 0 ) {
+      
+    }
+
+    this.displayNuevoInventarioRepuesto = false;
   }
 
   onTabOpen(event: any) {
@@ -291,9 +334,11 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
         // Removeremos los registros que han sido deseleccionados
         for (let i = 0; i < cloneRevisionDetalle5.length; i++) {
           let rowDataRemove =  cloneRevisionDetalle5[i];
-          let rowPrimaryKeyRemove = rowDataRemove.idRepuestoPorModelo;
-          let findExistsRemove = v.find(xFind => xFind.idRepuestoPorModelo === rowPrimaryKeyRemove);
-          if ( findExistsRemove ) {
+          rowDataRemove.idKeys = rowDataRemove.codigoRepuesto + rowDataRemove.codigoEquipo;
+          let rowPrimaryKeyRemove = rowDataRemove.idKeys;
+          let findExistsRemove = v.filter(xFind => xFind.codigoRepuesto + xFind.codigoEquipo === rowPrimaryKeyRemove).length;
+          if ( findExistsRemove > 0 ) {
+
             this.modeloItem.txRegistroEquipoDetalle5.push(rowDataRemove);
           }
         }
@@ -301,20 +346,20 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
         for (let i = 0; i < cloneRevisionDetalle6.length; i++) {
           let rowDataRemove6 =  cloneRevisionDetalle6[i];
           let rowPrimaryKeyRemove6 = rowDataRemove6.codigoRepuesto;
-          let findExistsRemove6 = v.find(xFind => xFind.codigoRepuesto === rowPrimaryKeyRemove6);
-          if ( findExistsRemove6 ) {
+          let findExistsRemove6 = v.filter(xFind => xFind.codigoRepuesto === rowPrimaryKeyRemove6).length;
+          if ( findExistsRemove6 > 0 ) {
             this.modeloItem.txRegistroEquipoDetalle6Repuestos.push(rowDataRemove6);
           }
         }
       }
-
+      
       for (let i = 0; i < v.length; i++) {
         let rowData = v[i];
-        let rowPrimaryKey = rowData.idRepuestoPorModelo;
+        let rowPrimaryKey = rowData.codigoRepuesto + rowData.codigoEquipo;
         let rowPrimaryKeyRepuesto = rowData.codigoRepuesto;
 
         // Buscamos si existe el registro para no perder la observacion ingresado.
-        let findExists = this.modeloItem.txRegistroEquipoDetalle5.find(xFind => xFind.idRepuestoPorModelo === rowPrimaryKey);
+        let findExists = this.modeloItem.txRegistroEquipoDetalle5.find(xFind => xFind.idKeys === rowPrimaryKey);
 
         let findExistsRepuesto =
         this.modeloItem.txRegistroEquipoDetalle6Repuestos.find(xFind => xFind.codigoRepuesto === rowPrimaryKeyRepuesto);
@@ -326,7 +371,8 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
             idRepuestoPorModelo: rowData.idRepuestoPorModelo,
             codigoRepuesto: rowData.codigoRepuesto,
             codigoEquipo: rowData.codigoEquipo,
-            descripcion: rowData.descripcion
+            descripcion: rowData.descripcion,
+            idKeys: rowData.codigoRepuesto + rowData.codigoEquipo
           };
           this.modeloItem.txRegistroEquipoDetalle5.push(detalle5);
         }
@@ -356,15 +402,15 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
 
   // Eventos del Detalle 5
   onRowEditInitDetalle5(modelo: TxRegistroEquipoDetalle5Model) {
-    this.modelocloned[modelo.idRepuestoPorModelo] = {...modelo};
+    this.modelocloned[modelo.idKeys] = {...modelo};
   }
 
   onRowEditSaveDetalle5(modelo: TxRegistroEquipoDetalle5Model) {
   }
 
   onRowEditCancelDetalle5(modelo: TxRegistroEquipoDetalle5Model, index: number) {
-    this.modeloItem.txRegistroEquipoDetalle5[index] = this.modelocloned[modelo.idRepuestoPorModelo];
-    delete this.modelocloned[modelo.idRepuestoPorModelo];
+    this.modeloItem.txRegistroEquipoDetalle5[index] = this.modelocloned[modelo.idKeys];
+    delete this.modelocloned[modelo.idKeys];
   }
 
   // Eventos del Detalle 6

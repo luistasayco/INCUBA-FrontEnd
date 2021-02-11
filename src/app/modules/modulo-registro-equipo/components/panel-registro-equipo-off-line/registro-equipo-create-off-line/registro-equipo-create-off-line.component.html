@@ -4,14 +4,21 @@
     <!-- Filtros -->
     <p-panel header="Opción de busqueda" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
         <div class="ui-g ui-fluid">
-            <div class="ui-g-12 ui-md-4">
+            <div class="ui-g-12 ui-md-3">
+                <label for="empresa">Empresa</label>
                 <p-dropdown id="dropdown" class="ui dropdown-item-text" [options]="listItemEmpresa" [(ngModel)]="selectedEmpresa" (onChange)="getOnChangeEmpresa()" placeholder="Select Compañia" optionLabel="label" [showClear]="true"></p-dropdown>
             </div>
-            <div class="ui-g-12 ui-md-4">
+            <div class="ui-g-12 ui-md-3">
+                <label for="planta">Planta</label>
                 <p-dropdown id="dropdown" class="ui dropdown-item-text" [options]="listItemPlanta" [(ngModel)]="selectedPlanta" (onChange)="getOnChangePlanta()" placeholder="Select Planta" optionLabel="label" [showClear]="true"></p-dropdown>
             </div>
-            <div class="ui-g-12 ui-md-4">
+            <div class="ui-g-12 ui-md-3">
+                <label for="modelo">Modelo</label>
                 <p-dropdown id="dropdown" class="ui dropdown-item-text" [options]="listItemModelo" [(ngModel)]="selectedModelo" (onChange)="getOnChangeModelo()" placeholder="Select Modelo" optionLabel="label" [showClear]="true"></p-dropdown>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom" for="text-jefe-planta">Jefe Planta </label>
+                <input id="text-jefe-planta" type="text" [(ngModel)]="modeloItem.jefePlanta" pInputText>
             </div>
         </div>
     </p-panel>
@@ -127,7 +134,7 @@
             </p-accordionTab>
 
             <p-accordionTab header="D .- Resumen de Mantenimiento">
-                <p-table [value]="modeloItem.txRegistroEquipoDetalle5" [columns]="columnasDetalle5" [paginator]="true" [rows]="globalConstants.sizePage" dataKey="idRepuestoPorModelo" editMode="row" autoLayout="true" [responsive]="true">
+                <p-table [value]="modeloItem.txRegistroEquipoDetalle5" [columns]="columnasDetalle5" [paginator]="true" [rows]="globalConstants.sizePage" dataKey="idKeys" editMode="row" autoLayout="true" [responsive]="true">
                     <!-- Header -->
                     <ng-template pTemplate="header" let-columns>
                         <tr>
@@ -353,6 +360,14 @@
         <p-footer>
             <div class="ui-grid ui-fluid">
                 <div class="ui-g-12 ui-md-6">
+                    <label for="float-input-responsable-invetsa">Obervación Invetsa:</label>
+                    <textarea id="float-input-responsable-invetsa" [(ngModel)]="modeloItem.observacionesInvetsa" pInputTextarea autoResize="autoResize" placeholder="Ingresar Observación"> </textarea>
+                </div>
+                <div class="ui-g-12 ui-md-6">
+                    <label for="float-input-responsable-planta">Observación Planta:</label>
+                    <textarea id="float-input-responsable-planta" [(ngModel)]="modeloItem.observacionesPlanta" pInputTextarea autoResize="autoResize" placeholder="Ingresar Observación"> </textarea>
+                </div>
+                <div class="ui-g-12 ui-md-6">
                     <app-panel-firma-digital (vDataFirma)="modeloItem.firmaIncuba = $event" (vDataFirmaClear)="modeloItem.firmaIncuba = $event" [vFirmaOk]="globalConstants.cFirmaOk1" [vFirmaClear]="globalConstants.cFirmaClear"></app-panel-firma-digital>
                 </div>
                 <div class="ui-g-12 ui-md-6">
@@ -370,7 +385,7 @@
 
                 <div class="ui-g-12 ui-md-6">
                     <div class="p-field">
-                        <label for="nombrePlanta">Responsable Planta:</label>
+                        <label for="nombrePlanta">Encargado Planta:</label>
                         <input id="nombrePlanta" type="text" [(ngModel)]="modeloItem.responsablePlanta" pInputText>
                         <label for="emailPlanta">Email:</label>
                         <input id="emailPlanta" [(ngModel)]="modeloItem.emailTo" type="text" pInputText>
