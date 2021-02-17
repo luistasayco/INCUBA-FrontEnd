@@ -5,6 +5,7 @@ import { TxVacunacionSubCutaneaIrregularidadModel } from './tx-vacunacion-subcut
 import { TxVacunacionSubCutaneaFotosModel } from './tx-vacunacion-subcutanea-fotos.model';
 import { TxVacunacionSubCutaneaDetalleModel } from './tx-vacunacion-subcutanea-detalle.model';
 import { TxVacunacionSubCutaneaResultadoModel } from './tx-vacunacion-subcutanea-resultado.model';
+import { TxVacunacionSubCutaneaPromedioModel } from './tx-vacunacion-subcutanea-promedio.model';
 
 export class TxVacunacionSubCutaneaModel {
     idVacunacionSubCutanea: number;
@@ -57,6 +58,7 @@ export class TxVacunacionSubCutaneaModel {
     listarTxVacunacionSubCutaneaVacuna: TxVacunacionSubCutaneayVacunaModel[];
     listarTxVacunacionSubCutaneaControlEficiencia: TxVacunacionSubCutaneaControlEficienciaModel[];
     listarTxVacunacionSubCutaneaResultado: TxVacunacionSubCutaneaResultadoModel[];
+    listarTxVacunacionSubCutaneaPromedio: TxVacunacionSubCutaneaPromedioModel[];
 
     // Auditoria
     regUsuario?: number;
@@ -113,6 +115,7 @@ export class TxVacunacionSubCutaneaModel {
         this.listarTxVacunacionSubCutaneaVacuna = [];
         this.listarTxVacunacionSubCutaneaControlEficiencia = [];
         this.listarTxVacunacionSubCutaneaResultado = [];
+        this.listarTxVacunacionSubCutaneaPromedio = [];
         this.regUsuario = 0;
         this.regEstacion = '';
     }

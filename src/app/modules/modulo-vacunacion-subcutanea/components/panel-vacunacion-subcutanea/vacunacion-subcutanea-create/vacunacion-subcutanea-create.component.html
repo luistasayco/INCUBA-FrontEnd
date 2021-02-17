@@ -294,7 +294,7 @@
                             </ng-template>
                             <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri let-editing="editing">
                                 <tr [pEditableRow]="rowData">
-                                    <td class="action-td">
+                                    <td class="ui-fluid">
                                         <span class="ui-column-title">Nombre del Vacunador</span> {{rowData.nombreVacunador}}
                                     </td>
                                     <td class="action-td">
@@ -433,7 +433,7 @@
                     </div>
                     <div class="ui-g-12">
                         <label class="label-custom"> <strong>Promedio / Sumatoria: </strong> </label>
-                        <p-table [value]="listControlEficienciaPromedio" [columns]="columnasControlEficiencia" [paginator]="true" [rows]="10" dataKey="nombreVacunador" editMode="row" autoLayout="true" [responsive]="true">
+                        <p-table [value]="modeloItem.listarTxVacunacionSubCutaneaPromedio" [columns]="columnasPromedio" [paginator]="true" [rows]="10" dataKey="nombreVacunador" editMode="row" autoLayout="true" [responsive]="true">
                             <ng-template pTemplate="header" let-columns>
                                 <tr>
                                     <th *ngFor="let col of columns">
@@ -445,12 +445,6 @@
                                 <tr [pEditableRow]="rowData">
                                     <td class="action-td">
                                         <span class="ui-column-title">Nombre del Vacunador</span> {{rowData.nombreVacunador}}
-                                    </td>
-                                    <td class="action-td">
-                                        <span class="ui-column-title">Cantidad Inicial</span> {{rowData.cantidadInicial}}
-                                    </td>
-                                    <td class="action-td">
-                                        <span class="ui-column-title">Cantidad Final</span> {{rowData.cantidadFinal}}
                                     </td>
                                     <td class="action-td">
                                         <span class="ui-column-title">Vac./Hora</span> {{rowData.vacunadoPorHora}}
@@ -476,12 +470,12 @@
                                     <td class="action-td">
                                         <span class="ui-column-title">Vac. Correctamente</span> {{rowData.vacunadoCorrectos}}
                                     </td>
-                                    <!-- <td class="action-td">
+                                    <td class="action-td">
                                         <span class="ui-column-title">% de Eficiencia</span> {{rowData.porcentajeEficiencia}}
                                     </td>
                                     <td class="action-td">
                                         <span class="ui-column-title">Puntaje de Eficiencia</span> {{rowData.puntajeEficiencia}}
-                                    </td> -->
+                                    </td>
                                 </tr>
                             </ng-template>
                         </p-table>
@@ -674,7 +668,7 @@
 <p-dialog header="Seleccionar Procesos" [(visible)]="displaySeleccionProceso" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
     <div class="ui-g ui-fluid">
         <div class="ui-g-12">
-            <p-table [columns]="columnasSeleccionarMaquina" [value]="listProceso" [(selection)]="selectSeleccionMaquina" dataKey="idProcesoSpray" autoLayout="true" [responsive]="true">
+            <p-table [columns]="columnasSeleccionarMaquina" [value]="listProceso" [(selection)]="selectSeleccionMaquina" dataKey="idProcesoSubCutanea" autoLayout="true" [responsive]="true">
                 <ng-template pTemplate="header" let-columns>
                     <tr>
                         <th style="width: 3em">

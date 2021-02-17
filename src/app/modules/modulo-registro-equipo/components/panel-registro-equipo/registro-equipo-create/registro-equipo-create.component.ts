@@ -16,6 +16,7 @@ import { SeguridadService } from '../../../../modulo-seguridad/services/segurida
 import { EmpresaPorUsuarioModel } from '../../../../modulo-seguridad/models/empresa-por-usuario';
 import { UserContextService } from '../../../../../services/user-context.service';
 import { UtilService } from '../../../../modulo-compartido/services/util.service';
+import { RepuestoPorModeloModel } from '../../../models/repuesto-por-modelo.model';
 
 @Component({
   selector: 'app-registro-equipo-create',
@@ -56,12 +57,15 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
 
   columnasDetalle5: any[];
   columnasDetalle6: any[];
+  columnasRepuestoNoPredeterminado: any[];
 
   // Opcion Editar
   modelocloned: { [s: string]: TxRegistroEquipoDetalle5Model; } = {};
   modeloclonedDetalle6: { [s: string]: TxRegistroEquipoDetalle6Model; } = {};
 
   listClonedDetalle6Repuesto: TxRegistroEquipoDetalle6Model[];
+  listRespuestoPorModelo: RepuestoPorModeloModel[];
+  selectRespuestoNoPredeterminado: RepuestoPorModeloModel[];
 
   // Selected Combo del detalle 2
   selectedMP: any;
@@ -81,6 +85,8 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
 
   displayGenerandoInformacion: boolean;
   mensajeGenerandoInformacion: string;
+
+  displaySeleccionRepuestoNoPredeterminado: boolean;
 
   constructor(private registroEquipoService: RegistroEquipoService,
               private compartidoService: CompartidoService,
@@ -107,6 +113,8 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
     this.mensajeGenerandoInformacion = 'Generando Informacion...!!!';
     this.listClonedDetalle6Repuesto = [];
     this.selectedNuveoRepuesto = [];
+    this.listRespuestoPorModelo = [];
+    this.selectRespuestoNoPredeterminado = [];
     this.listMP = [
       {label: 'Perdido', value: 'P'},
       {label: 'Malogrado', value: 'M'}
@@ -131,6 +139,11 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
       { header: 'Stock Actual' },
       { header: 'Cambio por mtto.' },
       { header: 'Entrego' }
+    ];
+
+    this.columnasRepuestoNoPredeterminado = [
+      { header: 'Codigo', field: 'codigoRepuesto' },
+      { header: 'Descripción', field: 'descripcion'}
     ];
 
     this.selectedEmpresa = null;
@@ -187,10 +200,26 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
 
   getOnChangeModelo() {
     this.onListar();
+    this.getOnRepuestoPorModelo();
   }
 
   getOnChangePlanta(){
     this.onListar();
+  }
+
+  getOnRepuestoPorModelo() {
+
+    let codigoModelo: string = this.selectedModelo === null ? '' : this.selectedModelo.value;
+    if (codigoModelo !=='') {
+      let vModelo: RepuestoPorModeloModel = {codigoModelo: codigoModelo}
+      this.subscription$ = new Subscription();
+      this.subscription$ = this.registroEquipoService.getRepuestoSeleccionados(vModelo)
+      .subscribe((data: RepuestoPorModeloModel[]) => {
+        this.listRespuestoPorModelo = [];
+        this.listRespuestoPorModelo = [...data].filter(xFila => xFila.flgAccesorio === false && xFila.flgPredeterminado === false);
+      });
+    }
+    
   }
 
   onListar() {
@@ -438,6 +467,25 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
     });
   }
 
+  onGrabarRespuestoNopredeterminado() {
+    if (this.selectRespuestoNoPredeterminado.length !== 0) {
+
+      this.selectRespuestoNoPredeterminado.forEach(xFila => {
+        let detalle6Repuesto: TxRegistroEquipoDetalle6Model = {
+          idRegistroEquipoDetalle: 0,
+          idRegistroEquipo: 0,
+          codigoRepuesto: xFila.codigoRepuesto,
+          descripcion: xFila.descripcion,
+          stockActual: 0,
+          cambioPorMantenimiento: 0,
+          entregado: 0
+        };
+        this.modeloItem.txRegistroEquipoDetalle6Repuestos.push(detalle6Repuesto);
+      });
+    }
+    this.displaySeleccionRepuestoNoPredeterminado = false;
+  }
+
   onToGrabar() {
 
     if (this.modeloItem.firmaIncuba === '') {
@@ -459,7 +507,7 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
       this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, `Ingresar Email de Planta`);
       return;
     }
-
+    console.log('this.modeloItem.emailTo', this.modeloItem.emailTo);
     let msgList = this.utilService.validaListEmail(this.modeloItem.emailTo);
 
     if (msgList !== '') {

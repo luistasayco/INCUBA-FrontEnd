@@ -29,6 +29,7 @@ import { IrregularidadModel } from '../../../models/irregularidad.model';
 import { TxVacunacionSubCutaneaIrregularidadModel } from '../../../models/tx-vacunacion-subcutanea-irregularidad.model';
 import { TxVacunacionSubCutaneaControlEficienciaModel } from '../../../models/tx-vacunacion-subcutanea-control-eficiencia.model';
 import { IndiceEficienciaModel } from '../../../models/indice-eficiencia.model';
+import { TxVacunacionSubCutaneaResultadoModel } from '../../../models/tx-vacunacion-subcutanea-resultado.model';
 
 @Component({
   selector: 'app-vacunacion-subcutanea-create',
@@ -64,6 +65,7 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
   columnasIrregularidad: any[];
   columnasNuevoIrregularidad: any[];
   columnasControlEficiencia: any[];
+  columnasPromedio: any[];
 
   selectEmpresa: any;
   selectedPlanta: any;
@@ -182,6 +184,20 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
       { header: 'Puntaje de Eficiencia'}
     ];
 
+    this.columnasPromedio = [
+      { header: 'Vacunador'},
+      { header: 'Vac./Hora'},
+      { header: 'Puntaje Productividad'},
+      { header: 'Controlados'},
+      { header: 'Sin Vacunar'},
+      { header: 'Heridos'},
+      { header: 'Mojados'},
+      { header: 'Mala Posición'},
+      { header: 'Vac. Correctamente'},
+      { header: '% de Eficiencia'},
+      { header: 'Puntaje de Eficiencia'}
+    ];
+
     this.getToObtieneEmpresa();
     this.getToObtieneVacuna();
     this.getToObtieneModelo();
@@ -202,6 +218,7 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
       this.modeloItem.listarTxVacunacionSubCutaneaFotos = [];
       this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia = [];
       this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad = [];
+      this.modeloItem.listarTxVacunacionSubCutaneaPromedio = [];
       this.clonedProcesoDetalle = [...this.modeloItem.listarTxVacunacionSubCutaneaDetalle];
       this.updateRowGroupMetaData();
     });
@@ -419,7 +436,13 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
     let cloneDataDetalleOriginal = [...this.clonedProcesoDetalle];
     let clonedDataResultado = [...this.modeloItem.listarTxVacunacionSubCutaneaResultado];
     let clonedListProcesoOriginal = [...this.listProceso];
-    clonedDataResultado.map(x => x.nroProcesoAcumulado = 0);
+    
+
+    clonedDataResultado.forEach(x => {
+      x.nroProcesoAcumulado = 0;
+    });
+
+    console.log('clonedDataResultado', clonedDataResultado);
     if (this.selectSeleccionMaquina.length === 0) {
       let cloneDataDetalle2 = [...cloneDataDetalleOriginal];
       this.listProceso.forEach(x => {
@@ -429,10 +452,17 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
       this.modeloItem.listarTxVacunacionSubCutaneaResultado = clonedDataResultado;
       this.updateRowGroupMetaData();
     } else {
+
       this.selectSeleccionMaquina.forEach(x => {
         clonedListProcesoOriginal = [...clonedListProcesoOriginal].filter(xx => xx.idProcesoSubCutanea !== x.idProcesoSubCutanea);
-        clonedDataResultado.find(xFilaResultado => xFilaResultado.idProcesoAgrupador === x.idProcesoAgrupador).nroProcesoAcumulado += 1
+
+        let existeRegistroResultado = [...clonedDataResultado].filter(xFilaResultado => xFilaResultado.idProcesoAgrupador === x.idProcesoAgrupador).length;
+        if (existeRegistroResultado>0) {
+          clonedDataResultado.find(xFilaResultado => xFilaResultado.idProcesoAgrupador === x.idProcesoAgrupador).nroProcesoAcumulado += 1;
+        }
+        
       });
+
       this.modeloItem.listarTxVacunacionSubCutaneaResultado = clonedDataResultado;
       let cloneDataDetalleSeleccionado = [...cloneDataDetalleOriginal];
 
@@ -448,6 +478,8 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
   }
 
   onCalcularPuntaje() {
+    this.listControlEficienciaPromedio = [];
+    this.modeloItem.listarTxVacunacionSubCutaneaPromedio = [];
     let clonedDetalleCalcular = [...this.modeloItem.listarTxVacunacionSubCutaneaDetalle];
     let clonedResultadoCalcular = [...this.modeloItem.listarTxVacunacionSubCutaneaResultado];
     let valorAsumar = 0.00;
@@ -546,10 +578,6 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
     promedioControldeEficiencia.porcentajeEficiencia = sumarControldeEficiencia.porcentajeEficiencia / countLineasControlEficiencia;
     promedioControldeEficiencia.puntajeEficiencia = sumarControldeEficiencia.puntajeEficiencia / countLineasControlEficiencia;
     
-
-    
-    
-    
     let valorInicio = 0;
     let valorFin = 0;
 
@@ -590,6 +618,24 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
       if (promedioControldeEficiencia.porcentajeEficiencia >= xFilaEficiencia.rangoInicial && promedioControldeEficiencia.porcentajeEficiencia <= xFilaEficiencia.rangoFinal) {
         promedioControldeEficiencia.puntajeEficiencia = xFilaEficiencia.puntaje;
       }
+    });
+
+    this.listControlEficienciaPromedio.forEach(xFila => {
+      this.modeloItem.listarTxVacunacionSubCutaneaPromedio.push({
+        idVacunacionSubCutaneaDetalle: 0,
+        idVacunacionSubCutanea: 0,
+        nombreVacunador: xFila.nombreVacunador,
+        vacunadoPorHora: xFila.vacunadoPorHora,
+        puntajeProductividad: xFila.puntajeProductividad,
+        controlados: xFila.controlados,
+        sinVacunar: xFila.sinVacunar,
+        heridos: xFila.heridos,
+        mojados: xFila.mojados,
+        malaPosicion: xFila.malaPosicion,
+        vacunadoCorrectos: xFila.vacunadoCorrectos,
+        porcentajeEficiencia: xFila.porcentajeEficiencia,
+        puntajeEficiencia: xFila.puntajeEficiencia
+      });
     });
 
     this.modeloItem.listarTxVacunacionSubCutaneaResultado.find(xFila => xFila.idProcesoAgrupador === 4).valorObtenido = promedioControldeEficiencia.puntajeEficiencia;

@@ -8,7 +8,7 @@ import { RepuestoPorModeloModel } from '../models/repuesto-por-modelo.model';
 import { CondicionLimpiezaModel } from '../models/condicion-limpieza.model';
 import { RequerimientoEquipoModel } from '../models/requerimiento-equipo.model';
 import { Observable, from, Subscription, of } from 'rxjs';
-import { concatMap, mergeMap } from 'rxjs/operators';
+import { concatMap, mergeMap, filter } from 'rxjs/operators';
 import { IObservableLocal } from '../../modulo-sincronizacion/interface/observable-local.interface';
 import { TxRegistroEquipoDetalle1Model } from '../models/tx-registro-equipo-detalle1.model';
 import { TxRegistroEquipoDetalle2Model } from '../models/tx-registro-equipo-detalle2.model';
@@ -32,6 +32,10 @@ export class RegistroEquipoLocalService implements OnDestroy {
 
   getModeloLocal() {
     return this.dbService.getAll(ConstantesTablasIDB._TABLA_MSTMODELO);
+  }
+
+  getRepuestoPorModelo() {
+    return this.dbService.getAll(ConstantesTablasIDB._TABLA_MSTREPUESTOPORMODELO);
   }
 
   getTxRegistroEquipoNewItem(codigoEmpresa: string, codigoPlanta: string, codigoModelo: string) {

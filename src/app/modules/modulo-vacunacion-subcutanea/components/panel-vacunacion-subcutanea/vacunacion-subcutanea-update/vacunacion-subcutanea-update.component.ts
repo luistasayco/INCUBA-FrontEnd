@@ -32,6 +32,7 @@ export class VacunacionSubcutaneaUpdateComponent implements OnInit {
   columnasIrregularidad: any[];
   columnasNuevoIrregularidad: any[];
   columnasControlEficiencia: any[];
+  columnasPromedio: any[];
 
   modeloItem: TxVacunacionSubCutaneaModel = new TxVacunacionSubCutaneaModel();
   id: number;
@@ -110,7 +111,19 @@ export class VacunacionSubcutaneaUpdateComponent implements OnInit {
       { header: 'Puntaje de Eficiencia'}
     ];
 
-
+    this.columnasPromedio = [
+      { header: 'Vacunador'},
+      { header: 'Vac./Hora'},
+      { header: 'Puntaje Productividad'},
+      { header: 'Controlados'},
+      { header: 'Sin Vacunar'},
+      { header: 'Heridos'},
+      { header: 'Mojados'},
+      { header: 'Mala Posición'},
+      { header: 'Vac. Correctamente'},
+      { header: '% de Eficiencia'},
+      { header: 'Puntaje de Eficiencia'}
+    ];
     
 
   }
