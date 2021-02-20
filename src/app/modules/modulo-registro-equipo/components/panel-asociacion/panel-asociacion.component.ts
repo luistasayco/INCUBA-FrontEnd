@@ -15,6 +15,7 @@ import { ButtonAcces } from '../../../../models/acceso-button';
 import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
 import { SeguridadService } from '../../../modulo-seguridad/services/seguridad.service';
 import { EmpresaPorUsuarioModel } from '../../../modulo-seguridad/models/empresa-por-usuario';
+import { PlantaPorUsuarioModel } from '../../../modulo-seguridad/models/planta-por-usuario';
 
 @Component({
   selector: 'app-panel-asociacion',
@@ -109,13 +110,12 @@ export class PanelAsociacionComponent implements OnInit, OnDestroy {
   }
 
   getToObtienePlantaPorEmpresa(value: string) {
-    this.modeloPlanta.codigoEmpresa = value;
     this.subscription = new Subscription();
-    this.subscription = this.compartidoService.getPlantaPorEmpresa(this.modeloPlanta)
-    .subscribe((data: PlantaModel[]) => {
+    this.subscription = this.seguridadService.getPlantaConAccesoPorUsuarioPorEmpresa(value)
+    .subscribe((data: PlantaPorUsuarioModel[]) => {
       this.listItemPlanta = [];
       for (let item of data) {
-        this.listItemPlanta.push({ label: item.descripcion, value: item.codigoPlanta });
+        this.listItemPlanta.push({ label: item.descripcionPlanta, value: item.codigoPlanta });
       }
       });
   }

@@ -22,4 +22,25 @@ export class ConstantesTablasIDB {
     // Tablas de seguridad
     public static _TABLA_SEGMENU = 'segMenu';
     public static _TABLA_SOCIEDAD = 'segSociedad'
+
+    // Tablas Maestras Modulo Vacunacion Spray
+    public static _TABLA_MSBOQUILLA = 'mstBoquilla';
+    public static _TABLA_MSPROCESODETALLESPRAY = 'mstProcesoDetalleSpray';
+    public static _TABLA_MSVACUNA = 'mstVacuna';
+    public static _TABLA_MSPROCESOSPRAY = 'mstProcesoSpray';
+
+    // Tabla Transaccionales del Modulo Vacunacion Spray
+    public static _TABLA_TXVACUNACIONSPRAYNEW = 'trxVacunacionSprayNew';
+    public static _TABLA_TXVACUNACIONSPRAY = 'trxVacunacionSpray';
+
+    // Tablas Maestras Modulo Vacunacion Subcutanea
+    public static _TABLA_MSAGUJA = 'mstAguja';
+    public static _TABLA_MSINDICEEFICIENCIA = 'mstIndiceEficiencia';
+    public static _TABLA_MSIRREGULARIDAD = 'mstIrregularidad';
+    public static _TABLA_MSPROCESODETALLESUBCUTANEA = 'mstProcesoDetalleSubCutanea';
+    public static _TABLA_MSPROCESOSUBCUTANEA = 'mstProcesoSubCutanea';
+
+    // Tabla Transaccionales del Modulo Vacunacion Subcutanea
+    public static _TABLA_TXVACUNACIONSUBCUTANEANEW = 'trxVacunacionSubCutaneaNew';
+    public static _TABLA_TXVACUNACIONSUBCUTANEA = 'trxVacunacionSubCutanea';
 }

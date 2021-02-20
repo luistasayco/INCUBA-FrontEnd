@@ -72,6 +72,73 @@ export class IndiceCrear {
                 nombreIndice: 'idxidDataBase', campoIndice: 'IdDataBase', unico: false  };
         }
 
+        if ( version === 10 ) {
+            indice = { tabla: ConstantesTablasIDB._TABLA_MSBOQUILLA,
+                nombreIndice: 'idxidBoquilla', campoIndice: 'idBoquilla', unico: false  };
+        }
+
+        if ( version === 11 ) {
+            indice = { tabla: ConstantesTablasIDB._TABLA_MSPROCESOSPRAY,
+                nombreIndice: 'idxidProcesoSpray', campoIndice: 'idProcesoSpray', unico: false  };
+        }
+
+        if ( version === 12 ) {
+            indice = { tabla: ConstantesTablasIDB._TABLA_MSPROCESODETALLESPRAY,
+                nombreIndice: 'idxidProcesoDetalleSpray', campoIndice: 'idProcesoDetalleSpray', unico: false  };
+        }
+
+        if ( version === 13 ) {
+            indice = { tabla: ConstantesTablasIDB._TABLA_MSVACUNA,
+                nombreIndice: 'idVacuna', campoIndice: 'idVacuna', unico: false  };
+        }
+
+        if ( version === 14 ) {
+            indice = { tabla: ConstantesTablasIDB._TABLA_TXVACUNACIONSPRAY,
+                nombreIndice: 'idxidVacunacionSpray', campoIndice: 'idVacunacionSpray', unico: false  };
+            indice = { tabla: ConstantesTablasIDB._TABLA_TXVACUNACIONSPRAY,
+                nombreIndice: 'idxfecHoraRegistro', campoIndice: 'fecHoraRegistro', unico: false  };
+        }
+
+        if ( version === 15 ) {
+            indice = { tabla: ConstantesTablasIDB._TABLA_MSAGUJA,
+                nombreIndice: 'idAguja', campoIndice: 'idAguja', unico: false  };
+        }
+
+        if ( version === 16 ) {
+            indice = { tabla: ConstantesTablasIDB._TABLA_MSINDICEEFICIENCIA,
+                nombreIndice: 'idIndiceEficiencia', campoIndice: 'idIndiceEficiencia', unico: false  };
+        }
+
+        if ( version === 17 ) {
+            indice = { tabla: ConstantesTablasIDB._TABLA_MSIRREGULARIDAD,
+                nombreIndice: 'idIrregularidad', campoIndice: 'idIrregularidad', unico: false  };
+        }
+
+        if ( version === 18 ) {
+            indice = { tabla: ConstantesTablasIDB._TABLA_MSPROCESOSUBCUTANEA,
+                nombreIndice: 'idProcesoSubCutanea', campoIndice: 'idProcesoSubCutanea', unico: false  };
+        }
+
+        if ( version === 19 ) {
+            indice = { tabla: ConstantesTablasIDB._TABLA_MSPROCESODETALLESUBCUTANEA,
+                nombreIndice: 'idProcesoDetalleSubCutanea', campoIndice: 'idProcesoDetalleSubCutanea', unico: false  };
+        }
+
+        if ( version === 20 ) {
+            indice = { tabla: ConstantesTablasIDB._TABLA_TXVACUNACIONSUBCUTANEA,
+                nombreIndice: 'idVacunacionSubCutanea', campoIndice: 'idVacunacionSubCutanea', unico: false  };
+        }
+
+        if ( version === 21 ) {
+            indice = { tabla: ConstantesTablasIDB._TABLA_TXVACUNACIONSUBCUTANEANEW,
+                nombreIndice: 'idVacunacionSubCutanea', campoIndice: 'idVacunacionSubCutanea', unico: false  };
+        }
+
+        if ( version === 22 ) {
+            indice = { tabla: ConstantesTablasIDB._TABLA_TXVACUNACIONSPRAYNEW,
+                nombreIndice: 'idyidVacunacionSpray', campoIndice: 'idVacunacionSpray', unico: false  };
+        }
+
         return this.indices;
     }
 }

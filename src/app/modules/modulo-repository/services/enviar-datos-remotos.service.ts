@@ -8,6 +8,10 @@ import { RegistroEquipoService } from '../../modulo-registro-equipo/services/reg
 import { UserContextService } from '../../../services/user-context.service';
 import { TxExamenFisicoPollitoModel } from '../../modulo-examen-fisico-pollito/models/tx-examen-fisico-pollito';
 import { ExamenFisicoPollitoService } from '../../modulo-examen-fisico-pollito/services/examen-fisico-pollito.service';
+import { VacunacionSprayService } from '../../modulo-vacunacion-spray/services/vacunacion-spray.service';
+import { VacunacionSubcutaneaService } from '../../modulo-vacunacion-subcutanea/services/vacunacion-subcutanea.service';
+import { TxVacunacionSprayModel } from '../../modulo-vacunacion-spray/models/tx-vacunacion-spray.model';
+import { TxVacunacionSubCutaneaModel } from '../../modulo-vacunacion-subcutanea/models/tx-vacunacion-subcutanea.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,21 +20,31 @@ export class EnviarDatosRemotosService {
 
   private tablasAEnviar = {
     envioTablaTrxRegistroEquipo: false,
-    envioTablaTrxExamenFisicoPollito: false};
+    envioTablaTrxExamenFisicoPollito: false,
+    envioTablaTrxVacunacionSpray: false,
+    envioTablaTrxVacunacionSubCutanea: false};
 
   constructor(private readonly servicioIndexedDB: NgxIndexedDBService,
               private readonly registroEquipoService: RegistroEquipoService,
               private readonly examenFisicoPollitoService: ExamenFisicoPollitoService,
+              private readonly vacunacionSprayService: VacunacionSprayService,
+              private readonly vacunacionSubcutaneaService: VacunacionSubcutaneaService,
               private userContextService: UserContextService) { }
 
   private ponerEstadoDefecto() {
     this.tablasAEnviar.envioTablaTrxExamenFisicoPollito = false;
     this.tablasAEnviar.envioTablaTrxRegistroEquipo = false;
+    this.tablasAEnviar.envioTablaTrxVacunacionSpray = false;
+    this.tablasAEnviar.envioTablaTrxVacunacionSubCutanea = false;
   }
 
   private validarProcesoCompletado(): boolean {
-    if (this.tablasAEnviar.envioTablaTrxExamenFisicoPollito &&
-    this.tablasAEnviar.envioTablaTrxRegistroEquipo) {
+    if (
+      this.tablasAEnviar.envioTablaTrxExamenFisicoPollito &&
+      this.tablasAEnviar.envioTablaTrxRegistroEquipo &&
+      this.tablasAEnviar.envioTablaTrxVacunacionSpray &&
+      this.tablasAEnviar.envioTablaTrxVacunacionSubCutanea
+    ) {
       return true;
     }
     return false;
@@ -96,9 +110,29 @@ export class EnviarDatosRemotosService {
             observer.error(error);
           }
           );
+          this.enviarVacunacionSpray()
+          .subscribe(resultado => {
+            this.tablasAEnviar.envioTablaTrxVacunacionSpray = true;
+            if (this.validarProcesoCompletado()) { observer.next(); }
+          },
+          error => {
+            observer.error(error);
+          }
+          );
+          this.enviarVacunacionSubCutanea()
+          .subscribe(resultado => {
+            this.tablasAEnviar.envioTablaTrxVacunacionSubCutanea = true;
+            if (this.validarProcesoCompletado()) { observer.next(); }
+          },
+          error => {
+            observer.error(error);
+          }
+          );
         } else {
           this.tablasAEnviar.envioTablaTrxRegistroEquipo = true;
           this.tablasAEnviar.envioTablaTrxExamenFisicoPollito = true;
+          this.tablasAEnviar.envioTablaTrxVacunacionSpray = true;
+          this.tablasAEnviar.envioTablaTrxVacunacionSubCutanea = true;
           if (this.validarProcesoCompletado()) { observer.next(); }
         }
       } else {
@@ -169,6 +203,86 @@ export class EnviarDatosRemotosService {
                 item.flgMigrado = true;
                 // console.log('enviarExamenFisicoPollito', `Se migro correctamente: `, item);
                 this.servicioIndexedDB.update(ConstantesTablasIDB._TABLA_TXEXAMENFISICOPOLLITO, item);
+              },
+              errorFor => {
+                // console.log('enviarExamenFisicoPollito', `Error al enviar Datos. Examenes Fisicos de Pollitos: ${errorFor}`, item);
+              }
+              );
+            });
+            observer.next();
+          } else {
+            observer.next();
+          }
+        } else {
+          observer.next();
+        }
+      },
+      error => {
+        // console.log(`Error al enviar Datos. Examenes Fisicos de Pollitos: ${error}`);
+        observer.next();
+      }
+      );
+    });
+    return obsProcesoTerminado;
+  }
+
+  private enviarVacunacionSpray() {
+    const obsProcesoTerminado = new Observable (observer => {
+      let registros: TxVacunacionSprayModel[] = [];
+      this.servicioIndexedDB.getAll(ConstantesTablasIDB._TABLA_TXVACUNACIONSPRAY)
+      .subscribe(resultado => {
+        if (resultado) {
+          registros = [...resultado];
+          registros = registros
+          .filter(z => z.flgCerrado === true)
+          .filter(x => x.flgMigrado === false);
+          if ( registros.length > 0 ) {
+            registros.forEach( item => {
+              this.vacunacionSprayService.setInsertTxVacunacionSpray(item)
+              .subscribe( result => {
+                item.flgMigrado = true;
+                // console.log('enviarExamenFisicoPollito', `Se migro correctamente: `, item);
+                this.servicioIndexedDB.update(ConstantesTablasIDB._TABLA_TXVACUNACIONSPRAY, item);
+              },
+              errorFor => {
+                // console.log('enviarExamenFisicoPollito', `Error al enviar Datos. Examenes Fisicos de Pollitos: ${errorFor}`, item);
+              }
+              );
+            });
+            observer.next();
+          } else {
+            observer.next();
+          }
+        } else {
+          observer.next();
+        }
+      },
+      error => {
+        // console.log(`Error al enviar Datos. Examenes Fisicos de Pollitos: ${error}`);
+        observer.next();
+      }
+      );
+    });
+    return obsProcesoTerminado;
+  }
+
+  private enviarVacunacionSubCutanea() {
+    const obsProcesoTerminado = new Observable (observer => {
+      let registros: TxVacunacionSubCutaneaModel[] = [];
+      this.servicioIndexedDB.getAll(ConstantesTablasIDB._TABLA_TXVACUNACIONSUBCUTANEA)
+      .subscribe(resultado => {
+        if (resultado) {
+          registros = [...resultado];
+          registros = registros
+          .filter(z => z.flgCerrado === true)
+          .filter(x => x.flgMigrado === false);
+          if ( registros.length > 0 ) {
+            registros.forEach( item => {
+              this.vacunacionSubcutaneaService.setInsertTxVacunacionSubCutanea(item)
+              .subscribe( result => {
+                item.flgMigrado = true;
+                // console.log('enviarExamenFisicoPollito', `Se migro correctamente: `, item);
+                this.servicioIndexedDB.update(ConstantesTablasIDB._TABLA_TXVACUNACIONSUBCUTANEA, item);
               },
               errorFor => {
                 // console.log('enviarExamenFisicoPollito', `Error al enviar Datos. Examenes Fisicos de Pollitos: ${errorFor}`, item);

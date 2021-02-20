@@ -25,6 +25,7 @@ import { LayoutComponent } from '../../../../layout/layout.component';
 import { ProgressStatusEnum, ProgressStatus } from '../../interfaces/progress-status';
 import { UserContextService } from '../../../../services/user-context.service';
 import { variableGlobal } from '../../../../interface/variable-global.interface';
+import { PlantaPorUsuarioModel } from '../../../modulo-seguridad/models/planta-por-usuario';
 
 @Component({
   selector: 'app-panel-extranet',
@@ -219,13 +220,12 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
   }
 
   getToObtienePlantaPorEmpresa(value: string) {
-    this.modeloPlanta.codigoEmpresa = value;
     this.subscription$ = new Subscription();
-    this.subscription$ = this.compartidoService.getPlantaPorEmpresa(this.modeloPlanta)
-    .subscribe((data: PlantaModel[]) => {
+    this.subscription$ = this.seguridadService.getPlantaConAccesoPorUsuarioPorEmpresa(value)
+    .subscribe((data: PlantaPorUsuarioModel[]) => {
       this.listItemPlanta = [];
       for (let item of data) {
-        this.listItemPlanta.push({ label: item.descripcion, value: item.codigoPlanta });
+        this.listItemPlanta.push({ label: item.descripcionPlanta, value: item.codigoPlanta });
       }
 
       if (this.saveFiltros.length > 0) {

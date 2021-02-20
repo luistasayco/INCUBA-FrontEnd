@@ -16,6 +16,7 @@ import { SubTipoExplotacionPorUsuarioModel } from '../../../models/sub-tipo-expl
 import { CifrarDataService } from '../../../../../services/cifrar-data.service';
 import { AprobarSubTipoExplotacionPorUsuarioModel } from '../../../models/aprobar-sub-tipo-explotacion-por-usuario';
 import { ConstantesVarios } from '../../../../../constants/constantes-varios';
+import { PlantaPorUsuarioModel } from '../../../models/planta-por-usuario';
 
 @Component({
   selector: 'app-persona-create',
@@ -46,6 +47,9 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
   listEmpresaPorSeleccionado: EmpresaPorUsuarioModel[];
   listEmpresaSeleccionado: EmpresaPorUsuarioModel[];
 
+  listPlantaPorSeleccionado: PlantaPorUsuarioModel[];
+  listPlantaSeleccionado: PlantaPorUsuarioModel[];
+
   listSubTipoExplotacionPorSeleccionado: SubTipoExplotacionPorUsuarioModel[];
   lisSubTipoExplotacionSeleccionado: SubTipoExplotacionPorUsuarioModel[];
 
@@ -72,6 +76,8 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
     this.sellersPermitString = '';
     this.listEmpresaPorSeleccionado = [];
     this.listEmpresaSeleccionado = [];
+    this.listPlantaPorSeleccionado = [];
+    this.listPlantaSeleccionado = [];
     this.lisSubTipoExplotacionSeleccionado = [];
     this.listAprobarSubTipoExplotacionSeleccionado = [];
     this.themes = [
@@ -80,6 +86,7 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
 
     this.getToObtienePerfil();
     this.getEmpresaSinAccesoPorUsuario();
+    this.getPlantaSinAccesoPorUsuario();
     this.getToObtieneSubTipoExplotacion();
     this.getToObtieneAprobarSubTipoExplotacion();
 
@@ -123,6 +130,15 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
     .subscribe((data: EmpresaPorUsuarioModel[]) => {
       this.listEmpresaPorSeleccionado = [];
       this.listEmpresaPorSeleccionado = data;
+    });
+  }
+
+  getPlantaSinAccesoPorUsuario() {
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.getPlantaSinAccesoPorUsuario(0)
+    .subscribe((data: PlantaPorUsuarioModel[]) => {
+      this.listPlantaPorSeleccionado = [];
+      this.listPlantaPorSeleccionado = data;
     });
   }
 
@@ -185,6 +201,7 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
 
   onClickSave() {
     this.modelo.listEmpresaPorUsuario = this.listEmpresaSeleccionado;
+    this.modelo.listPlantaProUsuario = this.listPlantaSeleccionado;
     this.modelo.listSubTipoExplosionPorUsuario = this.lisSubTipoExplotacionSeleccionado;
     this.listAprobarSubTipoExplotacionSeleccionado.map(x => {
       x.flgAprobar = true;

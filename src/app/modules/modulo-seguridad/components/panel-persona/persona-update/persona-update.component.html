@@ -111,6 +111,16 @@
                                 </ng-template>
                             </p-pickList>
                         </p-fieldset>
+                        <p-fieldset legend="Acceso por Planta/Sede" [toggleable]="true" [collapsed]="true">
+                            <p-pickList [source]="listPlantaPorSeleccionado" [target]="listPlantaSeleccionado" sourceHeader="Lista" targetHeader="Seleccionado" [responsive]="true" filterBy="descripcionPlanta" dragdrop="true" showSourceControls='false' sourceFilterPlaceholder="Search by Planta/Sede"
+                                targetFilterPlaceholder="Search by Planta/Sede" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}" [showSourceControls]="false" [showTargetControls]="false">
+                                <ng-template let-empresa pTemplate="item">
+                                    <div class="ui-helper-clearfix">
+                                        <div style="font-size:14px;float:left;margin:5px 5px 0 0">{{empresa.descripcionPlanta}}</div>
+                                    </div>
+                                </ng-template>
+                            </p-pickList>
+                        </p-fieldset>
                         <p-fieldset legend="Acceso por Tipo Explotación" [toggleable]="true" [collapsed]="true">
                             <div class="ui-g-12">
                                 <p-pickList [source]="listSubTipoExplotacionPorSeleccionado" [target]="lisSubTipoExplotacionSeleccionado" sourceHeader="Lista" targetHeader="Seleccionado" [responsive]="true" filterBy="descripcionSubTipoExplotacion" dragdrop="true" showSourceControls='false'

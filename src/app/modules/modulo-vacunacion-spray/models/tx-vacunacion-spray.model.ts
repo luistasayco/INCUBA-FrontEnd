@@ -34,6 +34,7 @@ export class TxVacunacionSprayModel {
     firmaInvetsa: string;
     firmaPlanta: string;
     flgCerrado: boolean;
+    flgMigrado: boolean;
     idUsuarioCierre: number;
     fecCierre: Date;
     emailFrom: string;
@@ -83,6 +84,7 @@ export class TxVacunacionSprayModel {
         this.firmaInvetsa = '';
         this.firmaPlanta = '';
         this.flgCerrado = false;
+        this.flgMigrado = false;
         this.idUsuarioCierre = 0;
         this.fecCierre = null;
         this.emailFrom = '';

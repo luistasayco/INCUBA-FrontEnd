@@ -30,6 +30,7 @@ import { TxVacunacionSubCutaneaIrregularidadModel } from '../../../models/tx-vac
 import { TxVacunacionSubCutaneaControlEficienciaModel } from '../../../models/tx-vacunacion-subcutanea-control-eficiencia.model';
 import { IndiceEficienciaModel } from '../../../models/indice-eficiencia.model';
 import { TxVacunacionSubCutaneaResultadoModel } from '../../../models/tx-vacunacion-subcutanea-resultado.model';
+import { PlantaPorUsuarioModel } from '../../../../modulo-seguridad/models/planta-por-usuario';
 
 @Component({
   selector: 'app-vacunacion-subcutanea-create',
@@ -251,14 +252,12 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
   }
 
   getToObtienePlantaPorEmpresa(value: string) {
-    let modeloPlanta = new PlantaModel();
-    modeloPlanta.codigoEmpresa = value;
     this.subscription$ = new Subscription();
-    this.subscription$ = this.compartidoService.getPlantaPorEmpresa(modeloPlanta)
-    .subscribe((data: PlantaModel[]) => {
+    this.subscription$ = this.seguridadService.getPlantaConAccesoPorUsuarioPorEmpresa(value)
+    .subscribe((data: PlantaPorUsuarioModel[]) => {
       this.listItemPlanta = [];
       for (let item of data) {
-        this.listItemPlanta.push({ label: item.descripcion, value: item.codigoPlanta });
+        this.listItemPlanta.push({ label: item.descripcionPlanta, value: item.codigoPlanta });
       }
     });
   }

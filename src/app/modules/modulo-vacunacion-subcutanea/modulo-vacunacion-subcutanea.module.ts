@@ -16,6 +16,9 @@ import { PanelVacunacionSubcutaneaComponent } from './components/panel-vacunacio
 import { ProcesoSubcutaneaCreateComponent } from './components/panel-proceso-subcutanea/proceso-subcutanea-create/proceso-subcutanea-create.component';
 import { VacunacionSubcutaneaCreateComponent } from './components/panel-vacunacion-subcutanea/vacunacion-subcutanea-create/vacunacion-subcutanea-create.component';
 import { VacunacionSubcutaneaUpdateComponent } from './components/panel-vacunacion-subcutanea/vacunacion-subcutanea-update/vacunacion-subcutanea-update.component';
+import { PanelVacunacionSubcutaneaOfflineComponent } from './components/panel-vacunacion-subcutanea-offline/panel-vacunacion-subcutanea-offline.component';
+import { VacunacionSubcutaneaOfflineCreateComponent } from './components/panel-vacunacion-subcutanea-offline/vacunacion-subcutanea-offline-create/vacunacion-subcutanea-offline-create.component';
+import { VacunacionSubcutaneaOfflineUpdateComponent } from './components/panel-vacunacion-subcutanea-offline/vacunacion-subcutanea-offline-update/vacunacion-subcutanea-offline-update.component';
 
 @NgModule({
     declarations: [PanelAgujaComponent,
@@ -28,7 +31,10 @@ import { VacunacionSubcutaneaUpdateComponent } from './components/panel-vacunaci
         ProcesoDetalleSubcutaneaCreateComponent,
         PanelVacunacionSubcutaneaComponent,
         VacunacionSubcutaneaCreateComponent,
-        VacunacionSubcutaneaUpdateComponent],
+        VacunacionSubcutaneaUpdateComponent,
+        PanelVacunacionSubcutaneaOfflineComponent,
+        VacunacionSubcutaneaOfflineCreateComponent,
+        VacunacionSubcutaneaOfflineUpdateComponent],
     imports: [ CommonModule, FormsModule, ReactiveFormsModule, VacunacionSubCutaneaPrimeNgModule, VacunacionSubCutaneaRoutingModule, GaleriaImagenModule, FirmaDigitalModule ],
     exports: [],
     providers: [],

@@ -50,7 +50,7 @@ export class TxVacunacionSubCutaneaModel {
     nombreArchivo: string;
     usuarioCierre: string;
     usuarioCreacion: string;
-
+    flgMigrado: boolean;
     listarTxVacunacionSubCutaneaDetalle: TxVacunacionSubCutaneaDetalleModel[];
     listarTxVacunacionSubCutaneaFotos: TxVacunacionSubCutaneaFotosModel[];
     listarTxVacunacionSubCutaneaIrregularidad: TxVacunacionSubCutaneaIrregularidadModel[];
@@ -107,7 +107,7 @@ export class TxVacunacionSubCutaneaModel {
         this.nombreArchivo = '';
         this.usuarioCierre = '';
         this.usuarioCreacion = '';
-    
+        this.flgMigrado = false;
         this.listarTxVacunacionSubCutaneaDetalle = [];
         this.listarTxVacunacionSubCutaneaFotos = [];
         this.listarTxVacunacionSubCutaneaIrregularidad = [];

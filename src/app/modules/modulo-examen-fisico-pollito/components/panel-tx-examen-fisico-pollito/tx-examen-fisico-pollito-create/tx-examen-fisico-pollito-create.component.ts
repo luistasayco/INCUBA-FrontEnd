@@ -19,6 +19,7 @@ import { UserContextService } from '../../../../../services/user-context.service
 import { PlantaModel } from '../../../../modulo-compartido/models/planta.model';
 import { CompartidoService } from '../../../../modulo-compartido/services/compartido.service';
 import { UtilService } from '../../../../modulo-compartido/services/util.service';
+import { PlantaPorUsuarioModel } from '../../../../modulo-seguridad/models/planta-por-usuario';
 
 @Component({
   selector: 'app-tx-examen-fisico-pollito-create',
@@ -123,14 +124,12 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
   }
 
   getToObtienePlantaPorEmpresa(value: string) {
-    let modeloPlanta = new PlantaModel();
-    modeloPlanta.codigoEmpresa = value;
     this.subscription$ = new Subscription();
-    this.subscription$ = this.compartidoService.getPlantaPorEmpresa(modeloPlanta)
-    .subscribe((data: PlantaModel[]) => {
+    this.subscription$ = this.seguridadService.getPlantaConAccesoPorUsuarioPorEmpresa(value)
+    .subscribe((data: PlantaPorUsuarioModel[]) => {
       this.listItemPlanta = [];
       for (let item of data) {
-        this.listItemPlanta.push({ label: item.descripcion, value: item.codigoPlanta });
+        this.listItemPlanta.push({ label: item.descripcionPlanta, value: item.codigoPlanta });
       }
     });
   }

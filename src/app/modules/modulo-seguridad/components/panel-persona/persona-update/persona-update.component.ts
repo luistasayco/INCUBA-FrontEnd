@@ -14,6 +14,7 @@ import { EmpresaPorUsuarioModel } from '../../../models/empresa-por-usuario';
 import { SubTipoExplotacionPorUsuarioModel } from '../../../models/sub-tipo-explotacion-por-usuario.model';
 import { CifrarDataService } from '../../../../../services/cifrar-data.service';
 import { AprobarSubTipoExplotacionPorUsuarioModel } from '../../../models/aprobar-sub-tipo-explotacion-por-usuario';
+import { PlantaPorUsuarioModel } from '../../../models/planta-por-usuario';
 
 @Component({
   selector: 'app-persona-update',
@@ -45,6 +46,9 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
 
   listEmpresaPorSeleccionado: EmpresaPorUsuarioModel[];
   listEmpresaSeleccionado: EmpresaPorUsuarioModel[];
+
+  listPlantaPorSeleccionado: PlantaPorUsuarioModel[];
+  listPlantaSeleccionado: PlantaPorUsuarioModel[];
 
   listSubTipoExplotacionPorSeleccionado: SubTipoExplotacionPorUsuarioModel[];
   lisSubTipoExplotacionSeleccionado: SubTipoExplotacionPorUsuarioModel[];
@@ -134,6 +138,13 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
       } else {
         this.listEmpresaSeleccionado = [];
       }
+
+      if (this.modelo.listPlantaProUsuario.length > 0) {
+        this.listPlantaSeleccionado = this.modelo.listPlantaProUsuario;
+      } else {
+        this.listPlantaSeleccionado = [];
+      }
+
       if (this.modelo.listSubTipoExplosionPorUsuario.length > 0) {
         this.lisSubTipoExplotacionSeleccionado = this.modelo.listSubTipoExplosionPorUsuario;
       } else {
@@ -145,6 +156,7 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
         this.listAprobarSubTipoExplotacionSeleccionado = [];
       }
       this.getEmpresaSinAccesoPorUsuario();
+      this.getPlantaSinAccesoPorUsuario();
       this.getToObtieneSubTipoExplotacion();
       this.getToObtieneAprobarSubTipoExplotacion();
     });
@@ -167,6 +179,15 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
     .subscribe((data: EmpresaPorUsuarioModel[]) => {
       this.listEmpresaPorSeleccionado = [];
       this.listEmpresaPorSeleccionado = data;
+    });
+  }
+
+  getPlantaSinAccesoPorUsuario() {
+    this.subscription = new Subscription();
+    this.subscription = this.seguridadService.getPlantaSinAccesoPorUsuario(this.modelo.entidadUsuario.idUsuario)
+    .subscribe((data: PlantaPorUsuarioModel[]) => {
+      this.listPlantaPorSeleccionado = [];
+      this.listPlantaPorSeleccionado = data;
     });
   }
 
@@ -229,6 +250,7 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
 
   onClickSave() {
     this.modelo.listEmpresaPorUsuario = this.listEmpresaSeleccionado;
+    this.modelo.listPlantaProUsuario = this.listPlantaSeleccionado;
     this.modelo.listSubTipoExplosionPorUsuario = this.lisSubTipoExplotacionSeleccionado;
     this.listAprobarSubTipoExplotacionSeleccionado.map(x => {
       x.flgAprobar = true;

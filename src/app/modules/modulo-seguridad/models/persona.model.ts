@@ -2,6 +2,7 @@ import { UsuarioModel } from './usuario.model';
 import { EmpresaPorUsuarioModel } from './empresa-por-usuario';
 import { SubTipoExplotacionPorUsuarioModel } from './sub-tipo-explotacion-por-usuario.model';
 import { AprobarSubTipoExplotacionPorUsuarioModel } from './aprobar-sub-tipo-explotacion-por-usuario';
+import { PlantaPorUsuarioModel } from './planta-por-usuario';
 export class PersonaModel {
     idPersona?: number;
     nombre: string;
@@ -15,6 +16,7 @@ export class PersonaModel {
     descripcionPerfil?: string;
     entidadUsuario?: UsuarioModel;
     listEmpresaPorUsuario?: EmpresaPorUsuarioModel[];
+    listPlantaProUsuario?: PlantaPorUsuarioModel[];
     listSubTipoExplosionPorUsuario?: SubTipoExplotacionPorUsuarioModel[];
     listAprobarSubTipoExplosionPorUsuario?: AprobarSubTipoExplotacionPorUsuarioModel[];
 
@@ -34,6 +36,7 @@ export class PersonaModel {
         this.flgActivo = true;
         this.descripcionPerfil = '';
         this.listEmpresaPorUsuario = [];
+        this.listPlantaProUsuario = [];
         this.listSubTipoExplosionPorUsuario = [];
         this.listAprobarSubTipoExplosionPorUsuario = [];
         this.regUsuario = 0;

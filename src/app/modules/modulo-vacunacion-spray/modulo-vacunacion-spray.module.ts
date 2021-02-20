@@ -16,6 +16,9 @@ import { VacunaCreateComponent } from './components/panel-vacuna/vacuna-create/v
 import { PanelVacunacionSprayComponent } from './components/panel-vacunacion-spray/panel-vacunacion-spray.component';
 import { VacunacionSprayCreateComponent } from './components/panel-vacunacion-spray/vacunacion-spray-create/vacunacion-spray-create.component';
 import { VacunacionSprayUpdateComponent } from './components/panel-vacunacion-spray/vacunacion-spray-update/vacunacion-spray-update.component';
+import { PanelVacunacionSprayOfflineComponent } from './components/panel-vacunacion-spray-offline/panel-vacunacion-spray-offline.component';
+import { VacunacionSprayCreateOfflineComponent } from './components/panel-vacunacion-spray-offline/vacunacion-spray-create-offline/vacunacion-spray-create-offline.component';
+import { VacunacionSprayUpdateOfflineComponent } from './components/panel-vacunacion-spray-offline/vacunacion-spray-update-offline/vacunacion-spray-update-offline.component';
 
 @NgModule({
     declarations: [PanelBoquillaComponent,
@@ -28,7 +31,10 @@ import { VacunacionSprayUpdateComponent } from './components/panel-vacunacion-sp
         VacunaCreateComponent,
         PanelVacunacionSprayComponent,
         VacunacionSprayCreateComponent,
-        VacunacionSprayUpdateComponent],
+        VacunacionSprayUpdateComponent,
+        PanelVacunacionSprayOfflineComponent,
+        VacunacionSprayCreateOfflineComponent,
+        VacunacionSprayUpdateOfflineComponent],
     imports: [ CommonModule, FormsModule, ReactiveFormsModule, VacunacionSprayRoutingModule, VacunacionSprayPrimeNgModule, GaleriaImagenModule, FirmaDigitalModule ],
     exports: [],
     providers: [],

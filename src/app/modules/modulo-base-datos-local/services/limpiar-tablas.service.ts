@@ -12,6 +12,8 @@ export class LimpiarTablasService {
   public depurarTablas() {
     this.limpiarTablaRegistroEquipo(ConstantesTablasIDB._TABLA_TXREGISTROEQUIPO, 'id');
     this.limpiarTablaRegistroEquipo(ConstantesTablasIDB._TABLA_TXEXAMENFISICOPOLLITO, 'id');
+    this.limpiarTablaRegistroEquipo(ConstantesTablasIDB._TABLA_TXVACUNACIONSPRAY, 'id');
+    this.limpiarTablaRegistroEquipo(ConstantesTablasIDB._TABLA_TXVACUNACIONSUBCUTANEA, 'id');
   }
 
   private limpiarTablaRegistroEquipo(tabla: string, campoID: string) {

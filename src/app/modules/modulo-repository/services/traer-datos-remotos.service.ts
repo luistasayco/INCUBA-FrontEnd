@@ -13,6 +13,19 @@ import { ExamenFisicoPollitoService } from '../../modulo-examen-fisico-pollito/s
 import { CalidadModel } from '../../modulo-examen-fisico-pollito/models/calidad.model';
 import { LoginService } from '../../../services/login.service';
 import { DataBaseModel } from '../../modulo-seguridad/models/data-base';
+import { VacunacionSprayService } from '../../modulo-vacunacion-spray/services/vacunacion-spray.service';
+import { VacunacionSubcutaneaService } from '../../modulo-vacunacion-subcutanea/services/vacunacion-subcutanea.service';
+import { BoquillaModel } from '../../modulo-vacunacion-spray/models/boquilla.model';
+import { VacunaModel } from '../../modulo-vacunacion-spray/models/vacuna.model';
+import { ProcesoSprayModel } from '../../modulo-vacunacion-spray/models/proceso-spray.model';
+import { ProcesoDetalleSprayModel } from '../../modulo-vacunacion-spray/models/proceso-detalle-spray.model';
+import { AgujaModel } from '../../modulo-vacunacion-subcutanea/models/aguja.model';
+import { IndiceEficienciaModel } from '../../modulo-vacunacion-subcutanea/models/indice-eficiencia.model';
+import { IrregularidadModel } from '../../modulo-vacunacion-subcutanea/models/irregularidad.model';
+import { ProcesoSubCutaneaModel } from '../../modulo-vacunacion-subcutanea/models/proceso-subcutanea.model';
+import { ProcesoDetalleSubCutaneaModel } from '../../modulo-vacunacion-subcutanea/models/proceso-detalle-subcutanea';
+import { TxVacunacionSprayModel } from '../../modulo-vacunacion-spray/models/tx-vacunacion-spray.model';
+import { TxVacunacionSubCutaneaModel } from '../../modulo-vacunacion-subcutanea/models/tx-vacunacion-subcutanea.model';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +45,9 @@ export class TraerDatosRemotosService {
               private registroEquipoService: RegistroEquipoService,
               private seguridadService: SeguridadService,
               private examenFisicoPollitoService: ExamenFisicoPollitoService,
-              private loginService: LoginService) { }
+              private loginService: LoginService,
+              private vacunacionSprayService: VacunacionSprayService,
+              private vacunacionSubcutaneaService: VacunacionSubcutaneaService) { }
 
   private iniciarTablas() {
     this.tablasCompletas = {
@@ -46,14 +61,25 @@ export class TraerDatosRemotosService {
       tablaMstRepuestoPorModelo: false,
       tablaMstCalidad: false,
       tablaTrxExamenFisicoPollitoDetalle: false,
-      tablaMsSociedades: false
+      tablaMsSociedades: false,
+      tablaMstBoquilla: false,
+      tablaMstVacuna: false,
+      tablaMstProcesoSpray: false,
+      tablaMstProcesoDetalleSpray: false,
+      tablaMstAguja: false,
+      tablaMstIndiceEficiencia: false,
+      tablaMstIrregularidad: false,
+      tablaMstProcesoSubCutanea: false,
+      tablaMstProcesoDetalleSubCutanea: false,
+      tablaTrxVacunacionSprayNew: false,
+      tablaTrxVacunacionSubCutaneaNew: false
     };
   }
 
   private informacionDelProceso(descripcion: string, objeto?: any) {
     // return; // DESCOMENTAR PARA PRUEBAS
     const hora = new Date();
-    // console.log('[' + hora.toString() + ']' + ' ' + descripcion, objeto ? objeto : '');
+    console.log('[' + hora.toString() + ']' + ' ' + descripcion, objeto ? objeto : '');
   }
 
   private procesoFinalizado(nameProcedimiento: string) {
@@ -108,6 +134,22 @@ export class TraerDatosRemotosService {
     // Plantilla para el registro del examen fisico del pollito
     this.getExamenFisicoPollitoDetalle('getExamenFisicoPollitoDetalle', 'ExamenFisicoPollitoDetalle');
 
+    // Modulo Vacunacion de Spray
+
+    this.getBoquilla('getBoquilla', 'Boquilla');
+    this.geVacuna('getVacuna', 'Vacuna');
+    this.getProcesoSpray('getProcesoSpray', 'ProcesoSpray');
+    this.getProcesoDetalleSpray('getProcesoDetalleSpray', 'ProcesoDetalleSpray');
+
+    // Modulo Vacunacion Subcutanea
+    this.getAguja('getAguja', 'Aguja');
+    this.geIndiceEficiencia('getIndiceEficiencia', 'IndiceEficiencia');
+    this.getIrregularidad('getIrregularidad', 'Irregularidad');
+    this.getProcesoSubCutanea('getProcesoSubCutanea', 'ProcesoSubCutanea');
+    this.getProcesoDetalleSubCutanea('getProcesoDetalleSubCutanea', 'ProcesoDetalleSubCutanea');
+    this.getTrxVacunacionSprayNew('getTrxVacunacionSprayNew', 'TrxVacunacionSprayNew');
+    this.getTrxVacunacionSubCutaneaNew('getTrxVacunacionSubCutaneaNew', 'TrxVacunacionSubCutaneaNew');
+
   }
 
   private getSociedades(nameProcedimiento: string, etiqueta: string) {
@@ -146,7 +188,7 @@ export class TraerDatosRemotosService {
 
   private getPlantaPorEmpresa(nameProcedimiento: string, etiqueta: string) {
     this.informacionDelProceso(`Inicio de ${nameProcedimiento}`);
-    this.compartidoService.getPlantaPorEmpresa()
+    this.seguridadService.getPlantaConAccesoPorUsuario()
     .subscribe(
         result => {
           this.createDataIndexDB( ConstantesTablasIDB._TABLA_MSTPLANTA, result, etiqueta);
@@ -264,6 +306,171 @@ export class TraerDatosRemotosService {
     );
   }
 
+  private getBoquilla(nameProcedimiento: string, etiqueta: string) {
+    this.listEmpresa = [];
+    this.informacionDelProceso(`Inicio de ${nameProcedimiento}`);
+    let modelo : BoquillaModel = new BoquillaModel();
+    this.vacunacionSprayService.getBoquilla(modelo)
+    .subscribe(
+        result => {
+          this.createDataIndexDB( ConstantesTablasIDB._TABLA_MSBOQUILLA, result, etiqueta);
+          this.procesoFinalizado(nameProcedimiento);
+          this.tablasCompletas.tablaMstBoquilla = true;
+          this.emitDatosCargados();
+        }
+    );
+  }
+
+  private geVacuna(nameProcedimiento: string, etiqueta: string) {
+    this.listEmpresa = [];
+    this.informacionDelProceso(`Inicio de ${nameProcedimiento}`);
+    let modelo : VacunaModel = new VacunaModel();
+    this.vacunacionSprayService.getVacuna(modelo)
+    .subscribe(
+        result => {
+          this.createDataIndexDB( ConstantesTablasIDB._TABLA_MSVACUNA, result, etiqueta);
+          this.procesoFinalizado(nameProcedimiento);
+          this.tablasCompletas.tablaMstVacuna = true;
+          this.emitDatosCargados();
+        }
+    );
+  }
+
+  private getProcesoSpray(nameProcedimiento: string, etiqueta: string) {
+    this.listEmpresa = [];
+    this.informacionDelProceso(`Inicio de ${nameProcedimiento}`);
+    let modelo : ProcesoSprayModel = new ProcesoSprayModel();
+    this.vacunacionSprayService.getProcesoSpray(modelo)
+    .subscribe(
+        result => {
+          this.createDataIndexDB( ConstantesTablasIDB._TABLA_MSPROCESOSPRAY, result, etiqueta);
+          this.procesoFinalizado(nameProcedimiento);
+          this.tablasCompletas.tablaMstProcesoSpray = true;
+          this.emitDatosCargados();
+        }
+    );
+  }
+
+  private getProcesoDetalleSpray(nameProcedimiento: string, etiqueta: string) {
+    this.listEmpresa = [];
+    this.informacionDelProceso(`Inicio de ${nameProcedimiento}`);
+    let modelo : ProcesoDetalleSprayModel = new ProcesoDetalleSprayModel();
+    this.vacunacionSprayService.getProcesoDetalleSpray(modelo)
+    .subscribe(
+        result => {
+          this.createDataIndexDB( ConstantesTablasIDB._TABLA_MSPROCESODETALLESPRAY, result, etiqueta);
+          this.procesoFinalizado(nameProcedimiento);
+          this.tablasCompletas.tablaMstProcesoDetalleSpray = true;
+          this.emitDatosCargados();
+        }
+    );
+  }
+
+  private getAguja(nameProcedimiento: string, etiqueta: string) {
+    this.listEmpresa = [];
+    this.informacionDelProceso(`Inicio de ${nameProcedimiento}`);
+    let modelo : AgujaModel = new AgujaModel();
+    this.vacunacionSubcutaneaService.getAguja(modelo)
+    .subscribe(
+        result => {
+          this.createDataIndexDB( ConstantesTablasIDB._TABLA_MSAGUJA, result, etiqueta);
+          this.procesoFinalizado(nameProcedimiento);
+          this.tablasCompletas.tablaMstAguja = true;
+          this.emitDatosCargados();
+        }
+    );
+  }
+
+  private geIndiceEficiencia(nameProcedimiento: string, etiqueta: string) {
+    this.listEmpresa = [];
+    this.informacionDelProceso(`Inicio de ${nameProcedimiento}`);
+    let modelo : IndiceEficienciaModel = new IndiceEficienciaModel();
+    this.vacunacionSubcutaneaService.getIndiceEficiencia(modelo)
+    .subscribe(
+        result => {
+          this.createDataIndexDB( ConstantesTablasIDB._TABLA_MSINDICEEFICIENCIA, result, etiqueta);
+          this.procesoFinalizado(nameProcedimiento);
+          this.tablasCompletas.tablaMstIndiceEficiencia = true;
+          this.emitDatosCargados();
+        }
+    );
+  }
+
+  private getIrregularidad(nameProcedimiento: string, etiqueta: string) {
+    this.listEmpresa = [];
+    this.informacionDelProceso(`Inicio de ${nameProcedimiento}`);
+    let modelo : IrregularidadModel = new IrregularidadModel();
+    this.vacunacionSubcutaneaService.getIrregularidad(modelo)
+    .subscribe(
+        result => {
+          this.createDataIndexDB( ConstantesTablasIDB._TABLA_MSIRREGULARIDAD, result, etiqueta);
+          this.procesoFinalizado(nameProcedimiento);
+          this.tablasCompletas.tablaMstIrregularidad = true;
+          this.emitDatosCargados();
+        }
+    );
+  }
+
+  private getProcesoSubCutanea(nameProcedimiento: string, etiqueta: string) {
+    this.listEmpresa = [];
+    this.informacionDelProceso(`Inicio de ${nameProcedimiento}`);
+    let modelo : ProcesoSubCutaneaModel = new ProcesoSubCutaneaModel();
+    this.vacunacionSubcutaneaService.getProcesoSubCutanea(modelo)
+    .subscribe(
+        result => {
+          this.createDataIndexDB( ConstantesTablasIDB._TABLA_MSPROCESOSUBCUTANEA, result, etiqueta);
+          this.procesoFinalizado(nameProcedimiento);
+          this.tablasCompletas.tablaMstProcesoSubCutanea = true;
+          this.emitDatosCargados();
+        }
+    );
+  }
+
+  private getProcesoDetalleSubCutanea(nameProcedimiento: string, etiqueta: string) {
+    this.listEmpresa = [];
+    this.informacionDelProceso(`Inicio de ${nameProcedimiento}`);
+    let modelo : ProcesoDetalleSubCutaneaModel = new ProcesoDetalleSubCutaneaModel();
+    this.vacunacionSubcutaneaService.getProcesoDetalleSubCutanea(modelo)
+    .subscribe(
+        result => {
+          this.createDataIndexDB( ConstantesTablasIDB._TABLA_MSPROCESODETALLESUBCUTANEA, result, etiqueta);
+          this.procesoFinalizado(nameProcedimiento);
+          this.tablasCompletas.tablaMstProcesoDetalleSubCutanea = true;
+          this.emitDatosCargados();
+        }
+    );
+  }
+
+  private getTrxVacunacionSprayNew(nameProcedimiento: string, etiqueta: string) {
+    let listTrx: TxVacunacionSprayModel[] = [];
+    this.informacionDelProceso(`Inicio de ${nameProcedimiento}`);
+    this.vacunacionSprayService.getTxVacunacionSprayPorIdNew()
+    .subscribe(
+        result => {
+          listTrx.push(result);
+          this.createDataIndexDB( ConstantesTablasIDB._TABLA_TXVACUNACIONSPRAYNEW, listTrx, etiqueta);
+          this.procesoFinalizado(nameProcedimiento);
+          this.tablasCompletas.tablaTrxVacunacionSprayNew = true;
+          this.emitDatosCargados();
+        }
+    );
+  }
+
+  private getTrxVacunacionSubCutaneaNew(nameProcedimiento: string, etiqueta: string) {
+    let listTrx: TxVacunacionSubCutaneaModel[] = [];
+    this.informacionDelProceso(`Inicio de ${nameProcedimiento}`);
+    this.vacunacionSubcutaneaService.getTxVacunacionSubCutaneaPorIdNew()
+    .subscribe(
+        result => {
+          listTrx.push(result);
+          this.createDataIndexDB( ConstantesTablasIDB._TABLA_TXVACUNACIONSUBCUTANEANEW, listTrx, etiqueta);
+          this.procesoFinalizado(nameProcedimiento);
+          this.tablasCompletas.tablaTrxVacunacionSubCutaneaNew = true;
+          this.emitDatosCargados();
+        }
+    );
+  }
+
   emitDatosCargados() {
     let resultado = false;
     if (this.tablasCompletas.tablaMstEmpresa && this.tablasCompletas.tablaMstPlanta &&
@@ -274,7 +481,18 @@ export class TraerDatosRemotosService {
         this.tablasCompletas.tablaMstRepuestoPorModelo &&
         this.tablasCompletas.tablaMstCalidad &&
         this.tablasCompletas.tablaTrxExamenFisicoPollitoDetalle &&
-        this.tablasCompletas.tablaMsSociedades
+        this.tablasCompletas.tablaMsSociedades &&
+        this.tablasCompletas.tablaMstBoquilla &&
+        this.tablasCompletas.tablaMstVacuna &&
+        this.tablasCompletas.tablaMstProcesoSpray &&
+        this.tablasCompletas.tablaMstProcesoDetalleSpray &&
+        this.tablasCompletas.tablaMstAguja &&
+        this.tablasCompletas.tablaMstIndiceEficiencia &&
+        this.tablasCompletas.tablaMstIrregularidad &&
+        this.tablasCompletas.tablaMstProcesoSubCutanea &&
+        this.tablasCompletas.tablaMstProcesoDetalleSubCutanea &&
+        this.tablasCompletas.tablaTrxVacunacionSprayNew && 
+        this.tablasCompletas.tablaTrxVacunacionSubCutaneaNew
         ){
       resultado = true;
       // console.log('FIN DE LA SINCRONIZACION DE RECEPCION:', this.formatoFecha.transform(new Date(), 'dd/MM/yyyy HH:mm:ss'));

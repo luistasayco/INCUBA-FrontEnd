@@ -11,6 +11,9 @@ import { ProcesoDetalleSubcutaneaCreateComponent } from './components/panel-proc
 import { PanelVacunacionSubcutaneaComponent } from './components/panel-vacunacion-subcutanea/panel-vacunacion-subcutanea.component';
 import { VacunacionSubcutaneaCreateComponent } from './components/panel-vacunacion-subcutanea/vacunacion-subcutanea-create/vacunacion-subcutanea-create.component';
 import { VacunacionSubcutaneaUpdateComponent } from './components/panel-vacunacion-subcutanea/vacunacion-subcutanea-update/vacunacion-subcutanea-update.component';
+import { PanelVacunacionSubcutaneaOfflineComponent } from './components/panel-vacunacion-subcutanea-offline/panel-vacunacion-subcutanea-offline.component';
+import { VacunacionSubcutaneaOfflineCreateComponent } from './components/panel-vacunacion-subcutanea-offline/vacunacion-subcutanea-offline-create/vacunacion-subcutanea-offline-create.component';
+import { VacunacionSubcutaneaOfflineUpdateComponent } from './components/panel-vacunacion-subcutanea-offline/vacunacion-subcutanea-offline-update/vacunacion-subcutanea-offline-update.component';
 
 const routes: Routes = [
     { path: 'panel-aguja', component: PanelAgujaComponent },
@@ -21,9 +24,14 @@ const routes: Routes = [
     { path: 'proceso-subcutanea-create', component: ProcesoSubcutaneaCreateComponent },
     { path: 'panel-proceso-detalle-subcutanea', component: PanelProcesoDetalleSubcutaneaComponent },
     { path: 'proceso-detalle-subcutanea-create/:id', component: ProcesoDetalleSubcutaneaCreateComponent },
+    // Online
     { path: 'panel-vacunacion-subcutanea', component: PanelVacunacionSubcutaneaComponent },
     { path: 'vacunacion-subcutanea-create', component: VacunacionSubcutaneaCreateComponent },
-    { path: 'vacunacion-subcutanea-update/:id', component: VacunacionSubcutaneaUpdateComponent }
+    { path: 'vacunacion-subcutanea-update/:id', component: VacunacionSubcutaneaUpdateComponent },
+    // Offline
+    { path: 'panel-vacunacion-subcutanea-offline', component: PanelVacunacionSubcutaneaOfflineComponent },
+    { path: 'vacunacion-subcutanea-offline-create', component: VacunacionSubcutaneaOfflineCreateComponent },
+    { path: 'vacunacion-subcutanea-offline-update/:id', component: VacunacionSubcutaneaOfflineUpdateComponent }
 ];
 
 @NgModule({

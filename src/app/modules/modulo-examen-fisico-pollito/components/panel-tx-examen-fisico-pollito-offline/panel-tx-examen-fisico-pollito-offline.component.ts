@@ -78,6 +78,7 @@ export class PanelTxExamenFisicoPollitoOfflineComponent implements OnInit, OnDes
     });
 
     this.onListar();
+    this.onUpdateDataVistaUsuario();
   }
 
   ngOnDestroy(): void {

@@ -189,6 +189,153 @@ export const estructuraBD = {
           { name: 'IdDataBase', keypath: 'IdDataBase', options: { unique:true } },
           { name: 'DescripcionDataBase', keypath: 'DescripcionDataBase', options: { unique: false } }
         ]
+      },
+      {
+        store: ConstantesTablasIDB._TABLA_MSBOQUILLA,
+        storeConfig: { keyPath: 'id', autoIncrement: true },
+        storeSchema: [
+          { name: 'idBoquilla', keypath: 'idBoquilla', options: { unique:true } },
+          { name: 'descripcionBoquilla', keypath: 'descripcionBoquilla', options: { unique: false } }
+        ]
+      },
+      {
+        store: ConstantesTablasIDB._TABLA_MSPROCESOSPRAY,
+        storeConfig: { keyPath: 'id', autoIncrement: true },
+        storeSchema: [
+          { name: 'idProcesoSpray', keypath: 'idProcesoSpray', options: { unique:true } },
+          { name: 'descripcionProcesoSpray', keypath: 'descripcionProcesoSpray', options: { unique: false } },
+          { name: 'valor', keypath: 'valor', options: { unique: false } },
+          { name: 'idProcesoAgrupador', keypath: 'idProcesoAgrupador', options: { unique: false } }
+        ]
+      },
+      {
+        store: ConstantesTablasIDB._TABLA_MSPROCESODETALLESPRAY,
+        storeConfig: { keyPath: 'id', autoIncrement: true },
+        storeSchema: [
+          { name: 'idProcesoDetalleSpray', keypath: 'idProcesoDetalleSpray', options: { unique:true } },
+          { name: 'idProcesoSpray', keypath: 'idProcesoSpray', options: { unique: false } },
+          { name: 'descripcionProcesoSpray', keypath: 'descripcionProcesoSpray', options: { unique: false } },
+          { name: 'valor', keypath: 'valor', options: { unique: false } }
+        ]
+      },
+      {
+        store: ConstantesTablasIDB._TABLA_MSVACUNA,
+        storeConfig: { keyPath: 'id', autoIncrement: true },
+        storeSchema: [
+          { name: 'idVacuna', keypath: 'idVacuna', options: { unique:true } },
+          { name: 'descripcionVacuna', keypath: 'descripcionVacuna', options: { unique: false } }
+        ]
+      },
+      {
+        store: ConstantesTablasIDB._TABLA_TXVACUNACIONSPRAY,
+        storeConfig: { keyPath: 'id', autoIncrement: true },
+        storeSchema: [
+          { name: 'idVacunacionSpray', keypath: 'idVacunacionSpray', options: { unique:false } },
+          { name: 'codigoEmpresa', keypath: 'codigoEmpresa', options: { unique: false } },
+          { name: 'descripcionEmpresa', keypath: 'descripcionEmpresa', options: { unique: false } },
+          { name: 'codigoPlanta', keypath: 'codigoPlanta', options: { unique: false } },
+          { name: 'descripcionPlanta', keypath: 'descripcionPlanta', options: { unique: false } },
+          { name: 'unidad', keypath: 'unidad', options: { unique: false } },
+          { name: 'fecRegistro', keypath: 'fecRegistro', options: { unique: false } },
+          { name: 'fecHoraRegistro', keypath: 'fecHoraRegistro', options: { unique: false } },
+          { name: 'responsableInvetsa', keypath: 'responsableInvetsa', options: { unique: false } },
+          { name: 'responsableIncubadora', keypath: 'responsableIncubadora', options: { unique: false } },
+          { name: 'observacionInvetsa', keypath: 'observacionInvetsa', options: { unique: false } },
+          { name: 'observacionPlanta', keypath: 'observacionPlanta', options: { unique: false } },
+          { name: 'observacionOtros', keypath: 'observacionOtros', options: { unique: false } },
+          { name: 'promedioPollos', keypath: 'promedioPollos', options: { unique: false } },
+          { name: 'responsablePlanta', keypath: 'responsablePlanta', options: { unique: false } },
+          { name: 'firmaInvetsa', keypath: 'firmaInvetsa', options: { unique: false } },
+          { name: 'firmaPlanta', keypath: 'firmaPlanta', options: { unique: false } },
+          { name: 'flgCerrado', keypath: 'flgCerrado', options: { unique: false } },
+          { name: 'idUsuarioCierre', keypath: 'idUsuarioCierre', options: { unique: false } },
+          { name: 'fecCierre', keypath: 'fecCierre', options: { unique: false } },
+          { name: 'emailFrom', keypath: 'emailFrom', options: { unique: false } },
+          { name: 'emailTo', keypath: 'emailTo', options: { unique: false } },
+          { name: 'nombreArchivo', keypath: 'nombreArchivo', options: { unique: false } },
+          { name: 'usuarioCierre', keypath: 'usuarioCierre', options: { unique: false } },
+          { name: 'usuarioCreacion', keypath: 'usuarioCreacion', options: { unique: false } },
+          { name: 'listarTxVacunacionSprayDetalle', keypath: 'listarTxVacunacionSprayDetalle', options: { unique: false } },
+          { name: 'listarTxVacunacionSprayFotos', keypath: 'listarTxVacunacionSprayFotos', options: { unique: false } },
+          { name: 'listarTxVacunacionSprayMaquina', keypath: 'listarTxVacunacionSprayMaquina', options: { unique: false } },
+          { name: 'listarTxVacunacionSprayVacuna', keypath: 'listarTxVacunacionSprayVacuna', options: { unique: false } },
+          { name: 'listarTxVacunacionSprayResultado', keypath: 'listarTxVacunacionSprayResultado', options: { unique: false } }
+        ]
+      },
+      {
+        store: ConstantesTablasIDB._TABLA_MSAGUJA,
+        storeConfig: { keyPath: 'id', autoIncrement: true },
+        storeSchema: [
+          { name: 'idAguja', keypath: 'idAguja', options: { unique:true } },
+          { name: 'descripcionAguja', keypath: 'descripcionAguja', options: { unique: false } }
+        ]
+      },
+      {
+        store: ConstantesTablasIDB._TABLA_MSINDICEEFICIENCIA,
+        storeConfig: { keyPath: 'id', autoIncrement: true },
+        storeSchema: [
+          { name: 'idIndiceEficiencia', keypath: 'idIndiceEficiencia', options: { unique:true } },
+          { name: 'descripcionIndiceEficiencia', keypath: 'descripcionIndiceEficiencia', options: { unique: false } },
+          { name: 'rangoInicial', keypath: 'rangoInicial', options: { unique: false } },
+          { name: 'rangoFinal', keypath: 'rangoFinal', options: { unique: false } },
+          { name: 'puntaje', keypath: 'puntaje', options: { unique: false } }
+        ]
+      },
+      {
+        store: ConstantesTablasIDB._TABLA_MSIRREGULARIDAD,
+        storeConfig: { keyPath: 'id', autoIncrement: true },
+        storeSchema: [
+          { name: 'idIrregularidad', keypath: 'idIrregularidad', options: { unique:true } },
+          { name: 'descripcionIrregularidad', keypath: 'descripcionIrregularidad', options: { unique: false } },
+          { name: 'valor', keypath: 'valor', options: { unique: false } }
+        ]
+      },
+      {
+        store: ConstantesTablasIDB._TABLA_MSPROCESOSUBCUTANEA,
+        storeConfig: { keyPath: 'id', autoIncrement: true },
+        storeSchema: [
+          { name: 'idProcesoSubCutanea', keypath: 'idProcesoSubCutanea', options: { unique:true } },
+          { name: 'descripcionProcesoSubCutanea', keypath: 'descripcionProcesoSubCutanea', options: { unique: false } },
+          { name: 'valor', keypath: 'valor', options: { unique: false } },
+          { name: 'idProcesoAgrupador', keypath: 'idProcesoAgrupador', options: { unique: false } }
+        ]
+      },
+      {
+        store: ConstantesTablasIDB._TABLA_MSPROCESODETALLESUBCUTANEA,
+        storeConfig: { keyPath: 'id', autoIncrement: true },
+        storeSchema: [
+          { name: 'idProcesoDetalleSubCutanea', keypath: 'idProcesoDetalleSubCutanea', options: { unique:true } },
+          { name: 'idProcesoSubCutanea', keypath: 'idProcesoSubCutanea', options: { unique: false } },
+          { name: 'descripcionProcesoSubCutanea', keypath: 'descripcionProcesoSubCutanea', options: { unique: false } },
+          { name: 'valor', keypath: 'valor', options: { unique: false } }
+        ]
+      },
+      {
+        store: ConstantesTablasIDB._TABLA_TXVACUNACIONSUBCUTANEA,
+        storeConfig: { keyPath: 'id', autoIncrement: true },
+        storeSchema: [
+          { name: 'idVacunacionSubCutanea', keypath: 'idVacunacionSubCutanea', options: { unique:false } },
+          { name: 'codigoEmpresa', keypath: 'codigoEmpresa', options: { unique: false } },
+          { name: 'codigoPlanta', keypath: 'codigoPlanta', options: { unique: false } }
+        ]
+      },
+      {
+        store: ConstantesTablasIDB._TABLA_TXVACUNACIONSUBCUTANEANEW,
+        storeConfig: { keyPath: 'id', autoIncrement: true },
+        storeSchema: [
+          { name: 'idVacunacionSubCutanea', keypath: 'idVacunacionSubCutanea', options: { unique:false } },
+          { name: 'codigoEmpresa', keypath: 'codigoEmpresa', options: { unique: false } },
+          { name: 'codigoPlanta', keypath: 'codigoPlanta', options: { unique: false } }
+        ]
+      },
+      {
+        store: ConstantesTablasIDB._TABLA_TXVACUNACIONSPRAYNEW,
+        storeConfig: { keyPath: 'id', autoIncrement: true },
+        storeSchema: [
+          { name: 'idVacunacionSpray', keypath: 'idVacunacionSpray', options: { unique:false } },
+          { name: 'codigoEmpresa', keypath: 'codigoEmpresa', options: { unique: false } },
+          { name: 'codigoPlanta', keypath: 'codigoPlanta', options: { unique: false } }
+        ]
       }
     ]
 }

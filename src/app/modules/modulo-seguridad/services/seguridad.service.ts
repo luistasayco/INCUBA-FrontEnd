@@ -14,6 +14,7 @@ import { ParametroSistemaModel } from '../models/parametro-sistema.model';
 import { ParametroConexionModel } from '../models/parametro-conexion.model';
 import { AprobarSubTipoExplotacionPorUsuarioModel } from '../models/aprobar-sub-tipo-explotacion-por-usuario';
 import { UsuarioModel } from '../models/usuario.model';
+import { PlantaPorUsuarioModel } from '../models/planta-por-usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -231,6 +232,32 @@ export class SeguridadService {
 
     return this.http.get<EmpresaPorUsuarioModel[]>
     (`${environment.url_api_seguridad}EmpresaPorUsuario/GetEmpresaConAccesoPorUsuario/`, { params: parametros });
+  }
+
+  getPlantaSinAccesoPorUsuario(idUsuario: number) {
+    let parametros = new HttpParams();
+    parametros = parametros.append('idUsuario', idUsuario.toString());
+
+    return this.http.get<PlantaPorUsuarioModel[]>
+    (`${environment.url_api_seguridad}PlantaPorUsuario/GetPlantaSinAccesoPorUsuario/`, { params: parametros });
+  }
+
+  getPlantaConAccesoPorUsuarioPorEmpresa(codigoEmpresa: string) {
+    let idUsuario = this.userContextService.getIdUsuario();
+    let parametros = new HttpParams();
+    parametros = parametros.append('idUsuario', idUsuario.toString());
+    parametros = parametros.append('codigoEmpresa', codigoEmpresa);
+    return this.http.get<PlantaPorUsuarioModel[]>
+    (`${environment.url_api_seguridad}PlantaPorUsuario/GetPlantaConAccesoPorUsuario/`, { params: parametros });
+  }
+
+  getPlantaConAccesoPorUsuario() {
+    let idUsuario = this.userContextService.getIdUsuario();
+    let parametros = new HttpParams();
+    parametros = parametros.append('idUsuario', idUsuario.toString());
+
+    return this.http.get<PlantaPorUsuarioModel[]>
+    (`${environment.url_api_seguridad}PlantaPorUsuario/GetPlantaConAccesoPorUsuario/`, { params: parametros });
   }
 
   getSubTipoExplotacionSinAccesoPorUsuario(idUsuario: number) {

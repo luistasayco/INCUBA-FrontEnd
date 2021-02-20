@@ -17,6 +17,7 @@ import { EmpresaPorUsuarioModel } from '../../../../modulo-seguridad/models/empr
 import { UserContextService } from '../../../../../services/user-context.service';
 import { UtilService } from '../../../../modulo-compartido/services/util.service';
 import { RepuestoPorModeloModel } from '../../../models/repuesto-por-modelo.model';
+import { PlantaPorUsuarioModel } from '../../../../modulo-seguridad/models/planta-por-usuario';
 
 @Component({
   selector: 'app-registro-equipo-create',
@@ -176,13 +177,12 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
   }
 
   getToObtienePlantaPorEmpresa(value: string) {
-    this.modeloPlanta.codigoEmpresa = value;
     this.subscription$ = new Subscription();
-    this.subscription$ = this.compartidoService.getPlantaPorEmpresa(this.modeloPlanta)
-    .subscribe((data: PlantaModel[]) => {
+    this.subscription$ = this.seguridadService.getPlantaConAccesoPorUsuarioPorEmpresa(value)
+    .subscribe((data: PlantaPorUsuarioModel[]) => {
       this.listItemPlanta = [];
       for (let item of data) {
-        this.listItemPlanta.push({ label: item.descripcion, value: item.codigoPlanta });
+        this.listItemPlanta.push({ label: item.descripcionPlanta, value: item.codigoPlanta });
       }
     });
   }

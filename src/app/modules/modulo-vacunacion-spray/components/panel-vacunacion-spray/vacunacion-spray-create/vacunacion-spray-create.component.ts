@@ -25,6 +25,7 @@ import { EquipoPorModeloModel } from '../../../../modulo-registro-equipo/models/
 import { TxVacunacionSprayMaquinaModel } from '../../../models/tx-vacunacion-spray-maquina.model';
 import { TxVacunacionSprayDetalleModel } from '../../../models/tx-vacunacion-spray-detalle.model';
 import { map } from 'rxjs/operators';
+import { PlantaPorUsuarioModel } from '../../../../modulo-seguridad/models/planta-por-usuario';
 
 @Component({
   selector: 'app-vacunacion-spray-create',
@@ -176,14 +177,12 @@ export class VacunacionSprayCreateComponent implements OnInit, OnDestroy{
   }
 
   getToObtienePlantaPorEmpresa(value: string) {
-    let modeloPlanta = new PlantaModel();
-    modeloPlanta.codigoEmpresa = value;
     this.subscription$ = new Subscription();
-    this.subscription$ = this.compartidoService.getPlantaPorEmpresa(modeloPlanta)
-    .subscribe((data: PlantaModel[]) => {
+    this.subscription$ = this.seguridadService.getPlantaConAccesoPorUsuarioPorEmpresa(value)
+    .subscribe((data: PlantaPorUsuarioModel[]) => {
       this.listItemPlanta = [];
       for (let item of data) {
-        this.listItemPlanta.push({ label: item.descripcion, value: item.codigoPlanta });
+        this.listItemPlanta.push({ label: item.descripcionPlanta, value: item.codigoPlanta });
       }
     });
   }
