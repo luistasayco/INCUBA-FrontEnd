@@ -303,7 +303,7 @@ export function migrationFactory() {
 
 const dbConfig: DBConfig  = {
     name: 'DBINVETSA',
-    version: 1,
+    version: 2,
     objectStoresMeta: estructuraBD.BASE_DE_DATOS, migrationFactory
   };
 

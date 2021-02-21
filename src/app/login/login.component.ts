@@ -18,6 +18,7 @@ import { FunctionDBLocalService } from '../modules/modulo-base-datos-local/servi
 import { ConstantesTablasIDB } from '../constants/constantes-tablas-indexdb';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
 import { CifrarDataService } from '../services/cifrar-data.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -40,6 +41,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   subscripcion: Subscription;
 
   displayValida: boolean;
+  versionSistema: string;
 
   constructor(private readonly loginService: LoginService,
               private readonly router: Router,
@@ -60,7 +62,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.modeloLogin = new LoginModel();
     this.iniciarObservableEstadoInternet();
     this.instanciarFormulario();
-
+    this.versionSistema = environment.versionSistema;
     
   }
 

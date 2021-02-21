@@ -32,6 +32,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
 import { LoginModule } from './login/login.module';
+import { ToastrModule } from 'ngx-toastr';
 
 registerLocaleData(localePy, 'es');
 
@@ -60,6 +61,7 @@ registerLocaleData(localePy, 'es');
     ModuloEstadoInternetModule,
     ModuloBaseDatosLocalModule,
     LoginModule,
+    ToastrModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [ DatePipe,
