@@ -5,11 +5,16 @@
         <div class="ui-grid ui-fluid">
 
             <div *ngFor="let item of listModelo" [ngClass]="[item.mimeType === 'application/vnd.google-apps.folder' ? 'ui-g-12 ui-md-4': 'ui-g-12 ui-md-12']">
-                <p-card styleClass="ui-card-shadow">
+                <p-card>
                     <div style="text-align: center;">
                         <button *ngIf="item.mimeType === 'application/vnd.google-apps.folder'" icon="fa fa-folder" pButton type="button" label="{{item.names}}" class="ui-button-secondary ui-button-block" (click)="onListarChildern(item)"></button>
 
-                        <button *ngIf="item.mimeType !== 'application/vnd.google-apps.folder'" icon="fa fa-file" pButton type="button" label="{{item.names}}" class="ui-button-secondary ui-button-block" (click)="onListarChildern(item)"></button>
+                        <div *ngIf="item.mimeType !== 'application/vnd.google-apps.folder'" class="ui-inputgroup">
+                            <button [disabled]="buttonAcces.btnDownload" pButton type="button" icon="{{globalConstants.icoDownload}}" pTooltip="Descargar" tooltipPosition="top" (click)="onListarChildern(item)"></button>
+                            <textarea [(ngModel)]="item.names" pInputTextarea autoResize="autoResize" disabled></textarea>
+                            <button [disabled]="buttonAcces.btnVisualizar" pButton type="button" icon="{{globalConstants.icoVisualizar}}" class="ui-button-warning" pTooltip="Visualizar" tooltipPosition="top" (click)="onToVisualizar(item)"></button>
+                        </div>
+
                     </div>
                 </p-card>
             </div>
@@ -19,7 +24,18 @@
 
 <p-dialog header="Descarga" [(visible)]="displayDescarga" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
 
-    Realizando la descarga del PDF del registro seleccionado...!!!
+    Realizando la descarga del registro seleccionado...!!!
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>
+        </div>
+    </div>
+
+</p-dialog>
+
+<p-dialog header="Visualizar" [(visible)]="displayVisualizar" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+
+    Generando enlace de visualizacion del registro seleccionado...!!!
     <div class="ui-g ui-fluid">
         <div class="ui-g-12">
             <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>

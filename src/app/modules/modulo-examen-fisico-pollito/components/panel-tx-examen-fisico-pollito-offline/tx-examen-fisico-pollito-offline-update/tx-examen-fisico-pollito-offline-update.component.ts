@@ -35,7 +35,7 @@ export class TxExamenFisicoPollitoOfflineUpdateComponent implements OnInit, OnDe
   // Lista de imagenes
   listIma: any[];
   cloneListImagen: TxExamenFisicoPollitoDetalleFotosModel[] = [];
-
+  displayControles: boolean;
   constructor(public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService,
               private examenFisicoPollitoLocalService: ExamenFisicoPollitoLocalService,
@@ -101,6 +101,10 @@ export class TxExamenFisicoPollitoOfflineUpdateComponent implements OnInit, OnDe
     });
   }
 
+  goDisplayControles() {
+    this.displayControles = ! this.displayControles;
+  }
+  
   onGrabar() {
 
     this.modeloItem.listDetalleNew

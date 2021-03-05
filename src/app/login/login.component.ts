@@ -161,6 +161,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     if (usuOffline === usuLocal && claveOffline === claveLocal) {
       this.router.navigate(['/main/dashboard']);
+    } else {
+      this.mensajePrimeNgService.onToInfoMsg(null, 'Credenciales incorrectos.');
     }
   }
 

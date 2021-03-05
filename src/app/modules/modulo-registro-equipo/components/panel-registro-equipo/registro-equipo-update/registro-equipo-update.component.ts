@@ -63,7 +63,7 @@ export class RegistroEquipoUpdateComponent implements OnInit, OnDestroy {
   cloneListImagen: TxRegistroEquipoDetalle7Model[] = [];
 
   displaySave: boolean;
-
+  displayControles: boolean;
   constructor(private registroEquipoService: RegistroEquipoService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private router: Router,
@@ -222,5 +222,9 @@ export class RegistroEquipoUpdateComponent implements OnInit, OnDestroy {
     if (this.subscription$) {
       this.subscription$.unsubscribe();
     }
+  }
+
+  goDisplayControles() {
+    this.displayControles = ! this.displayControles;
   }
 }

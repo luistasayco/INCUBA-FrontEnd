@@ -231,4 +231,9 @@ export class ExtranetService {
     return this.http.get<GoogleDriveFilesModel[]>
     (`${environment.url_api}TxRegistroDocumento/GetGoogleDriveFilesPorId/${id}`);
   }
+
+  getGetUrlFilePorId(id: string,permissionValue: string, userRule: string ) {
+    return this.http.get<boolean>
+    (`${environment.url_api}TxRegistroDocumento/GetUrlFilePorId/?id=${id}&permissionValue=${permissionValue}&userRule=${userRule}`);
+  }
 }

@@ -89,6 +89,8 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
 
   displaySeleccionRepuestoNoPredeterminado: boolean;
 
+  displayControles: boolean;
+
   constructor(private registroEquipoService: RegistroEquipoService,
               private compartidoService: CompartidoService,
               public mensajePrimeNgService: MensajePrimeNgService,
@@ -532,5 +534,9 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
 
   back() {
     this.router.navigate(['/main/module-re/panel-registro-equipo']);
+  }
+
+  goDisplayControles() {
+    this.displayControles = ! this.displayControles;
   }
 }

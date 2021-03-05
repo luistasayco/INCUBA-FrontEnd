@@ -39,7 +39,7 @@ export class VacunacionSubcutaneaOfflineUpdateComponent implements OnInit, OnDes
 
   listIma: any[];
   cloneListImagen: TxVacunacionSubCutaneaFotosModel[] = [];
-
+  displayControles: boolean;
   constructor(public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService,
               private vacunacionSubcutaneaLocalService: VacunacionSubcutaneaLocalService,
@@ -222,5 +222,7 @@ export class VacunacionSubcutaneaOfflineUpdateComponent implements OnInit, OnDes
   onBack() {
     this.router.navigate(['/main/module-su/panel-vacunacion-subcutanea-offline']);
   }
-
+  goDisplayControles() {
+    this.displayControles = ! this.displayControles;
+  }
 }

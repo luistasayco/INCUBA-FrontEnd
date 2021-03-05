@@ -56,8 +56,8 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
 
   subscription$: Subscription;
 
-  displaySave: boolean;s
-
+  displaySave: boolean;
+  displayControles: boolean;
   constructor(public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService,
               private examenFisicoPollitoService: ExamenFisicoPollitoService,
@@ -229,7 +229,9 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
       });
     });
   }
-
+  goDisplayControles() {
+    this.displayControles = ! this.displayControles;
+  }
   onGrabar() {
 
     if (!this.selectEmpresa) {

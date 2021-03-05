@@ -76,7 +76,7 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
   isNuveo = false;
 
   saveFiltros: any[];
-
+  displayVisualizar: boolean;
   constructor(private extranetService: ExtranetService,
               private compartidoService: CompartidoService,
               public mensajePrimeNgService: MensajePrimeNgService,
@@ -86,7 +86,8 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
               private userContextService: UserContextService,
               private menuDinamicoService: MenuDinamicoService,
               private sessionService: SessionService,
-              private seguridadService: SeguridadService ) {
+              private seguridadService: SeguridadService,
+              private router: Router ) {
     this.breadcrumbService.setItems([
         { label: 'Módulo Extranet' },
         { label: 'Registro Documentos', routerLink: ['module-ex/panel-extranet'] }
@@ -128,6 +129,7 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
       { field: 'fecRegistro', header: 'Fecha' },
       { field: 'codigoEmpresa', header: 'Empresa'},
       { field: 'codigoPlanta', header: 'Planta'},
+      { field: 'extencionArchivo', header: 'Tipo' },
       { field: 'nombreDocumento', header: 'Nombre Documento' }
     ];
 
@@ -160,6 +162,17 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
       this.onListar();
     }
   
+  }
+
+  onLimpiarFiltros() {
+    this.sessionService.removeItem('filter-ex');
+    this.modeloFind.fecInicio = new Date();
+    this.modeloFind.fecFin = new Date();
+    this.selectedEmpresa = null;
+    this.selectedTipoExplotacion = null;
+    this.selectedPlanta = null;
+    this.selectedSubTipoExplotacion = null;
+    
   }
 
   onToBuscar() {
@@ -270,6 +283,23 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
 
   onToVisualizar(data: TxRegistroDocumentoModel) {
 
+    // if (this.userContextService.getEmail() == "") {
+    //   this.mensajePrimeNgService.onToInfoMsg(null, "No se puede brindar permisos de visualizacion");
+    //   return;
+    // }
+    this.displayVisualizar = true;
+    this.subscription$ = new Subscription();
+    this.subscription$ = this.extranetService.getGetUrlFilePorId(data.idGoogleDrive, "", 'reader')
+    .subscribe((resp: boolean) => {
+      this.displayVisualizar = false;
+      // this.router.navigateByUrl(`https://drive.google.com/open?id=${data.idGoogleDrive}`);
+      window.open(`https://drive.google.com/open?id=${data.idGoogleDrive}`, '_blank');
+      },
+      (error) => {
+        this.displayVisualizar = false;
+        this.mensajePrimeNgService.onToErrorMsg(null, error);
+      }
+    );
   }
 
   onSaveData() {
@@ -433,9 +463,11 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
           break;
         case HttpEventType.Response:
           this.mensajePrimeNgService.onToInfoMsg(null, 'DESCARGA COMPLETA');
-          let file = new window.Blob([resp.body], {type: resp.body.type});
-          let fileURL = window.URL.createObjectURL(file);
-          window.open(fileURL, '_blank');
+
+          saveAs(new Blob([resp.body], {type: resp.body.type}), modelo.nombreArchivo);
+          // let file = new window.Blob([resp.body], {type: resp.body.type});
+          // let fileURL = window.URL.createObjectURL(file);
+          // window.open(fileURL, '_blank');
           this.displayDescarga = false;
           break;
       }

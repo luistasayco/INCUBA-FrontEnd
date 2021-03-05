@@ -26,8 +26,10 @@
     <p-messages [(value)]="mensajePrimeNgService.msgs"></p-messages>
 
     <p-panel header="Detalle" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
-        <p-accordion>
-            <p-accordionTab header="A .- Detalles de Mantenimiento y Funcionamiento de equipos">
+        <button pButton type="button" label="{{globalConstants.cDesplegar}}" icon="{{globalConstants.icoDesplegar}}" (click)="goDisplayControles()"></button>
+
+        <p-accordion [multiple]="true">
+            <p-accordionTab header="A .- Detalles de Mantenimiento y Funcionamiento de equipos" [selected]="displayControles">
                 <p-table [value]="modeloItem.txRegistroEquipoDetalle1" dataKey="descripcion">
                     <ng-template pTemplate="header">
                         <tr>
@@ -58,7 +60,7 @@
                 </p-table>
             </p-accordionTab>
 
-            <p-accordionTab header="B .- Check list de componentes">
+            <p-accordionTab header="B .- Check list de componentes" [selected]="displayControles">
                 <p-table [value]="modeloItem.txRegistroEquipoDetalle2" dataKey="codigoRepuesto">
                     <ng-template pTemplate="header">
                         <tr>
@@ -93,7 +95,7 @@
                 </p-table>
             </p-accordionTab>
 
-            <p-accordionTab header="C .- Requerimientos para los equipos y condiciones de limpieza">
+            <p-accordionTab header="C .- Requerimientos para los equipos y condiciones de limpieza" [selected]="displayControles">
                 <div class="ui-g dashboard">
                     <div class="ui-g-12 ui-md-6 ui-lg-6 task-list">
                         <p-panel header="Requerimientos para los Equipos">
@@ -120,7 +122,7 @@
                 </div>
             </p-accordionTab>
 
-            <p-accordionTab header="D .- Resumen de Mantenimiento">
+            <p-accordionTab header="D .- Resumen de Mantenimiento" [selected]="displayControles">
                 <p-table [value]="modeloItem.txRegistroEquipoDetalle5" [columns]="columnasDetalle5" [paginator]="true" [rows]="globalConstants.sizePage" dataKey="idRepuestoPorModelo" editMode="row" autoLayout="true" [responsive]="true">
                     <!-- Header -->
                     <ng-template pTemplate="header" let-columns>
@@ -150,7 +152,7 @@
                 </p-table>
             </p-accordionTab>
 
-            <p-accordionTab header="E .-Inventario de consumibles">
+            <p-accordionTab header="E .-Inventario de consumibles" [selected]="displayControles">
                 <p-table [value]="modeloItem.txRegistroEquipoDetalle6" [columns]="columnasDetalle6" [paginator]="true" [rows]="globalConstants.sizePage" dataKey="codigoRepuesto" editMode="row" autoLayout="true" [responsive]="true">
                     <!-- Header -->
                     <ng-template pTemplate="header" let-columns>
@@ -183,7 +185,7 @@
                 </p-table>
             </p-accordionTab>
 
-            <p-accordionTab header="F .-Inventario de repuestos">
+            <p-accordionTab header="F .-Inventario de repuestos" [selected]="displayControles">
                 <p-table [value]="modeloItem.txRegistroEquipoDetalle6Repuestos" [columns]="columnasDetalle6" [paginator]="true" [rows]="globalConstants.sizePage" dataKey="codigoRepuesto" editMode="row" autoLayout="true" [responsive]="true">
                     <!-- Header -->
                     <ng-template pTemplate="header" let-columns>
@@ -215,7 +217,7 @@
                     </ng-template>
                 </p-table>
             </p-accordionTab>
-            <p-accordionTab header="Galeria de Fotos">
+            <p-accordionTab header="Galeria de Fotos" [selected]="displayControles">
                 <div class="ui-grid ui-fluid">
                     <div class="ui-g-12">
                         <app-galeria-imagen [(carouselCars)]="listIma" (listUpdate)="listUpdate($event)"></app-galeria-imagen>

@@ -19,10 +19,13 @@
                 <label class="label-custom" for="dropdown-empresa">Empresa: </label>
                 <p-dropdown id="dropdown-empresa" class="ui dropdown-item-text" [options]="listItemEmpresa" [(ngModel)]="selectedEmpresa" placeholder="Select Compañia" optionLabel="label" [showClear]="true"></p-dropdown>
             </div>
-            <div class="ui-g-12 ui-md-6">
+            <div class="ui-g-12 ui-md-4">
+                <button pButton type="button" label="{{globalConstants.cFiltro}}" icon="{{globalConstants.icoFiltro}}" (click)="onLimpiarFiltros()" class="btn btn-block"></button>
+            </div>
+            <div class="ui-g-12 ui-md-4">
                 <button pButton type="button" label="{{globalConstants.cBuscar}}" icon="{{globalConstants.icoBuscar}}" (click)="onToBuscar()" class="btn btn-block"></button>
             </div>
-            <div class="ui-g-12 ui-md-6">
+            <div class="ui-g-12 ui-md-4">
                 <button [disabled]="buttonAcces.btnNuevo" pButton type="button" label="{{globalConstants.cNuevo}}" icon="{{globalConstants.icoNuevo}}" (click)="onToCreate()"></button>
             </div>
         </div>

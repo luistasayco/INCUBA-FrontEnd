@@ -123,6 +123,14 @@ export class PanelVacunacionSubcutaneaComponent implements OnInit, OnDestroy {
     });
   }
 
+  onLimpiarFiltros () {
+    this.sessionService.removeItem('filter-su');
+    this.modeloItem.idVacunacionSubCutanea = 0;
+    this.fecRegistroInicio = new Date();
+    this.fecRegistroFin = new Date();
+    this.selectedEmpresa = null ;
+  }
+
   onToBuscar() {
     this.onListar();
   }

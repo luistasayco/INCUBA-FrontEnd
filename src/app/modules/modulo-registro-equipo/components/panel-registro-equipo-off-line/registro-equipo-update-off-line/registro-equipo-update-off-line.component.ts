@@ -58,7 +58,7 @@ export class RegistroEquipoUpdateOffLineComponent implements OnInit, OnDestroy {
   subscription$: Subscription;
 
   listIma: any[];
-
+  displayControles: boolean;
   constructor(private registroEquipoLocalService: RegistroEquipoLocalService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private router: Router,
@@ -184,6 +184,10 @@ export class RegistroEquipoUpdateOffLineComponent implements OnInit, OnDestroy {
     });
   }
 
+  goDisplayControles() {
+    this.displayControles = ! this.displayControles;
+  }
+  
   onToGrabar() {
     this.subscription$ = new Subscription();
     this.modeloItem.flgEnModificacion = false;

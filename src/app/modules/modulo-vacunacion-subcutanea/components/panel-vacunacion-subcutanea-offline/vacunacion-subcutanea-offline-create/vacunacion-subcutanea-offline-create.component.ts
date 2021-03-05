@@ -107,7 +107,7 @@ export class VacunacionSubcutaneaOfflineCreateComponent implements OnInit, OnDes
   displayControlEficiencia: boolean;
 
   modeloclonedControlEficiencia: { [s: string]: TxVacunacionSubCutaneaControlEficienciaModel; } = {};
-
+  displayControles: boolean;
   constructor(public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService,
               private vacunacionSubcutaneaLocalService: VacunacionSubcutaneaLocalService,
@@ -837,5 +837,9 @@ export class VacunacionSubcutaneaOfflineCreateComponent implements OnInit, OnDes
 
   onBack() {
     this.router.navigate(['/main/module-su/panel-vacunacion-subcutanea-offline']);
+  }
+
+  goDisplayControles() {
+    this.displayControles = ! this.displayControles;
   }
 }

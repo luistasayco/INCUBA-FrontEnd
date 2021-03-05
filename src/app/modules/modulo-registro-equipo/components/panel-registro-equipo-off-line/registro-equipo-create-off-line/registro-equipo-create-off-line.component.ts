@@ -82,7 +82,7 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
   listRespuestoPorModelo: RepuestoPorModeloModel[];
   selectRespuestoNoPredeterminado: RepuestoPorModeloModel[];
   columnasRepuestoNoPredeterminado: any[];
-
+  displayControles: boolean;
   constructor(private registroEquipoLocalService: RegistroEquipoLocalService,
               private compartidoLocalService: CompartidoLocalService,
               public mensajePrimeNgService: MensajePrimeNgService,
@@ -496,7 +496,9 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
     }
     this.displaySeleccionRepuestoNoPredeterminado = false;
   }
-
+  goDisplayControles() {
+    this.displayControles = ! this.displayControles;
+  }
   onToGrabar() {
 
     if (this.modeloItem.firmaIncuba === '') {

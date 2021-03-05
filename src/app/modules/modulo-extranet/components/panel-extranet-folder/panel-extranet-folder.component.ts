@@ -7,6 +7,8 @@ import { ExtranetService } from '../../services/extranet.service';
 import { MensajePrimeNgService } from '../../../modulo-compartido/services/mensaje-prime-ng.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { HttpEventType } from '@angular/common/http';
+import { saveAs } from 'file-saver';
+import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
 
 @Component({
   selector: 'app-panel-extranet-folder',
@@ -31,16 +33,23 @@ export class PanelExtranetFolderComponent implements OnInit {
   typeFile: 'application/vnd.google-apps.folder';
 
   displayDescarga: boolean;
-
+  displayVisualizar: boolean;
   constructor(private extranetService: ExtranetService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private router: Router,
-              private readonly route: ActivatedRoute) { }
+              private readonly route: ActivatedRoute,
+              private menuDinamicoService: MenuDinamicoService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
       this.idGoogleDrive = params.id;
       this.onListar();
+    });
+
+    this.subscription$ = new Subscription();
+    this.subscription$ = this.menuDinamicoService.getObtieneOpciones('app-panel-extranet-folder')
+    .subscribe(acces => {
+      this.buttonAcces = acces;
     });
   }
 
@@ -80,11 +89,11 @@ export class PanelExtranetFolderComponent implements OnInit {
           break;
         case HttpEventType.Response:
           this.mensajePrimeNgService.onToInfoMsg(null, 'DESCARGA COMPLETA');
-          let file = new window.Blob([resp.body], {type: resp.body.type});
-          // saveAs(new Blob([resp], {type: 'application/pdf'}), 'Registros');
+          // let file = new window.Blob([resp.body], {type: resp.body.type});
+          saveAs(new Blob([resp.body], {type: resp.body.type}), modelo.names);
           // saveAs(new Blob([resp], {type: 'application/pdf'}), `RegistroEquipo#${modelo.idRegistroEquipo.toString()}`);
-          let fileURL = window.URL.createObjectURL(file);
-          window.open(fileURL, '_blank');
+          // let fileURL = window.URL.createObjectURL(file);
+          // window.open(fileURL, '_blank');
           this.displayDescarga = false;
           break;
       }
@@ -93,5 +102,20 @@ export class PanelExtranetFolderComponent implements OnInit {
         this.displayDescarga = false;
         this.mensajePrimeNgService.onToErrorMsg(null, error);
       });
+  }
+
+  onToVisualizar(data: GoogleDriveFilesModel) {
+    this.displayVisualizar = true;
+    this.subscription$ = new Subscription();
+    this.subscription$ = this.extranetService.getGetUrlFilePorId(data.idGoogleDrive, "", 'reader')
+    .subscribe((resp: boolean) => {
+      this.displayVisualizar = false;
+      window.open(`https://drive.google.com/open?id=${data.idGoogleDrive}`, '_blank');
+      },
+      (error) => {
+        this.displayVisualizar = false;
+        this.mensajePrimeNgService.onToErrorMsg(null, error);
+      }
+    );
   }
 }

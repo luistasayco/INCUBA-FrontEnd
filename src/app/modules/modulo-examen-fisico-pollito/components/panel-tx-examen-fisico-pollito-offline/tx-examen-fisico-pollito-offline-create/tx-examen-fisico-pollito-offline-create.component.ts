@@ -52,7 +52,7 @@ export class TxExamenFisicoPollitoOfflineCreateComponent implements OnInit, OnDe
   selectSexo: any;
 
   subscription$: Subscription;
-
+  displayControles: boolean;
   constructor(public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService,
               private examenFisicoPollitoLocalService: ExamenFisicoPollitoLocalService,
@@ -223,6 +223,10 @@ export class TxExamenFisicoPollitoOfflineCreateComponent implements OnInit, OnDe
     });
   }
 
+  goDisplayControles() {
+    this.displayControles = ! this.displayControles;
+  }
+  
   onGrabar() {
 
     if (!this.selectEmpresa) {

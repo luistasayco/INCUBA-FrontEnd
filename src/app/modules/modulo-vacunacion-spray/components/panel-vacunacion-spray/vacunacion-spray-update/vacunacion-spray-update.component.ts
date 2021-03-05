@@ -62,7 +62,7 @@ export class VacunacionSprayUpdateComponent implements OnInit, OnDestroy {
   id: number;
   listIma: any[];
   cloneListImagen: TxVacunacionSprayFotosModel[] = [];
-
+  displayControles: boolean;
   constructor(public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService,
               private vacunacionSprayService: VacunacionSprayService,
@@ -195,5 +195,9 @@ export class VacunacionSprayUpdateComponent implements OnInit, OnDestroy {
 
   onBack() {
     this.router.navigate(['/main/module-sp/panel-vacunacion-spray']);
+  }
+
+  goDisplayControles() {
+    this.displayControles = ! this.displayControles;
   }
 }

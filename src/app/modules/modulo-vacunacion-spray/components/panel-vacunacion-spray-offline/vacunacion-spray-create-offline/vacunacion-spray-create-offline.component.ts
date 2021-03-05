@@ -79,7 +79,7 @@ export class VacunacionSprayCreateOfflineComponent implements OnInit, OnDestroy 
   clonedProcesoDetalle: TxVacunacionSprayDetalleModel[] = [];
 
   displaySeleccionProceso: boolean;
-
+  displayControles: boolean;
   constructor(public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService,
               // private vacunacionSprayService: VacunacionSprayService,
@@ -422,7 +422,9 @@ export class VacunacionSprayCreateOfflineComponent implements OnInit, OnDestroy 
 
     this.modeloItem.listarTxVacunacionSprayVacuna = clonedListVacuna;
   }
-
+  goDisplayControles() {
+    this.displayControles = ! this.displayControles;
+  }
   onGrabar() {
     if (!this.selectEmpresa) {
       this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Seleccionar Empresa');

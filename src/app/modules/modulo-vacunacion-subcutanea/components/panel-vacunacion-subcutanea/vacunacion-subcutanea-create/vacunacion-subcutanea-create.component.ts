@@ -104,7 +104,7 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
   displayControlEficiencia: boolean;
 
   modeloclonedControlEficiencia: { [s: string]: TxVacunacionSubCutaneaControlEficienciaModel; } = {};
-
+  displayControles: boolean;
   constructor(public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService,
               private vacunacionSubcutaneaService: VacunacionSubcutaneaService,
@@ -832,5 +832,7 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
   onBack() {
     this.router.navigate(['/main/module-su/panel-vacunacion-subcutanea']);
   }
-
+  goDisplayControles() {
+    this.displayControles = ! this.displayControles;
+  }
 }

@@ -8,6 +8,9 @@ export class GlobalsConstants {
     cCancelar: string;
     cRegresar: string;
     cCalcular: string;
+    cDesplegar: string;
+    cContraer: string;
+    cFiltro: string;
 
     // Variables de Etiquetas para la Firma Digital
     cFirma1: string;
@@ -30,6 +33,9 @@ export class GlobalsConstants {
     icoVisualizar: string;
     icoDownload: string;
     icoCalcular: string;
+    icoDesplegar: string;
+    icoContraer: string;
+    icoFiltro: string;
 
     // Variables titulos
     titleEliminar: string;
@@ -62,7 +68,9 @@ export class GlobalsConstants {
         this.cEliminar = 'Eliminar';
         this.cRegresar = 'Regresar';
         this.cCalcular = 'Calcular';
-
+        this.cDesplegar = 'Desplegar Todo';
+        this.cContraer = 'Contraer Todo';
+        this.cFiltro = 'Limpiar Filtros'
         this.cFirmaOk1 = 'Firma Invetsa Finalizada';
         this.cFirmaOk2 = 'Firma Planta Finalizada';
         this.cFirma1 = 'Firma Invetsa';
@@ -83,7 +91,9 @@ export class GlobalsConstants {
         this.icoVisualizar = 'fa fa-eye';
         this.icoDownload = 'fa fa-download';
         this.icoCalcular = 'fa fa-calculator';
-
+        this.icoDesplegar = 'fa fa-list';
+        this.icoContraer = 'fa fa-stream';
+        this.icoFiltro = 'fa fa-filter';
         // Titulo
         this.titleEliminar = 'Confimación de Eliminación';
         this.subTitleEliminar = '¿Seguro de Eliminar el registro seleccionado?';

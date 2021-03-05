@@ -37,7 +37,7 @@ export class TxExamenFisicoPollitoUpdateComponent implements OnInit, OnDestroy {
   cloneListImagen: TxExamenFisicoPollitoDetalleFotosModel[] = [];
 
   displaySave: boolean;
-
+  displayControles: boolean;
   constructor(public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService,
               private examenFisicoPollitoService: ExamenFisicoPollitoService,
@@ -110,6 +110,10 @@ export class TxExamenFisicoPollitoUpdateComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  goDisplayControles() {
+    this.displayControles = ! this.displayControles;
   }
 
   onGrabar() {

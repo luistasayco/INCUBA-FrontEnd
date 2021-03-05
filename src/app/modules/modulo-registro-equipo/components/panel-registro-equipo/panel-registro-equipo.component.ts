@@ -146,6 +146,16 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
     this.onListar();
   }
 
+  onLimpiarFiltros () {
+      this.sessionService.removeItem('filter-re');
+      this.modeloFind.idRegistroEquipo = 0;
+      this.modeloFind.fecRegistroInicio = new Date();
+      this.modeloFind.fecRegistroFin = new Date();
+      this.selectedEmpresa = null ;
+      this.selectedModelo = null ;
+      this.selectedPlanta = null;
+  }
+
   onToBuscar() {
     this.onListar();
   }

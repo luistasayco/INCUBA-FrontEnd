@@ -123,6 +123,14 @@ export class PanelTxExamenFisicoPollitoComponent implements OnInit, OnDestroy {
     });
   }
 
+  onLimpiarFiltros () {
+      this.sessionService.removeItem('filter-ef');
+      this.modeloItem.idExamenFisico = 0;
+      this.fecRegistroInicio = new Date();
+      this.fecRegistroFin = new Date();
+      this.selectedEmpresa = null;
+}
+
   onToBuscar() {
     this.onListar();
   }

@@ -18,6 +18,7 @@ import { TabMenuModule } from 'primeng/tabmenu';
 import { FileUploadModule } from 'primeng/fileupload';
 import { CardModule } from 'primeng/card';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { TooltipModule } from 'primeng/tooltip';
 // Sevices
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
@@ -40,7 +41,8 @@ import { MessageService } from 'primeng/api';
         TabMenuModule,
         FileUploadModule,
         CardModule,
-        MultiSelectModule],
+        MultiSelectModule,
+        TooltipModule],
     providers: [ConfirmationService, MessageService],
 })
 export class ExtranetPrimeNgModule {}

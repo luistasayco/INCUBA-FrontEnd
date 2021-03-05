@@ -18,7 +18,7 @@ export class TxRegistroDocumentoModel {
     fecRegistro: Date;
     fecHoraRegistro: Date;
     idGoogleDriveFolder: string;
-
+    extencionArchivo?: string;
     fecInicio: Date;
     fecFin: Date;
 
@@ -43,7 +43,7 @@ export class TxRegistroDocumentoModel {
         this.fecRegistro = null;
         this.fecHoraRegistro = null;
         this.idGoogleDriveFolder = '';
-
+        this.extencionArchivo = '';
         this.fecInicio = null;
         this.fecFin = null;
 

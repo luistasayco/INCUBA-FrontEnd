@@ -29,11 +29,15 @@
                 <label class="label-custom" for="float-input-fecha-fin">Fec. Fin: </label>
                 <p-calendar id="float-input-fecha-fin" [(ngModel)]="modeloFind.fecFin" placeholder="Seleccionar Fecha Fin" [showButtonBar]="true" [locale]="lenguageService.es" dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
             </div>
-
-            <div class="ui-g-12 ui-md-6">
+            <div class="ui-g-12 ui-md-4">
+            </div>
+            <div class="ui-g-12 ui-md-4">
+                <button pButton type="button" label="{{globalConstants.cFiltro}}" icon="{{globalConstants.icoFiltro}}" (click)="onLimpiarFiltros()" class="btn btn-block"></button>
+            </div>
+            <div class="ui-g-12 ui-md-4">
                 <button *ngIf="!isNuveo" pButton type="button" label="{{globalConstants.cBuscar}}" icon="{{globalConstants.icoBuscar}}" (click)="onToBuscar()" class="btn btn-block"></button>
             </div>
-            <div class="ui-g-12 ui-md-6">
+            <div class="ui-g-12 ui-md-4">
                 <button *ngIf="!isNuveo" [disabled]="buttonAcces.btnNuevo" pButton type="button" label="{{globalConstants.cNuevo}}" icon="{{globalConstants.icoNuevo}}" (click)="onToCreate()"></button>
             </div>
         </div>
@@ -78,7 +82,7 @@
                     <th *ngFor="let col of columns">
                         {{col.header}}
                     </th>
-                    <th colspan="3">Acciones</th>
+                    <th colspan="4">Acciones</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns">
@@ -95,20 +99,22 @@
                     <td class="ui-fluid">
                         <span class="ui-column-title">Planta</span> {{rowData.descripcionPlanta}}
                     </td>
-                    <!-- <td class="ui-fluid">
-                        <span class="ui-column-title">Modelo</span> {{rowData.subTipoExplotacion}}
-                    </td> -->
                     <td class="ui-fluid">
-                        <span class="ui-column-title">Modelo</span> {{rowData.nombreArchivo}}
+                        <span class="ui-column-title">Tipo</span> {{rowData.extencionArchivo}}
+                    </td>
+                    <td class="ui-fluid">
+                        <span class="ui-column-title">Nombre Archivo</span> {{rowData.nombreArchivo}}
                     </td>
                     <td class="action-td">
-                        <!-- <button [disabled]="buttonAcces.btnVisualizar" pButton icon="{{globalConstants.icoVisualizar}}" (click)="onToVisualizar(rowData)"></button> -->
                         <button *ngIf="!rowData.flgCerrado" pButton icon="{{globalConstants.icoAbierto}}" (click)="onConfirmCerrar(rowData)"></button>
                         <button *ngIf="rowData.flgCerrado" pButton icon="{{globalConstants.icoCerrado}}" class="ui-button-danger"></button>
 
                     </td>
                     <td class="action-td">
                         <button [disabled]="buttonAcces.btnDownload" pButton icon="{{globalConstants.icoDownload}}" (click)="onToRowDownload(rowData)"></button>
+                    </td>
+                    <td class="action-td">
+                        <button [disabled]="buttonAcces.btnVisualizar" pButton icon="{{globalConstants.icoVisualizar}}" (click)="onToVisualizar(rowData)" class="ui-button-warning"></button>
                     </td>
                     <td class="action-td">
                         <button [disabled]="buttonAcces.btnEliminar" pButton icon="{{globalConstants.icoEliminar}}" (click)="onConfirmEliminar(rowData)" class="ui-button-danger"></button>
@@ -138,7 +144,18 @@
 
 <p-dialog header="Descarga" [(visible)]="displayDescarga" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
 
-    Realizando la descarga del PDF del registro seleccionado...!!!
+    Realizando la descarga del registro seleccionado...!!!
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>
+        </div>
+    </div>
+
+</p-dialog>
+
+<p-dialog header="Visualizar" [(visible)]="displayVisualizar" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+
+    Generando enlace de visualizacion del registro seleccionado...!!!
     <div class="ui-g ui-fluid">
         <div class="ui-g-12">
             <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>

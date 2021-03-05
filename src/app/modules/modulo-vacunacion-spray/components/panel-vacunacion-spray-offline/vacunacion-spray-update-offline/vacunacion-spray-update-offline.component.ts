@@ -50,7 +50,7 @@ export class VacunacionSprayUpdateOfflineComponent implements OnInit {
   id: number;
   listIma: any[];
   cloneListImagen: TxVacunacionSprayFotosModel[] = [];
-
+  displayControles: boolean;
   constructor(public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService,
               private vacunacionSprayLocalService: VacunacionSprayLocalService,
@@ -173,7 +173,9 @@ export class VacunacionSprayUpdateOfflineComponent implements OnInit {
       }
     });
   }
-
+  goDisplayControles() {
+    this.displayControles = ! this.displayControles;
+  }
   onGrabar() {
     this.displaySave = true;
     this.subscription$ = new Subscription();

@@ -123,6 +123,15 @@ export class PanelVacunacionSprayComponent implements OnInit {
     });
   }
 
+  onLimpiarFiltros () {
+    this.sessionService.removeItem('filter-sp');
+    this.modeloItem.idVacunacionSpray = 0;
+    this.fecRegistroInicio = new Date();
+    this.fecRegistroFin = new Date();
+    this.selectedEmpresa = null ;
+  }
+
+
   onToBuscar() {
     this.onListar();
   }

@@ -39,7 +39,7 @@ export class VacunacionSubcutaneaUpdateComponent implements OnInit {
 
   listIma: any[];
   cloneListImagen: TxVacunacionSubCutaneaFotosModel[] = [];
-
+  displayControles: boolean;
   constructor(public mensajePrimeNgService: MensajePrimeNgService,
               private breadcrumbService: BreadcrumbService,
               private vacunacionSubcutaneaService: VacunacionSubcutaneaService,
@@ -221,5 +221,7 @@ export class VacunacionSubcutaneaUpdateComponent implements OnInit {
   onBack() {
     this.router.navigate(['/main/module-su/panel-vacunacion-subcutanea']);
   }
-
+  goDisplayControles() {
+    this.displayControles = ! this.displayControles;
+  }
 }
