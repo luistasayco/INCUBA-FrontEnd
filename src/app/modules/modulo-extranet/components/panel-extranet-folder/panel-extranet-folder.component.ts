@@ -9,6 +9,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { HttpEventType } from '@angular/common/http';
 import { saveAs } from 'file-saver';
 import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
+import { UserContextService } from '../../../../services/user-context.service';
 
 @Component({
   selector: 'app-panel-extranet-folder',
@@ -38,7 +39,8 @@ export class PanelExtranetFolderComponent implements OnInit {
               public mensajePrimeNgService: MensajePrimeNgService,
               private router: Router,
               private readonly route: ActivatedRoute,
-              private menuDinamicoService: MenuDinamicoService) { }
+              private menuDinamicoService: MenuDinamicoService,
+              private userContextService: UserContextService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
@@ -105,9 +107,13 @@ export class PanelExtranetFolderComponent implements OnInit {
   }
 
   onToVisualizar(data: GoogleDriveFilesModel) {
+    if (this.userContextService.getEmail() == "") {
+      this.mensajePrimeNgService.onToInfoMsg(null, "No se puede brindar permisos de visualizacion, Usuario no tiene Email Configurado");
+      return;
+    }
     this.displayVisualizar = true;
     this.subscription$ = new Subscription();
-    this.subscription$ = this.extranetService.getGetUrlFilePorId(data.idGoogleDrive, "", 'reader')
+    this.subscription$ = this.extranetService.getGetUrlFilePorId(data.idGoogleDrive, this.userContextService.getEmail() , 'reader')
     .subscribe((resp: boolean) => {
       this.displayVisualizar = false;
       window.open(`https://drive.google.com/open?id=${data.idGoogleDrive}`, '_blank');

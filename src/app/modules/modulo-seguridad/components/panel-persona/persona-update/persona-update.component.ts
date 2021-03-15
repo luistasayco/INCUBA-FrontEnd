@@ -57,7 +57,7 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
   listAprobarSubTipoExplotacionSeleccionado: AprobarSubTipoExplotacionPorUsuarioModel[];
 
   subscription: Subscription;
-
+  displayGrabar: boolean;
   constructor(private fb: FormBuilder,
               private seguridadService: SeguridadService,
               public mensajePrimeNgService: MensajePrimeNgService,
@@ -249,6 +249,7 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
   }
 
   onClickSave() {
+    this.displayGrabar = true;
     this.modelo.listEmpresaPorUsuario = this.listEmpresaSeleccionado;
     this.modelo.listPlantaProUsuario = this.listPlantaSeleccionado;
     this.modelo.listSubTipoExplosionPorUsuario = this.lisSubTipoExplotacionSeleccionado;
@@ -278,14 +279,17 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
     this.subscription = new Subscription();
     this.subscription = this.seguridadService.setUpdatePersona(this.modelo)
     .subscribe(() =>  {
+      
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
       this.back(); },
       (error) => {
+        this.displayGrabar = false;
         this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, error);
     });
   }
 
   back() {
+    this.displayGrabar = false;
     this.router.navigate(['/main/module-se/panel-persona']);
   }
 

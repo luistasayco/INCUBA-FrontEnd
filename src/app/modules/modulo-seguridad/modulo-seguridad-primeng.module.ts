@@ -19,7 +19,8 @@ import { TreeModule } from 'primeng/tree';
 import { PickListModule } from 'primeng/picklist';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ToggleButtonModule } from 'primeng/togglebutton';
-
+import { DialogModule } from 'primeng/dialog';
+import { ProgressBarModule } from 'primeng/progressbar';
 // Sevices
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
@@ -43,7 +44,9 @@ import { MessageService } from 'primeng/api';
             TreeModule,
             PickListModule,
             FileUploadModule,
-            ToggleButtonModule],
+            ToggleButtonModule,
+            DialogModule,
+            ProgressBarModule],
     providers: [MessageService, ConfirmationService],
 })
 export class SeguridadPrimeNgModule {}

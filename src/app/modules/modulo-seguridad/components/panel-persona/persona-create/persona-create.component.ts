@@ -57,7 +57,7 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
   listAprobarSubTipoExplotacionSeleccionado: AprobarSubTipoExplotacionPorUsuarioModel[];
 
   subscription: Subscription;
-
+  displayGrabar: boolean;
   constructor(private fb: FormBuilder,
               private seguridadService: SeguridadService,
               public mensajePrimeNgService: MensajePrimeNgService,
@@ -200,6 +200,7 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
   }
 
   onClickSave() {
+    this.displayGrabar = true;
     this.modelo.listEmpresaPorUsuario = this.listEmpresaSeleccionado;
     this.modelo.listPlantaProUsuario = this.listPlantaSeleccionado;
     this.modelo.listSubTipoExplosionPorUsuario = this.lisSubTipoExplotacionSeleccionado;
@@ -240,11 +241,13 @@ export class PersonaCreateComponent implements OnInit, OnDestroy {
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
       this.back(); },
       (error) => {
+        this.displayGrabar = false;
         this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, error);
     });
   }
 
   back() {
+    this.displayGrabar = false;
     this.router.navigate(['/main/module-se/panel-persona']);
   }
 

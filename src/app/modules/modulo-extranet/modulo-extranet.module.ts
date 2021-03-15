@@ -12,6 +12,7 @@ import { TipoSubExplotacionCreateComponent } from './components/panel-sub-tipo-e
 import { PanelExtranetViewComponent } from './components/panel-extranet-view/panel-extranet-view.component';
 import { PanelExtranetFolderComponent } from './components/panel-extranet-folder/panel-extranet-folder.component';
 import { PanelExtranetMasivoComponent } from './components/panel-extranet-masivo/panel-extranet-masivo.component';
+import { PanelVisorComponent } from './components/panel-visor/panel-visor.component';
 
 @NgModule({
     declarations: [ PanelExtranetComponent,
@@ -22,13 +23,14 @@ import { PanelExtranetMasivoComponent } from './components/panel-extranet-masivo
         TipoSubExplotacionCreateComponent,
         PanelExtranetViewComponent,
         PanelExtranetFolderComponent,
-        PanelExtranetMasivoComponent],
+        PanelExtranetMasivoComponent,
+        PanelVisorComponent],
     imports: [ CommonModule,
         ExtranetPrimeNgModule,
         ExtranetRoutingModule,
         FormsModule,
         ReactiveFormsModule],
-    exports: [],
+    exports: [PanelVisorComponent],
     providers: [],
 })
 export class ExtranetModule {}

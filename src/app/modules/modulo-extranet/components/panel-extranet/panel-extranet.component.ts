@@ -283,13 +283,13 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
 
   onToVisualizar(data: TxRegistroDocumentoModel) {
 
-    // if (this.userContextService.getEmail() == "") {
-    //   this.mensajePrimeNgService.onToInfoMsg(null, "No se puede brindar permisos de visualizacion");
-    //   return;
-    // }
+    if (this.userContextService.getEmail() == "") {
+      this.mensajePrimeNgService.onToInfoMsg(null, "No se puede brindar permisos de visualizacion, Usuario no tiene Email ConfiguradoNo se puede brindar permisos de visualizacion");
+      return;
+    }
     this.displayVisualizar = true;
     this.subscription$ = new Subscription();
-    this.subscription$ = this.extranetService.getGetUrlFilePorId(data.idGoogleDrive, "", 'reader')
+    this.subscription$ = this.extranetService.getGetUrlFilePorId(data.idGoogleDrive, this.userContextService.getEmail(), 'reader')
     .subscribe((resp: boolean) => {
       this.displayVisualizar = false;
       // this.router.navigateByUrl(`https://drive.google.com/open?id=${data.idGoogleDrive}`);
