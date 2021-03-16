@@ -114,7 +114,7 @@
                         <button [disabled]="buttonAcces.btnDownload" pButton icon="{{globalConstants.icoDownload}}" (click)="onToRowDownload(rowData)"></button>
                     </td>
                     <td class="action-td">
-                        <button [disabled]="buttonAcces.btnVisualizar" pButton icon="{{globalConstants.icoVisualizar}}" (click)="onToVisualizar(rowData)" class="ui-button-warning"></button>
+                        <button [disabled]="buttonAcces.btnVisualizar" pButton icon="{{globalConstants.icoVisualizar}}" (click)="onToVisorCustom(rowData)" class="ui-button-warning"></button>
                     </td>
                     <td class="action-td">
                         <button [disabled]="buttonAcces.btnEliminar" pButton icon="{{globalConstants.icoEliminar}}" (click)="onConfirmEliminar(rowData)" class="ui-button-danger"></button>
@@ -153,7 +153,7 @@
 
 </p-dialog>
 
-<p-dialog header="Visualizar" [(visible)]="displayVisualizar" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+<!-- <p-dialog header="Visualizar" [(visible)]="displayVisualizar" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
 
     Generando enlace de visualizacion del registro seleccionado...!!!
     <div class="ui-g ui-fluid">
@@ -161,5 +161,11 @@
             <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>
         </div>
     </div>
+
+</p-dialog> -->
+
+<p-dialog [header]="modeloSeleccionadoVisualizar.nombreArchivo" [(visible)]="displayVisualizar" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+
+    <app-panel-visor [isdataVisorCustom]="dataVisorCustom" [isVisible]="displayVisualizar" [isNombreArchivo]="modeloSeleccionadoVisualizar.nombreArchivo"></app-panel-visor>
 
 </p-dialog>

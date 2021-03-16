@@ -13,6 +13,10 @@ import { PanelExtranetViewComponent } from './components/panel-extranet-view/pan
 import { PanelExtranetFolderComponent } from './components/panel-extranet-folder/panel-extranet-folder.component';
 import { PanelExtranetMasivoComponent } from './components/panel-extranet-masivo/panel-extranet-masivo.component';
 import { PanelVisorComponent } from './components/panel-visor/panel-visor.component';
+import { VisorImagenComponent } from './components/panel-visor/visor-imagen/visor-imagen.component';
+import { VisorAudioComponent } from './components/panel-visor/visor-audio/visor-audio.component';
+import { VisorPdfComponent } from './components/panel-visor/visor-pdf/visor-pdf.component';
+import { VisorVideoComponent } from './components/panel-visor/visor-video/visor-video.component';
 
 @NgModule({
     declarations: [ PanelExtranetComponent,
@@ -24,13 +28,21 @@ import { PanelVisorComponent } from './components/panel-visor/panel-visor.compon
         PanelExtranetViewComponent,
         PanelExtranetFolderComponent,
         PanelExtranetMasivoComponent,
-        PanelVisorComponent],
+        PanelVisorComponent,
+        VisorImagenComponent,
+        VisorAudioComponent,
+        VisorPdfComponent,
+        VisorVideoComponent],
     imports: [ CommonModule,
         ExtranetPrimeNgModule,
         ExtranetRoutingModule,
         FormsModule,
         ReactiveFormsModule],
-    exports: [PanelVisorComponent],
+    exports: [PanelVisorComponent,
+        VisorImagenComponent,
+        VisorAudioComponent,
+        VisorPdfComponent,
+        VisorVideoComponent],
     providers: [],
 })
 export class ExtranetModule {}

@@ -77,6 +77,8 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
 
   saveFiltros: any[];
   displayVisualizar: boolean;
+  modeloSeleccionadoVisualizar: TxRegistroDocumentoModel = new TxRegistroDocumentoModel();;
+  dataVisorCustom: any;
   constructor(private extranetService: ExtranetService,
               private compartidoService: CompartidoService,
               public mensajePrimeNgService: MensajePrimeNgService,
@@ -477,7 +479,34 @@ export class PanelExtranetComponent implements OnInit, OnDestroy {
         this.mensajePrimeNgService.onToErrorMsg(null, error);
       });
   }
-
+  onToVisorCustom(modelo: TxRegistroDocumentoModel) {
+    this.modeloSeleccionadoVisualizar = modelo;
+    this.displayDescarga = true;
+    this.subscription$ = new Subscription();
+    this.subscription$ = this.extranetService.getDownloadTxRegistroDocumento(modelo.idGoogleDrive)
+    .subscribe((resp: any) => {
+      switch (resp.type) {
+        case HttpEventType.DownloadProgress:
+          this.mensajePrimeNgService.onToInfoMsg(null,  'EN PROCESO');
+          break;
+        case HttpEventType.Response:
+          this.mensajePrimeNgService.onToInfoMsg(null, 'DESCARGA COMPLETA');
+          console.log(resp);
+          this.dataVisorCustom = new Blob([resp.body], {type: resp.body.type});
+          this.displayVisualizar = true;
+          // saveAs(new Blob([resp.body], {type: resp.body.type}), modelo.nombreArchivo);
+          // let file = new window.Blob([resp.body], {type: resp.body.type});
+          // let fileURL = window.URL.createObjectURL(file);
+          // window.open(fileURL, '_blank');
+          this.displayDescarga = false;
+          break;
+      }
+    },
+      (error) => {
+        this.displayDescarga = false;
+        this.mensajePrimeNgService.onToErrorMsg(null, error);
+      });
+  }
   onToCreate() {
     this.isNuveo = true;
   } 
