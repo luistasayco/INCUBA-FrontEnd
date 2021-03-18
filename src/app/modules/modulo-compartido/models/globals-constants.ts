@@ -68,7 +68,7 @@ export class GlobalsConstants {
         this.cEliminar = 'Eliminar';
         this.cRegresar = 'Regresar';
         this.cCalcular = 'Calcular';
-        this.cDesplegar = 'Desplegar Todo';
+        this.cDesplegar = 'Desplegar/Contraer Todo';
         this.cContraer = 'Contraer Todo';
         this.cFiltro = 'Limpiar Filtros'
         this.cFirmaOk1 = 'Firma Invetsa Finalizada';

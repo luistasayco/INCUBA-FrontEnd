@@ -7,7 +7,7 @@
         <div class="ui-g ui-fluid">
             <div class="ui-g-12 ui-md-4">
                 <label class="label-custom" for="float-input-nro">Nro Registro: </label>
-                <input id="float-input-nro" [(ngModel)]="modeloFind.idRegistroEquipo" type="number" pInputText placeholder="Ingresar Nro">
+                <input id="float-input-nro" [(ngModel)]="modeloFind.idRegistroEquipo" type="number" pInputText placeholder="Ingresar Nro" (keyup.enter)="onToBuscar()">
             </div>
             <div class="ui-g-12 ui-md-4">
                 <label class="label-custom" for="float-input-fecha-ini">Fec. Inicio: </label>

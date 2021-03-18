@@ -25,7 +25,7 @@
 
     <p-panel header="Detalle" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
         <!-- <div class="ui-g-12"> -->
-        <button pButton type="button" label="{{globalConstants.cDesplegar}}" icon="{{globalConstants.icoDesplegar}}" (click)="goDisplayControles()"></button>
+        <button class="button-custom" pButton type="button" label="{{globalConstants.cDesplegar}}" icon="{{globalConstants.icoDesplegar}}" (click)="goDisplayControles()"></button>
         <!-- </div> -->
         <p-accordion (onOpen)="onTabOpen($event)" [multiple]="true">
             <p-accordionTab header="A .- Detalles de Mantenimiento y Funcionamiento de equipos" [selected]="displayControles">

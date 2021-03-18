@@ -21,8 +21,9 @@
         </div>
     </p-panel>
     <div class="ui-g ui-fluid">
-        <button pButton type="button" label="{{globalConstants.cDesplegar}}" icon="{{globalConstants.icoDesplegar}}" (click)="goDisplayControles()"></button>
-        <hr>
+        <div class="ui-g-12 ui-md-2">
+            <button class="button-custom" pButton type="button" label="{{globalConstants.cDesplegar}}" icon="{{globalConstants.icoDesplegar}}" (click)="goDisplayControles()"></button>
+        </div>
     </div>
     <p-panel header="Información General" [toggleable]="true" [collapsed]="!displayControles" [style]="{'margin-bottom':'20px'}">
         <p-fieldset legend="Línea Genética">

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-visor-video',
@@ -9,33 +10,26 @@ export class VisorVideoComponent implements OnInit {
  
   @Input() isFile: Blob;
   blobURL: any;
-  constructor() { }
+  constructor(private _sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
-    // console.log(this.isFile);
-    // let file = new window.Blob([this.isFile], {type: this.isFile.type});
-    // console.log('file', file);
-    // this.blobURL = URL.createObjectURL(this.isFile);
 
-    // console.log('this.blo', this.blobURL);
+    let file = this.blobToFile(this.isFile, 'prueba.mp3');
 
-    this.handleInputChange(this.isFile);
+    let URL = window.URL;
+
+    let urlData = URL.createObjectURL(file);
+    this.blobURL = this._sanitizer.bypassSecurityTrustUrl(urlData);
 
   }
 
-  handleInputChange(files) {
-    let file = files;
-    let reader = new FileReader();
+  public blobToFile = (theBlob: Blob, fileName:string): File => {
+    var b: any = theBlob;
+    //A Blob() is almost a File() - it's just missing the two properties below which we will add
+    b.lastModifiedDate = new Date();
+    b.name = fileName;
 
-    reader.onloadend = this._handleReaderLoaded.bind(this);
-    reader.readAsDataURL(file);
-  }
-
-  _handleReaderLoaded(e) {
-    let reader = e.target;
-    this.blobURL = reader.result;
-
-    console.log('reader', e);
-    console.log('blob', this.blobURL);
+    //Cast to a File() type
+    return <File>theBlob;
   }
 }

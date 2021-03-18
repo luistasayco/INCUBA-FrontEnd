@@ -5,7 +5,7 @@
     <p-panel header="{{titulo}}" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
         <div class="ui-g ui-fluid">
             <div class="ui-g-12 ui-md-6">
-                <input type="text" pInputText placeholder="Ingresar nombre" size="100" [(ngModel)]="descripcionFind" />
+                <input type="text" pInputText placeholder="Ingresar nombre" size="100" [(ngModel)]="descripcionFind" (keyup.enter)="onToBuscar()"/>
             </div>
             <div class="ui-g-12 ui-md-3">
                 <button pButton type="button" label="{{globalConstants.cBuscar}}" icon="{{globalConstants.icoBuscar}}" (click)="onToBuscar()" class="btn btn-block"></button>

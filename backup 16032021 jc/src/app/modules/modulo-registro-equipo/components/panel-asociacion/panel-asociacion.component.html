@@ -1,0 +1,59 @@
+<div class="card card-w-title">
+    <h1><strong>{{titulo}}</strong></h1>
+
+    <!-- Filtros -->
+    <p-panel header="Opción de busqueda de {{titulo}}" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-md-4">
+                <p-dropdown id="dropdown" class="ui dropdown-item-text" [options]="listItemEmpresa" [(ngModel)]="selectedEmpresa" (onChange)="getOnChangeEmpresa()" placeholder="Select Compañia" optionLabel="label" [showClear]="true"></p-dropdown>
+            </div>
+            <div class="ui-g-12 ui-md-4">
+                <p-dropdown id="dropdown" class="ui dropdown-item-text" [options]="listItemPlanta" [(ngModel)]="selectedPlanta" (onChange)="getOnChangePlanta()" placeholder="Select Planta" optionLabel="label" [showClear]="true"></p-dropdown>
+            </div>
+            <div class="ui-g-12 ui-md-4">
+                <p-dropdown id="dropdown" class="ui dropdown-item-text" [options]="listItemModelo" [(ngModel)]="selectedModelo" (onChange)="getOnChangeModelo()" placeholder="Select Modelo" optionLabel="label" [showClear]="true"></p-dropdown>
+            </div>
+        </div>
+    </p-panel>
+
+    <p-messages [(value)]="mensajePrimeNgService.msgs"></p-messages>
+
+    <p-panel header="Opción de {{titulo}}" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
+        <p-accordion>
+            <p-accordionTab header="Equipo">
+                <p-pickList [disabled]="true" [source]="listEquipoPorSeleccionado" [target]="listEquipoSeleccionado" sourceHeader="Lista" targetHeader="Seleccionado" [responsive]="true" filterBy="codigoEquipo" dragdrop="true" showSourceControls='false' sourceFilterPlaceholder="Search by Equipo"
+                    targetFilterPlaceholder="Search by Equipo" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}" [showSourceControls]="false" [showTargetControls]="false">
+                    <ng-template let-equipo pTemplate="item">
+                        <div class="ui-helper-clearfix">
+                            <div style="font-size:14px;float:left;margin:5px 5px 0 0">{{equipo.codigoEquipo}}</div>
+                        </div>
+                    </ng-template>
+                </p-pickList>
+            </p-accordionTab>
+            <p-accordionTab header="Mantenimiento">
+                <p-pickList [disabled]="buttonAcces.btnAdicionarEliminarMantenimiento" [source]="listMantenimientoPorSeleccionado" [target]="listMantenimientoSeleccionado" sourceHeader="Lista" targetHeader="Seleccionado" [responsive]="true" filterBy="descripcion" dragdrop="true"
+                    showSourceControls='false' sourceFilterPlaceholder="Search by mantenimiento" targetFilterPlaceholder="Search by mantenimiento" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}" [showSourceControls]="false" [showTargetControls]="false"
+                    (onMoveToTarget)="onToMoveToTargetMantenimiento($event.items)" (onMoveToSource)="onToMoveToSourceMantenimiento($event.items)" (onMoveAllToTarget)="onToMoveAllToTargetMantenimiento($event.items)" (onToMoveAllToSource)="onToMoveAllToSourceMantenimiento($event.items)">
+                    <ng-template let-mantenimiento pTemplate="item">
+                        <div class="ui-helper-clearfix">
+                            <div style="font-size:14px;float:left;margin:5px 5px 0 0">{{mantenimiento.idMantenimiento}} - {{mantenimiento.descripcion}}</div>
+                        </div>
+                    </ng-template>
+                </p-pickList>
+            </p-accordionTab>
+            <p-accordionTab header="Repuesto">
+                <p-pickList [disabled]="buttonAcces.btnAdicionarEliminarRepuesto" [source]="listRepuestoPorSeleccionado" [target]="listRepuestoSeleccionado" sourceHeader="Lista" targetHeader="Seleccionado" [responsive]="true" filterBy="codigoRepuesto" dragdrop="true"
+                    showSourceControls='false' sourceFilterPlaceholder="Search by repuesto" targetFilterPlaceholder="Search by repuesto" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}" [showSourceControls]="false" [showTargetControls]="false"
+                    (onMoveToTarget)="onToMoveToTargetRepuesto($event.items)" (onMoveToSource)="onToMoveToSourceRepuesto($event.items)" (onMoveAllToTarget)="onToMoveAllToTargetRepuesto($event.items)" (onToMoveAllToSource)="onToMoveAllToSourceRepuesto($event.items)">
+                    <ng-template let-repuesto pTemplate="item">
+                        <div class="ui-helper-clearfix">
+                            <p-toggleButton onIcon="pi pi-check" [(ngModel)]="repuesto.flgPredeterminado" offIcon="pi pi-times" [style]="{'width':'150px'}" onLabel="Predeterminado" offLabel="Predeterminado"></p-toggleButton>
+                            <p-toggleButton onIcon="pi pi-check" [(ngModel)]="repuesto.flgAccesorio" offIcon="pi pi-times" [style]="{'width':'150px'}" onLabel="Accesorio" offLabel="Accesorio"></p-toggleButton>
+                            <div style="font-size:14px;float:left;margin:5px 5px 0 0">{{repuesto.codigoRepuesto}} - {{repuesto.descripcion}}</div>
+                        </div>
+                    </ng-template>
+                </p-pickList>
+            </p-accordionTab>
+        </p-accordion>
+    </p-panel>
+</div>

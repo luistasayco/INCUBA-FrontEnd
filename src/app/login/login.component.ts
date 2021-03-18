@@ -159,7 +159,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     let claveOffline = this.cifrarDataService.encrypt(this.formularioLogin.value.password);
     let claveLocal = this.sessionService.getItem('pass');
 
-    if (usuOffline === usuLocal && claveOffline === claveLocal) {
+    if (usuOffline.toLowerCase() === usuLocal.toLowerCase() && claveOffline === claveLocal) {
       this.router.navigate(['/main/dashboard']);
     } else {
       this.mensajePrimeNgService.onToInfoMsg(null, 'Credenciales incorrectos.');

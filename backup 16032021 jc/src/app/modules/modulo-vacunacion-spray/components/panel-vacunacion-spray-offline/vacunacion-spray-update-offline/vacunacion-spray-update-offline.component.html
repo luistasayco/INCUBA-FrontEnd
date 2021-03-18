@@ -1,0 +1,258 @@
+<div class="card card-w-title">
+    <h1><strong>{{titulo}} - {{id}}</strong></h1>
+    <strong>Fecha - Hora: {{modeloItem.fecHoraRegistro | date:'short'}}</strong>
+    <p-panel header="Datos Principales" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom" for="dropdown-empresa">Empresa: </label>
+                <input disabled id="dropdown-empresa" type="text" [(ngModel)]="modeloItem.descripcionEmpresa" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom" for="dropdown-planta">Planta: </label>
+                <input disabled id="dropdown-planta" type="text" [(ngModel)]="modeloItem.descripcionPlanta" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom-unidad" for="dropdown-unidad">Unidad: </label>
+                <input disabled id="label-custom-unidad" type="text" [(ngModel)]="modeloItem.unidad" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom-responsable-incubadora" for="dropdown-responsable">Responsable Incubadora: </label>
+                <input disabled id="label-custom-responsable-incubadora" type="text" [(ngModel)]="modeloItem.responsableIncubadora" pInputText>
+            </div>
+        </div>
+    </p-panel>
+    <div class="ui-g ui-fluid">
+        <button pButton type="button" label="{{globalConstants.cDesplegar}}" icon="{{globalConstants.icoDesplegar}}" (click)="goDisplayControles()"></button>
+        <hr>
+    </div>
+    <p-panel header="Información General" [toggleable]="true" [collapsed]="!displayControles" [style]="{'margin-bottom':'20px'}">
+        <p-fieldset legend="Línea Genética">
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-md-1">
+                    <p-checkbox disabled [(ngModel)]="modeloItem.flgHyLine" label="HyLine" binary="true"></p-checkbox>
+                </div>
+                <div class="ui-g-12 ui-md-1">
+                    <p-checkbox disabled [(ngModel)]="modeloItem.flgLohman" label="Lohman" binary="true"></p-checkbox>
+                </div>
+                <div class="ui-g-12 ui-md-1">
+                    <p-checkbox disabled [(ngModel)]="modeloItem.flgRoss" label="Ross" binary="true"></p-checkbox>
+                </div>
+                <div class="ui-g-12 ui-md-1">
+                    <p-checkbox disabled [(ngModel)]="modeloItem.flgCobb" label="Cobb" binary="true"></p-checkbox>
+                </div>
+                <div class="ui-g-12 ui-md-1">
+                    <p-checkbox disabled [(ngModel)]="modeloItem.flgOtros" label="Otros" binary="true"></p-checkbox>
+                </div>
+                <div class="ui-g-12 ui-md-7">
+                    <input disabled id="observacionOtros" type="text" [(ngModel)]="modeloItem.observacionOtros" pInputText>
+                </div>
+            </div>
+        </p-fieldset>
+        <p-fieldset legend="N° de Nacimientos / Semana">
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-md-1">
+                    <p-checkbox disabled [(ngModel)]="modeloItem.flgLunes" label="Lunes" binary="true"></p-checkbox>
+                </div>
+                <div class="ui-g-12 ui-md-1">
+                    <p-checkbox disabled [(ngModel)]="modeloItem.flgMartes" label="Martes" binary="true"></p-checkbox>
+                </div>
+                <div class="ui-g-12 ui-md-1">
+                    <p-checkbox disabled [(ngModel)]="modeloItem.flgMiercoles" label="Miercoles" binary="true"></p-checkbox>
+                </div>
+                <div class="ui-g-12 ui-md-1">
+                    <p-checkbox disabled [(ngModel)]="modeloItem.flgJueves" label="Jueves" binary="true"></p-checkbox>
+                </div>
+                <div class="ui-g-12 ui-md-1">
+                    <p-checkbox disabled [(ngModel)]="modeloItem.flgViernes" label="Viernes" binary="true"></p-checkbox>
+                </div>
+                <div class="ui-g-12 ui-md-1">
+                    <p-checkbox disabled [(ngModel)]="modeloItem.flgSabado" label="Sabado" binary="true"></p-checkbox>
+                </div>
+                <div class="ui-g-12 ui-md-1">
+                    <p-checkbox disabled [(ngModel)]="modeloItem.flgDomingo" label="Domingo" binary="true"></p-checkbox>
+                </div>
+                <div class="ui-g-12 ui-md-2">
+                    <label class="label-custom" for="lote">Pollos/día(promedio): </label>
+                </div>
+                <div class="ui-g-12 ui-md-3">
+                    <input disabled id="promedioPollos" type="number" [(ngModel)]="modeloItem.promedioPollos" pInputText>
+                </div>
+            </div>
+        </p-fieldset>
+    </p-panel>
+    <p-panel header="Detalle" [toggleable]="true" [collapsed]="!displayControles" [style]="{'margin-bottom':'20px'}">
+        <p-accordion [multiple]="true">
+            <p-accordionTab header="Vacunación Spray" [selected]="displayControles">
+                <p-table [value]="modeloItem.listarTxVacunacionSprayMaquina" [columns]="columnasMaquina" [paginator]="true" [rows]="9" autoLayout="true" [responsive]="true">
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th *ngFor="let col of columns">
+                                {{col.header}}
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                        <tr>
+                            <td>
+                                <span class="ui-column-title">Boquilla</span> {{rowData.descripcionBoquilla}}
+                            </td>
+                            <td>
+                                <span class="ui-column-title"># Máquina</span> {{rowData.nroMaquinas}}
+                            </td>
+                            <td>
+                                <span class="ui-column-title">Modelo</span> {{rowData.descripcionModelo}}
+                            </td>
+                            <td>
+                                <span class="ui-column-title">Equipo</span> {{rowData.codigoEquipo}}
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+            </p-accordionTab>
+            <p-accordionTab header="Vacunas empleadas en la vacunación" [selected]="displayControles">
+                <p-table [value]="modeloItem.listarTxVacunacionSprayVacuna" [columns]="columnasVacuna" [paginator]="true" [rows]="9" autoLayout="true" [responsive]="true">
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th *ngFor="let col of columns">
+                                {{col.header}}
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri>
+                        <tr>
+                            <td>
+                                <span class="ui-column-title">Nro</span> {{rowData.descripcionVacuna}}
+                            </td>
+                            <td>
+                                <span class="ui-column-title">Proceso</span> {{rowData.nombreVacuna}}
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+            </p-accordionTab>
+
+            <p-accordionTab header="Detalle" [selected]="displayControles">
+                <p-table [value]="modeloItem.listarTxVacunacionSprayDetalle" dataKey="descripcionProcesoSpray">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width: 3em">
+                                ...
+                            </th>
+                            <th style="width: 3em">
+                                ...
+                            </th>
+                            <th>Equipo</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex" let-expanded="expanded" let-columns="columns">
+                        <tr class="ui-widget-header" *ngIf="rowGroupMetadata[rowData.descripcionProcesoSpray].index === rowIndex">
+                            <td colspan="3">
+                                <a href="#" [pRowToggler]="rowData">
+                                    <i [ngClass]="expanded ? 'pi pi-fw pi-chevron-circle-down' : 'pi pi-fw pi-chevron-circle-right'" style="vertical-align: middle;padding-bottom: .1em;"></i>
+                                    <span>{{rowData.descripcionProcesoSpray}}</span>
+                                </a>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="rowexpansion" let-rowData let-rowIndex="rowIndex">
+                        <tr>
+                            <td>
+                                <label *ngIf="rowData.valor" class="label-custom" for="float-input-corta">SI </label>
+                                <label *ngIf="!rowData.valor" class="label-custom" for="float-input-corta">NO </label>
+                            </td>
+                            <td>
+                                <p-checkbox disabled [(ngModel)]="rowData.valor" binary="true"></p-checkbox>
+                            </td>
+                            <td>{{rowData.descripcionProcesoDetalleSpray}}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-accordionTab>
+            <p-accordionTab header="Puntaje Total Obtenido" [selected]="displayControles">
+                <p-table [value]="modeloItem.listarTxVacunacionSprayResultado" [columns]="columnasResultado" [paginator]="true" [rows]="9" autoLayout="true" [responsive]="true">
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th *ngFor="let col of columns">
+                                {{col.header}}
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri>
+                        <tr>
+                            <td>
+                                <span class="ui-column-title">Descripción</span> {{rowData.descripcionProcesoAgrupador}}
+                            </td>
+                            <td>
+                                <span class="ui-column-title">Valor Esperado</span> {{rowData.valorEsperado}}
+                            </td>
+                            <td>
+                                <span class="ui-column-title">Valor Obtenido</span> {{rowData.valorObtenido}}
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-accordionTab>
+            <p-accordionTab header="Fotos" [selected]="displayControles">
+                <div class="ui-grid ui-fluid">
+                    <div class="ui-g-12">
+                        <app-galeria-imagen (listUpdate)="listUpdate($event)" [(carouselCars)]="listIma"></app-galeria-imagen>
+                    </div>
+                </div>
+            </p-accordionTab>
+        </p-accordion>
+    </p-panel>
+    <p-footer>
+        <div class="ui-grid ui-fluid">
+            <div class="ui-g-12 ui-md-6">
+                <label for="float-input-responsable-invetsa">Responsable Invetsa:</label>
+                <textarea disabled id="float-input-responsable-invetsa" [(ngModel)]="modeloItem.observacionInvetsa" pInputTextarea autoResize="autoResize" placeholder="Ingresar Observación"> </textarea>
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                <label for="float-input-responsable-planta">Responsable Planta:</label>
+                <textarea disabled id="float-input-responsable-planta" [(ngModel)]="modeloItem.observacionPlanta" pInputTextarea autoResize="autoResize" placeholder="Ingresar Observación"> </textarea>
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                <img [src]="modeloItem.firmaInvetsa" *ngIf="modeloItem.firmaInvetsa" style="width: 100%; display: block;" />
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                <img [src]="modeloItem.firmaPlanta" *ngIf="modeloItem.firmaPlanta" style="width: 100%; display: block;" />
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                <div class="p-field">
+                    <label for="nombreInvetsa">Responsable Invetsa:</label>
+                    <input [disabled]="true" id="nombreInvetsa" [(ngModel)]="modeloItem.responsableInvetsa" type="text" pInputText>
+                    <label for="emailInvetsa">Email:</label>
+                    <input [disabled]="true" id="emailInvetsa" [(ngModel)]="modeloItem.emailFrom" type="text" pInputText>
+                </div>
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                <div class="p-field">
+                    <label for="nombrePlanta">Responsable Planta:</label>
+                    <input disabled id="nombrePlanta" [(ngModel)]="modeloItem.responsablePlanta" type="text" pInputText>
+                    <label for="emailPlanta">Email:</label>
+                    <input disabled id="emailPlanta" [(ngModel)]="modeloItem.emailTo" type="text" pInputText>
+                </div>
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                <button [disabled]="modeloItem.flgCerrado" pButton type="button" label="{{globalConstants.cGrabar}}" icon="{{globalConstants.icoGrabar}}" (click)="onGrabar()"></button>
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                <button pButton type="button" label="{{globalConstants.cRegresar}}" icon="{{globalConstants.icoRegresar}}" (click)="onBack()"></button>
+            </div>
+        </div>
+    </p-footer>
+</div>
+<p-messages [(value)]="mensajePrimeNgService.msgs"></p-messages>
+
+<p-dialog header="Grabar" [(visible)]="displaySave" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+
+    Guardando Informacion...!!!
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>
+        </div>
+    </div>
+
+</p-dialog>

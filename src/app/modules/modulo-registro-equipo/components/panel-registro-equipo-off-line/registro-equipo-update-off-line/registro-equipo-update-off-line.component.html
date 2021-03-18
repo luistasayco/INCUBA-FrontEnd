@@ -26,7 +26,7 @@
     <p-messages [(value)]="mensajePrimeNgService.msgs"></p-messages>
 
     <p-panel header="Detalle" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
-        <button pButton type="button" label="{{globalConstants.cDesplegar}}" icon="{{globalConstants.icoDesplegar}}" (click)="goDisplayControles()"></button>
+        <button class="button-custom"  pButton type="button" label="{{globalConstants.cDesplegar}}" icon="{{globalConstants.icoDesplegar}}" (click)="goDisplayControles()"></button>
 
         <p-accordion [multiple]="true">
             <p-accordionTab header="A .- Detalles de Mantenimiento y Funcionamiento de equipos" [selected]="displayControles">

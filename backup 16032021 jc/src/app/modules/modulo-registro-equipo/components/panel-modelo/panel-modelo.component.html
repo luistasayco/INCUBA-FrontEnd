@@ -1,0 +1,43 @@
+<div class="card card-w-title">
+    <h1><strong>{{titulo}}</strong></h1>
+
+    <!-- Filtros -->
+    <p-panel header="{{titulo}}" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-md-6">
+                <input type="text" pInputText placeholder="Ingresar descripcion" size="100" [(ngModel)]="descripcionFind" />
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                <button pButton type="button" label="{{globalConstants.cBuscar}}" icon="{{globalConstants.icoBuscar}}" (click)="onToBuscar()" class="btn btn-block"></button>
+            </div>
+        </div>
+    </p-panel>
+
+    <p-messages [(value)]="mensajePrimeNgService.msgs"></p-messages>
+
+    <!-- Grilla de Datos     -->
+    <p-panel header="Lista de {{titulo}}">
+        <p-table [value]="listModelo" [columns]="columnas" [paginator]="true" [rows]="globalConstants.sizePage" dataKey="codigoModelo" editMode="row" autoLayout="true" [responsive]="true">
+            <!-- Header -->
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns">
+                        {{col.header}}
+                    </th>
+                </tr>
+            </ng-template>
+            <!-- body -->
+            <ng-template pTemplate="body" let-modelo let-editing="editing" let-ri="rowIndex">
+                <tr>
+                    <td class="action-td">
+                        <span class="ui-column-title">Codigo</span> {{modelo.codigoModelo}}
+                    </td>
+                    <td class="ui-fluid">
+                        <span class="ui-column-title">Descripción</span> {{modelo.descripcion}}
+                    </td>
+                </tr>
+            </ng-template>
+
+        </p-table>
+    </p-panel>
+</div>

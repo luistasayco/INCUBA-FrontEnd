@@ -26,6 +26,7 @@ export class PanelExtranetFolderComponent implements OnInit {
   globalConstants: GlobalsConstants = new GlobalsConstants();
 
   listModelo: GoogleDriveFilesModel[] = [];
+  modeloSeleccionadoVisualizar: GoogleDriveFilesModel = new GoogleDriveFilesModel();
 
   subscription$: Subscription;
 
@@ -35,6 +36,8 @@ export class PanelExtranetFolderComponent implements OnInit {
 
   displayDescarga: boolean;
   displayVisualizar: boolean;
+  displayVisualizarCustom: boolean;
+  dataVisorCustom: any;
   constructor(private extranetService: ExtranetService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private router: Router,
@@ -106,22 +109,50 @@ export class PanelExtranetFolderComponent implements OnInit {
       });
   }
 
-  onToVisualizar(data: GoogleDriveFilesModel) {
-    if (this.userContextService.getEmail() == "") {
-      this.mensajePrimeNgService.onToInfoMsg(null, "No se puede brindar permisos de visualizacion, Usuario no tiene Email Configurado");
-      return;
-    }
+  // onToVisualizar(data: GoogleDriveFilesModel) {
+  //   if (this.userContextService.getEmail() == "") {
+  //     this.mensajePrimeNgService.onToInfoMsg(null, "No se puede brindar permisos de visualizacion, Usuario no tiene Email Configurado");
+  //     return;
+  //   }
+  //   this.displayVisualizar = true;
+  //   this.subscription$ = new Subscription();
+  //   this.subscription$ = this.extranetService.getGetUrlFilePorId(data.idGoogleDrive, this.userContextService.getEmail() , 'reader')
+  //   .subscribe((resp: boolean) => {
+  //     this.displayVisualizar = false;
+  //     window.open(`https://drive.google.com/open?id=${data.idGoogleDrive}`, '_blank');
+  //     },
+  //     (error) => {
+  //       this.displayVisualizar = false;
+  //       this.mensajePrimeNgService.onToErrorMsg(null, error);
+  //     }
+  //   );
+  // }
+
+  onToVisorCustom(modelo: GoogleDriveFilesModel) {
+    this.modeloSeleccionadoVisualizar = modelo;
     this.displayVisualizar = true;
     this.subscription$ = new Subscription();
-    this.subscription$ = this.extranetService.getGetUrlFilePorId(data.idGoogleDrive, this.userContextService.getEmail() , 'reader')
-    .subscribe((resp: boolean) => {
-      this.displayVisualizar = false;
-      window.open(`https://drive.google.com/open?id=${data.idGoogleDrive}`, '_blank');
-      },
+    this.subscription$ = this.extranetService.getDownloadTxRegistroDocumento(modelo.idGoogleDrive)
+    .subscribe((resp: any) => {
+      switch (resp.type) {
+        case HttpEventType.DownloadProgress:
+          this.mensajePrimeNgService.onToInfoMsg(null,  'EN PROCESO');
+          break;
+        case HttpEventType.Response:
+          this.mensajePrimeNgService.onToInfoMsg(null, 'DESCARGA COMPLETA');
+          console.log(resp);
+          console.log('res');
+          debugger;
+          this.dataVisorCustom = new Blob([resp.body], {type: resp.body.type});
+          this.displayVisualizarCustom = true;
+          this.displayVisualizar = false;
+          break;
+      }
+    },
       (error) => {
         this.displayVisualizar = false;
         this.mensajePrimeNgService.onToErrorMsg(null, error);
-      }
-    );
+      });
   }
+
 }

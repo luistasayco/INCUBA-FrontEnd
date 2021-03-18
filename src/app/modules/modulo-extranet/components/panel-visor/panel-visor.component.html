@@ -1,14 +1,12 @@
 <div *ngIf="isVisible">
     <div *ngIf="isdataVisorCustom.type === 'image/png' || isdataVisorCustom.type === 'image/jpeg'">
 
-
         <app-visor-imagen [isFile]="isdataVisorCustom">
         </app-visor-imagen>
 
     </div>
 
     <div *ngIf="isdataVisorCustom.type === 'audio/mpeg'">
-
 
         <app-visor-audio [isFile]="isdataVisorCustom">
         </app-visor-audio>
@@ -17,9 +15,15 @@
 
     <div *ngIf="isdataVisorCustom.type === 'video/mp4'">
 
-
         <app-visor-video [isFile]="isdataVisorCustom">
         </app-visor-video>
+
+    </div>
+
+    <div *ngIf="isdataVisorCustom.type === 'application/pdf'">
+
+        <app-visor-pdf [isFile]="isdataVisorCustom">
+        </app-visor-pdf>
 
     </div>
 </div>
