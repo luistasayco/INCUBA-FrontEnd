@@ -1,0 +1,763 @@
+<div class="card card-w-title">
+    <h1><strong>{{titulo}}</strong></h1>
+
+    <p-panel header="Datos Principal" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom" for="dropdown-empresa">Empresa</label>
+                <p-dropdown id="dropdown-empresa" class="ui dropdown-item-text" [options]="listItemEmpresa" [(ngModel)]="selectedEmpresa" placeholder="Select Compañia" optionLabel="label" [showClear]="true"></p-dropdown>
+            </div>
+            <div class="ui-g-12 ui-md-2">
+                <label class="label-custom" for="text-granja">Granja</label>
+                <input id="text-granja" type="text" [(ngModel)]="modeloItem.codigoPlanta" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-1">
+                <label class="label-custom" for="text-edad">Edad</label>
+                <input id="text-edad" type="number" [(ngModel)]="modeloItem.edad" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-2">
+                <label class="label-custom" for="text-sexo">Sexo</label>
+                <input id="text-sexo" type="text" [(ngModel)]="modeloItem.sexo" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-2">
+                <label class="label-custom" for="text-zona">Zona</label>
+                <input id="text-zona" type="text" [(ngModel)]="modeloItem.zona" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-1">
+                <label class="label-custom" for="text-galpon">Galpón</label>
+                <input id="text-galpon" type="number" [(ngModel)]="modeloItem.galpon" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-1">
+                <label class="label-custom" for="text-nroPollos">N° Pollos</label>
+                <input id="text-nroPollos" type="number" [(ngModel)]="modeloItem.nroPollos" pInputText>
+            </div>
+        </div>
+    </p-panel>
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12 ui-md-2">
+            <button class="button-custom" pButton type="button" label="{{globalConstants.cDesplegar}}" icon="{{globalConstants.icoDesplegar}}" (click)="goDisplayControles()"></button>
+        </div>
+    </div>
+
+    <p-panel header="Detalle" [toggleable]="true" [collapsed]="!displayControles" [style]="{'margin-bottom':'20px'}">
+        <p-accordion [multiple]="true">
+            <p-accordionTab header="Índice Bursal" [selected]="displayControles">
+                <p-table [value]="modeloItem.listaTxSIMIndiceBursal" [columns]="columnasIndiceBursal" [paginator]="true" [rows]="6" dataKey="ave" autoLayout="true" [responsive]="true">
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th *ngFor="let col of columns">
+                                {{col.header}}
+                            </th>
+                            <th colspan="1">Acciones</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri>
+                        <tr>
+                            <td class="action-td">
+                                <span class="ui-column-title">Ave</span> {{rowData.ave}}
+                            </td>
+                            <td class="action-td">
+                                <span class="ui-column-title">Peso Corporal (g)</span> {{rowData.pesoCorporal}}
+                                <!-- <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <span class="p-float-label">
+                                            <input id="float-input" type="number" pInputText [(ngModel)]="rowData.pesoCorporal"> 
+                                        </span>
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                       
+                                    </ng-template>
+                                </p-cellEditor> -->
+                            </td>
+                            <td class="action-td">
+                                <span class="ui-column-title">Peso Bursa (g)</span>{{rowData.pesoBursa}}
+                                <!-- <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <span class="p-float-label">
+                                            <input id="float-input" type="number" pInputText [(ngModel)]="rowData.pesoBursa"> 
+                                        </span>
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{rowData.pesoBursa}}
+                                    </ng-template>
+                                </p-cellEditor> -->
+                            </td>
+                            <td class="action-td">
+                                <span class="ui-column-title">Peso de Bazo (g)</span>{{rowData.pesoBazo}}
+                                <!-- <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <span class="p-float-label">
+                                            <input id="float-input" type="number" pInputText [(ngModel)]="rowData.pesoBazo"> 
+                                        </span>
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{rowData.pesoBazo}}
+                                    </ng-template>
+                                </p-cellEditor> -->
+                            </td>
+                            <td class="action-td">
+                                <span class="ui-column-title">Peso de Timo (g)</span>{{rowData.pesoTimo}}
+                                <!-- <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <span class="p-float-label">
+                                            <input id="float-input" type="number" pInputText [(ngModel)]="rowData.pesoTimo"> 
+                                        </span>
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{rowData.pesoTimo}}
+                                    </ng-template>
+                                </p-cellEditor> -->
+                            </td>
+                            <td class="action-td">
+                                <span class="ui-column-title">Peso de Hígado (g)</span>{{rowData.pesoHigado}}
+                                <!-- <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <span class="p-float-label">
+                                            <input id="float-input" type="number" pInputText [(ngModel)]="rowData.pesoHigado"> 
+                                        </span>
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{rowData.pesoHigado}}
+                                    </ng-template>
+                                </p-cellEditor> -->
+                            </td>
+                            <td class="action-td">
+                                <span class="ui-column-title">Índice Bursal</span> {{rowData.indiceBursal}}
+                            </td>
+                            <td class="action-td ">
+                                <span class="ui-column-title">Índice Timico</span> {{rowData.indiceTimico}}
+                            </td>
+                            <td class="action-td">
+                                <span class="ui-column-title">Índice Hepático</span> {{rowData.indiceHepatico}}
+                            </td>
+                            <td class="action-td">
+                                <span class="ui-column-title">Bursómetro</span>{{rowData.bursometro}}
+                                <!-- <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <span class="p-float-label">
+                                            <input id="float-input" type="number" pInputText [(ngModel)]="rowData.bursometro"> 
+                                        </span>
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{rowData.bursometro}}
+                                    </ng-template>
+                                </p-cellEditor> -->
+                            </td>
+
+                            <!-- <td class="action-td-action">
+                                <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="{{globalConstants.icoEditar}}" (click)="onRowEditInitIndiceBursal(rowData)"></button>
+                                <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="{{globalConstants.icoGrabar}}" class="ui-button-success" (click)="onRowEditSaveIndiceBursal(rowData)"></button>
+                                <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="{{globalConstants.icoCancelar}}" class="ui-button-danger" style="margin-left: .5em" (click)="onRowEditCancelIndiceBursal(rowData, ri)"></button>
+                            </td> -->
+                            <td class="action-td">
+                                <button *ngIf="!rowData.flgPromedio" pButton icon="{{globalConstants.icoEliminar}}" class="ui-button-danger" (click)="onToRowSelectDeleteIndiceBursal(rowData)"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                <p-footer>
+                    <div class="ui-grid ui-fluid">
+                        <div class="ui-g-12">
+                            <button pButton type="button" label="{{globalConstants.cNuevo}}" icon="{{globalConstants.icoNuevo}}" (click)="onNewIndiceBursal()"></button>
+                        </div>
+                    </div>
+                </p-footer>
+            </p-accordionTab>
+            <p-accordionTab [selected]="displayControles">
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-md-4">
+                        <p-fieldset legend="1. Relación Morfométrica Bursa / Bazo">
+                            <div class="ui-g ui-fluid">
+                                <div class="ui-g-12">
+                                    <label class="label-custom">A favor de la Bursa</label>
+                                    <input type="number" [(ngModel)]="modeloItem.relacionAFavorBursa" pInputText>
+                                </div>
+                                <div class="ui-g-12">
+                                    <label class="label-custom">A favor del Bazo</label>
+                                    <input type="number" [(ngModel)]="modeloItem.relacionAFavorBazo" pInputText>
+                                </div>
+                                <div class="ui-g-12">
+                                    <label class="label-custom">Relación 1 / 1</label>
+                                    <input type="number" [(ngModel)]="modeloItem.relacion1a1" pInputText>
+                                </div>
+                            </div>
+                        </p-fieldset>
+                    </div>
+                    <div class="ui-g-12 ui-md-4">
+                        <p-fieldset legend="2. Apariencia de los pliegues internos de la bursa">
+                            <div class="ui-g ui-fluid">
+                                <div class="ui-g-12">
+                                    <label class="label-custom">Normal</label>
+                                    <input type="number" [(ngModel)]="modeloItem.aparienciaNormal" pInputText>
+                                </div>
+                                <div class="ui-g-12">
+                                    <label class="label-custom">Anormal</label>
+                                    <input type="number" [(ngModel)]="modeloItem.aparienciaAnormal" pInputText>
+                                </div>
+                            </div>
+                        </p-fieldset>
+                    </div>
+                    <div class="ui-g-12 ui-md-4">
+                        <p-fieldset legend="3. Tamaño y apariencia del Timo">
+                            <div class="ui-g ui-fluid">
+                                <div class="ui-g-12">
+                                    <label class="label-custom">Normal</label>
+                                    <input type="number" [(ngModel)]="modeloItem.tamanoNormal" pInputText>
+                                </div>
+                                <div class="ui-g-12">
+                                    <label class="label-custom">Anormal</label>
+                                    <input type="number" [(ngModel)]="modeloItem.tamanoAnormal" pInputText>
+                                </div>
+                            </div>
+                        </p-fieldset>
+                    </div>
+                </div>
+
+            </p-accordionTab>
+            <p-accordionTab header="Sistema Respiratorio" [selected]="displayControles">
+                <p-table [value]="modeloItem.listaTxSIMRespiratorio" [columns]="columnasRespiratorio" [paginator]="true" [rows]="6" dataKey="ave" utoLayout="true" [responsive]="true">
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th *ngFor="let col of columns">
+                                {{col.header}}
+                            </th>
+                            <th colspan="1">Acciones</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri>
+                        <tr>
+                            <td class="ui-fluid">
+                                <span class="ui-column-title">Ave</span> {{rowData.ave}}
+                            </td>
+                            <td class="action-td">
+                                <span class="ui-column-title">Sacos aereos</span> {{rowData.sacosAereos}}
+                            </td>
+                            <td class="action-td">
+                                <span class="ui-column-title">Cornetes</span> {{rowData.cornetes}}
+                            </td>
+                            <td class="action-td">
+                                <span class="ui-column-title">Glotis</span> {{rowData.glotis}}
+                            </td>
+                            <td class="action-td">
+                                <span class="ui-column-title">Tráquea</span> {{rowData.traquea}}
+                            </td>
+                            <td class="action-td">
+                                <span class="ui-column-title">Pulmones</span> {{rowData.pulmones}}
+                            </td>
+                            <td class="action-td">
+                                <span class="ui-column-title">Riñones</span>{{rowData.rinones}}
+                            </td>
+                            <td class="action-td">
+                                <span class="ui-column-title">Placas Peyer</span>{{rowData.placaPeyer}}
+                            </td>
+                            <td>
+                                <button *ngIf="!rowData.flgGradoLesion" pButton icon="{{globalConstants.icoEliminar}}" class="ui-button-danger" (click)="onToRowSelectDeleteRespiratorio(rowData)"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                <p-footer>
+                    <div class="ui-grid ui-fluid">
+                        <div class="ui-g-12">
+                            <button pButton type="button" label="{{globalConstants.cNuevo}}" icon="{{globalConstants.icoNuevo}}" (click)="onNewRespiratorio()"></button>
+                        </div>
+                    </div>
+                </p-footer>
+            </p-accordionTab>
+            <p-accordionTab header="Sistema Digestivo" [selected]="displayControles">
+                <p-table [value]="modeloItem.listaTxSIMDigestivos" [columns]="columnasDigestivo" [paginator]="true" [rows]="6" dataKey="ave" autoLayout="true" [responsive]="true">
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th *ngFor="let col of columns">
+                                {{col.header}}
+                            </th>
+                            <th colspan="1">Acciones</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri>
+                        <tr>
+                            <td class="ui-fluid">
+                                <span class="ui-column-title">Ave</span> {{rowData.ave}}
+                            </td>
+                            <td class="action-td">
+                                <span class="ui-column-title">Duodeno</span> {{rowData.duademo}}
+                            </td>
+                            <td class="action-td">
+                                <span class="ui-column-title">Yeyuno</span>{{rowData.yeyuno}}
+                            </td>
+                            <td class="action-td">
+                                <span class="ui-column-title">Lleon</span>{{rowData.lleon}}
+                            </td>
+                            <td class="action-td">
+                                <span class="ui-column-title">Ciegos</span>{{rowData.ciegos}}
+                            </td>
+                            <td class="action-td">
+                                <span class="ui-column-title">Tonsilas C.</span>{{rowData.tonsillas}}
+                            </td>
+                            <td class="action-td">
+                                <span class="ui-column-title">Hígado</span>{{rowData.higados}}
+                            </td>
+                            <td class="action-td">
+                                <span class="ui-column-title">Molleja</span>{{rowData.molleja}}
+                            </td>
+                            <td class="action-td">
+                                <span class="ui-column-title">Proventriculo</span>{{rowData.proventriculo}}
+                            </td>
+                            <td>
+                                <button *ngIf="!rowData.flgGradoLesion" pButton icon="{{globalConstants.icoEliminar}}" class="ui-button-danger" (click)="onToRowSelectDeleteDigestivo(rowData)"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                <p-footer>
+                    <div class="ui-grid ui-fluid">
+                        <div class="ui-g-12">
+                            <button pButton type="button" label="{{globalConstants.cNuevo}}" icon="{{globalConstants.icoNuevo}}" (click)="onNewDigestivo()"></button>
+                        </div>
+                    </div>
+                </p-footer>
+            </p-accordionTab>
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12">
+                    <p-fieldset>
+                        <label class="label-custom">Los grados de lesión serán calificados del 1 al 3 según su extensión en el órgano</label>
+                        <div class="ui-g ui-fluid">
+                            <div class="ui-g-12 ui-md-2">
+                                <label class="label-custom">Interpretación</label>
+                                <input type="text" [ngModel]="'0.2 - 1'" pInputText disabled>
+                            </div>
+                            <div class="ui-g-12 ui-md-2">
+                                <label class="label-custom">Lesión</label>
+                                <input type="text" [ngModel]="'Leve'" pInputText disabled>
+                            </div>
+                            <div class="ui-g-12 ui-md-8">
+                            </div>
+                            <div class="ui-g-12 ui-md-2">
+                                <input type="text" [ngModel]="'1.2 - 2'" pInputText disabled>
+                            </div>
+                            <div class="ui-g-12 ui-md-2">
+                                <input type="text" [ngModel]="'Moderado'" pInputText disabled>
+                            </div>
+                            <div class="ui-g-12 ui-md-8">
+                            </div>
+                            <div class="ui-g-12 ui-md-2">
+                                <input type="text" [ngModel]="'2.2 - 3'" pInputText disabled>
+                            </div>
+                            <div class="ui-g-12 ui-md-2">
+                                <input type="text" [ngModel]="'Severo'" pInputText disabled>
+                            </div>
+                            <div class="ui-g-12 ui-md-8">
+                            </div>
+
+                            <div class="ui-g-12 ui-md-2">
+                                <label class="label-custom">Hígado</label>
+                                <input type="text" [ngModel]="'Congestión'" pInputText disabled>
+                            </div>
+                            <div class="ui-g-12 ui-md-2">
+                                <label class="label-custom">.</label>
+                                <input type="text" [ngModel]="'1'" pInputText disabled>
+                            </div>
+                            <div class="ui-g-12 ui-md-8">
+                            </div>
+                            <div class="ui-g-12 ui-md-2">
+                                <input type="text" [ngModel]="'Pálido'" pInputText disabled>
+                            </div>
+                            <div class="ui-g-12 ui-md-2">
+                                <input type="text" [ngModel]="'2'" pInputText disabled>
+                            </div>
+                            <div class="ui-g-12 ui-md-8">
+                            </div>
+                            <div class="ui-g-12 ui-md-2">
+                                <input type="text" [ngModel]="'Friable'" pInputText disabled>
+                            </div>
+                            <div class="ui-g-12 ui-md-2">
+                                <input type="text" [ngModel]="'3'" pInputText disabled>
+                            </div>
+                            <div class="ui-g-12 ui-md-8">
+                            </div>
+                        </div>
+                    </p-fieldset>
+                </div>
+
+            </div>
+            <p-accordionTab [selected]="displayControles">
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-md-6">
+                        <p-fieldset legend="SCORE DE LESIONES HISTOPATOLÓGICAS DE BURSA">
+                            <p-table [value]="modeloItem.listaTxSIMLesionBursa" [columns]="columnasLesionBursal" [paginator]="true" [rows]="6" dataKey="ave" autoLayout="true" [responsive]="true">
+                                <ng-template pTemplate="header" let-columns>
+                                    <tr>
+                                        <th *ngFor="let col of columns">
+                                            {{col.header}}
+                                        </th>
+                                        <th colspan="1">Acciones</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri>
+                                    <tr>
+                                        <td class="action-td">
+                                            <span class="ui-column-title">Ave</span> {{rowData.ave}}
+                                        </td>
+                                        <td class="action-td">
+                                            <span class="ui-column-title">Valor</span>{{rowData.valor}}
+                                        </td>
+                                        <td class="action-td">
+                                            <button *ngIf="!rowData.flgPromedio" pButton icon="{{globalConstants.icoEliminar}}" class="ui-button-danger" (click)="onToRowSelectDeleteLesionBursal(rowData)"></button>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <p-footer>
+                                <div class="ui-grid ui-fluid">
+                                    <div class="ui-g-12">
+                                        <button pButton type="button" label="{{globalConstants.cNuevo}}" icon="{{globalConstants.icoNuevo}}" (click)="onNewLesionBursal()"></button>
+                                    </div>
+                                </div>
+                            </p-footer>
+                        </p-fieldset>
+                    </div>
+                    <div class="ui-g-12 ui-md-6">
+                        <p-fieldset legend="SCORE DE LESIONES HISTOPATOLÓGICAS DE TIMO">
+                            <p-table [value]="modeloItem.listaTxSIMLesionTimo" [columns]="columnasLesionTimo" [paginator]="true" [rows]="6" dataKey="ave" autoLayout="true" [responsive]="true">
+                                <ng-template pTemplate="header" let-columns>
+                                    <tr>
+                                        <th *ngFor="let col of columns">
+                                            {{col.header}}
+                                        </th>
+                                        <th colspan="1">Acciones</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri>
+                                    <tr>
+                                        <td class="action-td">
+                                            <span class="ui-column-title">Ave</span> {{rowData.ave}}
+                                        </td>
+                                        <td class="action-td">
+                                            <span class="ui-column-title">Valor</span>{{rowData.valor}}
+                                        </td>
+                                        <td class="action-td">
+                                            <button *ngIf="!rowData.flgPromedio" pButton icon="{{globalConstants.icoEliminar}}" class="ui-button-danger" (click)="onToRowSelectDeleteLesionTimo(rowData)"></button>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <p-footer>
+                                <div class="ui-grid ui-fluid">
+                                    <div class="ui-g-12">
+                                        <button pButton type="button" label="{{globalConstants.cNuevo}}" icon="{{globalConstants.icoNuevo}}" (click)="onNewLesionTimo()"></button>
+                                    </div>
+                                </div>
+                            </p-footer>
+                        </p-fieldset>
+                    </div>
+
+                    <div class="ui-g-12">
+                        <p-fieldset legend="HALLAZGO DE LESIONES HISTOPATOLÓGICAS DE ÓRGANOS">
+                            <p-table [value]="modeloItem.listaTxSIMLesiones" [columns]="columnasLesiones" [paginator]="true" [rows]="1" dataKey="lesionesDeudemo" autoLayout="true" [responsive]="true">
+                                <ng-template pTemplate="header" let-columns>
+                                    <tr>
+                                        <th *ngFor="let col of columns">
+                                            {{col.header}}
+                                        </th>
+                                        <th colspan="2">Acciones</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri>
+                                    <tr>
+
+                                        <td class="ui-fluid">
+                                            <span class="ui-column-title">Lesiones en Duodeno</span>{{rowData.lesionesDeudemo}}
+                                        </td>
+                                        <td class="ui-fluid">
+                                            <span class="ui-column-title">Lesiones en Intestino Medio</span>{{rowData.lesionesIntestinoMedio}}
+                                        </td>
+                                        <td class="ui-fluid">
+                                            <span class="ui-column-title">Lesiones en Hígado</span>{{rowData.lesionesHigado}}
+                                        </td>
+                                        <td>
+                                            <button pButton icon="{{globalConstants.icoEliminar}}" class="ui-button-danger" (click)="onToRowSelectDeleteLesiones(rowData)"></button>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                            <p-footer>
+                                <div class="ui-grid ui-fluid">
+                                    <div class="ui-g-12">
+                                        <button pButton type="button" label="{{globalConstants.cNuevo}}" icon="{{globalConstants.icoNuevo}}" (click)="onNewLesiones()"></button>
+                                    </div>
+                                </div>
+                            </p-footer>
+                        </p-fieldset>
+                    </div>
+                </div>
+            </p-accordionTab>
+            <p-accordionTab header="Fotos" [selected]="displayControles">
+                <div class="ui-grid ui-fluid">
+                    <div class="ui-g-12">
+                        <app-galeria-imagen (listUpdate)="listUpdate($event)"></app-galeria-imagen>
+                    </div>
+                </div>
+            </p-accordionTab>
+        </p-accordion>
+    </p-panel>
+
+    <p-footer>
+        <div class="ui-grid ui-fluid">
+            <div class="ui-g-12 ui-md-6">
+                <label for="float-input-responsable-invetsa">Observación Invetsa:</label>
+                <textarea id="float-input-responsable-invetsa" [(ngModel)]="modeloItem.observacionInvetsa" pInputTextarea autoResize="autoResize" placeholder="Ingresar Observación"> </textarea>
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                <label for="float-input-responsable-planta">Observación Planta:</label>
+                <textarea id="float-input-responsable-planta" [(ngModel)]="modeloItem.observacionPlanta" pInputTextarea autoResize="autoResize" placeholder="Ingresar Observación"> </textarea>
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                <div class="p-field">
+                    <label for="nombreInvetsa">Responsable Invetsa:</label>
+                    <input [disabled]="true" id="nombreInvetsa" [(ngModel)]="modeloItem.responsableInvetsa" type="text" pInputText>
+                    <label for="emailInvetsa">Email:</label>
+                    <input [disabled]="true" id="emailInvetsa" [(ngModel)]="modeloItem.emailFrom" type="text" pInputText>
+                </div>
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                <div class="p-field">
+                    <label for="nombrePlanta">Responsable Planta:</label>
+                    <input id="nombrePlanta" [(ngModel)]="modeloItem.responsableIncubadora" type="text" pInputText>
+                    <label for="emailPlanta">Email:</label>
+                    <input id="emailPlanta" [(ngModel)]="modeloItem.emailTo" type="text" pInputText>
+                </div>
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                <button pButton type="button" label="{{globalConstants.cGrabar}}" icon="{{globalConstants.icoGrabar}}" (click)="onGrabar()"></button>
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                <button pButton type="button" label="{{globalConstants.cRegresar}}" icon="{{globalConstants.icoRegresar}}" (click)="onBack()"></button>
+            </div>
+        </div>
+    </p-footer>
+</div>
+
+<p-messages [(value)]="mensajePrimeNgService.msgs"></p-messages>
+
+<p-dialog header="Grabar" [(visible)]="displaySave" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+
+    Guardando Informacion...!!!
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>
+        </div>
+    </div>
+
+</p-dialog>
+
+<p-dialog header="INDICE BURSAL" [(visible)]="displayIndiceBursal" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom">Peso Corporal (g):</label>
+                <input type="number" [(ngModel)]="modeloInsertIndiceBursal.pesoCorporal" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom">Peso de Bursa (g): </label>
+                <input type="number" [(ngModel)]="modeloInsertIndiceBursal.pesoBursa" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom">Peso de Bazo (g): </label>
+                <input type="number" [(ngModel)]="modeloInsertIndiceBursal.pesoBazo" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom">Peso de Timo (g): </label>
+                <input type="number" [(ngModel)]="modeloInsertIndiceBursal.pesoTimo" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom">Peso de Hígado (g): </label>
+                <input type="number" [(ngModel)]="modeloInsertIndiceBursal.pesoHigado" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom">Bursómetro: </label>
+                <input type="number" [(ngModel)]="modeloInsertIndiceBursal.bursometro" pInputText>
+            </div>
+        </div>
+    </div>
+    <p-footer>
+        <div class="ui-grid ui-fluid">
+            <div class="ui-g-12 ui-md-6">
+                <button pButton type="button" label="{{globalConstants.cGrabar}}" icon="{{globalConstants.icoGrabar}}" (click)="onSaveIndiceBursal()"></button>
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                <button pButton type="button" label="{{globalConstants.cCancelar}}" icon="{{globalConstants.icoCancelar}}" (click)="displayIndiceBursal = false"></button>
+            </div>
+        </div>
+    </p-footer>
+</p-dialog>
+
+<p-dialog header="SISTEMA RESPIRATORIO" [(visible)]="displayRespiratorio" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom">Sacos aereos: </label>
+                <input type="number" [(ngModel)]="modeloInsertRespiratorio.sacosAereos" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom">Cornetes: </label>
+                <input type="number" [(ngModel)]="modeloInsertRespiratorio.cornetes" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom">Glotis: </label>
+                <input type="number" [(ngModel)]="modeloInsertRespiratorio.glotis" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom">Tráquea: </label>
+                <input type="number" [(ngModel)]="modeloInsertRespiratorio.traquea" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom">Pulmones: </label>
+                <input type="number" [(ngModel)]="modeloInsertRespiratorio.pulmones" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom">Riñones: </label>
+                <input type="number" [(ngModel)]="modeloInsertRespiratorio.rinones" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom">Placas Peyer: </label>
+                <input type="number" [(ngModel)]="modeloInsertRespiratorio.placaPeyer" pInputText>
+            </div>
+        </div>
+    </div>
+    <p-footer>
+        <div class="ui-grid ui-fluid">
+            <div class="ui-g-12 ui-md-6">
+                <button pButton type="button" label="{{globalConstants.cGrabar}}" icon="{{globalConstants.icoGrabar}}" (click)="onSaveRespiratorio()"></button>
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                <button pButton type="button" label="{{globalConstants.cCancelar}}" icon="{{globalConstants.icoCancelar}}" (click)="onNewRespiratorio()"></button>
+            </div>
+        </div>
+    </p-footer>
+</p-dialog>
+
+<p-dialog header="SISTEMA DIGESTIVO" [(visible)]="displayDigestivo" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom">Duodeno: </label>
+                <input type="number" [(ngModel)]="modeloInsertDigestivo.duademo" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom">Yeyuno: </label>
+                <input type="number" [(ngModel)]="modeloInsertDigestivo.yeyuno" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom">Ileon: </label>
+                <input type="number" [(ngModel)]="modeloInsertDigestivo.lleon" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom">Ciegos: </label>
+                <input type="number" [(ngModel)]="modeloInsertDigestivo.ciegos" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom">Tonsilas C.: </label>
+                <input type="number" [(ngModel)]="modeloInsertDigestivo.tonsillas" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom">Hígado: </label>
+                <input type="number" [(ngModel)]="modeloInsertDigestivo.higados" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom">Molleja: </label>
+                <input type="number" [(ngModel)]="modeloInsertDigestivo.molleja" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom">Proventriculo: </label>
+                <input type="number" [(ngModel)]="modeloInsertDigestivo.proventriculo" pInputText>
+            </div>
+        </div>
+    </div>
+    <p-footer>
+        <div class="ui-grid ui-fluid">
+            <div class="ui-g-12 ui-md-6">
+                <button pButton type="button" label="{{globalConstants.cGrabar}}" icon="{{globalConstants.icoGrabar}}" (click)="onSaveDigestivo()"></button>
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                <button pButton type="button" label="{{globalConstants.cCancelar}}" icon="{{globalConstants.icoCancelar}}" (click)="onNewDigestivo()"></button>
+            </div>
+        </div>
+    </p-footer>
+</p-dialog>
+
+<p-dialog header="SCORE DE LESIONES HISTOPATOLÓGICAS DE BURSA" [(visible)]="displayLesionBursal" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom">Valor: </label>
+                <input type="number" [(ngModel)]="modeloInsertLesionBursal.valor" pInputText>
+            </div>
+        </div>
+    </div>
+    <p-footer>
+        <div class="ui-grid ui-fluid">
+            <div class="ui-g-12 ui-md-6">
+                <button pButton type="button" label="{{globalConstants.cGrabar}}" icon="{{globalConstants.icoGrabar}}" (click)="onSaveLesionBursal()"></button>
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                <button pButton type="button" label="{{globalConstants.cCancelar}}" icon="{{globalConstants.icoCancelar}}" (click)="onNewLesionBursal()"></button>
+            </div>
+        </div>
+    </p-footer>
+</p-dialog>
+
+<p-dialog header="SCORE DE LESIONES HISTOPATOLÓGICAS DE TIMO" [(visible)]="displayLesionTimo" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom">Valor: </label>
+                <input type="number" [(ngModel)]="modeloInsertLesionTimo.valor" pInputText>
+            </div>
+        </div>
+    </div>
+    <p-footer>
+        <div class="ui-grid ui-fluid">
+            <div class="ui-g-12 ui-md-6">
+                <button pButton type="button" label="{{globalConstants.cGrabar}}" icon="{{globalConstants.icoGrabar}}" (click)="onSaveLesionTimo()"></button>
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                <button pButton type="button" label="{{globalConstants.cCancelar}}" icon="{{globalConstants.icoCancelar}}" (click)="onNewLesionTimo()"></button>
+            </div>
+        </div>
+    </p-footer>
+</p-dialog>
+
+<p-dialog header="HALLAZGO DE LESIONES HISTOPATOLÓGICAS DE ÓRGANOS" [(visible)]="displayLesiones" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <div class="ui-g-12 ui-md-12">
+                <label class="label-custom">Lesiones en duodeno: </label>
+                <input type="text" [(ngModel)]="modeloInsertLesiones.lesionesDeudemo" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-12">
+                <label class="label-custom">Lesiones en intestino medio: </label>
+                <input type="text" [(ngModel)]="modeloInsertLesiones.lesionesIntestinoMedio" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-12">
+                <label class="label-custom">Lesiones en hígado: </label>
+                <input type="text" [(ngModel)]="modeloInsertLesiones.lesionesHigado" pInputText>
+            </div>
+        </div>
+    </div>
+    <p-footer>
+        <div class="ui-grid ui-fluid">
+            <div class="ui-g-12 ui-md-6">
+                <button pButton type="button" label="{{globalConstants.cGrabar}}" icon="{{globalConstants.icoGrabar}}" (click)="onSaveLesiones()"></button>
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                <button pButton type="button" label="{{globalConstants.cCancelar}}" icon="{{globalConstants.icoCancelar}}" (click)="onNewLesiones()"></button>
+            </div>
+        </div>
+    </p-footer>
+</p-dialog>

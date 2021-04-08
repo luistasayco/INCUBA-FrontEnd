@@ -139,6 +139,11 @@ export class IndiceCrear {
                 nombreIndice: 'idyidVacunacionSpray', campoIndice: 'idVacunacionSpray', unico: false  };
         }
 
+        if ( version === 23 ) {
+            indice = { tabla: ConstantesTablasIDB._TABLA_TXSIM,
+                nombreIndice: 'idySIM', campoIndice: 'idSIM', unico: false  };
+        }
+
         return this.indices;
     }
 }

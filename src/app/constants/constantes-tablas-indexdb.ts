@@ -43,4 +43,7 @@ export class ConstantesTablasIDB {
     // Tabla Transaccionales del Modulo Vacunacion Subcutanea
     public static _TABLA_TXVACUNACIONSUBCUTANEANEW = 'trxVacunacionSubCutaneaNew';
     public static _TABLA_TXVACUNACIONSUBCUTANEA = 'trxVacunacionSubCutanea';
+
+    // tabla Transaccion del modulo SIM
+    public static _TABLA_TXSIM = 'trxSIM';
 }

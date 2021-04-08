@@ -129,30 +129,38 @@ export class PanelExtranetFolderComponent implements OnInit {
   // }
 
   onToVisorCustom(modelo: GoogleDriveFilesModel) {
-    this.modeloSeleccionadoVisualizar = modelo;
-    this.displayVisualizar = true;
-    this.subscription$ = new Subscription();
-    this.subscription$ = this.extranetService.getDownloadTxRegistroDocumento(modelo.idGoogleDrive)
-    .subscribe((resp: any) => {
-      switch (resp.type) {
-        case HttpEventType.DownloadProgress:
-          this.mensajePrimeNgService.onToInfoMsg(null,  'EN PROCESO');
-          break;
-        case HttpEventType.Response:
-          this.mensajePrimeNgService.onToInfoMsg(null, 'DESCARGA COMPLETA');
-          console.log(resp);
-          console.log('res');
-          debugger;
-          this.dataVisorCustom = new Blob([resp.body], {type: resp.body.type});
-          this.displayVisualizarCustom = true;
-          this.displayVisualizar = false;
-          break;
-      }
-    },
-      (error) => {
-        this.displayVisualizar = false;
-        this.mensajePrimeNgService.onToErrorMsg(null, error);
-      });
+    if (modelo.mimeType === 'application/pdf' || 
+        modelo.mimeType === 'audio/mpeg' ||
+        modelo.mimeType === 'image/jpeg' ||
+        modelo.mimeType === 'image/png' ||
+        modelo.mimeType === 'video/mp4'){
+          this.modeloSeleccionadoVisualizar = modelo;
+          this.displayVisualizar = true;
+          this.subscription$ = new Subscription();
+          this.subscription$ = this.extranetService.getDownloadTxRegistroDocumento(modelo.idGoogleDrive)
+          .subscribe((resp: any) => {
+            switch (resp.type) {
+              case HttpEventType.DownloadProgress:
+                this.mensajePrimeNgService.onToInfoMsg(null,  'EN PROCESO');
+                break;
+              case HttpEventType.Response:
+                this.mensajePrimeNgService.onToInfoMsg(null, 'DESCARGA COMPLETA');
+                console.log(resp);
+                console.log('res');
+                debugger;
+                this.dataVisorCustom = new Blob([resp.body], {type: resp.body.type});
+                this.displayVisualizarCustom = true;
+                this.displayVisualizar = false;
+                break;
+            }
+          },
+            (error) => {
+              this.displayVisualizar = false;
+              this.mensajePrimeNgService.onToErrorMsg(null, error);
+            });
+    } else {
+      this.mensajePrimeNgService.onToInfoMsg(null,  'FORMATO SOLO SE PUEDE DESCARGAR');
+    }
   }
 
 }

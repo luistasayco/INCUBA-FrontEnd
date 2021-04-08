@@ -32,6 +32,9 @@ const routes: Routes = [
       canActivate: [AuthGuard]},
       { path: 'module-su' , loadChildren:
       () => import('./modules/modulo-vacunacion-subcutanea/modulo-vacunacion-subcutanea.module').then(m => m.VacunacionSubCutaneaModule),
+      canActivate: [AuthGuard]},
+      { path: 'module-si' , loadChildren:
+      () => import('./modules/modulo-sim/modulo-sim.module').then(m => m.SIMModule),
       canActivate: [AuthGuard]}
     ]
   },

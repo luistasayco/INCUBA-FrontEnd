@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-
+import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   selector: 'app-visor-pdf',
   templateUrl: './visor-pdf.component.html',
@@ -7,12 +7,31 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class VisorPdfComponent implements OnInit {
   @Input() isFile: Blob;
-  constructor() { }
+  strBlobURL: string;
 
+  constructor(private _sanitizer: DomSanitizer) { }
+//application
   ngOnInit(): void {
-    let file = new window.Blob([this.isFile], {type: "application/pdf"});
-    let fileURL = window.URL.createObjectURL(file);
+   
+    this.handleInputChange(this.isFile)
       
-    var aa= window.open(fileURL+"#toolbar=0", 'iframe');
   } 
+
+ handleInputChange(files) {
+     let file = files;
+    let pattern = /pdf-*/;
+    let reader = new FileReader();
+    if (!file.type.match(pattern)) {
+      alert('invalid format');
+      return;
+    }
+    reader.onloadend = this._handleReaderLoaded.bind(this);
+    reader.readAsDataURL(file);
+  }
+
+  _handleReaderLoaded(e) {
+    let reader = e.target;
+    this.strBlobURL = reader.result
+  }
+
 }

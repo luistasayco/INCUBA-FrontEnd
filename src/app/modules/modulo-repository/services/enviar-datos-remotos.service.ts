@@ -12,6 +12,8 @@ import { VacunacionSprayService } from '../../modulo-vacunacion-spray/services/v
 import { VacunacionSubcutaneaService } from '../../modulo-vacunacion-subcutanea/services/vacunacion-subcutanea.service';
 import { TxVacunacionSprayModel } from '../../modulo-vacunacion-spray/models/tx-vacunacion-spray.model';
 import { TxVacunacionSubCutaneaModel } from '../../modulo-vacunacion-subcutanea/models/tx-vacunacion-subcutanea.model';
+import { TxSIMModel } from '../../modulo-sim/models/tx-sim.model';
+import { SimService } from '../../modulo-sim/services/sim.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,13 +24,15 @@ export class EnviarDatosRemotosService {
     envioTablaTrxRegistroEquipo: false,
     envioTablaTrxExamenFisicoPollito: false,
     envioTablaTrxVacunacionSpray: false,
-    envioTablaTrxVacunacionSubCutanea: false};
+    envioTablaTrxVacunacionSubCutanea: false,
+    envioTablaTrxSIM: false};
 
   constructor(private readonly servicioIndexedDB: NgxIndexedDBService,
               private readonly registroEquipoService: RegistroEquipoService,
               private readonly examenFisicoPollitoService: ExamenFisicoPollitoService,
               private readonly vacunacionSprayService: VacunacionSprayService,
               private readonly vacunacionSubcutaneaService: VacunacionSubcutaneaService,
+              private readonly simService: SimService,
               private userContextService: UserContextService) { }
 
   private ponerEstadoDefecto() {
@@ -36,6 +40,7 @@ export class EnviarDatosRemotosService {
     this.tablasAEnviar.envioTablaTrxRegistroEquipo = false;
     this.tablasAEnviar.envioTablaTrxVacunacionSpray = false;
     this.tablasAEnviar.envioTablaTrxVacunacionSubCutanea = false;
+    this.tablasAEnviar.envioTablaTrxSIM = false;
   }
 
   private validarProcesoCompletado(): boolean {
@@ -43,7 +48,8 @@ export class EnviarDatosRemotosService {
       this.tablasAEnviar.envioTablaTrxExamenFisicoPollito &&
       this.tablasAEnviar.envioTablaTrxRegistroEquipo &&
       this.tablasAEnviar.envioTablaTrxVacunacionSpray &&
-      this.tablasAEnviar.envioTablaTrxVacunacionSubCutanea
+      this.tablasAEnviar.envioTablaTrxVacunacionSubCutanea &&
+      this.tablasAEnviar.envioTablaTrxSIM
     ) {
       return true;
     }
@@ -128,11 +134,21 @@ export class EnviarDatosRemotosService {
             observer.error(error);
           }
           );
+          this.enviarSIM()
+          .subscribe(resultado => {
+            this.tablasAEnviar.envioTablaTrxSIM = true;
+            if (this.validarProcesoCompletado()) { observer.next(); }
+          },
+          error => {
+            observer.error(error);
+          }
+          );
         } else {
           this.tablasAEnviar.envioTablaTrxRegistroEquipo = true;
           this.tablasAEnviar.envioTablaTrxExamenFisicoPollito = true;
           this.tablasAEnviar.envioTablaTrxVacunacionSpray = true;
           this.tablasAEnviar.envioTablaTrxVacunacionSubCutanea = true;
+          this.tablasAEnviar.envioTablaTrxSIM = true;
           if (this.validarProcesoCompletado()) { observer.next(); }
         }
       } else {
@@ -283,6 +299,46 @@ export class EnviarDatosRemotosService {
                 item.flgMigrado = true;
                 // console.log('enviarExamenFisicoPollito', `Se migro correctamente: `, item);
                 this.servicioIndexedDB.update(ConstantesTablasIDB._TABLA_TXVACUNACIONSUBCUTANEA, item);
+              },
+              errorFor => {
+                // console.log('enviarExamenFisicoPollito', `Error al enviar Datos. Examenes Fisicos de Pollitos: ${errorFor}`, item);
+              }
+              );
+            });
+            observer.next();
+          } else {
+            observer.next();
+          }
+        } else {
+          observer.next();
+        }
+      },
+      error => {
+        // console.log(`Error al enviar Datos. Examenes Fisicos de Pollitos: ${error}`);
+        observer.next();
+      }
+      );
+    });
+    return obsProcesoTerminado;
+  }
+
+  private enviarSIM() {
+    const obsProcesoTerminado = new Observable (observer => {
+      let registros: TxSIMModel[] = [];
+      this.servicioIndexedDB.getAll(ConstantesTablasIDB._TABLA_TXSIM)
+      .subscribe(resultado => {
+        if (resultado) {
+          registros = [...resultado];
+          registros = registros
+          .filter(z => z.flgCerrado === true)
+          .filter(x => x.flgMigrado === false);
+          if ( registros.length > 0 ) {
+            registros.forEach( item => {
+              this.simService.setInsertTxSIM(item)
+              .subscribe( result => {
+                item.flgMigrado = true;
+                // console.log('enviarExamenFisicoPollito', `Se migro correctamente: `, item);
+                this.servicioIndexedDB.update(ConstantesTablasIDB._TABLA_TXSIM, item);
               },
               errorFor => {
                 // console.log('enviarExamenFisicoPollito', `Error al enviar Datos. Examenes Fisicos de Pollitos: ${errorFor}`, item);

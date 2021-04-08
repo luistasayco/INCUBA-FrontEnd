@@ -171,7 +171,7 @@
             <p-accordionTab header="Detalle" [selected]="displayControles">
                 <div class="ui-grid ui-fluid">
                     <div class="ui-g-12">
-                        <button pButton type="button" label="Seleccionar Procesos" icon="{{globalConstants.icoNuevo}}" (click)="displaySeleccionProceso = true"></button>
+                        <button pButton type="button" label="Seleccionar Procesos" icon="{{globalConstants.icoNuevo}}" (click)="onVisibleMaquina()"></button>
                     </div>
                     <div class="ui-g-12">
                         <p-table [value]="modeloItem.listarTxVacunacionSubCutaneaDetalle" dataKey="descripcionProcesoSubCutanea">
@@ -270,7 +270,7 @@
                         <p-footer>
                             <div class="ui-grid ui-fluid">
                                 <div class="ui-g-12">
-                                    <button pButton type="button" label="{{globalConstants.cNuevo}}" icon="{{globalConstants.icoNuevo}}" (click)="displayIrregularidad = true"></button>
+                                    <button pButton type="button" label="{{globalConstants.cNuevo}}" icon="{{globalConstants.icoNuevo}}" (click)="onDisplayIrregularidad()"></button>
                                 </div>
                             </div>
                         </p-footer>
@@ -616,7 +616,7 @@
 
 </p-dialog>
 
-<p-dialog header="Adicionar Vacuna" [(visible)]="displayVacuna" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+<p-dialog *ngIf="displayVacuna" header="Adicionar Vacuna" [(visible)]="displayVacuna" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
     <div class="ui-g ui-fluid">
         <div class="ui-g-12 ui-md-4">
             <label class="label-custom" for="promedio">Vacuna</label>
@@ -640,7 +640,7 @@
 </p-dialog>
 
 
-<p-dialog header="Adicionar Maquina" [(visible)]="displayMaquina" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+<p-dialog *ngIf="displayMaquina" header="Adicionar Maquina" [(visible)]="displayMaquina" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
     <div class="ui-g ui-fluid">
         <div class="ui-g-12 ui-md-6">
             <label class="label-custom" for="label-maquina">Aguja</label>
@@ -668,7 +668,7 @@
     </p-footer>
 </p-dialog>
 
-<p-dialog header="Seleccionar Procesos" [(visible)]="displaySeleccionProceso" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+<p-dialog *ngIf="displaySeleccionProceso" header="Seleccionar Procesos" [(visible)]="displaySeleccionProceso" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false">
     <div class="ui-g ui-fluid">
         <div class="ui-g-12">
             <p-table [columns]="columnasSeleccionarMaquina" [value]="listProceso" [(selection)]="selectSeleccionMaquina" dataKey="idProcesoSubCutanea" autoLayout="true" [responsive]="true">
@@ -699,7 +699,7 @@
                         <button pButton type="button" label="{{globalConstants.cGrabar}}" icon="{{globalConstants.icoGrabar}}" (click)="onGrabarSeleccionMaquina()"></button>
                     </div>
                     <div class="ui-g-12 ui-md-6">
-                        <button pButton type="button" label="{{globalConstants.cCancelar}}" icon="{{globalConstants.icoCancelar}}" (click)="displaySeleccionProceso = false"></button>
+                        <button pButton type="button" label="{{globalConstants.cCancelar}}" icon="{{globalConstants.icoCancelar}}" (click)="onVisibleMaquina()"></button>
                     </div>
                 </div>
             </p-footer>
@@ -709,7 +709,7 @@
 </p-dialog>
 
 
-<p-dialog header="Seleccionar Irregularidad" [(visible)]="displayIrregularidad" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+<p-dialog *ngIf="displayIrregularidad" header="Seleccionar Irregularidad" [(visible)]="displayIrregularidad" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false">
     <div class="ui-g ui-fluid">
         <div class="ui-g-12  ui-md-6">
             <label class="label-custom" for="label-custom-nombre-vacunador">Vacunador: </label>
@@ -737,7 +737,7 @@
                             <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
                         </td>
                         <td *ngFor="let col of columns">
-                            {{rowData[col.field]}}
+                            <span class="ui-column-title">{{col.header}}</span> {{rowData[col.field]}}
                         </td>
                     </tr>
                 </ng-template>
@@ -748,7 +748,7 @@
                         <button pButton type="button" label="{{globalConstants.cGrabar}}" icon="{{globalConstants.icoGrabar}}" (click)="onGrabarIrregularidad()"></button>
                     </div>
                     <div class="ui-g-12 ui-md-6">
-                        <button pButton type="button" label="{{globalConstants.cCancelar}}" icon="{{globalConstants.icoCancelar}}" (click)="displayIrregularidad = false"></button>
+                        <button pButton type="button" label="{{globalConstants.cCancelar}}" icon="{{globalConstants.icoCancelar}}" (click)="onDisplayIrregularidad()"></button>
                     </div>
                 </div>
             </p-footer>

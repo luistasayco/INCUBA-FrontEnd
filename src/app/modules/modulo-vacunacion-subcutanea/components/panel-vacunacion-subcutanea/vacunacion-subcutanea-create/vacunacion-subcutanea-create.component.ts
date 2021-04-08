@@ -415,6 +415,11 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
     this.displayMaquina = false;
   }
 
+  onVisibleMaquina() {
+    this.displaySeleccionProceso = !this.displaySeleccionProceso;
+    this.selectSeleccionMaquina = null;
+  }
+
   onGrabarVacuna() {
     if (this.selectVacuna !== null) {
       this.modeloItem.listarTxVacunacionSubCutaneaVacuna.push(
@@ -665,6 +670,13 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
     this.modeloItem.listarTxVacunacionSubCutaneaVacuna = clonedListVacuna;
   }
 
+  onDisplayIrregularidad() {
+    this.displayIrregularidad =!this.displayIrregularidad;
+    this.selectIrregularidad = null;
+    this.nombreVacunador = '';
+    this.selectNumeroAF = null;
+  }
+
   onGrabarIrregularidad() {
     if (this.selectIrregularidad.length > 0 ) {
       this.selectIrregularidad.forEach(data => {
@@ -814,7 +826,7 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
       this.modeloItem.puntajePorcentajeViabilidad = 0.5;
     }
 
-    console.log('this.modeloItem', this.modeloItem);
+    this.onCalcularPuntaje();
     this.subscription$ = new Subscription();
     this.subscription$ = this.vacunacionSubcutaneaService.setInsertTxVacunacionSubCutanea(this.modeloItem)
     .subscribe(() =>  {

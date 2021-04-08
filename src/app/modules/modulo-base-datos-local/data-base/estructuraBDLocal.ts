@@ -336,6 +336,15 @@ export const estructuraBD = {
           { name: 'codigoEmpresa', keypath: 'codigoEmpresa', options: { unique: false } },
           { name: 'codigoPlanta', keypath: 'codigoPlanta', options: { unique: false } }
         ]
+      },
+      {
+        store: ConstantesTablasIDB._TABLA_TXSIM,
+        storeConfig: { keyPath: 'id', autoIncrement: true },
+        storeSchema: [
+          { name: 'idSIM', keypath: 'idSIM', options: { unique:false } },
+          { name: 'codigoEmpresa', keypath: 'codigoEmpresa', options: { unique: false } },
+          { name: 'codigoPlanta', keypath: 'codigoPlanta', options: { unique: false } }
+        ]
       }
     ]
 }

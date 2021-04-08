@@ -33,6 +33,7 @@ import { environment } from '../environments/environment';
 
 import { LoginModule } from './login/login.module';
 import { ToastrModule } from 'ngx-toastr';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 registerLocaleData(localePy, 'es');
 
@@ -62,7 +63,8 @@ registerLocaleData(localePy, 'es');
     ModuloBaseDatosLocalModule,
     LoginModule,
     ToastrModule.forRoot(),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    PdfViewerModule
   ],
   providers: [ DatePipe,
     { provide: LOCALE_ID, useValue: 'es' },

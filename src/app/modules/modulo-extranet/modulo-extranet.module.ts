@@ -17,7 +17,7 @@ import { VisorImagenComponent } from './components/panel-visor/visor-imagen/viso
 import { VisorAudioComponent } from './components/panel-visor/visor-audio/visor-audio.component';
 import { VisorPdfComponent } from './components/panel-visor/visor-pdf/visor-pdf.component';
 import { VisorVideoComponent } from './components/panel-visor/visor-video/visor-video.component';
-
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 @NgModule({
     declarations: [ PanelExtranetComponent,
         PanelExtranetConfigComponent,
@@ -37,7 +37,8 @@ import { VisorVideoComponent } from './components/panel-visor/visor-video/visor-
         ExtranetPrimeNgModule,
         ExtranetRoutingModule,
         FormsModule,
-        ReactiveFormsModule],
+        ReactiveFormsModule,
+        PdfViewerModule],
     exports: [PanelVisorComponent,
         VisorImagenComponent,
         VisorAudioComponent,

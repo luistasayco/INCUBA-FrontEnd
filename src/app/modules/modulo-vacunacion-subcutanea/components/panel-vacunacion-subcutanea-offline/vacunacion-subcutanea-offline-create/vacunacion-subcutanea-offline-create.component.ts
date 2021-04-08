@@ -34,6 +34,7 @@ import { VacunacionSprayLocalService } from '../../../../modulo-vacunacion-spray
 import { CompartidoLocalService } from '../../../../modulo-compartido/services/compartido-local.service';
 import { RegistroEquipoLocalService } from '../../../../modulo-registro-equipo/services/registro-equipo-local.service';
 import { PlantaModel } from '../../../../modulo-compartido/models/planta.model';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-vacunacion-subcutanea-offline-create',
@@ -670,6 +671,17 @@ export class VacunacionSubcutaneaOfflineCreateComponent implements OnInit, OnDes
     this.modeloItem.listarTxVacunacionSubCutaneaVacuna = clonedListVacuna;
   }
 
+  onVisibleMaquina() {
+    this.displaySeleccionProceso = !this.displaySeleccionProceso;
+    this.selectSeleccionMaquina = null;
+  }
+  onDisplayIrregularidad() {
+    this.displayIrregularidad =!this.displayIrregularidad;
+    this.selectIrregularidad = null;
+    this.nombreVacunador = '';
+    this.selectNumeroAF = null;
+  }
+  
   onGrabarIrregularidad() {
     if (this.selectIrregularidad.length > 0 ) {
       this.selectIrregularidad.forEach(data => {
@@ -820,7 +832,8 @@ export class VacunacionSubcutaneaOfflineCreateComponent implements OnInit, OnDes
       this.modeloItem.puntajePorcentajeViabilidad = 0.5;
     }
 
-    console.log('this.modeloItem', this.modeloItem);
+    this.onCalcularPuntaje();
+
     this.subscription$ = new Subscription();
     this.subscription$ = this.vacunacionSubcutaneaLocalService.setInsertTxVacunacionSubcutanea(this.modeloItem)
     .subscribe(() =>  {
