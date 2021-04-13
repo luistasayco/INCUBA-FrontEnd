@@ -14,7 +14,7 @@ platformBrowserDynamic().bootstrapModule(AppModule)
     if ('serviceWorker' in navigator && environment.production) {
       navigator.serviceWorker.register('/Invetsa/ngsw-worker.js');
     } else {
-      console.log('SERVICE WORKER NO REGISTRADO. ESTE NAVEGADOR O SERVIDOR NO PERMITE SERVICE WORKER');
+      // console.log('SERVICE WORKER NO REGISTRADO. ESTE NAVEGADOR O SERVIDOR NO PERMITE SERVICE WORKER');
     }
   }
 )

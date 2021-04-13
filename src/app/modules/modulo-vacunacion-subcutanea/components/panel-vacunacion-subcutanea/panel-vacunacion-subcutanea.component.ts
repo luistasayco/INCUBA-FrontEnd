@@ -147,7 +147,7 @@ export class PanelVacunacionSubcutaneaComponent implements OnInit, OnDestroy {
   }
 
   onListar() {
-    console.log(this.modeloItem.idVacunacionSubCutanea );
+    // console.log(this.modeloItem.idVacunacionSubCutanea );
     this.modeloItem.idVacunacionSubCutanea = this.modeloItem.idVacunacionSubCutanea === null ? 0 : this.modeloItem.idVacunacionSubCutanea;
     this.modeloItem.codigoEmpresa = this.selectedEmpresa === null ? '' : this.selectedEmpresa.value;
     this.subscription$ = new Subscription();

@@ -184,7 +184,6 @@ export class PanelAsociacionComponent implements OnInit, OnDestroy {
       this.subscription = this.registroEquipoService.getMantenimientoPorSeleccionar(this.modeloMantenimientoPorModelo)
       .subscribe(resp => {
         if (resp) {
-          console.log('listMantenimientoPorSeleccionado', resp);
             this.listMantenimientoPorSeleccionado = resp;
           }
         },
@@ -197,7 +196,6 @@ export class PanelAsociacionComponent implements OnInit, OnDestroy {
       this.subscription = this.registroEquipoService.getMantenimientoSeleccionados(this.modeloMantenimientoPorModelo)
       .subscribe(resp => {
         if (resp) {
-          console.log('listMantenimientoSeleccionado', resp);
             this.listMantenimientoSeleccionado = resp;
           }
         },

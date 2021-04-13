@@ -97,7 +97,7 @@ export class CreateTxSinmiComponent implements OnInit, OnDestroy {
       this.modeloItem.responsableInvetsa = this.userContextService.getNombreCompletoUsuario();
       this.modeloItem.emailFrom = this.userContextService.getEmail();
       this.updateRowGroupMetaData();
-      console.log('this.modeloItem', this.modeloItem);
+      // console.log('this.modeloItem', this.modeloItem);
     });
   }
 
@@ -183,7 +183,7 @@ export class CreateTxSinmiComponent implements OnInit, OnDestroy {
     this.modeloItem.fecHoraRegistro = null;
     this.modeloItem.flgCerrado = false;
 
-    console.log('this.modeloItem', this.modeloItem);
+    // console.log('this.modeloItem', this.modeloItem);
     this.subscription$ = new Subscription();
     this.subscription$ = this.sinmiService.setInsertTxSINMI(this.modeloItem)
     .subscribe(() =>  {

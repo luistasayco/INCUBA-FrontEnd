@@ -94,7 +94,7 @@ export class PanelIrregularidadComponent implements OnInit, OnDestroy {
   }
 
   onRowEditSave(modelo: IrregularidadModel) {
-    console.log('modelo', modelo);
+    // console.log('modelo', modelo);
     this.subscription = new Subscription();
     this.subscription = this.modeloService.setUpdateIrregularidad(modelo)
     .subscribe((resp: IMensajeResultadoApi) => {

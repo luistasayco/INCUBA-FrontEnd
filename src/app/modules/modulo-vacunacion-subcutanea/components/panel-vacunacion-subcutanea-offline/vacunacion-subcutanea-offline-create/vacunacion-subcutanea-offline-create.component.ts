@@ -447,7 +447,7 @@ export class VacunacionSubcutaneaOfflineCreateComponent implements OnInit, OnDes
       x.nroProcesoAcumulado = 0;
     });
 
-    console.log('clonedDataResultado', clonedDataResultado);
+    // console.log('clonedDataResultado', clonedDataResultado);
     if (this.selectSeleccionMaquina.length === 0) {
       let cloneDataDetalle2 = [...cloneDataDetalleOriginal];
       this.listProceso.forEach(x => {

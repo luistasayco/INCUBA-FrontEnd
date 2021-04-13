@@ -79,7 +79,7 @@ export class VacunacionSprayUpdateComponent implements OnInit, OnDestroy {
 
     this.route.params.subscribe((params: Params) => {
       this.id = params.id;
-      console.log(this.id);
+      // console.log(this.id);
       this.onObtieneVacunacionSprayPorId();
     });
 
@@ -107,7 +107,7 @@ export class VacunacionSprayUpdateComponent implements OnInit, OnDestroy {
     .subscribe((data: TxVacunacionSprayModel) => {
       
       this.modeloItem = data;
-      console.log('object', this.modeloItem);
+      // console.log('object', this.modeloItem);
       this.cloneListImagen = [...this.modeloItem.listarTxVacunacionSprayFotos];
       this.updateRowGroupMetaData();
       this.listImagen();

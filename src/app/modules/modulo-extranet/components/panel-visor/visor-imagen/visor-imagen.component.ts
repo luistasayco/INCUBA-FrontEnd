@@ -12,13 +12,10 @@ export class VisorImagenComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log('visor-img');
-    debugger;
     this.handleInputChange(this.isFile)
   }
 
   handleInputChange(files) {
-    debugger;
     let file = files;
     let pattern = /image-*/;
     let reader = new FileReader();
@@ -32,8 +29,6 @@ export class VisorImagenComponent implements OnInit {
 
   _handleReaderLoaded(e) {
     let reader = e.target;
-    debugger;
-    console.log(reader.result);
     this.base64result = reader.result
   }
 

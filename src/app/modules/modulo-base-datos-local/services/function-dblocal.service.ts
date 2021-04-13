@@ -34,7 +34,7 @@ export class FunctionDBLocalService {
         .subscribe( (data) => {
         },
         error => {
-          console.log(`error ${nameTabla}`, item);
+          // console.log(`error ${nameTabla}`, item);
         });
       });
     });
@@ -66,7 +66,7 @@ export class FunctionDBLocalService {
         .subscribe( (data) => {
         },
         error => {
-          console.log(`error ${nameTabla}`, registro);
+          // console.log(`error ${nameTabla}`, registro);
         });
     });
   }

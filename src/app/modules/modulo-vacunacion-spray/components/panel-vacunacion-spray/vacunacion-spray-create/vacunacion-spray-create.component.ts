@@ -462,7 +462,7 @@ export class VacunacionSprayCreateComponent implements OnInit, OnDestroy{
     this.modeloItem.fecRegistro = null;
     this.modeloItem.fecHoraRegistro = null;
     this.modeloItem.flgCerrado = false;
-    console.log('this.modeloItem', this.modeloItem);
+    // console.log('this.modeloItem', this.modeloItem);
     this.subscription$ = new Subscription();
     this.subscription$ = this.vacunacionSprayService.setInsertTxVacunacionSpray(this.modeloItem)
     .subscribe(() =>  {

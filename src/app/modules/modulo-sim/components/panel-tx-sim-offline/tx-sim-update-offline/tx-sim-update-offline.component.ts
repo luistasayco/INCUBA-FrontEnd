@@ -72,7 +72,7 @@ export class TxSimUpdateOfflineComponent implements OnInit, OnDestroy {
     this.subscription$ = new Subscription();
       this.subscription$ = this.simService.getTxSIMPorId(Number(this.id))
       .subscribe((data: TxSIMModel) => {
-        console.log(data);
+        // console.log(data);
         this.modeloItem = data;
         this.cloneListImagen = [...this.modeloItem.listaTxSIMFotos];
         this.listImagen();

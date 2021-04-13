@@ -196,7 +196,6 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
     let codigoModelo: string = this.selectedModelo === null ? '' : this.selectedModelo.value;
     
     if (codigoModelo !== '') {
-      console.log('codigoModelo', codigoModelo);
       this.subscription$ = new Subscription();
       this.subscription$ = this.registroEquipoLocalService.getRepuestoPorModelo()
       .subscribe((data: RepuestoPorModeloModel[]) => {

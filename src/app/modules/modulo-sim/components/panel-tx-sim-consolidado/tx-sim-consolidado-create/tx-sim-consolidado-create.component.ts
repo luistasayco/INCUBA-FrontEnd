@@ -160,7 +160,7 @@ export class TxSimConsolidadoCreateComponent implements OnInit, OnDestroy {
       this.modeloItem.fecRegistro = null;
       this.modeloItem.fecHoraRegistro = null;
       this.modeloItem.flgCerrado = false;
-      console.log('this.modeloItem', this.modeloItem);
+      // console.log('this.modeloItem', this.modeloItem);
       this.subscription$ = new Subscription();
       this.subscription$ = this.simService.setInsertTxSIMConsolidado(this.modeloItem)
       .subscribe(() =>  {

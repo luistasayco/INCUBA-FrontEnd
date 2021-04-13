@@ -152,7 +152,7 @@ export class PanelTxSinmiComponent implements OnInit, OnDestroy {
 
   onListar() {
 
-    console.log(this.modeloItem);
+    // console.log(this.modeloItem);
     this.modeloItem.idSINMI = this.modeloItem.idSINMI === null ? 0 : this.modeloItem.idSINMI;
     this.modeloItem.codigoEmpresa = this.selectedEmpresa === null ? '' : this.selectedEmpresa.value;
     this.subscription$ = new Subscription();

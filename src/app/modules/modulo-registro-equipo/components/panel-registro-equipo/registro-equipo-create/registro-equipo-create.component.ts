@@ -509,7 +509,6 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
       this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, `Ingresar Email de Planta`);
       return;
     }
-    console.log('this.modeloItem.emailTo', this.modeloItem.emailTo);
     let msgList = this.utilService.validaListEmail(this.modeloItem.emailTo);
 
     if (msgList !== '') {

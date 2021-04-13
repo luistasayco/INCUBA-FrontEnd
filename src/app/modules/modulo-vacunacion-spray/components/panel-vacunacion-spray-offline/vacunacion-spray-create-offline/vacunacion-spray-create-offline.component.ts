@@ -471,7 +471,7 @@ export class VacunacionSprayCreateOfflineComponent implements OnInit, OnDestroy 
     this.modeloItem.fecHoraRegistro = new Date();
     this.modeloItem.fecRegistro = new Date();
     this.modeloItem.usuarioCreacion = usuario;
-    console.log('this.modeloItem', this.modeloItem);
+    // console.log('this.modeloItem', this.modeloItem);
     this.subscription$ = new Subscription();
     this.subscription$ = this.vacunacionSprayLocalService.setInsertTxVacunacionSpray(this.modeloItem)
     .subscribe(() =>  {
@@ -481,7 +481,7 @@ export class VacunacionSprayCreateOfflineComponent implements OnInit, OnDestroy 
     },
       (error) => {
         this.displaySave = false;
-        console.log('error', error);
+        // console.log('error', error);
         this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, error);
     });
 

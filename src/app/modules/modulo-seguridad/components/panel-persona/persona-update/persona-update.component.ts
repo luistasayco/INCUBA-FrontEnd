@@ -275,7 +275,7 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
     this.modelo.entidadUsuario.themeDark = Boolean(this.modeloForm.controls['dark'].value);
     this.modelo.entidadUsuario.typeMenu = this.modeloForm.controls['menu'].value;
     this.modelo.entidadUsuario.themeColor = this.modeloForm.controls['theme'].value;
-    console.log(this.modelo);
+    // console.log(this.modelo);
     this.subscription = new Subscription();
     this.subscription = this.seguridadService.setUpdatePersona(this.modelo)
     .subscribe(() =>  {

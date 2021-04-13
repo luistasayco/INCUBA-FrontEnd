@@ -97,7 +97,7 @@ export class UpdateTxSinmiComponent implements OnInit, OnDestroy {
       this.listImagen();
 
       this.updateRowGroupMetaData();
-      console.log('this.modeloItem', this.modeloItem);
+      // console.log('this.modeloItem', this.modeloItem);
     });
   }
 
@@ -168,7 +168,7 @@ export class UpdateTxSinmiComponent implements OnInit, OnDestroy {
     
     this.displaySave = true;
 
-    console.log('this.modeloItem', this.modeloItem);
+    // console.log('this.modeloItem', this.modeloItem);
     this.subscription$ = new Subscription();
     this.subscription$ = this.sinmiService.setUpdateTxSINMI(this.modeloItem)
     .subscribe(() =>  {

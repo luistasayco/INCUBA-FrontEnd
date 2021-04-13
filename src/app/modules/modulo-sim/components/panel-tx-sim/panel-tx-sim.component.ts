@@ -163,7 +163,7 @@ export class PanelTxSimComponent implements OnInit, OnDestroy {
     .subscribe(resp => {
       if (resp) {
           this.listModelo = resp;
-          console.log('this.listModelo', this.listModelo);
+          // console.log('this.listModelo', this.listModelo);
         }
       },
       (error) => {

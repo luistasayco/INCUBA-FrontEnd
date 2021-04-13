@@ -139,7 +139,7 @@ export class VacunacionSubcutaneaOfflineUpdateComponent implements OnInit, OnDes
     this.subscription$ = new Subscription();
     this.subscription$ = this.vacunacionSubcutaneaLocalService.getTxVacunacionSubcutaneaPorId(vId)
     .subscribe((data: TxVacunacionSubCutaneaModel) => {
-      console.log('data', data);
+      // console.log('data', data);
       this.modeloItem = data;
       this.cloneListImagen = [...this.modeloItem.listarTxVacunacionSubCutaneaFotos];
       this.listImagen();

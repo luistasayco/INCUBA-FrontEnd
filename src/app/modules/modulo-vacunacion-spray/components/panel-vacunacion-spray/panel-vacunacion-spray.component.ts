@@ -148,7 +148,7 @@ export class PanelVacunacionSprayComponent implements OnInit {
   }
 
   onListar() {
-    console.log(this.modeloItem.idVacunacionSpray );
+    // console.log(this.modeloItem.idVacunacionSpray );
     this.modeloItem.idVacunacionSpray = this.modeloItem.idVacunacionSpray === null ? 0 : this.modeloItem.idVacunacionSpray;
     this.modeloItem.codigoEmpresa = this.selectedEmpresa === null ? '' : this.selectedEmpresa.value;
     this.subscription$ = new Subscription();

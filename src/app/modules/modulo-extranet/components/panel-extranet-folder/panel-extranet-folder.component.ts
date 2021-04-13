@@ -145,9 +145,6 @@ export class PanelExtranetFolderComponent implements OnInit {
                 break;
               case HttpEventType.Response:
                 this.mensajePrimeNgService.onToInfoMsg(null, 'DESCARGA COMPLETA');
-                console.log(resp);
-                console.log('res');
-                debugger;
                 this.dataVisorCustom = new Blob([resp.body], {type: resp.body.type});
                 this.displayVisualizarCustom = true;
                 this.displayVisualizar = false;

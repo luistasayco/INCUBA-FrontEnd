@@ -22,7 +22,7 @@ export class AppComponent implements OnInit, OnDestroy {
               private readonly servicioMensaje: MensajesService) {
 
       this.swUpdate.available.subscribe(event => {
-      console.log('Nueva versión disponible');
+      // console.log('Nueva versión disponible');
       this.descargarActualizacion();
     });
 

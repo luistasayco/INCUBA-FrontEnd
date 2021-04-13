@@ -93,7 +93,7 @@ export class UpdateTxSinmiOfflineComponent implements OnInit , OnDestroy{
     .subscribe((data: TxSINMIModel) => {
   
       this.modeloItem = data;
-      console.log(' this.modeloItem',  this.modeloItem);
+      // console.log(' this.modeloItem',  this.modeloItem);
       this.cloneListImagen = [...this.modeloItem.listaTxSINMIFotos];
       this.listImagen();
 
