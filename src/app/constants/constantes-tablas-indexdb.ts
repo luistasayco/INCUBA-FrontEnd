@@ -46,4 +46,10 @@ export class ConstantesTablasIDB {
 
     // tabla Transaccion del modulo SIM
     public static _TABLA_TXSIM = 'trxSIM';
+
+    // tabla Transaccion del modulo SIM
+    public static _TABLA_TXSINMI = 'trxSINMI';
+
+    // tabla Transaccion del modulo SIM
+    public static _TABLA_TXSINMI_DETALLE_NEW = 'trxSINMI_Detalle_New';
 }

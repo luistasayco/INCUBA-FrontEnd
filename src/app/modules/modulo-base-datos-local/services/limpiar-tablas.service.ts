@@ -15,6 +15,7 @@ export class LimpiarTablasService {
     this.limpiarTablaRegistroEquipo(ConstantesTablasIDB._TABLA_TXVACUNACIONSPRAY, 'id');
     this.limpiarTablaRegistroEquipo(ConstantesTablasIDB._TABLA_TXVACUNACIONSUBCUTANEA, 'id');
     this.limpiarTablaRegistroEquipo(ConstantesTablasIDB._TABLA_TXSIM, 'id');
+    this.limpiarTablaRegistroEquipo(ConstantesTablasIDB._TABLA_TXSINMI, 'id');
   }
 
   private limpiarTablaRegistroEquipo(tabla: string, campoID: string) {

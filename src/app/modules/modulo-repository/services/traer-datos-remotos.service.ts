@@ -26,6 +26,8 @@ import { ProcesoSubCutaneaModel } from '../../modulo-vacunacion-subcutanea/model
 import { ProcesoDetalleSubCutaneaModel } from '../../modulo-vacunacion-subcutanea/models/proceso-detalle-subcutanea';
 import { TxVacunacionSprayModel } from '../../modulo-vacunacion-spray/models/tx-vacunacion-spray.model';
 import { TxVacunacionSubCutaneaModel } from '../../modulo-vacunacion-subcutanea/models/tx-vacunacion-subcutanea.model';
+import { TxSINMIDetalleModel } from '../../modulo-sinmi/models/tx-sinmi-detalle.model';
+import { SinmiService } from '../../modulo-sinmi/services/sinmi.service';
 
 @Injectable({
   providedIn: 'root'
@@ -47,7 +49,8 @@ export class TraerDatosRemotosService {
               private examenFisicoPollitoService: ExamenFisicoPollitoService,
               private loginService: LoginService,
               private vacunacionSprayService: VacunacionSprayService,
-              private vacunacionSubcutaneaService: VacunacionSubcutaneaService) { }
+              private vacunacionSubcutaneaService: VacunacionSubcutaneaService,
+              private sinmiService: SinmiService) { }
 
   private iniciarTablas() {
     this.tablasCompletas = {
@@ -72,7 +75,8 @@ export class TraerDatosRemotosService {
       tablaMstProcesoSubCutanea: false,
       tablaMstProcesoDetalleSubCutanea: false,
       tablaTrxVacunacionSprayNew: false,
-      tablaTrxVacunacionSubCutaneaNew: false
+      tablaTrxVacunacionSubCutaneaNew: false,
+      tablaTrxSINMIDetalleNew: false
     };
   }
 
@@ -149,6 +153,8 @@ export class TraerDatosRemotosService {
     this.getProcesoDetalleSubCutanea('getProcesoDetalleSubCutanea', 'ProcesoDetalleSubCutanea');
     this.getTrxVacunacionSprayNew('getTrxVacunacionSprayNew', 'TrxVacunacionSprayNew');
     this.getTrxVacunacionSubCutaneaNew('getTrxVacunacionSubCutaneaNew', 'TrxVacunacionSubCutaneaNew');
+
+    this.getTrxSINMIDetalleNew('getTrxSINMIDetalleNew', 'TrxSINMIDetalleNew');
 
   }
 
@@ -471,6 +477,21 @@ export class TraerDatosRemotosService {
     );
   }
 
+  private getTrxSINMIDetalleNew(nameProcedimiento: string, etiqueta: string) {
+    let listTrx: TxSINMIDetalleModel[] = [];
+    this.informacionDelProceso(`Inicio de ${nameProcedimiento}`);
+    this.sinmiService.getTxSINMIDetalleNew()
+    .subscribe(
+        result => {
+          listTrx = result;
+          this.createDataIndexDB( ConstantesTablasIDB._TABLA_TXSINMI_DETALLE_NEW, listTrx, etiqueta);
+          this.procesoFinalizado(nameProcedimiento);
+          this.tablasCompletas.tablaTrxSINMIDetalleNew = true;
+          this.emitDatosCargados();
+        }
+    );
+  }
+
   emitDatosCargados() {
     let resultado = false;
     if (this.tablasCompletas.tablaMstEmpresa && this.tablasCompletas.tablaMstPlanta &&
@@ -492,7 +513,8 @@ export class TraerDatosRemotosService {
         this.tablasCompletas.tablaMstProcesoSubCutanea &&
         this.tablasCompletas.tablaMstProcesoDetalleSubCutanea &&
         this.tablasCompletas.tablaTrxVacunacionSprayNew && 
-        this.tablasCompletas.tablaTrxVacunacionSubCutaneaNew
+        this.tablasCompletas.tablaTrxVacunacionSubCutaneaNew &&
+        this.tablasCompletas.tablaTrxSINMIDetalleNew
         ){
       resultado = true;
       // console.log('FIN DE LA SINCRONIZACION DE RECEPCION:', this.formatoFecha.transform(new Date(), 'dd/MM/yyyy HH:mm:ss'));

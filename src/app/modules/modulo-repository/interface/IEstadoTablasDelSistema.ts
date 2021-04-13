@@ -23,4 +23,7 @@ export interface IEstadoTablasDelSistema {
   tablaMstProcesoSubCutanea: boolean;
   tablaMstProcesoDetalleSubCutanea: boolean;
   tablaTrxVacunacionSubCutaneaNew: boolean;
+
+  tablaTrxSINMIDetalleNew: boolean;
+
 }

@@ -1,0 +1,161 @@
+<div class="card card-w-title">
+    <h1><strong>{{titulo}}</strong></h1>
+
+    <p-panel header="Datos Principal" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom" for="dropdown-empresa">Empresa</label>
+                <p-dropdown id="dropdown-empresa" class="ui dropdown-item-text" [options]="listItemEmpresa" [(ngModel)]="selectedEmpresa" placeholder="Select Compañia" optionLabel="label" [showClear]="true"></p-dropdown>
+            </div>
+            <div class="ui-g-12 ui-md-2">
+                <label class="label-custom" for="text-granja">Granja</label>
+                <input id="text-granja" type="text" [(ngModel)]="modeloItem.codigoPlanta" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-1">
+                <label class="label-custom" for="text-edad">Edad</label>
+                <input id="text-edad" type="number" [(ngModel)]="modeloItem.edad" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                <label class="label-custom" for="text-sexo">Motivo Visita</label>
+                <input id="text-sexo" type="text" [(ngModel)]="modeloItem.motivoVisita" pInputText>
+            </div>
+        </div>
+    </p-panel>
+
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12 ui-md-2">
+            <button class="button-custom" pButton type="button" label="{{globalConstants.cDesplegar}}" icon="{{globalConstants.icoDesplegar}}" (click)="goDisplayControles()"></button>
+        </div>
+    </div>
+
+    <p-panel header="Detalle" [toggleable]="true" [collapsed]="!displayControles" [style]="{'margin-bottom':'20px'}">
+        <p-table [value]="modeloItem.listaTxSINMIDetalle" sortMode="single" (onSort)="onSort()">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Órgano</th>
+                    <th>Observaciones</th>
+                    <th>Score</th>
+                    <th>Ave 1</th>
+                    <th>Ave 2</th>
+                    <th>Ave 3</th>
+                    <th>Ave 4</th>
+                    <th>Ave 5</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                <tr>
+                    <td class="action-td" *ngIf="rowGroupMetadata[rowData.descripcionOrgano].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.descripcionOrgano].size">
+                        <strong>{{rowData.descripcionOrgano}}</strong>
+                    </td>
+
+                    <td class="ui-fluid">{{rowData.descripcionOrganoDetalle}}</td>
+                    <td class="action-td">{{rowData.score}}</td>
+                    <td class="action-td" [pEditableColumn]>
+                        <p-cellEditor>
+                            <ng-template pTemplate="output">
+                                {{rowData.ave1}}
+                            </ng-template>
+                            <ng-template pTemplate="input">
+                                <input type="number" [(ngModel)]="rowData.ave1" pInputText>
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td class="action-td" [pEditableColumn]>
+                        <p-cellEditor>
+                            <ng-template pTemplate="output">
+                                {{rowData.ave2}}
+                            </ng-template>
+                            <ng-template pTemplate="input">
+                                <input type="number" [(ngModel)]="rowData.ave2" pInputText>
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td class="action-td" [pEditableColumn]>
+                        <p-cellEditor>
+                            <ng-template pTemplate="output">
+                                {{rowData.ave3}}
+                            </ng-template>
+                            <ng-template pTemplate="input">
+                                <input type="number" [(ngModel)]="rowData.ave3" pInputText>
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td class="action-td" [pEditableColumn]>
+                        <p-cellEditor>
+                            <ng-template pTemplate="output">
+                                {{rowData.ave4}}
+                            </ng-template>
+                            <ng-template pTemplate="input">
+                                <input type="number" [(ngModel)]="rowData.ave4" pInputText>
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td class="action-td" [pEditableColumn]>
+                        <p-cellEditor>
+                            <ng-template pTemplate="output">
+                                {{rowData.ave5}}
+                            </ng-template>
+                            <ng-template pTemplate="input">
+                                <input type="number" [(ngModel)]="rowData.ave5" pInputText>
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </p-panel>
+    <p-panel header="Fotos" [toggleable]="true" [collapsed]="!displayControles" [style]="{'margin-bottom':'20px'}">
+        <div class="ui-grid ui-fluid">
+            <div class="ui-g-12">
+                <app-galeria-imagen (listUpdate)="listUpdate($event)"></app-galeria-imagen>
+            </div>
+        </div>
+    </p-panel>
+    <p-footer>
+        <div class="ui-grid ui-fluid">
+            <div class="ui-g-12 ui-md-6">
+                <label for="float-input-responsable-invetsa">Observación Invetsa:</label>
+                <textarea id="float-input-responsable-invetsa" [(ngModel)]="modeloItem.observacionInvetsa" pInputTextarea autoResize="autoResize" placeholder="Ingresar Observación"> </textarea>
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                <label for="float-input-responsable-planta">Observación Planta:</label>
+                <textarea id="float-input-responsable-planta" [(ngModel)]="modeloItem.observacionPlanta" pInputTextarea autoResize="autoResize" placeholder="Ingresar Observación"> </textarea>
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                <div class="p-field">
+                    <label for="nombreInvetsa">Responsable Invetsa:</label>
+                    <input [disabled]="true" id="nombreInvetsa" [(ngModel)]="modeloItem.responsableInvetsa" type="text" pInputText>
+                    <label for="emailInvetsa">Email:</label>
+                    <input [disabled]="true" id="emailInvetsa" [(ngModel)]="modeloItem.emailFrom" type="text" pInputText>
+                </div>
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                <div class="p-field">
+                    <label for="nombrePlanta">Responsable Planta:</label>
+                    <input id="nombrePlanta" [(ngModel)]="modeloItem.responsableIncubadora" type="text" pInputText>
+                    <label for="emailPlanta">Email:</label>
+                    <input id="emailPlanta" [(ngModel)]="modeloItem.emailTo" type="text" pInputText>
+                </div>
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                <button pButton type="button" label="{{globalConstants.cGrabar}}" icon="{{globalConstants.icoGrabar}}" (click)="onGrabar()"></button>
+            </div>
+            <div class="ui-g-12 ui-md-6">
+                <button pButton type="button" label="{{globalConstants.cRegresar}}" icon="{{globalConstants.icoRegresar}}" (click)="onBack()"></button>
+            </div>
+        </div>
+    </p-footer>
+</div>
+
+<p-messages [(value)]="mensajePrimeNgService.msgs"></p-messages>
+
+<p-dialog header="Grabar" [(visible)]="displaySave" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+
+    Guardando Informacion...!!!
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>
+        </div>
+    </div>
+
+</p-dialog>

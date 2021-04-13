@@ -345,6 +345,23 @@ export const estructuraBD = {
           { name: 'codigoEmpresa', keypath: 'codigoEmpresa', options: { unique: false } },
           { name: 'codigoPlanta', keypath: 'codigoPlanta', options: { unique: false } }
         ]
+      },
+      {
+        store: ConstantesTablasIDB._TABLA_TXSINMI,
+        storeConfig: { keyPath: 'id', autoIncrement: true },
+        storeSchema: [
+          { name: 'idSINMI', keypath: 'idSINMI', options: { unique:false } },
+          { name: 'codigoEmpresa', keypath: 'codigoEmpresa', options: { unique: false } },
+          { name: 'codigoPlanta', keypath: 'codigoPlanta', options: { unique: false } }
+        ]
+      }
+      ,
+      {
+        store: ConstantesTablasIDB._TABLA_TXSINMI_DETALLE_NEW,
+        storeConfig: { keyPath: 'id', autoIncrement: true },
+        storeSchema: [
+          { name: 'idSINMIDetalle', keypath: 'idSINMIDetalle', options: { unique:false } }
+        ]
       }
     ]
 }

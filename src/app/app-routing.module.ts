@@ -35,6 +35,9 @@ const routes: Routes = [
       canActivate: [AuthGuard]},
       { path: 'module-si' , loadChildren:
       () => import('./modules/modulo-sim/modulo-sim.module').then(m => m.SIMModule),
+      canActivate: [AuthGuard]},
+      { path: 'module-sm' , loadChildren:
+      () => import('./modules/modulo-sinmi/modulo-sinmi.module').then(m => m.SINMIModule),
       canActivate: [AuthGuard]}
     ]
   },

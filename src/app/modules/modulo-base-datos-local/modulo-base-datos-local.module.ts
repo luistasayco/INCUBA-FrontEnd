@@ -310,13 +310,39 @@ export function migrationFactory() {
         } catch (e) {
             // console.log('Error al crear los indices', e);
         }
+      },
+      24: (db, transaction) => {
+        try {
+            arrayIndices = IndiceCrear.armarIndices(24);
+
+            arrayIndices.forEach( idx => {
+                store = transaction.objectStore( idx.tabla );
+                store.createIndex(idx.nombreIndice, idx.campoIndice, { unique: idx.unico });
+             }
+            );
+        } catch (e) {
+            // console.log('Error al crear los indices', e);
+        }
+      },
+      25: (db, transaction) => {
+        try {
+            arrayIndices = IndiceCrear.armarIndices(25);
+
+            arrayIndices.forEach( idx => {
+                store = transaction.objectStore( idx.tabla );
+                store.createIndex(idx.nombreIndice, idx.campoIndice, { unique: idx.unico });
+             }
+            );
+        } catch (e) {
+            // console.log('Error al crear los indices', e);
+        }
       }
     };
   }
 
 const dbConfig: DBConfig  = {
     name: 'DBINVETSA',
-    version: 3,
+    version: 4,
     objectStoresMeta: estructuraBD.BASE_DE_DATOS, migrationFactory
   };
 

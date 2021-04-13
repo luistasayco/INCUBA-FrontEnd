@@ -144,6 +144,16 @@ export class IndiceCrear {
                 nombreIndice: 'idySIM', campoIndice: 'idSIM', unico: false  };
         }
 
+        if ( version === 24 ) {
+            indice = { tabla: ConstantesTablasIDB._TABLA_TXSINMI,
+                nombreIndice: 'idySINMI', campoIndice: 'idSINMI', unico: false  };
+        }
+
+        if ( version === 25 ) {
+            indice = { tabla: ConstantesTablasIDB._TABLA_TXSINMI_DETALLE_NEW,
+                nombreIndice: 'idySINMIDetalle', campoIndice: 'idSINMIDetalle', unico: false  };
+        }
+
         return this.indices;
     }
 }
