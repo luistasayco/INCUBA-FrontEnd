@@ -67,7 +67,11 @@ export class PanelOrganoDetalleComponent implements OnInit, OnDestroy {
       { header: 'Codigo' },
       { header: 'Descripcion' },
       { header: 'Score' },
-      { header: 'Orden' }
+      { header: 'Score Inicial' },
+      { header: 'Score Final' },
+      { header: 'Orden' },
+      { header: 'Factor Impacto' },
+      { header: 'Flag Media' }
     ];
     this.getToObtieneOrgano();
     // this.onListar();

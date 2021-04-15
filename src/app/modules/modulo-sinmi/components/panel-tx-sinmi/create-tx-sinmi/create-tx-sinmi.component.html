@@ -56,7 +56,8 @@
                                 {{rowData.ave1}}
                             </ng-template>
                             <ng-template pTemplate="input">
-                                <input type="number" [(ngModel)]="rowData.ave1" pInputText>
+                                <input type="number" [(ngModel)]="rowData.ave1" [min]="rowData.scoreInicio" [step]="1" [max]="rowData.scoreFin" pInputText>
+                                <span class="validity"></span>
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -66,7 +67,8 @@
                                 {{rowData.ave2}}
                             </ng-template>
                             <ng-template pTemplate="input">
-                                <input type="number" [(ngModel)]="rowData.ave2" pInputText>
+                                <input type="number" [(ngModel)]="rowData.ave2" [min]="rowData.scoreInicio" [step]="1" [max]="rowData.scoreFin" pInputText>
+                                <span class="validity"></span>
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -76,7 +78,8 @@
                                 {{rowData.ave3}}
                             </ng-template>
                             <ng-template pTemplate="input">
-                                <input type="number" [(ngModel)]="rowData.ave3" pInputText>
+                                <input type="number" [(ngModel)]="rowData.ave3" [min]="rowData.scoreInicio" [step]="1" [max]="rowData.scoreFin" pInputText>
+                                <span class="validity"></span>
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -86,7 +89,8 @@
                                 {{rowData.ave4}}
                             </ng-template>
                             <ng-template pTemplate="input">
-                                <input type="number" [(ngModel)]="rowData.ave4" pInputText>
+                                <input type="number" [(ngModel)]="rowData.ave4" [min]="rowData.scoreInicio" [step]="1" [max]="rowData.scoreFin" pInputText>
+                                <span class="validity"></span>
                             </ng-template>
                         </p-cellEditor>
                     </td>
@@ -96,7 +100,8 @@
                                 {{rowData.ave5}}
                             </ng-template>
                             <ng-template pTemplate="input">
-                                <input type="number" [(ngModel)]="rowData.ave5" pInputText>
+                                <input type="number" [(ngModel)]="rowData.ave5" [min]="rowData.scoreInicio" [step]="1" [max]="rowData.scoreFin" pInputText>
+                                <span class="validity"></span>
                             </ng-template>
                         </p-cellEditor>
                     </td>

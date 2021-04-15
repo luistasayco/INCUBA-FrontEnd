@@ -14,24 +14,36 @@
                         </div>
                     </div>
                     <div class="ui-g-12">
-                        <label class="label-custom" for="float-input-score">Score: </label>
+                        <label class="label-custom" for="float-input-score">Score Inicial: </label>
+                    </div>
+                    <div class="ui-g-12 ui-md-3">
+                        <input id="float-input-score" type="number" formControlName="score" pInputText placeholder="Ingresar Score Inicial">
                     </div>
                     <div class="ui-g-12">
-                        <input id="float-input-score" type="text" formControlName="score" pInputText placeholder="Ingresar Score">
-                        <div *ngIf="maestroForm.controls['score'].errors && maestroForm.controls['score'].dirty">
-                            <p-message severity="error" text="Score es requerido" *ngIf="maestroForm.controls['score'].errors['required']"></p-message>
-                            <p-message severity="error" text="Score debe tener un maximo de 10 y un minimo de 1 caractares." *ngIf="maestroForm.controls['score'].errors['maxlength'] || maestroForm.controls['score'].errors['minlength']"></p-message>
-                        </div>
+                        <label class="label-custom" for="float-input-score-final">Score Final: </label>
+                    </div>
+                    <div class="ui-g-12 ui-md-3">
+                        <input id="float-input-score-final" type="number" formControlName="scoreFinal" pInputText placeholder="Ingresar Score Final">
                     </div>
                     <div class="ui-g-12">
-                        <div class="ui-g-12">
-                            <label class="label-custom" for="float-input-orden">Orden: </label>
-                        </div>
-                        <div class="ui-g-12">
-                            <input id="float-input-orden" type="number" ormControlName="orden" pInputText placeholder="Ingresar Orden">
-                        </div>
+                        <label class="label-custom" for="float-input-orden">Orden: </label>
+                    </div>
+                    <div class="ui-g-12  ui-md-3">
+                        <input id="float-input-orden" type="number" formControlName="orden" pInputText placeholder="Ingresar Orden">
+                    </div>
+                    <div class="ui-g-12">
+                        <label class="label-custom" for="float-input-factor">Factor Impacto: </label>
+                    </div>
+                    <div class="ui-g-12  ui-md-3">
+                        <input id="float-input-factor" type="number" formControlName="factor" pInputText placeholder="Ingresar Factor Impacto">
                     </div>
 
+                    <div class="ui-g-12">
+                        <label class="label-custom">Calcula Media: </label>
+                    </div>
+                    <div class="ui-g-12  ui-md-3">
+                        <p-checkbox formControlName="media" binary="true"></p-checkbox>
+                    </div>
                 </div>
             </form>
         </div>

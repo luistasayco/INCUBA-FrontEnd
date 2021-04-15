@@ -52,7 +52,10 @@ export class CreateOrganoDetalleComponent implements OnInit {
       {
         descripcion : new FormControl('', Validators.compose([Validators.required, Validators.maxLength(200), Validators.minLength(4)])),
         score : new FormControl('',Validators.compose([Validators.required, Validators.maxLength(10), Validators.minLength(1)])),
-        orden : new FormControl(0, Validators.compose([Validators.required]))
+        orden : new FormControl(0, Validators.compose([Validators.required])),
+        scoreFinal : new FormControl(0, Validators.compose([Validators.required])),
+        factor : new FormControl(0, Validators.compose([Validators.required])),
+        media : new FormControl(true, Validators.compose([Validators.required]))
       }
     );
   }
@@ -60,7 +63,10 @@ export class CreateOrganoDetalleComponent implements OnInit {
   onClickSave() {
     this.modelo.idOrgano = Number(this.idOrgano);
     this.modelo.descripcionOrganoDetalle = this.maestroForm.controls['descripcion'].value;
-    this.modelo.score = this.maestroForm.controls['score'].value;
+    this.modelo.scoreInicio = this.maestroForm.controls['score'].value;
+    this.modelo.scoreFin = this.maestroForm.controls['scoreFinal'].value;
+    this.modelo.factorImpacto = this.maestroForm.controls['factor'].value;
+    this.modelo.flgMedia = this.maestroForm.controls['media'].value;
     this.modelo.ordenDetalle = this.maestroForm.controls['orden'].value;
     this.subscription = new Subscription();
     this.subscription = this.sinmiService.setInsertOrganoDetalle(this.modelo)

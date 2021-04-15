@@ -49,29 +49,71 @@
                             </ng-template>
                         </p-cellEditor>
                     </td>
-                    <td class="ui-fluid">
-                        <span class="ui-column-title">Score</span>
+                    <td class="action-td">
+                        <span class="ui-column-title">Score</span> {{modelo.score}}
+                    </td>
+                    <td class="action-td">
+                        <span class="ui-column-title">Score Inicial</span>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
                                 <span class="p-float-label">
-                                    <input id="float-input" type="text" pInputText [(ngModel)]="modelo.score" size="100"> 
+                                    <input type="number" pInputText [(ngModel)]="modelo.scoreInicio"> 
                                 </span>
                             </ng-template>
                             <ng-template pTemplate="output">
-                                {{modelo.score}}
+                                {{modelo.scoreInicio}}
                             </ng-template>
                         </p-cellEditor>
                     </td>
-                    <td class="ui-fluid">
+                    <td class="action-td">
+                        <span class="ui-column-title">Score Final</span>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <span class="p-float-label">
+                                    <input type="number" pInputText [(ngModel)]="modelo.scoreFin"> 
+                                </span>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{modelo.scoreFin}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td class="action-td">
                         <span class="ui-column-title">Orden</span>
                         <p-cellEditor>
                             <ng-template pTemplate="input">
                                 <span class="p-float-label">
-                                    <input id="float-input" type="number" pInputText [(ngModel)]="modelo.ordenDetalle" size="100"> 
+                                    <input type="number" pInputText [(ngModel)]="modelo.ordenDetalle"> 
                                 </span>
                             </ng-template>
                             <ng-template pTemplate="output">
                                 {{modelo.ordenDetalle}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td class="action-td">
+                        <span class="ui-column-title">Factor Impacto</span>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <span class="p-float-label">
+                                    <input type="number" pInputText [(ngModel)]="modelo.factorImpacto"> 
+                                </span>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                {{modelo.factorImpacto}}
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td class="action-td">
+                        <span class="ui-column-title">Flag Media</span>
+                        <p-cellEditor>
+                            <ng-template pTemplate="input">
+                                <span class="p-float-label">
+                                    <p-checkbox [(ngModel)]="modelo.flgMedia" binary="true" ></p-checkbox>
+                                </span>
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                <p-checkbox [(ngModel)]="modelo.flgMedia" binary="true" disabled></p-checkbox>
                             </ng-template>
                         </p-cellEditor>
                     </td>

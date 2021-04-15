@@ -13,6 +13,8 @@ export class TxSINMIDetalleModel {
     ave3: number;
     ave4: number;
     ave5: number;
+    scoreInicio: number;
+    scoreFin: number;
 
     constructor() {
         this.idSINMIDetalle = 0;
@@ -29,5 +31,7 @@ export class TxSINMIDetalleModel {
         this.ave3 = 0;
         this.ave4 = 0;
         this.ave5 = 0;
+        this.scoreInicio = 0;
+        this.scoreFin = 0;
     }
 }
