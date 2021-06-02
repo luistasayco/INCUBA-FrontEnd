@@ -72,4 +72,9 @@ export class UtilService {
 
     return msg;
   }
+
+  onRedondearDecimal(numero: number, decimales: number): number {
+    let isNumero = Number(numero.toFixed(decimales));
+    return isNumero;
+  }
 }

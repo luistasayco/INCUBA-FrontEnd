@@ -19,6 +19,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { CardModule } from 'primeng/card';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TooltipModule } from 'primeng/tooltip';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
 // Sevices
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
@@ -42,7 +43,9 @@ import { MessageService } from 'primeng/api';
         FileUploadModule,
         CardModule,
         MultiSelectModule,
-        TooltipModule],
+        TooltipModule,
+        BreadcrumbModule,
+    ],
     providers: [ConfirmationService, MessageService],
 })
 export class ExtranetPrimeNgModule {}

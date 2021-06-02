@@ -1,5 +1,6 @@
 <div class="card card-w-title">
     <h1><strong>{{titulo}}</strong></h1>
+    <p-breadcrumb [model]="items" (onItemClick)="goBreadCrumd($event.item)"></p-breadcrumb>
     <p-messages [(value)]="mensajePrimeNgService.msgs"></p-messages>
     <p-panel header="Opción de busqueda de {{titulo}}" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
         <div class="ui-grid ui-fluid">
@@ -44,7 +45,7 @@
 
 </p-dialog>
 
-<p-dialog [header]="modeloSeleccionadoVisualizar.names" [(visible)]="displayVisualizarCustom" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" >
+<p-dialog [header]="modeloSeleccionadoVisualizar.names" [(visible)]="displayVisualizarCustom" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [maximizable]="true">
 
     <app-panel-visor [isdataVisorCustom]="dataVisorCustom" [isVisible]="displayVisualizarCustom" [isNombreArchivo]="modeloSeleccionadoVisualizar.names"></app-panel-visor>
 

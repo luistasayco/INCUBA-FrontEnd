@@ -214,16 +214,16 @@
                 </div>
 
             </p-accordionTab>
-            <p-accordionTab header="Prueba Microbiológica de viabilidad celular" [selected]="displayControles">
+            <p-accordionTab header="Manejo de pajilla control dentro del tanque de nitrógeno líquido" [selected]="displayControles">
                 <div class="ui-g ui-fluid">
                     <div class="ui-g-12 ui-md-6">
-                        <label class="label-custom">Realizado por un Médico Veterinario de INVETSA: </label>
+                        <label class="label-custom">Mantener una (1) pajilla invertida por cada canastilla como medida de control de cadena de frío: </label>
                     </div>
                     <div class="ui-g-12 ui-md-6">
                         <label class="label-custom">Puntaje Máximo : 0.5 </label>
                     </div>
                     <div class="ui-g-12">
-                        <p-checkbox id="dropdown-antibiotico" [(ngModel)]="modeloItem.flgPorcentajeViabilidad" binary="true" label="Porcentaje de viabilidad mayor al 85%"></p-checkbox>
+                        <p-checkbox id="dropdown-antibiotico" [(ngModel)]="modeloItem.flgPorcentajeViabilidad" binary="true" label="Cumplimiento"></p-checkbox>
                         <label *ngIf="modeloItem.flgPorcentajeViabilidad" class="label-custom" for="dropdown-antibiotico"> => SI </label>
                         <label *ngIf="!modeloItem.flgPorcentajeViabilidad" class="label-custom" for="dropdown-antibiotico"> => NO </label>
                     </div>

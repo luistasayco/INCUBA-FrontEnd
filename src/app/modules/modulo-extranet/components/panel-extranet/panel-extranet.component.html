@@ -164,7 +164,7 @@
 
 </p-dialog>
 
-<p-dialog [header]="modeloSeleccionadoVisualizar.nombreArchivo" [(visible)]="displayVisualizarCustom" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [resizable]="false">
+<p-dialog [header]="modeloSeleccionadoVisualizar.nombreArchivo" [(visible)]="displayVisualizarCustom" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [maximizable]="true">
     <div class="ui-g ui-fluid">
         <div class="ui-g-12">
             <app-panel-visor [isdataVisorCustom]="dataVisorCustom" [isVisible]="displayVisualizarCustom" [isNombreArchivo]="modeloSeleccionadoVisualizar.nombreArchivo"></app-panel-visor>

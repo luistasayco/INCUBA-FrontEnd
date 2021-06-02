@@ -10,7 +10,7 @@ import { MenuService } from 'src/app/services/menu.service';
   selector: '[app-menuitem]',
   templateUrl: './menuitem.component.html',
   styleUrls: ['./menuitem.component.css'],
-  host: {'[class.active-menuitem]': 'active'},
+  host: {'[class.active-menuitem]': 'actSive'},
   animations: [
       trigger('children', [
           state('void', style({

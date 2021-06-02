@@ -14,7 +14,7 @@ const routes: Routes = [
     { path: 'panel-extranet', component: PanelExtranetComponent },
     { path: 'panel-extranet-view', component: PanelExtranetViewComponent },
     { path: 'panel-extranet-config', component: PanelExtranetConfigComponent },
-    { path: 'panel-extranet-folder/:id', component: PanelExtranetFolderComponent },
+    { path: 'panel-extranet-folder', component: PanelExtranetFolderComponent },
     { path: 'panel-tipo-explotacion', component: PanelTipoExplotacionComponent },
     { path: 'tipo-explotacion-create', component: TipoExplotacionCreateComponent },
     { path: 'panel-sub-tipo-explotacion', component: PanelSubTipoExplotacionComponent },

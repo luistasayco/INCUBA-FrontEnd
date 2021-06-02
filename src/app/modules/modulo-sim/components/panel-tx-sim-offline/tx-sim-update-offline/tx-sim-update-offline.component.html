@@ -41,7 +41,7 @@
 
     <p-panel header="Detalle" [toggleable]="true" [collapsed]="!displayControles" [style]="{'margin-bottom':'20px'}">
         <p-accordion [multiple]="true">
-            <p-accordionTab header="Índice Bursal" [selected]="displayControles">
+            <p-accordionTab header="Pesos ídices de órganos linfoides" [selected]="displayControles">
                 <p-table [value]="modeloItem.listaTxSIMIndiceBursal" [columns]="columnasIndiceBursal" [paginator]="true" [rows]="6" dataKey="ave" autoLayout="true" [responsive]="true">
                     <ng-template pTemplate="header" let-columns>
                         <tr>

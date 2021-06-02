@@ -152,8 +152,18 @@ export class TxExamenFisicoPollitoOfflineCreateComponent implements OnInit, OnDe
 
   onCalcularCalificacion(): number {
     this.modeloItem.listDetalleResumen = [];
-    let cloneList = [...this.modeloItem.listDetalleNew].filter(x => x.factor !== 0);
+    let clonedListPollito = [...this.modeloItem.listDetalleNew];
+    let clonedListPollitoSinPeso = [...this.modeloItem.listDetalleNew].filter(x => x.factor === 0 && x.valor === 0);
+
+    clonedListPollitoSinPeso.forEach(xFila => {
+      clonedListPollito = [...clonedListPollito].filter(x => x.numeroPollitos !== xFila.numeroPollitos);
+    });
+
+
+    let cloneList = [...clonedListPollito].filter(x => x.factor !== 0);
+
     cloneList.forEach(x => {
+
       let existeRegistro = [...this.modeloItem.listDetalleResumen].find(existe => existe.idProceso === x.idProceso);
 
       let factor = 0;
@@ -162,9 +172,12 @@ export class TxExamenFisicoPollitoOfflineCreateComponent implements OnInit, OnDe
       }
 
       if (existeRegistro) {
+
         this.modeloItem.listDetalleResumen.find(existeRegistro => existeRegistro.idProceso === x.idProceso).obtenido += factor;
         this.modeloItem.listDetalleResumen.find(existeRegistro => existeRegistro.idProceso === x.idProceso).esperado += x.factor;
+
       }  else {
+
         this.modeloItem.listDetalleResumen.push({
           idExamenFisicoDetalle: 0,
           idExamenFisico: 0,
@@ -187,12 +200,18 @@ export class TxExamenFisicoPollitoOfflineCreateComponent implements OnInit, OnDe
   onCalcularPesoPromedio(): number {
     let pesoPromedio = 0;
 
-    let cloneList = [...this.modeloItem.listDetalleNew].filter(x => x.factor === 0);
+    let cloneList = [...this.modeloItem.listDetalleNew].filter(x => x.factor === 0 && x.valor > 0);
 
     cloneList.forEach(x => {
         pesoPromedio = pesoPromedio + x.valor;
     });
-    let peso = pesoPromedio / 100;
+
+    let peso: number = 0;
+
+    if (cloneList.length > 0) {
+      peso = pesoPromedio / cloneList.length;
+    }
+
     return parseInt(peso.toFixed(2));
   }
 
@@ -202,14 +221,15 @@ export class TxExamenFisicoPollitoOfflineCreateComponent implements OnInit, OnDe
 
     let countUniformidad = 0;
 
-    let cloneList = [...this.modeloItem.listDetalleNew].filter(x => x.factor === 0);
+    let cloneList = [...this.modeloItem.listDetalleNew].filter(x => x.factor === 0 && x.valor > 0);
 
     cloneList.forEach(x => {
       if (x.valor >= pesoMenos10Porciento && x.valor <= pesoMas10Porciento) {
         countUniformidad += 1;
       }
     });
-    return countUniformidad;
+
+    return parseInt(countUniformidad.toFixed(2));
   }
 
   listUpdate(event: any[]) {

@@ -182,12 +182,13 @@ export class TxSimCreateOfflineComponent implements OnInit, OnDestroy {
   onSaveIndiceBursal() {
     this.modeloInsertIndiceBursal.indiceBursal = this.onConvertDecimales((this.modeloInsertIndiceBursal.pesoBursa / this.modeloInsertIndiceBursal.pesoCorporal) * 1000,2);
     this.modeloInsertIndiceBursal.indiceTimico = this.onConvertDecimales((this.modeloInsertIndiceBursal.pesoTimo / this.modeloInsertIndiceBursal.pesoCorporal) * 1000,2);
-    this.modeloInsertIndiceBursal.indiceHepatico = this.onConvertDecimales((this.modeloInsertIndiceBursal.pesoHigado / this.modeloInsertIndiceBursal.pesoCorporal) * 1000,2);
+    this.modeloInsertIndiceBursal.indiceHepatico = this.onConvertDecimales((this.modeloInsertIndiceBursal.pesoHigado / this.modeloInsertIndiceBursal.pesoCorporal) * 100,2);
     this.modeloInsertIndiceBursal.flgPromedio = false;
     this.modeloItem.listaTxSIMIndiceBursal.push(this.modeloInsertIndiceBursal);
     this.onPromedioIndiceBursal();
     this.agregarNumLineas(this.modeloItem.listaTxSIMIndiceBursal);
     this.onNewIndiceBursal();
+    this.onFormulasIndiceBursal()
   }
 
   onPromedioIndiceBursal() {
@@ -198,20 +199,58 @@ export class TxSimCreateOfflineComponent implements OnInit, OnDestroy {
     let qtyLinea = clone.length;
     clone.forEach(x => {
       promedio.pesoCorporal += x.pesoCorporal/qtyLinea;
-      promedio.pesoBursa += this.onConvertDecimales(x.pesoBursa/qtyLinea, 2);
-      promedio.pesoBazo += this.onConvertDecimales(x.pesoBazo/qtyLinea, 2);
-      promedio.pesoTimo += this.onConvertDecimales(x.pesoTimo/qtyLinea, 2);
-      promedio.pesoHigado += this.onConvertDecimales(x.pesoHigado/qtyLinea, 2);
-      promedio.indiceBursal += this.onConvertDecimales(x.indiceBursal/qtyLinea, 2);
-      promedio.indiceTimico += this.onConvertDecimales(x.indiceTimico/qtyLinea, 2);
-      promedio.indiceHepatico += this.onConvertDecimales(x.indiceHepatico/qtyLinea, 2);
-      promedio.bursometro += this.onConvertDecimales(x.bursometro/qtyLinea, 2);
+      promedio.pesoBursa += this.onConvertDecimales(x.pesoBursa/qtyLinea, 1);
+      promedio.pesoBazo += this.onConvertDecimales(x.pesoBazo/qtyLinea, 1);
+      promedio.pesoTimo += this.onConvertDecimales(x.pesoTimo/qtyLinea, 1);
+      promedio.pesoHigado += this.onConvertDecimales(x.pesoHigado/qtyLinea, 1);
+      promedio.indiceBursal += this.onConvertDecimales(x.indiceBursal/qtyLinea, 1);
+      promedio.indiceTimico += this.onConvertDecimales(x.indiceTimico/qtyLinea, 1);
+      promedio.indiceHepatico += this.onConvertDecimales(x.indiceHepatico/qtyLinea, 1);
+      promedio.bursometro += this.onConvertDecimales(x.bursometro/qtyLinea, 1);
     });  
+
+    promedio.pesoBursa = this.onConvertDecimales(promedio.pesoBursa, 1);
+    promedio.pesoBazo = this.onConvertDecimales(promedio.pesoBazo, 1);
+    promedio.pesoTimo = this.onConvertDecimales(promedio.pesoTimo, 1);
+    promedio.pesoHigado = this.onConvertDecimales(promedio.pesoHigado, 1);
+    promedio.indiceBursal = this.onConvertDecimales(promedio.indiceBursal, 1);
+    promedio.indiceTimico = this.onConvertDecimales(promedio.indiceTimico, 1);
+    promedio.indiceHepatico = this.onConvertDecimales(promedio.indiceHepatico, 1);
+    promedio.bursometro = this.onConvertDecimales(promedio.bursometro , 1);
 
     clonePush.push(promedio);
     this.modeloItem.listaTxSIMIndiceBursal = clonePush;
   }
 
+  onFormulasIndiceBursal() {
+    
+    let formulasIndiceBursal = [...this.modeloItem.listaTxSIMIndiceBursal].filter(xFila => xFila.flgPromedio === false);
+
+    let aFavorBursa = 0;
+    let aFavorBazo = 0;
+    let relacion = 0;
+
+    formulasIndiceBursal.forEach(xFila => {
+      if (xFila.pesoBursa > xFila.pesoBazo) {
+        aFavorBursa += 1;
+      }
+
+      if (xFila.pesoBazo > xFila.pesoBursa) {
+        aFavorBazo += 1;
+      }
+
+      if (xFila.pesoBazo === xFila.pesoBursa) {
+        relacion += 1;
+      }
+
+    });
+
+    this.modeloItem.relacionAFavorBursa = aFavorBursa;
+    this.modeloItem.relacionAFavorBazo = aFavorBazo;
+    this.modeloItem.relacion1a1 = relacion;
+
+  }
+  
   onConvertDecimales(valor: number, decimales: number) : number {
     let dato = valor.toFixed(decimales);
 
@@ -362,6 +401,7 @@ export class TxSimCreateOfflineComponent implements OnInit, OnDestroy {
 
     this.modeloItem.listaTxSIMIndiceBursal = cloneDelete;
     this.agregarNumLineas(this.modeloItem.listaTxSIMIndiceBursal);
+    this.onFormulasIndiceBursal()
 
   }
 

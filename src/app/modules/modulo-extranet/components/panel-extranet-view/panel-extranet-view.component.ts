@@ -56,7 +56,7 @@ export class PanelExtranetViewComponent implements OnInit {
   }
 
   goGetFolderPorId(data: GoogleDriveFilesModel) {
-    this.router.navigate(['/main/module-ex/panel-extranet-folder', data.idGoogleDrive]);
+    this.router.navigate(['/main/module-ex/panel-extranet-folder'], { queryParams: { id: data.idGoogleDrive, name: data.names, band: 'S'}});
   }
 
 }
