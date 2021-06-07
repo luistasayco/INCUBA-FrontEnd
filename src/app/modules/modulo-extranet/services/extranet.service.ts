@@ -215,6 +215,17 @@ export class ExtranetService {
     {responseType: 'blob',  observe: 'response', reportProgress: true });
   }
 
+  getDownloadTxRegistroDocumentoByte(id: string) {
+    return this.http.get
+    (`${environment.url_api}TxRegistroDocumento/GetDownloadFileByte/${id}`,
+    {responseType: 'arraybuffer',  observe: 'response', reportProgress: true });
+  }
+
+  getDownloadTxRegistroDocumentoBase64(id: string) {
+    return this.http.get
+    (`${environment.url_api}TxRegistroDocumento/GetDownloadFileBase64/${id}`);
+  }
+
   private setAsignaValoresAuditabilidad<T>(data: any): T{
     data.regUsuario = this.userContextService.getIdUsuario();
     data.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;

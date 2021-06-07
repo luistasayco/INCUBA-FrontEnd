@@ -26,7 +26,7 @@
     <p-messages [(value)]="mensajePrimeNgService.msgs"></p-messages>
 
     <p-panel header="Detalle" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
-        <button class="button-custom"  pButton type="button" label="{{globalConstants.cDesplegar}}" icon="{{globalConstants.icoDesplegar}}" (click)="goDisplayControles()"></button>
+        <button class="button-custom" pButton type="button" label="{{globalConstants.cDesplegar}}" icon="{{globalConstants.icoDesplegar}}" (click)="goDisplayControles()"></button>
 
         <p-accordion [multiple]="true">
             <p-accordionTab header="A .- Detalles de Mantenimiento y Funcionamiento de equipos" [selected]="displayControles">
@@ -98,7 +98,7 @@
             <p-accordionTab header="C .- Requerimientos para los equipos y condiciones de limpieza" [selected]="displayControles">
                 <div class="ui-g dashboard">
                     <div class="ui-g-12 ui-md-6 ui-lg-6 task-list">
-                        <p-panel header="Requerimientos para los Equipos">
+                        <p-panel header="Limpieza y esterilización">
                             <ul>
                                 <li *ngFor="let item of modeloItem.txRegistroEquipoDetalle3">
                                     <p-toggleButton [(ngModel)]="item.flgValor" [style]="{'width':'100px'}" disabled="true"></p-toggleButton>
@@ -109,7 +109,7 @@
                         </p-panel>
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-6 task-list">
-                        <p-panel header="Limpieza y esterilización">
+                        <p-panel header="Requerimientos para los Equipos">
                             <ul>
                                 <li *ngFor="let item of modeloItem.txRegistroEquipoDetalle4">
                                     <p-toggleButton [(ngModel)]="item.flgValor" [style]="{'width':'100px'}" disabled="true"></p-toggleButton>

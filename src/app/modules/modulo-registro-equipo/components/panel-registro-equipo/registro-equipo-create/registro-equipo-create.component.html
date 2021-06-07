@@ -112,7 +112,7 @@
             <p-accordionTab header="C .- Requerimientos para los equipos y condiciones de limpieza" [selected]="displayControles">
                 <div class="ui-g dashboard">
                     <div class="ui-g-12 ui-md-6 ui-lg-6 task-list">
-                        <p-panel header="Requerimientos para los Equipos">
+                        <p-panel header="Limpieza y esterilización">
                             <ul>
                                 <li *ngFor="let item of modeloItem.txRegistroEquipoDetalle3">
                                     <p-toggleButton [(ngModel)]="item.flgValor" [style]="{'width':'100px'}" onLabel="Si"></p-toggleButton>
@@ -123,7 +123,7 @@
                         </p-panel>
                     </div>
                     <div class="ui-g-12 ui-md-6 ui-lg-6 task-list">
-                        <p-panel header="Limpieza y esterilización">
+                        <p-panel header="Requerimientos para los Equipos">
                             <ul>
                                 <li *ngFor="let item of modeloItem.txRegistroEquipoDetalle4">
                                     <p-toggleButton [(ngModel)]="item.flgValor" [style]="{'width':'100px'}" onLabel="Si"></p-toggleButton>

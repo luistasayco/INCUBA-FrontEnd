@@ -148,6 +148,29 @@ export class PanelExtranetFolderComponent implements OnInit, OnDestroy {
       });
   }
 
+  onSeleccionarMetodo(modelo: GoogleDriveFilesModel) {
+    if (modelo.mimeType === 'application/pdf' || 
+        modelo.mimeType === 'audio/mpeg' ||
+        modelo.mimeType === 'image/jpeg' ||
+        modelo.mimeType === 'image/png' ||
+        modelo.mimeType === 'video/mp4') {
+
+      if (modelo.mimeType === 'audio/mpeg' ||
+          modelo.mimeType === 'image/jpeg' ||
+          modelo.mimeType === 'image/png' ||
+          modelo.mimeType === 'video/mp4') {
+            this.onToVisorCustom(modelo);
+          } else {
+            // this.onToVisorCustomBase64(modelo);
+            this.onToVisorCustom(modelo);
+            // this.onToVisorCustomByte(modelo);
+          }
+
+    } else {
+      this.mensajePrimeNgService.onToInfoMsg(null,  'FORMATO SOLO SE PUEDE DESCARGAR');
+    }
+  }
+
   onToVisorCustom(modelo: GoogleDriveFilesModel) {
     if (modelo.mimeType === 'application/pdf' || 
         modelo.mimeType === 'audio/mpeg' ||
@@ -164,6 +187,9 @@ export class PanelExtranetFolderComponent implements OnInit, OnDestroy {
                 this.mensajePrimeNgService.onToInfoMsg(null,  'EN PROCESO');
                 break;
               case HttpEventType.Response:
+
+              console.log(resp);
+
                 this.mensajePrimeNgService.onToInfoMsg(null, 'DESCARGA COMPLETA');
                 this.dataVisorCustom = new Blob([resp.body], {type: resp.body.type});
                 // this.dataVisorCustom =resp;
@@ -180,6 +206,67 @@ export class PanelExtranetFolderComponent implements OnInit, OnDestroy {
       this.mensajePrimeNgService.onToInfoMsg(null,  'FORMATO SOLO SE PUEDE DESCARGAR');
     }
   }
+
+  onToVisorCustomByte(modelo: GoogleDriveFilesModel) {
+    if (modelo.mimeType === 'application/pdf' || 
+        modelo.mimeType === 'audio/mpeg' ||
+        modelo.mimeType === 'image/jpeg' ||
+        modelo.mimeType === 'image/png' ||
+        modelo.mimeType === 'video/mp4'){
+          this.modeloSeleccionadoVisualizar = modelo;
+          this.displayVisualizar = true;
+          this.subscription$ = new Subscription();
+          this.subscription$ = this.extranetService.getDownloadTxRegistroDocumentoByte(modelo.idGoogleDrive)
+          .subscribe((resp: any) => {
+            switch (resp.type) {
+              case HttpEventType.DownloadProgress:
+                this.mensajePrimeNgService.onToInfoMsg(null,  'EN PROCESO');
+                break;
+              case HttpEventType.Response:
+
+              console.log(resp);
+
+                this.mensajePrimeNgService.onToInfoMsg(null, 'DESCARGA COMPLETA');
+                // this.dataVisorCustom = new Blob([resp.body], {type: 'application/pdf'});
+                // this.dataVisorCustom =resp;
+                this.displayVisualizarCustom = true;
+                this.displayVisualizar = false;
+                break;
+            }
+          },
+            (error) => {
+              this.displayVisualizar = false;
+              this.mensajePrimeNgService.onToErrorMsg(null, error);
+            });
+    } else {
+      this.mensajePrimeNgService.onToInfoMsg(null,  'FORMATO SOLO SE PUEDE DESCARGAR');
+    }
+  }
+
+  onToVisorCustomBase64(modelo: GoogleDriveFilesModel) {
+    if (modelo.mimeType === 'application/pdf'){
+          this.modeloSeleccionadoVisualizar = modelo;
+          this.displayVisualizar = true;
+          this.subscription$ = new Subscription();
+          this.subscription$ = this.extranetService.getDownloadTxRegistroDocumentoBase64(modelo.idGoogleDrive)
+          .subscribe((resp: any) => {
+console.log('resp', resp);
+            this.displayVisualizar = false;
+
+            this.mensajePrimeNgService.onToInfoMsg(null, 'DESCARGA COMPLETA');
+            this.dataVisorCustom = resp;
+            // this.dataVisorCustom =resp;
+            this.displayVisualizarCustom = true;
+          },
+            (error) => {
+              this.displayVisualizar = false;
+              this.mensajePrimeNgService.onToErrorMsg(null, error);
+            });
+    } else {
+      this.mensajePrimeNgService.onToInfoMsg(null,  'FORMATO SOLO SE PUEDE DESCARGAR');
+    }
+  }
+
   ngOnDestroy() {
     this.items = [];
   }

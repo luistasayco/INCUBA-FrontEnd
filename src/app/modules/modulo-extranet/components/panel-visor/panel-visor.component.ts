@@ -6,7 +6,7 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./panel-visor.component.css']
 })
 export class PanelVisorComponent implements OnInit {
-  @Input() isdataVisorCustom: Blob;
+  @Input() isdataVisorCustom: any;
   @Input() isVisible: boolean;
   @Input() isNombreArchivo: string;
   constructor() { }

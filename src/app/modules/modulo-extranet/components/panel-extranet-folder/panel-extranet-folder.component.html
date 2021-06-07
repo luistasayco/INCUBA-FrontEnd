@@ -13,7 +13,7 @@
                         <div *ngIf="item.mimeType !== 'application/vnd.google-apps.folder'" class="ui-inputgroup">
                             <button [disabled]="buttonAcces.btnDownload" pButton type="button" icon="{{globalConstants.icoDownload}}" pTooltip="Descargar" tooltipPosition="top" (click)="onListarChildern(item)"></button>
                             <textarea [(ngModel)]="item.names" pInputTextarea autoResize="autoResize" disabled></textarea>
-                            <button [disabled]="buttonAcces.btnVisualizar" pButton type="button" icon="{{globalConstants.icoVisualizar}}" class="ui-button-warning" pTooltip="Visualizar" tooltipPosition="top" (click)="onToVisorCustom(item)"></button>
+                            <button [disabled]="buttonAcces.btnVisualizar" pButton type="button" icon="{{globalConstants.icoVisualizar}}" class="ui-button-warning" pTooltip="Visualizar" tooltipPosition="top" (click)="onSeleccionarMetodo(item)"></button>
                         </div>
 
                     </div>
@@ -45,8 +45,10 @@
 
 </p-dialog>
 
-<p-dialog [header]="modeloSeleccionadoVisualizar.names" [(visible)]="displayVisualizarCustom" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [maximizable]="true">
-
-    <app-panel-visor [isdataVisorCustom]="dataVisorCustom" [isVisible]="displayVisualizarCustom" [isNombreArchivo]="modeloSeleccionadoVisualizar.names"></app-panel-visor>
-
+<p-dialog [header]="modeloSeleccionadoVisualizar.names" [(visible)]="displayVisualizarCustom" [modal]="true" [style]="{width: '80vw'}" [baseZIndex]="10000" [maximizable]="true">
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <app-panel-visor [isdataVisorCustom]="dataVisorCustom" [isVisible]="displayVisualizarCustom" [isNombreArchivo]="modeloSeleccionadoVisualizar.names"></app-panel-visor>
+        </div>
+    </div>
 </p-dialog>

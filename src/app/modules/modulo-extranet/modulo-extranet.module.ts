@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PanelExtranetComponent } from './components/panel-extranet/panel-extranet.component';
@@ -18,6 +18,7 @@ import { VisorAudioComponent } from './components/panel-visor/visor-audio/visor-
 import { VisorPdfComponent } from './components/panel-visor/visor-pdf/visor-pdf.component';
 import { VisorVideoComponent } from './components/panel-visor/visor-video/visor-video.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { NgxDocViewerModule } from 'ngx-doc-viewer';
 @NgModule({
     declarations: [ PanelExtranetComponent,
         PanelExtranetConfigComponent,
@@ -38,12 +39,17 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
         ExtranetRoutingModule,
         FormsModule,
         ReactiveFormsModule,
-        PdfViewerModule],
+        PdfViewerModule,
+        NgxDocViewerModule
+    ],
     exports: [PanelVisorComponent,
         VisorImagenComponent,
         VisorAudioComponent,
         VisorPdfComponent,
         VisorVideoComponent],
     providers: [],
+    schemas: [
+        CUSTOM_ELEMENTS_SCHEMA
+    ]
 })
 export class ExtranetModule {}
