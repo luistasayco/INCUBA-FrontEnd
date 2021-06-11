@@ -55,29 +55,30 @@ export class MenuitemComponent implements OnInit, OnDestroy {
     key: string;
 
     constructor(public app: LayoutComponent, public router: Router, private menuService: MenuService) {
-        this.menuSourceSubscription = this.menuService.menuSource$.subscribe(key => {
-            // deactivate current active menu
-            if (this.active && this.key !== key && key.indexOf(this.key) !== 0) {
-                this.active = false;
-            }
-        });
+        // this.menuSourceSubscription = this.menuService.menuSource$.subscribe(
+        //     key => {
+        //     // deactivate current active menu
+        //     if (this.active && this.key !== key && key.indexOf(this.key) !== 0) {
+        //         this.active = false;
+        //     }
+        // });
 
         this.menuResetSubscription = this.menuService.resetSource$.subscribe(() => {
             this.active = false;
         });
 
-        this.router.events.pipe(filter(event => event instanceof NavigationEnd))
-            .subscribe(params => {
-                if (this.app.isHorizontal() || this.app.isSlim()) {
-                    this.active = false;
-                } else {
-                    if (this.item.routerLink) {
-                        this.updateActiveStateFromRoute();
-                    } else {
-                        this.active = false;
-                    }
-                }
-            });
+        // this.router.events.pipe(filter(event => event instanceof NavigationEnd))
+        //     .subscribe(params => {
+        //         if (this.app.isHorizontal() || this.app.isSlim()) {
+        //             this.active = false;
+        //         } else {
+        //             if (this.item.routerLink) {
+        //                 this.updateActiveStateFromRoute();
+        //             } else {
+        //                 this.active = false;
+        //             }
+        //         }
+        //     });
     }
 
     ngOnInit() {

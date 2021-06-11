@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-visor-pdf',
   templateUrl: './visor-pdf.component.html',
@@ -13,13 +14,16 @@ export class VisorPdfComponent implements OnInit {
   BASE64_MARKER = ';base64,';
   file: string = '';
 
-  filePdf = 'data:application/pdf;base64,'
+  // filePdf = 'data:application/pdf;base64,'
 
 
   constructor(private _sanitizer: DomSanitizer) { }
 //application
   ngOnInit(): void {
 
+    // console.log('isFile', this.isFile);
+  
+    // console.log('isFile - ruta', this.file);
     // this.filePdf = this.isFile.fileBase64; 
 
     // console.log('this.filePdf', this.filePdf);

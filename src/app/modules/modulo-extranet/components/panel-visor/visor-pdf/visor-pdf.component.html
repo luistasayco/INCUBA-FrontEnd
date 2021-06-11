@@ -1,17 +1,25 @@
 <div oncontextmenu="return false" onkeydown="return false">
-    <!-- <pdf-viewer *ngIf="filePdf" [src]="filePdf" style="display: block;" [fit-to-page]="true">
+    <!-- <pdf-viewer *ngIf="file" [src]="file" style="display: block;" [fit-to-page]="true">
     </pdf-viewer> -->
-    <!-- <object *ngIf="filePdf" [data]="filePdf" type="application/pdf" width="100%" height="100%">
+    <!-- <object *ngIf="file" [data]="file" type="application/pdf" width="100%" height="100%">
   </object> -->
 
-    <div id=tabla1 class="verde">
+    <!-- <embed [src]="file" type="application/pdf" width="100%" height="600px" /> -->
 
 
+    <!-- <div id=tabla1 class="verde">
 
 
-    </div>
+ <pdf-viewer *ngIf="file" [src]="file" style="display: block;">
+        </pdf-viewer>
 
-    <ng-container *ngIf="file" class="gris">
+    </div> -->
+    <ng-container>
+
+        <!-- <ng-container> -->
+
+        <!-- <pdf-viewer *ngIf="file" [src]="file" style="display: block;">
+        </pdf-viewer> -->
 
         <ngx-doc-viewer #visor id="visor" [url]="file" viewer="url" style="height:100vh;" [disableContent]="'popout-hide'">
         </ngx-doc-viewer>

@@ -215,10 +215,9 @@ export class ExtranetService {
     {responseType: 'blob',  observe: 'response', reportProgress: true });
   }
 
-  getDownloadTxRegistroDocumentoByte(id: string) {
+  getDownloadTxRegistroDocumentoSave(id: string) {
     return this.http.get
-    (`${environment.url_api}TxRegistroDocumento/GetDownloadFileByte/${id}`,
-    {responseType: 'arraybuffer',  observe: 'response', reportProgress: true });
+    (`${environment.url_api}TxRegistroDocumento/GetDownloadFileSave/${id}`);
   }
 
   getDownloadTxRegistroDocumentoBase64(id: string) {
