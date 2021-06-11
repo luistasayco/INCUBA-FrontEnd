@@ -15,9 +15,6 @@ export class VisorPdfComponent implements OnInit {
   file: string = '';
 
   // filePdf = 'data:application/pdf;base64,'
-
-  
-
   constructor(private _sanitizer: DomSanitizer) { }
 //application
   ngOnInit(): void {
