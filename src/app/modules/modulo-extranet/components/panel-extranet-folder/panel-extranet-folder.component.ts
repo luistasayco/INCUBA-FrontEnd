@@ -162,8 +162,8 @@ export class PanelExtranetFolderComponent implements OnInit, OnDestroy {
             this.onToVisorCustom(modelo);
           } else {
             // this.onToVisorCustomBase64(modelo);
-            // this.onToVisorCustom(modelo);
-            this.onToVisorCustomSave(modelo);
+            this.onToVisorCustom(modelo);
+            // this.onToVisorCustomSave(modelo);
           }
 
     } else {

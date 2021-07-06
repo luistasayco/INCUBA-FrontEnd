@@ -1,55 +1,46 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { AfterViewInit, Component, Input, isDevMode, OnInit } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-visor-pdf',
   templateUrl: './visor-pdf.component.html',
   styleUrls: ['./visor-pdf.component.css']
 })
-export class VisorPdfComponent implements OnInit {
+export class VisorPdfComponent implements OnInit, AfterViewInit {
 
   @Input() isFile: any;
   strBlobURL: any;
 
   BASE64_MARKER = ';base64,';
   file: string = '';
+  fileEnServidor = '';
+  urlSanitizer: SafeResourceUrl;
+
 
   // filePdf = 'data:application/pdf;base64,'
   constructor(private _sanitizer: DomSanitizer) { }
 //application
   ngOnInit(): void {
-
-    // console.log('isFile', this.isFile);
-  
-    // console.log('isFile - ruta', this.file);
-    // this.filePdf = this.isFile.fileBase64; 
-
-    // console.log('this.filePdf', this.filePdf);
-
     this.handleInputChange(this.isFile);
 
+    // let origen: string = `${window.location.origin}/Invetsa`;
+    // if (isDevMode()) {
+    //   origen =  'https://auditoria.invetsa.com/Invetsa';
+    // }
 
-//     this.strBlobURL = window.URL.createObjectURL(this.isFile);
-// this.strBlobURL = fileURL;
-//           window.open(fileURL);
-//           console.log('fileURL', fileURL);
+    // this.fileEnServidor = `${origen}/assets/file-pdf/${this.isFile.nameAleatorio}.pdf#toolbar=0&navpanes=0&scrollbar=0&view=fitH&&page=1`;
+    // this.urlSanitizer = this._sanitizer.bypassSecurityTrustResourceUrl(this.fileEnServidor);
+    // console.log('this.fileOnLocal:', this.fileEnServidor);
 
-//     var reader = new FileReader();
-//     reader.addEventListener("loadend", function() {
-//        // reader.result contains the contents of blob as a typed array
-//        this.onloadend = await this.onda
-//        console.log('reader.result', reader.result);
-
-//     });
-//     reader.readAsArrayBuffer(this.isFile);
-
-    // console.log('isFile', this.isFile);
-    // this.strBlobURL = this.isFile.arrayBuffer();
   } 
 
-  // onData(reader) {
-  //   this.strBlobURL = reader.result;
-  // }
+  ngAfterViewInit() {
+    // const div = document.getElementById('container');
+    // div.oncontextmenu = inhabilitar;
+    // function inhabilitar() {
+    //     return false;
+    // }
+  }
 
  async handleInputChange(files) {
     let _file = files;
@@ -67,12 +58,7 @@ export class VisorPdfComponent implements OnInit {
 
   _handleReaderLoaded(e) {
     let reader = e.target;
-
-    // console.log('reader', reader);
     this.strBlobURL =  reader.result;
-    // console.log('READER 2: this.strBlobURL', this.strBlobURL);
-    // const fileABase64 = this.BlobToBase64_2(this.strBlobURL);
-    // console.log('ARCHIVO BLOB A BASE 64', fileABase64);
     this.file = this.convertirBase64Afile(this.BlobToBase64_2(this.strBlobURL), 'archivo.pdf');
 
   }
@@ -82,22 +68,17 @@ export class VisorPdfComponent implements OnInit {
   BlobToBase64_2(blob) {
     let base64Index = blob.indexOf(this.BASE64_MARKER) + this.BASE64_MARKER.length;
     let base64 = blob.substring(base64Index);
-    // console.log('BlobToBase64_2: A BASE 64', base64);
     let raw = window.atob(base64);
-    // console.log('BlobToBase64_2: A raw', raw);
     return base64;
   }
 
   convertirBase64Afile(archivoEnBase64, nombreArchivoSalida): any {
-
     const archivoABlob = this.convertirBase64ToBlob(archivoEnBase64);
-    // const archivoPDF = new File([archivoABlob], nombreArchivoSalida, { type: 'application/pdf' });
     return window.URL.createObjectURL(archivoABlob);
 
   }
 
   convertirBase64ToBlob(dataURI): any {
-    // console.log('ARCHIVO EN BASE 64', dataURI);
     const byteString = window.atob(dataURI);
     const arrayBuffer = new ArrayBuffer(byteString.length);
     const int8Array = new Uint8Array(arrayBuffer);
@@ -105,8 +86,6 @@ export class VisorPdfComponent implements OnInit {
       int8Array[i] = byteString.charCodeAt(i);
     }
     const blob = new Blob([int8Array], { type: 'application/pdf' });
-    // console.log('ARCHIVO EN BLOB', blob);
-
     return blob;
   }
 

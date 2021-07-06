@@ -1,5 +1,58 @@
 @media screen and (max-width: 40em) {
      :host ::ng-deep .ui-dialog {
-        width: 90vw !important;
+        width: 100vw !important;
     }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.iFrameContainer {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    transition: top .3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.iFrameContainer {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    transition: top .3s ease;
+}
+
+.containerClose {
+    width: 100%;
+    height: 4vh;
+    text-align: right;
+}
+
+.containerClose i {
+    cursor: pointer;
+    font-size: 25px;
+    color: rgb(0, 0, 0);
+    margin: 0.1rem 1rem 0 0;
+}
+
+.cerrarIframe {
+    top: -100%;
 }

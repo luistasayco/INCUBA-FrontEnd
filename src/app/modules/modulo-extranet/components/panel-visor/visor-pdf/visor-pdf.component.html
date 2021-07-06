@@ -1,45 +1,14 @@
 <div oncontextmenu="return false" onkeydown="return false">
-    <!-- <pdf-viewer *ngIf="file" [src]="file" style="display: block;" [fit-to-page]="true">
-    </pdf-viewer> -->
-    <!-- <object *ngIf="file" [data]="file" type="application/pdf" width="100%" height="100%">
-  </object> -->
+    <!-- <div class="containerModal" oncontextmenu="return false;" onkeydown="return false">
 
-    <!-- <embed [src]="file" type="application/pdf" width="100%" height="600px" /> -->
-
-
-    <!-- <div id=tabla1 class="verde">
-
-
- <pdf-viewer *ngIf="file" [src]="file" style="display: block;">
-        </pdf-viewer>
-
+        <div id="container"></div>
+        <iframe id="visorPdf" [src]="urlSanitizer"></iframe>
     </div> -->
+
     <ng-container>
-
-        <!-- <ng-container> -->
-
-        <!-- <pdf-viewer *ngIf="file" [src]="file" style="display: block;">
-        </pdf-viewer> -->
 
         <ngx-doc-viewer #visor id="visor" [url]="file" viewer="url" style="height:100vh;" [disableContent]="'popout-hide'">
         </ngx-doc-viewer>
 
     </ng-container>
-    <!-- <object type="application/pdf" data="filePdf"></object>
-    <embed type="application/pdf" [src]="filePdf" />
-    <iframe *ngIf="filePdf" [src]="filePdf" width=100% height=600></iframe> -->
 </div>
-
-<!-- <object *ngIf="strBlobURL" [data]="strBlobURL" type="application/pdf" width="100%" height="100%">
-    <p>Alternative text - include a link <a href="myfile.pdf">to the PDF!</a></p>
-  </object> -->
-
-<!-- <iframe src="https://docs.google.com/viewer?url={{strBlobURL}}&embedded=true" width="600" height="780" style="border: none;"></iframe> -->
-
-
-
-
-
-<!-- <object *ngIf="strBlobURL" [data]="strBlobURL" type="application/pdf" width="100%" height="600px"></object> -->
-
-<!-- <iframe *ngIf="strBlobURL" [src]="strBlobURL" width=100% height=600></iframe> -->

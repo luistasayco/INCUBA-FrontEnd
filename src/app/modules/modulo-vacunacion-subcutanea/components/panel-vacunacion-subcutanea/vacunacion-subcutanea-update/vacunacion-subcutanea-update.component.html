@@ -234,7 +234,7 @@
                         <label class="label-custom">Puntaje Máximo : 1.0 </label>
                     </div>
                     <div class="ui-g-12">
-                        <p-table [value]="modeloItem.listarTxVacunacionSubCutaneaIrregularidad" [columns]="columnasIrregularidad" [paginator]="true" [rows]="9" autoLayout="true" [responsive]="true">
+                        <p-table [value]="modeloItem.listarTxVacunacionSubCutaneaIrregularidad" [columns]="columnasIrregularidad" [paginator]="true" [rows]="10" autoLayout="true" [responsive]="true">
                             <ng-template pTemplate="header" let-columns>
                                 <tr>
                                     <th *ngFor="let col of columns">
@@ -271,7 +271,7 @@
                         <label class="label-custom">Punjate Máximo : 5.5 </label>
                     </div>
                     <div class="ui-g-12">
-                        <p-table [value]="modeloItem.listarTxVacunacionSubCutaneaControlEficiencia" [columns]="columnasControlEficiencia" [paginator]="true" [rows]="10" dataKey="nombreVacunador" editMode="row" autoLayout="true" [responsive]="true">
+                        <p-table [value]="modeloItem.listarTxVacunacionSubCutaneaControlEficiencia" [columns]="columnasControlEficiencia" [paginator]="true" [rows]="20" dataKey="nombreVacunador" editMode="row" autoLayout="true" [responsive]="true">
                             <ng-template pTemplate="header" let-columns>
                                 <tr>
                                     <th *ngFor="let col of columns">

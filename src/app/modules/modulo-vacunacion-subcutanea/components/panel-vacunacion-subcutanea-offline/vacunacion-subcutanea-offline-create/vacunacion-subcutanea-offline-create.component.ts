@@ -697,9 +697,15 @@ export class VacunacionSubcutaneaOfflineCreateComponent implements OnInit, OnDes
   }
   
   onGrabarIrregularidad() {
+
+
+    let vclonedIrregularidad = [...this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad];
+
     if (this.selectIrregularidad.length > 0 ) {
+
       this.selectIrregularidad.forEach(data => {
-        this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad.push(
+        
+        vclonedIrregularidad.push(
           {
             idVacunacionSubCutaneaDetalle: 0,
             idVacunacionSubCutanea:0,
@@ -707,13 +713,17 @@ export class VacunacionSubcutaneaOfflineCreateComponent implements OnInit, OnDes
             codigoEquipo: this.selectNumeroAF.value,
             idIrregularidad: data.idIrregularidad,
             descripcionIrregularidad: data.descripcionIrregularidad,
-            valor: data.valor
+            valor: data.valor,
+            id:  `ID ${data.idIrregularidad} - ${this.nombreVacunador}` 
           });
       });
+
+      this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad = [...vclonedIrregularidad];
 
       this.onGuardaVacunador();
 
     }
+
     this.selectIrregularidad = null;
     this.nombreVacunador = '';
     this.selectNumeroAF = null;
@@ -724,9 +734,11 @@ export class VacunacionSubcutaneaOfflineCreateComponent implements OnInit, OnDes
 
     let encontroVacunador = [...this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.filter(xFila => xFila.nombreVacunador === this.nombreVacunador)].length;
 
+    let vclonedVacunado = [...this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia];
+
     if (encontroVacunador === 0) {
 
-      this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.push({
+      vclonedVacunado.push({
         idVacunacionSubCutaneaDetalle: 0,
         idVacunacionSubCutanea: 0,
         nombreVacunador: this.nombreVacunador,
@@ -741,7 +753,12 @@ export class VacunacionSubcutaneaOfflineCreateComponent implements OnInit, OnDes
         malaPosicion: 0,
         vacunadoCorrectos: 0
       });
+
+      this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia = [...vclonedVacunado];
+
     }
+
+
   }
 
   onRowEditInit(data: TxVacunacionSubCutaneaControlEficienciaModel) {
