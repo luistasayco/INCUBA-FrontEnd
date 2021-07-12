@@ -588,23 +588,26 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
     let valorFin = 0;
 
     this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.map(xFila => {
+      //cambio
+      if(isNaN(promedioControldeEficiencia.porcentajeEficiencia)) promedioControldeEficiencia.porcentajeEficiencia = 0;
       //•	+50% y -10% del promedio de Vacunados hora 1punto
-      valorInicio = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.1)
-      valorFin = promedioControldeEficiencia.vacunadoPorHora + (promedioControldeEficiencia.vacunadoPorHora * 0.5)
+      debugger;
+      valorInicio = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.1);
+      valorFin = promedioControldeEficiencia.vacunadoPorHora + (promedioControldeEficiencia.vacunadoPorHora * 0.5);
 
       if (xFila.vacunadoPorHora >= valorInicio && xFila.vacunadoPorHora <= valorFin) {
         xFila.puntajeProductividad = 1;
       }
       //•	Entre -10 a -20% del promedio 0.5 puntos
-      valorInicio = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.2)
-      valorFin = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.1)
+      valorInicio = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.2);
+      valorFin = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.1);
 
       if (xFila.vacunadoPorHora >= valorInicio && xFila.vacunadoPorHora <= valorFin) {
         xFila.puntajeProductividad = 0.5;
       }
       //•	21% a más por debajo de la media 0 puntos
-      valorInicio = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0)
-      valorFin = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.21)
+      valorInicio = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0);
+      valorFin = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.21);
 
       if (xFila.vacunadoPorHora >= valorInicio && xFila.vacunadoPorHora <= valorFin) {
         xFila.puntajeProductividad = 0;
@@ -638,7 +641,7 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
         idVacunacionSubCutanea: 0,
         nombreVacunador: xFila.nombreVacunador,
         vacunadoPorHora: this.onConvertDecimales(xFila.vacunadoPorHora,1),
-        puntajeProductividad: this.onConvertDecimales(xFila.puntajeProductividad,1),
+        puntajeProductividad: this.onConvertDecimales(xFila.puntajeProductividad,2),
         controlados: this.onConvertDecimales(xFila.controlados,1),
         sinVacunar: this.onConvertDecimales(xFila.sinVacunar,1),
         heridos: this.onConvertDecimales(xFila.heridos,1),
@@ -726,7 +729,7 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
   }
 
   onGuardaVacunador() {
-
+    debugger;
     let encontroVacunador = [...this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.filter(xFila => xFila.nombreVacunador === this.nombreVacunador)].length;
 
     let vclonedVacunado = [...this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia];
@@ -746,7 +749,10 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
         heridos: 0,
         mojados: 0,
         malaPosicion: 0,
-        vacunadoCorrectos: 0
+        vacunadoCorrectos: 0,
+        //Cambios
+        porcentajeEficiencia: 0,
+        puntajeEficiencia: 0
       });
 
       this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia = [...vclonedVacunado];
@@ -766,6 +772,9 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
       xFila.vacunadoPorHora = xFila.cantidadFinal - xFila.cantidadInicial;
       xFila.vacunadoCorrectos = xFila.controlados - (xFila.sinVacunar + xFila.heridos + xFila.mojados + xFila.malaPosicion);
       xFila.porcentajeEficiencia = (xFila.vacunadoCorrectos / xFila.controlados) *100;
+
+      //cambio
+      if(isNaN(xFila.porcentajeEficiencia)) xFila.porcentajeEficiencia = 0;
 
       this.listIndiceEficiencia.forEach(xFilaEficiencia => {
         if (xFila.porcentajeEficiencia >= xFilaEficiencia.rangoInicial && xFila.porcentajeEficiencia <= xFilaEficiencia.rangoFinal) {
@@ -796,6 +805,7 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
   }
 
   onGrabarControlEficiencia() {
+    debugger;
     if (!this.nombreVacunadorControlEficiencia) {
       this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Seleccionar Vacunador');
       return;
@@ -811,6 +821,7 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
   }
 
   onGrabar() {
+    debugger;
     if (!this.selectEmpresa) {
       this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Seleccionar Empresa');
       return;

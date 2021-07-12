@@ -589,6 +589,8 @@ export class VacunacionSubcutaneaOfflineCreateComponent implements OnInit, OnDes
     let valorFin = 0;
 
     this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.map(xFila => {
+      //cambio
+      if(isNaN(promedioControldeEficiencia.porcentajeEficiencia)) promedioControldeEficiencia.porcentajeEficiencia = 0;
       //•	+50% y -10% del promedio de Vacunados hora 1punto
       valorInicio = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.1)
       valorFin = promedioControldeEficiencia.vacunadoPorHora + (promedioControldeEficiencia.vacunadoPorHora * 0.5)
@@ -751,7 +753,10 @@ export class VacunacionSubcutaneaOfflineCreateComponent implements OnInit, OnDes
         heridos: 0,
         mojados: 0,
         malaPosicion: 0,
-        vacunadoCorrectos: 0
+        vacunadoCorrectos: 0,
+        //Cambios
+        porcentajeEficiencia: 0,
+        puntajeEficiencia: 0
       });
 
       this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia = [...vclonedVacunado];
@@ -771,6 +776,9 @@ export class VacunacionSubcutaneaOfflineCreateComponent implements OnInit, OnDes
       xFila.vacunadoPorHora = xFila.cantidadFinal - xFila.cantidadInicial;
       xFila.vacunadoCorrectos = xFila.controlados - (xFila.sinVacunar + xFila.heridos + xFila.mojados + xFila.malaPosicion);
       xFila.porcentajeEficiencia = (xFila.vacunadoCorrectos / xFila.controlados) *100;
+
+      //cambio
+      if(isNaN(xFila.porcentajeEficiencia)) xFila.porcentajeEficiencia = 0;
 
       this.listIndiceEficiencia.forEach(xFilaEficiencia => {
         if (xFila.porcentajeEficiencia >= xFilaEficiencia.rangoInicial && xFila.porcentajeEficiencia <= xFilaEficiencia.rangoFinal) {
