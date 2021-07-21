@@ -9,8 +9,11 @@ const routes: Routes = [
   {path: 'main',
     component: LayoutComponent,
     children: [
+      //{ path: 'dashboard' , loadChildren:
+      //() => import('./dashboard/dashboard.module').then(m => m.DashboardModule),
+      //canActivate: [AuthGuard]},
       { path: 'dashboard' , loadChildren:
-      () => import('./dashboard/dashboard.module').then(m => m.DashboardModule),
+      () => import('./modules/modulo-dashboard/modulo-dashboard.module').then(m => m.DashboardModule),
       canActivate: [AuthGuard]},
       { path: 'module-re' , loadChildren:
       () => import('./modules/modulo-registro-equipo/modulo-registro-equipo.module').then(m => m.RegistroEquipoModule),

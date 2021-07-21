@@ -9,6 +9,9 @@ import { Router } from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
 
+  //Titulo del componente
+  titulo = "Dashboard";
+
   constructor(private breadcrumbService: BreadcrumbService,
               private router: Router) {
     this.breadcrumbService.setItems([
