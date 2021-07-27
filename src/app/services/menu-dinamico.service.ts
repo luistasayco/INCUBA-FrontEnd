@@ -82,7 +82,9 @@ export class MenuDinamicoService {
 
   getMenu() {
     return  [
-      { label: 'Dashboard', icon: 'fa fa-fw fa-dashboard', routerLink: ['/'] },
+      { 
+        label: 'Dashboard', icon: 'fa fa-fw fa-dashboard', routerLink: ['/'] 
+      },
       {
           label: 'Modulos', icon: 'fa fa-fw fa-gg',
           items: [

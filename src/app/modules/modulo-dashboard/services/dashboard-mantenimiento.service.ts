@@ -22,9 +22,11 @@ export class DashboardMantenimientoService {
     parametros = parametros.append('tecnico', value.tecnico.toString());
     parametros = parametros.append('idDashboard', value.idDashboard.toString());
     parametros = parametros.append('empresa',value.empresa);
+    parametros = parametros.append('planta',value.planta);
     parametros = parametros.append('modelo',value.modelo);
     parametros = parametros.append('equipo',value.equipo);
-  
+    parametros = parametros.append('idUsuario',value.idUsuario.toString());
+
     return this.http.get<DashboardMantenimiento[]>
     (`${environment.url_api}DashboardMantenimiento/GetAll/`, { params: parametros });
   }

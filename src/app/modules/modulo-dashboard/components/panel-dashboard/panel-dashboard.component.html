@@ -21,7 +21,7 @@
             </div>
             <div class="ui-g-12 ui-md-3">
                 <label for="dropdown-componentes" class="label-custom">Componentes: </label>
-                <p-dropdown inputId="dropdown-componentes" class="ui dropdown-item-text"></p-dropdown>
+                <p-dropdown inputId="dropdown-componentes" class="ui dropdown-item-text" [options]="listItemRepuesto" [(ngModel)]="selectedRepuesto" placeholder="Select Componente" optionLabel="label" [showClear]="true"></p-dropdown>
             </div>
             <div class="ui-g-12 ui-md-3">
                 <label for="dropdown-tecnico" class="label-custom">Técnico: </label>
@@ -29,7 +29,7 @@
             </div>
             <div class="ui-g-12 ui-md-6">
                 <label for="dropdown-dash" class="label-custom">Tipo de Dashboard: </label>
-                <p-dropdown inputId="dropdown-dash" class="ui dropdown-item-text" placeholder="Select Dashboard" optionLabel="label" optionValue="value" [showClear]="true"></p-dropdown>
+                <p-dropdown inputId="dropdown-dash" class="ui dropdown-item-text" [options]="listItemDashboard" [(ngModel)]="selectedDashboard" placeholder="Select Dashboard" optionLabel="label" optionValue="value" [showClear]="true"></p-dropdown>
             </div>
             <div class="ui-g-12 ui-md-3">
                 <label for="float-input-fecha-ini" class="label-custom">Periodo Inicio: </label>
@@ -48,30 +48,50 @@
 
     <p-panel header="Dashboards - Mantenimiento" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
         <div class="ui-g ui-fluid">
-            <div class="ui-g-12 ui-md-6">
-                <h3>Visitas mensuales de mantenimiento</h3>
-                <p-chart type="bar" [data]="visitasMensualesMantenimientoData" [options]="visitasMensualesMantenimientoOptions"></p-chart>
-            </div>
-            <div class="ui-g-12 ui-md-6">
-                <h3>Numero de plantas visitadas por cliente</h3>
-                <p-chart type="pie" [data]="plantasVisitadasClienteData"></p-chart>
-            </div>
-            <div class="ui-g-12 ui-md-6">
-                <h3>Numero de visitas por planta</h3>
-                <p-chart type="pie" [data]="numeroVisitasPlantaData"></p-chart>
-            </div>
-            <div class="ui-g-12 ui-md-6">
-                <h3>Mantenimiento por tipo de maquina</h3>
-                <p-chart type="pie" [data]="mantenimientoTipomaquinaData"></p-chart>
-            </div>
-            <div class="ui-g-12 ui-md-12">
-                <h3>Numero de repuestos por periodo</h3>
-                <p-chart type="pie" [data]="numeroRepuestosPeriodoData"></p-chart>
-            </div>
-            <div class="ui-g-12 ui-md-6">
-                <h3>Numero de repuestos por equipo</h3>
-                <p-chart type="pie" [data]="numeroRepuestosEquipoData"></p-chart>
-            </div>
+            <p-card class="ui-g-12 ui-md-12" *ngIf="isValueDash === 1 || isValueDash === 0">
+                <div>
+                    <h3>Visitas mensuales de mantenimiento</h3>
+                    <p-chart type="bar" [data]="visitasMensualesMantenimientoData" [options]="barOptions" height="50vh"></p-chart>
+                </div>
+            </p-card>
+
+            <p-card class="ui-g-12 ui-md-12" *ngIf="isValueDash === 2 || isValueDash === 0">
+                <div>
+                    <h3>Numero de visitas por empresa</h3>
+                    <p-chart type="pie" [data]="plantasVisitadasClienteData" [options]="pieOptions" height="50vh"></p-chart>
+                </div>
+            </p-card>
+            <p-card class="ui-g-12 ui-md-12" *ngIf="isValueDash === 3 || isValueDash === 0">
+                <div>
+                    <h3>Numero de visitas por planta</h3>
+                    <p-chart type="pie" [data]="numeroVisitasPlantaData" [options]="pieOptions" height="50vh"></p-chart>
+                </div>
+            </p-card>
+            <p-card class="ui-g-12 ui-md-12" *ngIf="isValueDash === 4 || isValueDash === 0">
+                <div>
+                    <h3>Mantenimiento por modelo de maquina</h3>
+                    <p-chart type="pie" [data]="mantenimientoTipomaquinaData" [options]="pieOptions" height="50vh"></p-chart>
+                </div>
+            </p-card>
+            <p-card class="ui-g-12 ui-md-12" *ngIf="isValueDash === 5 || isValueDash === 0">
+                <div>
+                    <h3>Numero de repuestos por periodo</h3>
+                    <p-chart type="pie" [data]="numeroRepuestosPeriodoData" [options]="pieOptions" height="50vh"></p-chart>
+                </div>
+            </p-card>
+            <p-card class="ui-g-12 ui-md-12" *ngIf="isValueDash === 6 || isValueDash === 0">
+                <div>
+                    <h3>Numero de repuestos por equipo</h3>
+                    <p-chart type="pie" [data]="numeroRepuestosEquipoData" [options]="pieOptions" height="50vh"></p-chart>
+                </div>
+            </p-card>
+            <p-card class="ui-g-12 ui-md-12" *ngIf="isValueDash === 7 || isValueDash === 0">
+                <div>
+                    <h3>Inventario de consumibles</h3>
+                    <p-chart type="pie" [data]="numeroConsumiblesEquipoData" [options]="pieOptions" height="50vh"></p-chart>
+                </div>
+            </p-card>
+
         </div>
     </p-panel>
 

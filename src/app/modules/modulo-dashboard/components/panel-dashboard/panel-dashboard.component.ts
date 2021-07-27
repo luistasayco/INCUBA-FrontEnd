@@ -14,6 +14,14 @@ import { PersonaModel } from '../../../modulo-seguridad/models/persona.model';
 import { DashboardMantenimientoService } from '../../services/dashboard-mantenimiento.service';
 import { DashboardMantenimientoPorFiltro, DashboardMantenimiento } from '../../models/dashboard-mantenimiento-por-filtro.model';
 import { GlobalsConstants } from 'src/app/modules/modulo-compartido/models/globals-constants';
+//import { Label } from 'ng2-charts';
+import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
+import { ButtonAcces } from '../../../../models/acceso-button';
+import { PercentPipe } from '@angular/common';
+import { plugins } from 'chart.js';
+import { DashboardService } from '../../services/dashboard.service';
+import { DashboardModel, DashboardModelPorCategoria } from '../../models/dashboard-model.model';
+import { RepuestoPorModeloModel } from 'src/app/modules/modulo-registro-equipo/models/repuesto-por-modelo.model';
 
 @Component({
   selector: 'app-panel-dashboard',
@@ -25,6 +33,9 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
   //Titulo del componente
   titulo = 'Dashboard - Mantenimiento';
 
+  //Acceso de botones
+  buttonAcces: ButtonAcces = new ButtonAcces();
+
   //
   globalConstants: GlobalsConstants = new GlobalsConstants();
   
@@ -34,6 +45,8 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
   listItemModelo: SelectItem[];
   listItemEquipo: SelectItem[];
   listItemTecnico: SelectItem[];
+  listItemDashboard: SelectItem[];
+  listItemRepuesto: SelectItem[];
   //Variables de dato seleccionado
   selectedEmpresa: any;
   selectedPlanta: any;
@@ -42,36 +55,62 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
   selectedTecnico: any;
   selectedFechaInicio: any;
   selectedFechaFin: any;
+  selectedDashboard: any;
+  selectedRepuesto: any;
+  //Colores
+  
+
+  ColorArray: string[] = [
+    "#3366cc","#dc3912","#ff9900","#109618","#990099",
+    "#0099c6","#dd4477","#66aa00","#b82e2e","#316395",
+    "#3366cc","#994499","#22aa99","#aaaa11","#6633cc",
+    "#e67300","#8b0707","#651067","#329262","#5574a6",
+    "#3b3eac","#b77322","#16d620","#b91383","#f4359e",
+    "#9c5935","#a9c413","#2a778d","#668d1c","#bea413",
+    "#0c5922","#743411"
+   
+  ]
  
 
   //Variables de graficos
   visitasMensualesMantenimientoData: any;
-  visitasMensualesMantenimientoOptions: any;
+  barOptions: any;
+  pieOptions: any;
   plantasVisitadasClienteData: any;
   numeroVisitasPlantaData: any;
   mantenimientoTipomaquinaData : any;
   numeroRepuestosPeriodoData: any;
   numeroRepuestosEquipoData: any;
+  numeroConsumiblesEquipoData: any;
 
   equipoModel: EquipoModel = new EquipoModel();
+  dashboardModelPorCategoria: DashboardModelPorCategoria = new DashboardModelPorCategoria();
   personaModel: PersonaModel = new PersonaModel();
   modeloPlanta: PlantaModel = new PlantaModel();
   modeloModelo: ModeloModel = new ModeloModel();
   modeloEquipoPorModelo: EquipoPorModeloModel = new EquipoPorModeloModel();
   DashboardMantenimientoPorFiltro: DashboardMantenimientoPorFiltro = new DashboardMantenimientoPorFiltro();
+  dashboardModel: DashboardModel = new DashboardModel();
+  modeloRepuestoPorModelo: RepuestoPorModeloModel = new RepuestoPorModeloModel();
 
   subscription: Subscription;
 
   // Lista de datos
   listLabel: string[];
   listData: number[];
+
+  // 
+  isValueDash: number;
   
   constructor(private breadcrumbService: BreadcrumbService,
               private seguridadService: SeguridadService,
+              private dashboardService: DashboardService,
               private registroEquipoService: RegistroEquipoService,
-              private dashboardMantenimientoService: DashboardMantenimientoService) {
+              private dashboardMantenimientoService: DashboardMantenimientoService,
+              private menuDinamicoService: MenuDinamicoService) {
     this.breadcrumbService.setItems([
-      { label: 'Dashboard', routerLink: ['/dashboard'] }
+      {label:'Dashboard' },
+      { label: 'Mantenimiento', routerLink: ['/dashboard/panel-dashboard'] }
     ]);
    }
 
@@ -81,30 +120,63 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
     this.selectedModelo = null;
     this.selectedEquipo = null;
     this.selectedTecnico = null;
+    this.selectedDashboard = null;
+    this.selectedRepuesto = null;
     this.selectedFechaInicio = new Date();
     this.selectedFechaFin = new Date();
+    this.isValueDash = 0;
 
     this.getToObtieneEmpresa();
     this.getToObtieneModelo();
     this.getToObtieneTecnico();
-
+    this.getToObtieneDashboard();
+    this.getToObtieneRepuesto();
 
     this.listItemEquipo = [];
 
-    
+    this.subscription = new Subscription();
+    this.subscription = this.menuDinamicoService.getObtieneOpciones('app-panel-dashboard')
+    .subscribe(acces => {
+      this.buttonAcces = acces;
+    });
 
-    this.visitasMensualesMantenimientoOptions = {
+    this.barOptions = {
       title: {
-        display: true,
-        text: 'My Title',
+        //display: true,
+        //text: 'My Title',
         fontSize: 16
       },
       legend: {
-        position: 'bottom'
+        position: 'left'
+      },
+
+      plugins: {
+        labels: {
+          render: 'value',
+          fontSize: 14,
+          fontStyle: 'bold',
+          //fontColor: '#fff',
+          //overlap: false
+        }
       }
 
     };
 
+    this.pieOptions = {
+      legend: {
+        display: true,
+        position: "left"
+      },
+      plugins: {
+        labels: {
+          render: 'value',
+          fontSize: 16,
+          fontStyle: 'bold',
+          fontColor: '#fff',
+          overlap: true
+        }
+      }
+    };
     
   }
 
@@ -117,6 +189,44 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
         this.listItemEmpresa.push({ label: item.descripcionEmpresa, value: item.codigoEmpresa });
       }
     });
+  }
+
+  getToObtieneDashboard(){
+    debugger;
+    this.dashboardModelPorCategoria = 
+    {
+      dashboardCategory: 'Mantenimiento'
+    }
+
+    this.subscription = new Subscription();
+    this.subscription = this.dashboardService.getDashboardPorCategoria(this.dashboardModelPorCategoria)
+    .subscribe((data: DashboardModel[])=>{
+      console.log('data', data);
+      this.listItemDashboard = [];
+      for (let item of data) {
+        this.listItemDashboard.push({ label: item.dashboardName ,value: item.dashboardID });
+      }
+    });
+    
+  }
+
+  getToObtieneRepuesto(){
+
+    if (this.selectedModelo !== null) {
+      this.modeloRepuestoPorModelo =
+      { 
+        codigoModelo: this.selectedModelo.value
+      };
+
+      this.subscription = new Subscription();
+      this.subscription = this.registroEquipoService.getRepuestoSeleccionados(this.modeloRepuestoPorModelo)
+      .subscribe((data: RepuestoPorModeloModel[])=>{
+        this.listItemRepuesto = [];
+        for (let item of data) {
+          this.listItemRepuesto.push({label: item.descripcion , value: item.codigoModelo });
+        }
+      });
+    }
   }
 
   getOnChangeEmpresa() {
@@ -152,7 +262,16 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
 
   getOnChangeModelo(){
    //this.onListar();
-   this.getToObtieneEquipo();
+    if (this.selectedModelo !== null) {
+      this.getToObtieneEquipo();
+      this.getToObtieneRepuesto();
+    }
+    else{
+      this.listItemEquipo = [];
+      this.listItemRepuesto = [];
+    }
+    this.getToObtieneEquipo();
+    
   }
 
   getOnChangePlanta(){
@@ -202,11 +321,13 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
     let filtro: DashboardMantenimientoPorFiltro = new  DashboardMantenimientoPorFiltro();
     filtro.fechaInicio = this.selectedFechaInicio;
     filtro.fechaFin = this.selectedFechaFin;
-    filtro.tecnico = this.selectedTecnico.value;
+    filtro.tecnico = this.selectedTecnico == null ? 0 : this.selectedTecnico.value ;
     filtro.idDashboard = tipo;
-    filtro.empresa = this.selectedEmpresa == null? '' : this.selectedEmpresa.value ;
-    filtro.modelo = this.selectedModelo.value;
-    filtro.equipo = this.selectedEquipo.value;
+    filtro.empresa = this.selectedEmpresa == null ? '' : this.selectedEmpresa.value ;
+    filtro.planta = this.selectedPlanta == null ? '' : this.selectedPlanta.value ;
+    filtro.modelo = this.selectedModelo == null ? '' : this.selectedModelo.value ;
+    filtro.equipo = this.selectedEquipo == null ? '' : this.selectedEquipo.value ;
+    filtro.idUsuario = 1;
     
 
     this.subscription = new Subscription();
@@ -236,6 +357,10 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
         case 6:
           this.goLlenarMetodo6(data);
           break;
+
+        case 7:
+          this.goLlenarMetodo7(data);
+          break;
       
         default:
           break;
@@ -247,14 +372,22 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
   }
 
   getToListadoLlenar(){
-    
-    this.getToListado(1);
-    this.getToListado(2);    
-    this.getToListado(3);    
-    this.getToListado(4);
-    this.getToListado(5);      
-    this.getToListado(6);     
 
+    if (this.selectedDashboard != null) {
+      this.getToListado(this.selectedDashboard.value);
+      this.isValueDash = this.selectedDashboard.value;
+    }
+    else{
+      this.isValueDash = 0;
+      this.getToListado(1);
+      this.getToListado(2);    
+      this.getToListado(3);    
+      this.getToListado(4);
+      this.getToListado(5);      
+      this.getToListado(6);   
+      this.getToListado(7);  
+    }
+      
   }
 
   goLlenarMetodo(data: DashboardMantenimiento[]) {
@@ -263,7 +396,7 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
 
     data.forEach(xFila => {
       this.listLabel.push(xFila.periodo);
-      this.listData.push(xFila.cantidadVisitas);
+      this.listData.push(xFila.cantidad);
     });
 
     this.visitasMensualesMantenimientoData = {
@@ -271,8 +404,8 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
       
       datasets: [
         {
-        label: 'First Dataset',
-        backgroundColor: '#42A5F5',
+        label: 'Visitas por periodo',
+        backgroundColor: this.ColorArray[0],
         data: this.listData}
       
       ]
@@ -284,8 +417,8 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
     this.listData = [];
 
     data.forEach(xFila => {
-      this.listLabel.push(xFila.nombreEmpresa);
-      this.listData.push(xFila.cantidadVisitas);
+      this.listLabel.push(xFila.descripcion);
+      this.listData.push(xFila.cantidad);
     });
 
     this.plantasVisitadasClienteData = {
@@ -294,12 +427,7 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
       datasets: [
         {
         data: this.listData,
-        backgroundColor: [
-          '#3366CC', '#DC3912', '#FF9900', '#109618', '#990099',
-          '#3B3EAC', '#0099C6', '#DD4477', '#66AA00', '#B82E2E',
-          '#316395', '#994499', '#22AA99', '#AAAA11', '#6633CC',
-          '#E67300', '#8B0707', '#329262', '#5574A6', '#3B3EAC'
-        ]
+        backgroundColor: this.ColorArray
       
         }]
     };
@@ -310,8 +438,8 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
     this.listData = [];
 
     data.forEach(xFila => {
-      this.listLabel.push(xFila.nombrePlanta);
-      this.listData.push(xFila.cantidadVisitas);
+      this.listLabel.push(xFila.descripcion);
+      this.listData.push(xFila.cantidad);
     });
 
     this.numeroVisitasPlantaData = {
@@ -320,12 +448,7 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
       datasets: [
         {
         data: this.listData,
-        backgroundColor: [
-          '#3366CC', '#DC3912', '#FF9900', '#109618', '#990099',
-          '#3B3EAC', '#0099C6', '#DD4477', '#66AA00', '#B82E2E',
-          '#316395', '#994499', '#22AA99', '#AAAA11', '#6633CC',
-          '#E67300', '#8B0707', '#329262', '#5574A6', '#3B3EAC'
-        ]
+        backgroundColor: this.ColorArray
       
         }]
     };
@@ -336,8 +459,8 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
     this.listData = [];
 
     data.forEach(xFila => {
-      this.listLabel.push(xFila.nombreModelo);
-      this.listData.push(xFila.cantidadVisitas);
+      this.listLabel.push(xFila.descripcion);
+      this.listData.push(xFila.cantidad);
     });
 
     this.mantenimientoTipomaquinaData = {
@@ -346,12 +469,7 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
       datasets: [
         {
         data: this.listData,
-        backgroundColor: [
-          '#3366CC', '#DC3912', '#FF9900', '#109618', '#990099',
-          '#3B3EAC', '#0099C6', '#DD4477', '#66AA00', '#B82E2E',
-          '#316395', '#994499', '#22AA99', '#AAAA11', '#6633CC',
-          '#E67300', '#8B0707', '#329262', '#5574A6', '#3B3EAC'
-        ]
+        backgroundColor: this.ColorArray
       
         }]
     };
@@ -362,8 +480,8 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
     this.listData = [];
 
     data.forEach(xFila => {
-      this.listLabel.push(xFila.nombreRepuesto);
-      this.listData.push(xFila.cantidadVisitas);
+      this.listLabel.push(xFila.descripcion);
+      this.listData.push(xFila.cantidad);
     });
 
     this.numeroRepuestosPeriodoData = {
@@ -372,12 +490,7 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
       datasets: [
         {
         data: this.listData,
-        backgroundColor: [
-          '#3366CC', '#DC3912', '#FF9900', '#109618', '#990099',
-          '#3B3EAC', '#0099C6', '#DD4477', '#66AA00', '#B82E2E',
-          '#316395', '#994499', '#22AA99', '#AAAA11', '#6633CC',
-          '#E67300', '#8B0707', '#329262', '#5574A6', '#3B3EAC'
-        ]
+        backgroundColor: this.ColorArray
       
         }]
     };
@@ -388,8 +501,8 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
     this.listData = [];
 
     data.forEach(xFila => {
-      this.listLabel.push(xFila.nombreRepuesto);
-      this.listData.push(xFila.cantidadVisitas);
+      this.listLabel.push(xFila.descripcion);
+      this.listData.push(xFila.cantidad);
     });
 
     this.numeroRepuestosEquipoData = {
@@ -398,13 +511,28 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
       datasets: [
         {
         data: this.listData,
-        backgroundColor: [
-          '#3366CC', '#DC3912', '#FF9900', '#109618', '#990099',
-          '#3B3EAC', '#0099C6', '#DD4477', '#66AA00', '#B82E2E',
-          '#316395', '#994499', '#22AA99', '#AAAA11', '#6633CC',
-          '#E67300', '#8B0707', '#329262', '#5574A6', '#3B3EAC'
-        ]
+        backgroundColor: this.ColorArray
       
+        }]
+    };
+  }
+
+  goLlenarMetodo7(data: DashboardMantenimiento[]) {
+    this.listLabel = [];
+    this.listData = [];
+
+    data.forEach(xFila => {
+      this.listLabel.push(xFila.descripcion);
+      this.listData.push(xFila.cantidad);
+    });
+
+    this.numeroConsumiblesEquipoData = {
+      labels: this.listLabel,
+      
+      datasets: [
+        {
+        data: this.listData,
+        backgroundColor: this.ColorArray
         }]
     };
   }

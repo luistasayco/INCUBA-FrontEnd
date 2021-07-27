@@ -1,14 +1,15 @@
-<div oncontextmenu="return false" onkeydown="return false">
-    <!-- <div class="containerModal" oncontextmenu="return false;" onkeydown="return false">
-
-        <div id="container"></div>
-        <iframe id="visorPdf" [src]="urlSanitizer"></iframe>
-    </div> -->
-
+<!-- <div oncontextmenu="return false" onkeydown="return false">
     <ng-container>
 
-        <ngx-doc-viewer #visor id="visor" [url]="file" viewer="url" style="height:100vh;" [disableContent]="'popout-hide'">
+        <ngx-doc-viewer #visor id="visor" [url]="fileEnServidor" viewer="fileEnServidor" style="height:100vh;" [disableContent]="'popout-hide'">
         </ngx-doc-viewer>
 
     </ng-container>
+</div> -->
+
+
+<div oncontextmenu="return false" onkeydown="return false">
+
+    <pdf-viewer [src]="fileEnServidor" [render-text]="true" style="display: block;" [fit-to-page]="true"></pdf-viewer>
+
 </div>

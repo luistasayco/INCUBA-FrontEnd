@@ -19,27 +19,39 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
 
   // filePdf = 'data:application/pdf;base64,'
   constructor(private _sanitizer: DomSanitizer) { }
-//application
+
+  ngAfterViewInit(): void {
+    //this.inHabilitarClickDerecho();
+  }
+
+  inHabilitarClickDerecho() {
+    const div = document.getElementById('container');
+    div.oncontextmenu = inhabilitar;
+    function inhabilitar() {
+      console.log('CLICK DERECHO INHABILITADO');
+      return false;
+    }
+  }
+
   ngOnInit(): void {
-    this.handleInputChange(this.isFile);
+    console.log('ARCHIVO', this.isFile);
 
-    // let origen: string = `${window.location.origin}/Invetsa`;
-    // if (isDevMode()) {
-    //   origen =  'https://auditoria.invetsa.com/Invetsa';
-    // }
+    let origen: string = `${window.location.origin}/Invetsa`;
+    if (isDevMode()) {
+      //origen =  'https://auditoria.invetsa.com/Invetsa';
+      origen =  window.location.origin;
+    }
 
-    // this.fileEnServidor = `${origen}/assets/file-pdf/${this.isFile.nameAleatorio}.pdf#toolbar=0&navpanes=0&scrollbar=0&view=fitH&&page=1`;
-    // this.urlSanitizer = this._sanitizer.bypassSecurityTrustResourceUrl(this.fileEnServidor);
-    // console.log('this.fileOnLocal:', this.fileEnServidor);
+    setTimeout(() => {
+      //this.fileEnServidor = `${origen}/assets/file-pdf/${this.isFile.nameAleatorio}.pdf#toolbar=0&navpanes=0&scrollbar=0&view=fitH&&page=1`;
+      //this.fileEnServidor = `${origen}/assets/file-pdf/pruebai7.pdf#toolbar=0&navpanes=0&scrollbar=0&view=fitH&&page=1`;
+      let nombrePdf: string = this.isFile.nameAleatorio;
+      //nombrePdf = 'pruebai7';
+      this.fileEnServidor = `${origen}/assets/file-pdf/${nombrePdf}.pdf`;
+      console.log('this.fileOnLocal:', this.fileEnServidor);
+      // this.urlSanitizer = this._sanitizer.bypassSecurityTrustResourceUrl(this.fileEnServidor);
+    }, 5000);
 
-  } 
-
-  ngAfterViewInit() {
-    // const div = document.getElementById('container');
-    // div.oncontextmenu = inhabilitar;
-    // function inhabilitar() {
-    //     return false;
-    // }
   }
 
  async handleInputChange(files) {
@@ -68,17 +80,22 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
   BlobToBase64_2(blob) {
     let base64Index = blob.indexOf(this.BASE64_MARKER) + this.BASE64_MARKER.length;
     let base64 = blob.substring(base64Index);
+    // console.log('BlobToBase64_2: A BASE 64', base64);
     let raw = window.atob(base64);
+    // console.log('BlobToBase64_2: A raw', raw);
     return base64;
   }
 
   convertirBase64Afile(archivoEnBase64, nombreArchivoSalida): any {
+
     const archivoABlob = this.convertirBase64ToBlob(archivoEnBase64);
+    // const archivoPDF = new File([archivoABlob], nombreArchivoSalida, { type: 'application/pdf' });
     return window.URL.createObjectURL(archivoABlob);
 
   }
 
   convertirBase64ToBlob(dataURI): any {
+    // console.log('ARCHIVO EN BASE 64', dataURI);
     const byteString = window.atob(dataURI);
     const arrayBuffer = new ArrayBuffer(byteString.length);
     const int8Array = new Uint8Array(arrayBuffer);
@@ -86,6 +103,8 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
       int8Array[i] = byteString.charCodeAt(i);
     }
     const blob = new Blob([int8Array], { type: 'application/pdf' });
+    // console.log('ARCHIVO EN BLOB', blob);
+
     return blob;
   }
 
