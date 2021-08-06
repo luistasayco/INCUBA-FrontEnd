@@ -204,7 +204,7 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
       console.log('data', data);
       this.listItemDashboard = [];
       for (let item of data) {
-        this.listItemDashboard.push({ label: item.dashboardName ,value: item.dashboardID });
+        this.listItemDashboard.push({ label: item.dashboardName ,value: item.dashboardCategoryID });
       }
     });
     

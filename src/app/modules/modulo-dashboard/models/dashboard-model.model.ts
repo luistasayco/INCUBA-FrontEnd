@@ -1,13 +1,12 @@
-import { DashboardModule } from '../modulo-dashboard.module';
 export class DashboardModel {
     dashboardID: number;
     dashboardName: string;
-    dashboardDescription: string;
+    dashboardCategoryID: number;
 
     constructor(){
         this.dashboardID = 0;
         this.dashboardName = '';
-        this.dashboardDescription = '';
+        this.dashboardCategoryID = 0;
     }
 }
 

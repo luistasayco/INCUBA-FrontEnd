@@ -7,6 +7,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { ChartModule } from 'primeng/chart';
 import 'chartjs-plugin-labels';
 import { CardModule } from 'primeng/card';
+import { ScrollPanelModule } from 'primeng';
 //Services
 
 @NgModule({
@@ -16,7 +17,8 @@ import { CardModule } from 'primeng/card';
         DropdownModule,
         CalendarModule,
         ChartModule,
-        CardModule
+        CardModule,
+        ScrollPanelModule
     ],
     providers: []
 })

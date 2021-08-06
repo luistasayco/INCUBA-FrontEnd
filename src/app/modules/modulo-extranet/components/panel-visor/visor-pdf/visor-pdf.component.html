@@ -1,15 +1,24 @@
-<!-- <div oncontextmenu="return false" onkeydown="return false">
-    <ng-container>
+<!-- <div oncontextmenu="return false" onkeydown="return false" *ngIf="urlSanitizer">
 
-        <ngx-doc-viewer #visor id="visor" [url]="fileEnServidor" viewer="fileEnServidor" style="height:100vh;" [disableContent]="'popout-hide'">
-        </ngx-doc-viewer>
+    <div class="containerModal" oncontextmenu="return false;" onkeydown="return false">
+        <div id="container"></div>
+        <iframe id="visorPdf" class="" [src]="this.urlSanitizer" style="width: 100%; height: 200px; overflow: auto; -webkit-overflow-scrolling: touch;">
+         </iframe>
+    </div>
 
-    </ng-container>
+
 </div> -->
 
+<!-- <div style="text-align: center;">
+    <p-button (click)="primeraPagina()"> Primera </p-button>
+    <p-button (click)="PaginaAnterior()"> Anterior </p-button>
+    <p-button (click)="PaginaSiguiente()"> Siguiente </p-button>
+    <p-button (click)="ultimaPagina()"> Ultima </p-button>
+</div> -->
 
-<div oncontextmenu="return false" onkeydown="return false">
-
-    <pdf-viewer [src]="fileEnServidor" [render-text]="true" style="display: block;" [fit-to-page]="true"></pdf-viewer>
-
+<div oncontextmenu="return false" onkeydown="return false" *ngIf="this.urlSanitizer">
+    <div class="containerModal" oncontextmenu="return false;" onkeydown="return false">
+        <div id="container"></div>
+        <iframe id="visorPdf" [src]="this.urlSanitizer"></iframe>
+    </div>
 </div>

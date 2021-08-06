@@ -9,19 +9,22 @@ import { environment } from 'src/environments/environment';
 export class VisorPdfComponent implements OnInit, AfterViewInit {
 
   @Input() isFile: any;
-  strBlobURL: any;
+  archivoEnBase64: any;
+  nombrePdf: string = '';
+  origen: string = '';
 
   BASE64_MARKER = ';base64,';
-  file: string = '';
+  archivoUrl: string = '';
   fileEnServidor = '';
-  urlSanitizer: SafeResourceUrl;
+  urlSanitizer: SafeResourceUrl = null;
 
+  pagina: number = 1;
 
   // filePdf = 'data:application/pdf;base64,'
   constructor(private _sanitizer: DomSanitizer) { }
 
   ngAfterViewInit(): void {
-    //this.inHabilitarClickDerecho();
+    this.inHabilitarClickDerecho();
   }
 
   inHabilitarClickDerecho() {
@@ -33,24 +36,26 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngOnInit(): void {
-    console.log('ARCHIVO', this.isFile);
-
-    let origen: string = `${window.location.origin}/Invetsa`;
+  ngOnInit() {
+    this.origen = `${window.location.origin}/Invetsa`;
     if (isDevMode()) {
-      //origen =  'https://auditoria.invetsa.com/Invetsa';
-      origen =  window.location.origin;
+      // origen =  'https://auditoria.invetsa.com/Invetsa';
+      this.origen =  window.location.origin;
     }
+    console.log('origen:', this.origen);
 
-    setTimeout(() => {
+
+      // console.log('isFile', this.isFile);
+      // console.log('archivoUrl', this.archivoUrl);
+      // console.log('archivoEnBase64', this.archivoEnBase64);
+
       //this.fileEnServidor = `${origen}/assets/file-pdf/${this.isFile.nameAleatorio}.pdf#toolbar=0&navpanes=0&scrollbar=0&view=fitH&&page=1`;
-      //this.fileEnServidor = `${origen}/assets/file-pdf/pruebai7.pdf#toolbar=0&navpanes=0&scrollbar=0&view=fitH&&page=1`;
-      let nombrePdf: string = this.isFile.nameAleatorio;
-      //nombrePdf = 'pruebai7';
-      this.fileEnServidor = `${origen}/assets/file-pdf/${nombrePdf}.pdf`;
-      console.log('this.fileOnLocal:', this.fileEnServidor);
-      // this.urlSanitizer = this._sanitizer.bypassSecurityTrustResourceUrl(this.fileEnServidor);
-    }, 5000);
+      this.nombrePdf = this.isFile.nameAleatorio;
+      //this.fileEnServidor = `${origen}/assets/file-pdf/${nombrePdf}.pdf`;
+      const parametro = new Date();
+      this.fileEnServidor = `${this.origen}/assets/file-pdf/${this.nombrePdf}.pdf?param=${parametro}#toolbar=0&navpanes=0`;
+      console.log('this.fileEnServidor:', this.fileEnServidor);
+      this.urlSanitizer = this._sanitizer.bypassSecurityTrustResourceUrl(this.fileEnServidor);
 
   }
 
@@ -70,8 +75,8 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
 
   _handleReaderLoaded(e) {
     let reader = e.target;
-    this.strBlobURL =  reader.result;
-    this.file = this.convertirBase64Afile(this.BlobToBase64_2(this.strBlobURL), 'archivo.pdf');
+    this.archivoEnBase64 =  reader.result;
+    this.archivoUrl = this.convertirBase64Afile(this.BlobToBase64_2(this.archivoEnBase64), 'archivo.pdf');
 
   }
 
@@ -106,6 +111,39 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
     // console.log('ARCHIVO EN BLOB', blob);
 
     return blob;
+  }
+
+  public primeraPagina() {
+    this.pagina = 1;
+    this.MostrarPagina(this.pagina);
+  }
+
+
+  public ultimaPagina() {
+    this.pagina = 100;
+    this.MostrarPagina(this.pagina);
+  }
+
+  public PaginaAnterior() {
+    this.pagina--;
+    this.MostrarPagina(this.pagina);
+  }
+
+
+  public PaginaSiguiente() {
+    this.pagina++;
+    this.MostrarPagina(this.pagina);
+  }
+
+  private MostrarPagina(pagina: number) {
+    try {
+      const parametro = new Date();
+      this.fileEnServidor = `${this.origen}/assets/file-pdf/${this.nombrePdf}.pdf?param=${parametro}#toolbar=0&navpanes=0&&page=${pagina}`;
+      this.urlSanitizer = this._sanitizer.bypassSecurityTrustResourceUrl(this.fileEnServidor);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+
   }
 
 }
