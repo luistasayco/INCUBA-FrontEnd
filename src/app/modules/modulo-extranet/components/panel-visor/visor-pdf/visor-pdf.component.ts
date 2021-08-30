@@ -31,7 +31,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
     const div = document.getElementById('container');
     div.oncontextmenu = inhabilitar;
     function inhabilitar() {
-      console.log('CLICK DERECHO INHABILITADO');
+      // console.log('CLICK DERECHO INHABILITADO');
       return false;
     }
   }
@@ -42,7 +42,7 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
       // origen =  'https://auditoria.invetsa.com/Invetsa';
       this.origen =  window.location.origin;
     }
-    console.log('origen:', this.origen);
+    // console.log('origen:', this.origen);
 
 
       // console.log('isFile', this.isFile);

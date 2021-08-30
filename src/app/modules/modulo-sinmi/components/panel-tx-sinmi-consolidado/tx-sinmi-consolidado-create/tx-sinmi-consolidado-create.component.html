@@ -7,16 +7,36 @@
                 <label class="label-custom" for="dropdown-empresa">Empresa: </label>
                 <p-dropdown [disabled]="modeloItem.listaTxSINMIConsolidadoDetalle.length > 0" id="dropdown-empresa" class="ui dropdown-item-text" [options]="listItemEmpresa" [(ngModel)]="selectedEmpresa" placeholder="Select Compañia" optionLabel="label" [showClear]="true"></p-dropdown>
             </div>
+
             <div class="ui-g-12 ui-md-4">
             </div>
+
             <div class="ui-g-12 ui-md-4">
-                <label class="label-custom">.</label>
+                <label class="label-custom"></label>
                 <button pButton type="button" label="Adicionar Documento" icon="{{globalConstants.icoNuevo}}" (click)="onToCreate()"></button>
             </div>
 
+            <div class="ui-g-12 ui-md-4">
+                <label class="label-custom" for="textLinea">Linea: </label>
+                <input id="textLinea" type="text" pInputText placeholder="Ingresar Linea" [(ngModel)]="modeloItem.linea" />
+            </div>
+
+            <div class="ui-g-12 ui-md-8">
+            </div>
+
+            <div class="ui-g-12 ui-md-4">
+                <label class="label-custom" for="textLinea">Persona de contacto: </label>
+                <input id="textLinea" type="text" pInputText placeholder="Ingresar Contacto" [(ngModel)]="modeloItem.personaContacto" />
+            </div>
+
             <div class="ui-g-12 ui-md-12">
-                <label class="label-custom">Comentarios</label>
-                <textarea id="float-input-responsable-invetsa" [(ngModel)]="modeloItem.observacion" pInputTextarea autoResize="autoResize" placeholder="Ingresar Comentario"> </textarea>
+                <label class="label-custom">Resultados: </label>
+                <textarea id="float-input-responsable-invetsa" [(ngModel)]="modeloItem.resultado" pInputTextarea autoResize="autoResize" placeholder="Ingresar Resultados"> </textarea>
+            </div>
+
+            <div class="ui-g-12 ui-md-12">
+                <label class="label-custom">Conclusiones: </label>
+                <textarea id="float-input-responsable-invetsa" [(ngModel)]="modeloItem.conclusion" pInputTextarea autoResize="autoResize" placeholder="Ingresar Conclusiones"> </textarea>
             </div>
         </div>
     </p-panel>

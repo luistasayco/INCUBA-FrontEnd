@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuService } from '../services/menu.service';
 import { MenuDinamicoService } from '../services/menu-dinamico.service';
+import { UserContextService } from '../services/user-context.service';
 
 @Component({
   selector: 'app-layout',
@@ -41,11 +42,16 @@ export class LayoutComponent implements OnInit {
 
     model: any[];
 
+    sociedad: string;
+
     constructor(private menuService: MenuService,
-                public menuDinamicoService: MenuDinamicoService) {}
+                public menuDinamicoService: MenuDinamicoService,
+                public UserContextService: UserContextService) {}
 
     ngOnInit() {
         this.model = this.menuDinamicoService.getObtieneMenuDinamico();
+
+        this.sociedad = this.UserContextService.getSociedad();
     }
 
     changeTheme(theme) {

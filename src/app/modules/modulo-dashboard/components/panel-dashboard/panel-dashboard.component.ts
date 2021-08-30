@@ -22,6 +22,7 @@ import { plugins } from 'chart.js';
 import { DashboardService } from '../../services/dashboard.service';
 import { DashboardModel, DashboardModelPorCategoria } from '../../models/dashboard-model.model';
 import { RepuestoPorModeloModel } from 'src/app/modules/modulo-registro-equipo/models/repuesto-por-modelo.model';
+import { LanguageService } from '../../../../services/language.service';
 
 @Component({
   selector: 'app-panel-dashboard',
@@ -107,6 +108,7 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
               private dashboardService: DashboardService,
               private registroEquipoService: RegistroEquipoService,
               private dashboardMantenimientoService: DashboardMantenimientoService,
+              public languageService: LanguageService,
               private menuDinamicoService: MenuDinamicoService) {
     this.breadcrumbService.setItems([
       {label:'Dashboard' },
@@ -201,7 +203,6 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
     this.subscription = new Subscription();
     this.subscription = this.dashboardService.getDashboardPorCategoria(this.dashboardModelPorCategoria)
     .subscribe((data: DashboardModel[])=>{
-      console.log('data', data);
       this.listItemDashboard = [];
       for (let item of data) {
         this.listItemDashboard.push({ label: item.dashboardName ,value: item.dashboardCategoryID });

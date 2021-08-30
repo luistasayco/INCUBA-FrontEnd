@@ -58,7 +58,6 @@ export class PanelExtranetFolderComponent implements OnInit, OnDestroy {
     this.route.queryParamMap
     .pipe(
       map((params) => {
-        console.log('params', params);
         this.idGoogleDrive =  params.get('id');
         this.nameGoogleDrive =  params.get('name');
         this.band =  params.get('band');
@@ -183,8 +182,6 @@ export class PanelExtranetFolderComponent implements OnInit, OnDestroy {
           break;
         case HttpEventType.Response:
 
-        console.log(resp);
-
           this.mensajePrimeNgService.onToInfoMsg(null, 'DESCARGA COMPLETA');
           this.dataVisorCustom = new Blob([resp.body], {type: resp.body.type});
           // this.dataVisorCustom =resp;
@@ -205,7 +202,6 @@ export class PanelExtranetFolderComponent implements OnInit, OnDestroy {
     this.subscription$ = new Subscription();
     this.subscription$ = this.extranetService.getDownloadTxRegistroDocumentoSave(modelo.idGoogleDrive)
     .subscribe((resp: any) => {
-      console.log(resp);
       this.dataVisorCustom = resp;
       this.displayVisualizarCustom = true;
       this.displayVisualizar = false;

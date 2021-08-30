@@ -9,9 +9,11 @@ export class ModeloDashboardFormularioPorFiltro {
 export class ModeloDashboardFormulario {
     responsableIncubadora: string;
     nombreVacunador: string;
+    descripcion: string;
 
     constructor() {
         this.responsableIncubadora = '';
         this.nombreVacunador = '';
+        this.descripcion = '';
     }
 }

@@ -583,7 +583,6 @@ export class PanelDashboardAuditoriaComponent implements OnInit {
     this.subscription = new Subscription();
     this.subscription = this.dashboardService.getDashboardPorCategoria(this.dashboardModelPorCategoria)
     .subscribe((data: DashboardModel[])=>{
-      console.log('data', data);
       this.listItemDashboard = [];
       for (let item of data) {
         this.listItemDashboard.push({ label: item.dashboardName ,value: item.dashboardCategoryID });

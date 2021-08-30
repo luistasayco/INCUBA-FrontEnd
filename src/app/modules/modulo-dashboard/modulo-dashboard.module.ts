@@ -5,9 +5,10 @@ import { DashboardRoutingModule } from './modulo-dashboard-routing.module';
 import { DashboardPrimeNgModule } from './modulo-dashboard-primeng.module';
 import { FormsModule } from '@angular/forms';
 import { PanelDashboardAuditoriaComponent } from './components/panel-dashboard-auditoria/panel-dashboard-auditoria.component';
+import { PanelDashboardSinmiComponent } from './components/panel-dashboard-sinmi/panel-dashboard-sinmi.component';
 
 @NgModule({
-  declarations: [PanelDashboardComponent, PanelDashboardAuditoriaComponent],
+  declarations: [PanelDashboardComponent, PanelDashboardAuditoriaComponent, PanelDashboardSinmiComponent],
   imports: [
     CommonModule,
     DashboardRoutingModule,

@@ -1,0 +1,74 @@
+<div class="card card-w-title">
+    <h1><strong>{{titulo}}</strong></h1>
+    <!-- filtros -->
+    <p-panel header="Opcion de busqueda de {{titulo}}" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g ui-md-3">
+                <label for="dropdown-empresa" class="label-custom">Empresa: </label>
+                <p-dropdown inputId="dropdown-empresa" class="ui dropdown-item-text" placeholder="Select Empresa" [options]="listItemEmpresa" [(ngModel)]="selectedEmpresa" optionLabel="label" [showClear]="true"></p-dropdown>
+            </div>
+            <div class="ui-g ui-md-3">
+                <label for="dropdown-planta" class="label-custom">Granja: </label>
+                <p-dropdown inputId="dropdown-planta" class="ui dropdown-item-text" placeholder="Select Granja" [options]="listItemGranja" [(ngModel)]="selectedGranja" optionLabel="value" [showClear]="true"></p-dropdown>
+            </div>
+            <div class="ui-g ui-md-3">
+                <label for="dropdown-invetsa" class="label-custom">Responsable Invetsa: </label>
+                <p-dropdown inputId="dropdown-invetsa" class="ui dropdown-item-text" placeholder="Select Responsable" [options]="listItemResponsableInvetsa" [(ngModel)]="selectedResponsableInvetsa" optionLabel="label" optionValue="value" [showClear]="true"></p-dropdown>
+            </div>
+            <div class="ui-g ui-md-3">
+                <label for="dropdown-incubadora" class="label-custom">Responsable Planta: </label>
+                <p-dropdown inputId="dropdown-incubadora" class="ui dropdown-item-text" placeholder="Select Responsable" [options]="listItemResponsablePlanta" [(ngModel)]="selectedResponsablePlanta" optionLabel="value" optionValue="value" [showClear]="true"></p-dropdown>
+            </div>
+            <div class="ui-g ui-md-3">
+                <label for="dropdown-auditoria" class="label-custom">Tipo Modulo: </label>
+                <p-dropdown inputId="dropdown-auditoria" class="ui dropdown-item-text" [options]="listItemTipoModulo" [(ngModel)]="selectedTipoModulo" optionLabel="label" optionValue="value" [showClear]="true" (onChange)="getOnChangeTipoModulo()"></p-dropdown>
+            </div>
+            <div class="ui-g ui-md-3">
+                <label for="dropdown-linea" class="label-custom">Línea: </label>
+                <p-dropdown inputId="dropdown-linea" class="ui dropdown-item-text" placeholder="Select Línea" [options]="listItemLinea" [(ngModel)]="selectedLinea" optionLabel="value" optionValue="value" [showClear]="true"></p-dropdown>
+            </div>
+            <div class="ui-g ui-md-3">
+                <label for="dropdown-vacunador" class="label-custom">Edad: </label>
+                <p-dropdown inputId="dropdown-vacunador" class="ui dropdown-item-text" placeholder="Select Edad" [options]="listItemEdad" [(ngModel)]="selectedEdad" optionLabel="label" optionValue="value" [showClear]="true"></p-dropdown>
+            </div>
+            <div class="ui-g ui-md-3">
+                <label for="dropdown-dashboard" class="label-custom">Dashboard: </label>
+                <p-dropdown inputId="dropdown-dashboard" class="ui dropdown-item-text" [options]="listItemDashboard" [(ngModel)]="selectedDashboard" placeholder="Select Dashboard" placeholder="Select Dashboard" optionLabel="label" optionValue="value" [showClear]="true"></p-dropdown>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label for="float-input-fecha-ini" class="label-custom">Periodo Inicio: </label>
+                <p-calendar id="float-input-fecha-ini" placeholder="Seleccionar Fecha Inicio" [(ngModel)]="selectedFechaInicio" [showButtonBar]="true" view="month" dateFormat="mm/yy" [yearNavigator]="true" yearRange="2000:2030" [showIcon]="true" [locale]="languageService.es"></p-calendar>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label for="float-input-fecha-fin" class="label-custom">Periodo Fin: </label>
+                <p-calendar id="float-input-fecha-fin" placeholder="Seleccionar Fecha Fin" [(ngModel)]="selectedFechaFin" [showButtonBar]="true" view="month" dateFormat="mm/yy" [yearNavigator]="true" yearRange="2000:2030" [showIcon]="true" [locale]="languageService.es"></p-calendar>
+            </div>
+            <div class=" ui-g-12 ui-md-6">
+                <button pButton type="button" label="{{globalConstants.cBuscar}}" icon="{{globalConstants.icoBuscar}}" class="btn btn-block sba-button" (click)="getToListadoLlenar()"></button>
+            </div>
+        </div>
+    </p-panel>
+    <p-panel header="{{titulo}}" [toggleable]="true" [style]="{ 'margin-bottom': '20px'}">
+        <div class="ui-g ui-fluid">
+            <p-card class="ui-g-12 ui-md-12" *ngIf="isValueDash===1 || isValueDash===0">
+                <div *ngIf="listItemDashboard">
+                    <h3>{{listItemDashboard[0].label}}</h3>
+                </div>
+
+                <p-chart type="bar" height="50vh" [data]="scoreGeneralData" [options]="barOptions"></p-chart>
+            </p-card>
+            <p-card class="ui-g-12 ui-md-12" *ngIf="isValueDash===2 || isValueDash===0">
+                <div *ngIf="listItemDashboard">
+                    <h3>{{listItemDashboard[1].label}}</h3>
+                </div>
+                <p-chart type="bar" height="50vh" [data]="indiceHepaticoData" [options]="barOptions1"></p-chart>
+            </p-card>
+            <p-card class="ui-g-12 ui-md-12" *ngIf="isValueDash===3 || isValueDash===0">
+                <div *ngIf="listItemDashboard">
+                    <h3>{{listItemDashboard[2].label}}</h3>
+                </div>
+                <p-chart type="bar" height="50vh" [data]="scoreLesionesData" [options]="barOptions1"></p-chart>
+            </p-card>
+
+        </div>
+    </p-panel>

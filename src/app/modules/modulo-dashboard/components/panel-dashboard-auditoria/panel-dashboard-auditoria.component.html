@@ -43,53 +43,53 @@
                 <label for="float-input-fecha-fin" class="label-custom">Periodo Fin: </label>
                 <p-calendar id="float-input-fecha-fin" placeholder="Seleccionar Fecha Fin" [(ngModel)]="selectedFechaFin" [showButtonBar]="true" view="month" dateFormat="mm/yy" [yearNavigator]="true" yearRange="2000:2030" [showIcon]="true" [locale]="languageService.es"></p-calendar>
             </div>
-            <div class=" ui-g-12 ui-md-6 ">
-                <button pButton type="button " label="{{globalConstants.cBuscar}} " icon="{{globalConstants.icoBuscar}} " class="btn btn-block sba-button " (click)="getToListadoLlenar() "></button>
+            <div class=" ui-g-12 ui-md-6">
+                <button pButton type="button" label="{{globalConstants.cBuscar}}" icon="{{globalConstants.icoBuscar}}" class="btn btn-block sba-button" (click)="getToListadoLlenar()"></button>
             </div>
         </div>
     </p-panel>
 
-    <p-panel header="{{titulo}} " [toggleable]="true " [style]="{ 'margin-bottom': '20px'} ">
-        <div class="ui-g ui-fluid ">
-            <p-card class="ui-g-12 ui-md-12 " *ngIf="isValueDash===1 || isValueDash===0 ">
+    <p-panel header="{{titulo}}" [toggleable]="true" [style]="{ 'margin-bottom': '20px'}">
+        <div class="ui-g ui-fluid">
+            <p-card class="ui-g-12 ui-md-12" *ngIf="isValueDash===1 || isValueDash===0">
                 <h3>Manipulación y dilución de la vacuna nitrogenada</h3>
-                <p-chart type="horizontalBar " [data]="vacunaNitrogenadaData " [options]="vacunaNitrogenadaOptions " height="100vh "></p-chart>
+                <p-chart type="horizontalBar" [data]="vacunaNitrogenadaData" [options]="vacunaNitrogenadaOptions" height="100vh"></p-chart>
             </p-card>
-            <p-card class="ui-g-12 ui-md-12 " *ngIf="isValueDash===2 || isValueDash===0 ">
+            <p-card class="ui-g-12 ui-md-12" *ngIf="isValueDash===2 || isValueDash===0">
                 <h3>Manipulación y dilución de la vacuna liofilizada</h3>
-                <p-chart type="horizontalBar " [data]="vacunaLiofilizadaData " [options]="vacunaLiofilizadaOptions " height="70vh "></p-chart>
+                <p-chart type="horizontalBar" [data]="vacunaLiofilizadaData" [options]="vacunaLiofilizadaOptions" height="70vh"></p-chart>
             </p-card>
-            <p-card class="ui-g-12 ui-md-12 " *ngIf="isValueDash===3 && !isDisabled || isValueDash===0 && !isDisabled ">
+            <p-card class="ui-g-12 ui-md-12" *ngIf="isValueDash===3 && !isDisabled || isValueDash===0 && !isDisabled">
                 <h3>Puntaje (Productividad)</h3>
-                <p-chart type="bar " [data]="puntajeProductividadData " [options]="puntajeProductividadOptions " height="50vh "></p-chart>
+                <p-chart type="bar" [data]="puntajeProductividadData" [options]="puntajeProductividadOptions" height="50vh"></p-chart>
             </p-card>
-            <p-card class="ui-g-12 ui-md-12 " *ngIf="isValueDash===4 && !isDisabled || isValueDash===0 && !isDisabled ">
+            <p-card class="ui-g-12 ui-md-12" *ngIf="isValueDash===4 && !isDisabled || isValueDash===0 && !isDisabled">
                 <h3>% de eficiencia</h3>
-                <p-chart type="bar " [data]="porcentajeEficienciaData " [options]="porcentajeEficienciaOptions " height="50vh "></p-chart>
+                <p-chart type="bar" [data]="porcentajeEficienciaData" [options]="porcentajeEficienciaOptions" height="50vh"></p-chart>
             </p-card>
-            <p-card class="ui-g-12 ui-md-12 " *ngIf="isValueDash===5 || isValueDash===0 ">
+            <p-card class="ui-g-12 ui-md-12" *ngIf="isValueDash===5 || isValueDash===0">
                 <h3>Puntaje total obtenido</h3>
-                <p-chart type="bar " [data]="puntajeTotalData " [options]="puntajeTotalOptions " height="50vh "></p-chart>
+                <p-chart type="bar" [data]="puntajeTotalData" [options]="puntajeTotalOptions" height="50vh"></p-chart>
             </p-card>
-            <p-card class="ui-g-12 ui-md-12 " *ngIf="isValueDash===6 || isValueDash===0 ">
+            <p-card class="ui-g-12 ui-md-12" *ngIf="isValueDash===6 || isValueDash===0">
                 <h3>Puntaje total obtenido por plantas</h3>
-                <p-chart type="line " [data]="puntajeTotalMultipleData " [options]="puntajeTotalMultipleOptions " height="50vh "></p-chart>
+                <p-chart type="line" [data]="puntajeTotalMultipleData" [options]="puntajeTotalMultipleOptions" height="50vh"></p-chart>
             </p-card>
-            <p-card class="ui-g-12 ui-md-12 " *ngIf="isValueDash===7 || isValueDash===0 ">
+            <p-card class="ui-g-12 ui-md-12 " *ngIf="isValueDash===7 || isValueDash===0">
                 <h3>Numero de auditorias</h3>
-                <p-chart type="bar " [data]="numeroAuditoriasData " [options]="numeroAuditoriasOptions " height="50vh "></p-chart>
+                <p-chart type="bar" [data]="numeroAuditoriasData" [options]="numeroAuditoriasOptions" height="50vh"></p-chart>
             </p-card>
-            <p-card class="ui-g-12 ui-md-12 " *ngIf="isValueDash===8 || isValueDash===0 ">
+            <p-card class="ui-g-12 ui-md-12" *ngIf="isValueDash===8 || isValueDash===0">
                 <h3>Laboratorio de preparación de vacuna</h3>
-                <p-chart type="bar " [data]="laboratorioVacunaData " [options]="barOptions " height="50vh "></p-chart>
+                <p-chart type="bar" [data]="laboratorioVacunaData" [options]="barOptions" height="50vh"></p-chart>
             </p-card>
-            <p-card class="ui-g-12 ui-md-12 " *ngIf="isValueDash===9 || isValueDash===0 ">
+            <p-card class="ui-g-12 ui-md-12" *ngIf="isValueDash===9 || isValueDash===0">
                 <h3>Equipo INVETSA Temp y otros</h3>
-                <p-chart type="bar " [data]="equipoInvetsaData " [options]="barOptions " height="70vh "></p-chart>
+                <p-chart type="bar" [data]="equipoInvetsaData" [options]="barOptions" height="70vh"></p-chart>
             </p-card>
-            <p-card class="ui-g-12 ui-md-12 " *ngIf="isValueDash===10 || isValueDash===0 ">
+            <p-card class="ui-g-12 ui-md-12" *ngIf="isValueDash===10 || isValueDash===0">
                 <h3>Sala de vacunación</h3>
-                <p-chart type="bar " [data]="salaVacunacionData " [options]="barOptions " height="50vh "></p-chart>
+                <p-chart type="bar" [data]="salaVacunacionData" [options]="barOptions" height="50vh"></p-chart>
             </p-card>
         </div>
     </p-panel>

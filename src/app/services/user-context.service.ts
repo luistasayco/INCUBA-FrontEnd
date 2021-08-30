@@ -43,6 +43,10 @@ export class UserContextService {
     return this.sessionService.getItemDecrypt('usuario');
   }
 
+  public getSociedad() {
+    return this.sessionService.getItemDecrypt('DATABASESELECCIONADA');
+  }
+
   public setUser(user: any)
   {
     this.sessionService.setItemEncrypt('currentUser', user);

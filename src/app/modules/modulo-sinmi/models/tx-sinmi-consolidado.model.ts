@@ -4,7 +4,10 @@ export class TxSINMIConsolidado {
     codigoEmpresa: string;
     descripcionEmpresa: string;
     descripcion: string;
-    observacion: string;
+    conclusion: string;
+    resultado: string;
+    linea: string;
+    personaContacto: string;
     usuarioCreacion: string;
     fecRegistro: Date;
     fecHoraRegistro:Date;
@@ -23,7 +26,10 @@ export class TxSINMIConsolidado {
         this.codigoEmpresa = '';
         this.descripcionEmpresa = '';
         this.descripcion = '';
-        this.observacion = '';
+        this.conclusion = '';
+        this.resultado = '';
+        this.linea = '';
+        this.personaContacto = '';
         this.fecRegistro = null;
         this.fecHoraRegistro = null;
         this.listaTxSINMIConsolidadoDetalle = [];

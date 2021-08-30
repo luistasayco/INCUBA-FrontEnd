@@ -33,11 +33,11 @@
             </div>
             <div class="ui-g-12 ui-md-3">
                 <label for="float-input-fecha-ini" class="label-custom">Periodo Inicio: </label>
-                <p-calendar id="float-input-fecha-ini" placeholder="Seleccionar Fecha Inicio" [(ngModel)]="selectedFechaInicio" [showButtonBar]="true" view="month" dateFormat="mm/yy" [yearNavigator]="true" yearRange="2000:2030" [showIcon]="true"></p-calendar>
+                <p-calendar id="float-input-fecha-ini" placeholder="Seleccionar Fecha Inicio" [(ngModel)]="selectedFechaInicio" [showButtonBar]="true" view="month" dateFormat="mm/yy" [yearNavigator]="true" yearRange="2000:2030" [showIcon]="true" [locale]="languageService.es"></p-calendar>
             </div>
             <div class="ui-g-12 ui-md-3">
                 <label for="float-input-fecha-fin" class="label-custom">Periodo Fin: </label>
-                <p-calendar id="float-input-fecha-fin" placeholder="Seleccionar Fecha Fin" [(ngModel)]="selectedFechaFin" [showButtonBar]="true" view="month" dateFormat="mm/yy" [yearNavigator]="true" yearRange="2000:2030" [showIcon]="true"></p-calendar>
+                <p-calendar id="float-input-fecha-fin" placeholder="Seleccionar Fecha Fin" [(ngModel)]="selectedFechaFin" [showButtonBar]="true" view="month" dateFormat="mm/yy" [yearNavigator]="true" yearRange="2000:2030" [showIcon]="true" [locale]="languageService.es"></p-calendar>
             </div>
             <div class="ui-g-12 ui-md-6">
                 <button pButton type="button" label="{{globalConstants.cBuscar}}" icon="{{globalConstants.icoBuscar}}" (click)="getToListadoLlenar();" class="btn btn-block sba-button"></button>
