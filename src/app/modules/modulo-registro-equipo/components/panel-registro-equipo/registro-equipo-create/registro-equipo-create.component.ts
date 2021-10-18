@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, OnChanges, SimpleChanges, DoCheck } from '@angular/core';
 import { GlobalsConstants } from '../../../../modulo-compartido/models/globals-constants';
 import { SelectItem } from 'primeng';
 import { PlantaModel } from '../../../../modulo-compartido/models/planta.model';
@@ -91,6 +91,7 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
 
   displayControles: boolean;
 
+  
   constructor(private registroEquipoService: RegistroEquipoService,
               private compartidoService: CompartidoService,
               public mensajePrimeNgService: MensajePrimeNgService,
@@ -99,12 +100,20 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
               private router: Router,
               private userContextService: UserContextService,
               private utilService: UtilService) {
-                this.breadcrumbService.setItems([
-                    { label: 'Módulo Registro Equipo' },
-                    { label: 'Registro de Equipo', routerLink: ['module-re/panel-registro-equipo'] },
-                    { label: 'Nuevo'}
-                ]);
-              }
+    this.breadcrumbService.setItems([
+        { label: 'Módulo Registro Equipo' },
+        { label: 'Registro de Equipo', routerLink: ['module-re/panel-registro-equipo'] },
+        { label: 'Nuevo' }
+    ]);
+
+    window.addEventListener("beforeunload", (event) => {
+      event.preventDefault();
+      event.returnValue = "Unsaved modifications";
+      return event;
+   });
+
+  }
+
 
   ngOnDestroy() {
     if (this.subscription$) {

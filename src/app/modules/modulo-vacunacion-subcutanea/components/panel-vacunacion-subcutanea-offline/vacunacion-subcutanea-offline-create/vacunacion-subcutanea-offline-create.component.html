@@ -495,7 +495,7 @@
                         <label class="label-custom">Puntaje Máximo: 1.0 </label>
                     </div>
                     <div class="ui-g-12  ui-md-6">
-                        <label class="label-custom">Resultado dentro de +50% y -10% de la media: </label>
+                        <label class="label-custom">Resultado dentro de -10% de la media: </label>
                     </div>
                     <div class="ui-g-12  ui-md-6">
                         <label class="label-custom">1.0 punto</label>
@@ -567,11 +567,11 @@
         <div class="ui-grid ui-fluid">
             <div class="ui-g-12 ui-md-6">
                 <label for="float-input-responsable-invetsa">Responsable Invetsa:</label>
-                <textarea id="float-input-responsable-invetsa" [(ngModel)]="modeloItem.observacionInvetsa" pInputTextarea autoResize="autoResize" placeholder="Ingresar Observación"> </textarea>
+                <textarea id="float-input-responsable-invetsa" [(ngModel)]="modeloItem.observacionInvetsa" pInputTextarea rows="5" cols="30" maxlength="500" placeholder="Ingresar Observación"> </textarea>
             </div>
             <div class="ui-g-12 ui-md-6">
                 <label for="float-input-responsable-planta">Responsable Planta:</label>
-                <textarea id="float-input-responsable-planta" [(ngModel)]="modeloItem.observacionPlanta" pInputTextarea autoResize="autoResize" placeholder="Ingresar Observación"> </textarea>
+                <textarea id="float-input-responsable-planta" [(ngModel)]="modeloItem.observacionPlanta" pInputTextarea rows="5" cols="30" maxlength="500" placeholder="Ingresar Observación"> </textarea>
             </div>
             <div class="ui-g-12 ui-md-6">
                 <app-panel-firma-digital (vDataFirma)="modeloItem.firmaInvetsa = $event" (vDataFirmaClear)="modeloItem.firmaInvetsa = $event" [vFirmaOk]="globalConstants.cFirmaOk1" [vFirmaClear]="globalConstants.cFirmaClear"></app-panel-firma-digital>
@@ -721,6 +721,7 @@
             <p-dropdown id="label-custom-dosis-nro-af" class="ui dropdown-item-text" [options]="listItemEquipo" [(ngModel)]="selectNumeroAF" placeholder="Select AF" optionLabel="label" [showClear]="true"></p-dropdown>
         </div>
         <div class="ui-g-12">
+            <p-messages [(value)]="mensajePrimeNgService.msgs"></p-messages>
             <p-table [columns]="columnasNuevoIrregularidad" [value]="listIrregularidad" [(selection)]="selectIrregularidad" dataKey="idIrregularidad" autoLayout="true" [responsive]="true">
                 <ng-template pTemplate="header" let-columns>
                     <tr>

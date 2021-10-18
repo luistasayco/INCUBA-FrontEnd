@@ -384,7 +384,7 @@
                         <label class="label-custom">Puntaje Máximo: 1.0 </label>
                     </div>
                     <div class="ui-g-12  ui-md-6">
-                        <label class="label-custom">Resultado dentro de +50% y -10% de la media: </label>
+                        <label class="label-custom">Resultado dentro de -10% de la media: </label>
                     </div>
                     <div class="ui-g-12  ui-md-6">
                         <label class="label-custom">1.0 punto</label>
@@ -446,54 +446,54 @@
         </p-accordion>
     </p-panel>
     <p-footer>
-        <div class="ui-grid ui-fluid ">
-            <div class="ui-g-12 ui-md-6 ">
-                <label for="float-input-responsable-invetsa ">Responsable Invetsa:</label>
-                <textarea disabled id="float-input-responsable-invetsa " [(ngModel)]="modeloItem.observacionInvetsa " pInputTextarea autoResize="autoResize " placeholder="Ingresar Observación "> </textarea>
+        <div class="ui-grid ui-fluid">
+            <div class="ui-g-12 ui-md-6">
+                <label for="float-input-responsable-invetsa">Responsable Invetsa:</label>
+                <textarea disabled id="float-input-responsable-invetsa" [(ngModel)]="modeloItem.observacionInvetsa" pInputTextarea rows="5" cols="30" maxlength="500" placeholder="Ingresar Observación"> </textarea>
             </div>
-            <div class="ui-g-12 ui-md-6 ">
-                <label for="float-input-responsable-planta ">Responsable Planta:</label>
-                <textarea disabled id="float-input-responsable-planta " [(ngModel)]="modeloItem.observacionPlanta " pInputTextarea autoResize="autoResize " placeholder="Ingresar Observación "> </textarea>
+            <div class="ui-g-12 ui-md-6">
+                <label for="float-input-responsable-planta">Responsable Planta:</label>
+                <textarea disabled id="float-input-responsable-planta" [(ngModel)]="modeloItem.observacionPlanta" pInputTextarea rows="5" cols="30" maxlength="500" placeholder="Ingresar Observación"> </textarea>
             </div>
-            <div class="ui-g-12 ui-md-6 ">
-                <img [src]="modeloItem.firmaInvetsa " *ngIf="modeloItem.firmaInvetsa " style="width: 100%; display: block; " />
+            <div class="ui-g-12 ui-md-6">
+                <img [src]="modeloItem.firmaInvetsa" *ngIf="modeloItem.firmaInvetsa" style="width: 100%; display: block;" />
             </div>
-            <div class="ui-g-12 ui-md-6 ">
-                <img [src]="modeloItem.firmaPlanta " *ngIf="modeloItem.firmaPlanta " style="width: 100%; display: block; " />
+            <div class="ui-g-12 ui-md-6">
+                <img [src]="modeloItem.firmaPlanta" *ngIf="modeloItem.firmaPlanta" style="width: 100%; display: block;" />
             </div>
-            <div class="ui-g-12 ui-md-6 ">
-                <div class="p-field ">
-                    <label for="nombreInvetsa ">Responsable Invetsa:</label>
-                    <input [disabled]="true " id="nombreInvetsa " [(ngModel)]="modeloItem.responsableInvetsa " type="text " pInputText>
-                    <label for="emailInvetsa ">Email:</label>
-                    <input [disabled]="true " id="emailInvetsa " [(ngModel)]="modeloItem.emailFrom " type="text " pInputText>
+            <div class="ui-g-12 ui-md-6">
+                <div class="p-field">
+                    <label for="nombreInvetsa">Responsable Invetsa:</label>
+                    <input [disabled]="true" id="nombreInvetsa" [(ngModel)]="modeloItem.responsableInvetsa" type="text" pInputText>
+                    <label for="emailInvetsa">Email:</label>
+                    <input [disabled]="true" id="emailInvetsa" [(ngModel)]="modeloItem.emailFrom" type="text" pInputText>
                 </div>
             </div>
-            <div class="ui-g-12 ui-md-6 ">
-                <div class="p-field ">
-                    <label for="nombrePlanta ">Responsable Planta:</label>
-                    <input disabled id="nombrePlanta " [(ngModel)]="modeloItem.responsablePlanta " type="text " pInputText>
-                    <label for="emailPlanta ">Email:</label>
-                    <input disabled id="emailPlanta " [(ngModel)]="modeloItem.emailTo " type="text " pInputText>
+            <div class="ui-g-12 ui-md-6">
+                <div class="p-field">
+                    <label for="nombrePlanta">Responsable Planta:</label>
+                    <input disabled id="nombrePlanta" [(ngModel)]="modeloItem.responsablePlanta" type="text" pInputText>
+                    <label for="emailPlanta">Email:</label>
+                    <input disabled id="emailPlanta" [(ngModel)]="modeloItem.emailTo" type="text" pInputText>
                 </div>
             </div>
-            <div class="ui-g-12 ui-md-6 ">
-                <button [disabled]="modeloItem.flgCerrado" pButton type="button " label="{{globalConstants.cGrabar}} " icon="{{globalConstants.icoGrabar}} " (click)="onGrabar() "></button>
+            <div class="ui-g-12 ui-md-6">
+                <button [disabled]="modeloItem.flgCerrado" pButton type="button" label="{{globalConstants.cGrabar}}" icon="{{globalConstants.icoGrabar}}" (click)="onGrabar()"></button>
             </div>
-            <div class="ui-g-12 ui-md-6 ">
-                <button pButton type="button " label="{{globalConstants.cRegresar}} " icon="{{globalConstants.icoRegresar}} " (click)="onBack() "></button>
+            <div class="ui-g-12 ui-md-6">
+                <button pButton type="button" label="{{globalConstants.cRegresar}}" icon="{{globalConstants.icoRegresar}}" (click)="onBack()"></button>
             </div>
         </div>
     </p-footer>
 </div>
-<p-messages [(value)]="mensajePrimeNgService.msgs "></p-messages>
+<p-messages [(value)]="mensajePrimeNgService.msgs"></p-messages>
 
-<p-dialog header="Grabar " [(visible)]="displaySave " [closable]="false " [modal]="true " [style]="{width: '50vw'} " [baseZIndex]="10000 " [draggable]="false " [resizable]="false ">
+<p-dialog header="Grabar" [(visible)]="displaySave" [closable]="false" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
 
     Guardando Informacion...!!!
-    <div class="ui-g ui-fluid ">
-        <div class="ui-g-12 ">
-            <p-progressBar mode="indeterminate " [style]="{ 'height': '6px'} "></p-progressBar>
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <p-progressBar mode="indeterminate" [style]="{ 'height': '6px'}"></p-progressBar>
         </div>
     </div>
 

@@ -80,7 +80,12 @@ export class TxSimCreateComponent implements OnInit, OnDestroy {
                   { label: 'Sis. Integrado de Monitoreo', routerLink: ['module-si/panel-tx-sim'] },
                   { label: 'Nuevo'}
               ]);
-              }
+              window.addEventListener("beforeunload", (event) => {
+                event.preventDefault();
+                event.returnValue = "Unsaved modifications";
+                return event;
+             });
+    }
 
   ngOnDestroy() {
     if (this.subscription$) {

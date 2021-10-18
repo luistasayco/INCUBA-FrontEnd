@@ -65,6 +65,11 @@ export class TxExamenFisicoPollitoOfflineCreateComponent implements OnInit, OnDe
                   { label: 'Examen Físico (Offline)', routerLink: ['module-ef/panel-tx-examen-fisico-pollito-offline'] },
                   { label: 'Nuevo'}
               ]);
+              window.addEventListener("beforeunload", (event) => {
+                event.preventDefault();
+                event.returnValue = "Unsaved modifications";
+                return event;
+             });
   }
 
   ngOnInit(): void {

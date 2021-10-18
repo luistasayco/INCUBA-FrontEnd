@@ -97,6 +97,11 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
                     { label: 'Registro de Equipo (Offline)', routerLink: ['module-re/panel-registro-equipo-offline'] },
                     { label: 'Nuevo'}
                 ]);
+                window.addEventListener("beforeunload", (event) => {
+                  event.preventDefault();
+                  event.returnValue = "Unsaved modifications";
+                  return event;
+               });
               }
 
   ngOnDestroy() {

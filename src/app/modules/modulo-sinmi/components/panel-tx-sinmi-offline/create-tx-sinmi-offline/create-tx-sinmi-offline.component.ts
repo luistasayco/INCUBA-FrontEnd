@@ -57,7 +57,12 @@ export class CreateTxSinmiOfflineComponent implements OnInit, OnDestroy {
                   { label: 'SINMI - Offline', routerLink: ['module-sm/panel-tx-sinmi-offline'] },
                   { label: 'Nuevo'}
               ]);
-              }
+              window.addEventListener("beforeunload", (event) => {
+                event.preventDefault();
+                event.returnValue = "Unsaved modifications";
+                return event;
+             });
+  }
 
   ngOnDestroy() {
     if (this.subscription$) {

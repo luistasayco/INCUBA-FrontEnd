@@ -13,6 +13,8 @@ import { UserContextService } from '../../../../services/user-context.service';
 import { MenuItem } from 'primeng/api';
 import { Label } from 'ng2-charts';
 import { map } from 'rxjs/operators';
+import { SeguridadService } from '../../../modulo-seguridad/services/seguridad.service';
+import { PlantaPorUsuarioModel } from '../../../modulo-seguridad/models/planta-por-usuario';
 
 @Component({
   selector: 'app-panel-extranet-folder',
@@ -36,6 +38,7 @@ export class PanelExtranetFolderComponent implements OnInit, OnDestroy {
   idGoogleDrive: string;
   nameGoogleDrive: string;
   band: string;
+  codigoEmpresa: string;
   correlativo: number = 0;
   typeFile: 'application/vnd.google-apps.folder';
 
@@ -51,7 +54,8 @@ export class PanelExtranetFolderComponent implements OnInit, OnDestroy {
               private router: Router,
               private readonly route: ActivatedRoute,
               private menuDinamicoService: MenuDinamicoService,
-              private userContextService: UserContextService) { }
+              private userContextService: UserContextService,
+              private seguridadService: SeguridadService) { }
 
   ngOnInit(): void {
     this.items = [];
@@ -61,10 +65,17 @@ export class PanelExtranetFolderComponent implements OnInit, OnDestroy {
         this.idGoogleDrive =  params.get('id');
         this.nameGoogleDrive =  params.get('name');
         this.band =  params.get('band');
+        this.codigoEmpresa = params.get('codigoEmpresa');
       })
     )
     .subscribe(() => {
-      this.onListar() ;
+      debugger;
+      if (this.band === 'S') {
+        this.getToObtienePlantaPorEmpresa(this.codigoEmpresa) ;
+      } else {
+        this.onListar() ;
+      }
+      
     });
 
     this.subscription$ = new Subscription();
@@ -76,6 +87,43 @@ export class PanelExtranetFolderComponent implements OnInit, OnDestroy {
     
   }
 
+  getToObtienePlantaPorEmpresa(value: string) {
+    this.subscription$ = new Subscription();
+    this.subscription$ = this.seguridadService.getPlantaConAccesoPorUsuarioPorEmpresa(this.codigoEmpresa)
+    .subscribe((data: PlantaPorUsuarioModel[]) => {
+      
+      this.onListarPlanta(data);
+
+    });
+  }
+
+  onListarPlanta(data: PlantaPorUsuarioModel[]) {
+    if (this.band === 'S') {
+      this.correlativo = 1;
+      this.items.push({label: this.nameGoogleDrive, id: this.idGoogleDrive, tabindex: this.correlativo.toString(), target: this.band});
+    }
+    
+    this.subscription$ = new Subscription();
+    this.subscription$ = this.extranetService.getGoogleDriveFilesPorId(this.idGoogleDrive)
+    .subscribe((resp: GoogleDriveFilesModel[]) => {
+      this.listModelo = [];
+      if (resp) {
+
+          for (let iterator of resp) {
+            let exists = [...data].filter(xFila => xFila.descripcionPlanta === iterator.names).length;
+
+            if (exists>0) {
+              this.listModelo.push(iterator);
+            }
+          }
+        }
+      },
+      (error) => {
+        this.mensajePrimeNgService.onToErrorMsg(null, error);
+      }
+    );
+  }
+
   onListar() {
     if (this.band === 'S') {
       this.correlativo = 1;
@@ -85,8 +133,10 @@ export class PanelExtranetFolderComponent implements OnInit, OnDestroy {
     this.subscription$ = new Subscription();
     this.subscription$ = this.extranetService.getGoogleDriveFilesPorId(this.idGoogleDrive)
     .subscribe((resp: GoogleDriveFilesModel[]) => {
+      
       if (resp) {
-          this.listModelo = resp;
+
+        this.listModelo = resp;
         }
       },
       (error) => {
@@ -98,7 +148,7 @@ export class PanelExtranetFolderComponent implements OnInit, OnDestroy {
   onListarChildern(data: GoogleDriveFilesModel) {
     if (data.mimeType === 'application/vnd.google-apps.folder') {
       this.correlativo += 1;
-      this.router.navigate(['/main/module-ex/panel-extranet-folder'],  { queryParams: { id: data.idGoogleDrive, name: data.names, band: 'N'}});
+      this.router.navigate(['/main/module-ex/panel-extranet-folder'],  { queryParams: { id: data.idGoogleDrive, name: data.names, band: 'N', codigoEmpresa: this.codigoEmpresa}});
       this.items.push({label: data.names, id: data.idGoogleDrive, tabindex: this.correlativo.toString(), target: 'N'});
     } else {
       this.onToRowDownload(data);
@@ -112,7 +162,7 @@ export class PanelExtranetFolderComponent implements OnInit, OnDestroy {
     } else {
       this.items = [...this.items].filter(xFila => Number(xFila.tabindex) <= Number(event.tabindex))
 
-      this.router.navigate(['/main/module-ex/panel-extranet-folder'],  { queryParams: { id: event.id, name: event.label, band: 'N'}});
+      this.router.navigate(['/main/module-ex/panel-extranet-folder'],  { queryParams: { id: event.id, name: event.label, band: 'N', codigoEmpresa: this.codigoEmpresa}});
     }
     
 
@@ -161,8 +211,8 @@ export class PanelExtranetFolderComponent implements OnInit, OnDestroy {
             this.onToVisorCustom(modelo);
           } else {
             // this.onToVisorCustomBase64(modelo);
-            // this.onToVisorCustom(modelo);
-            this.onToVisorCustomSave(modelo);
+            this.onToVisorCustom(modelo);
+            // this.onToVisorCustomSave(modelo);
           }
 
     } else {
@@ -219,7 +269,6 @@ export class PanelExtranetFolderComponent implements OnInit, OnDestroy {
           this.subscription$ = new Subscription();
           this.subscription$ = this.extranetService.getDownloadTxRegistroDocumentoBase64(modelo.idGoogleDrive)
           .subscribe((resp: any) => {
-console.log('resp', resp);
             this.displayVisualizar = false;
 
             this.mensajePrimeNgService.onToInfoMsg(null, 'DESCARGA COMPLETA');
@@ -239,6 +288,4 @@ console.log('resp', resp);
   ngOnDestroy() {
     this.items = [];
   }
-
-  
 }

@@ -202,7 +202,7 @@ export class PersonaUpdateComponent implements OnInit, OnDestroy {
 
   getToObtieneAprobarSubTipoExplotacion() {
     this.subscription = new Subscription();
-    this.subscription = this.seguridadService.getAprobarSubTipoExplotacionSinAccesoPorUsuario(0)
+    this.subscription = this.seguridadService.getAprobarSubTipoExplotacionSinAccesoPorUsuario(this.modelo.entidadUsuario.idUsuario)
     .subscribe((data: AprobarSubTipoExplotacionPorUsuarioModel[]) => {
       this.listAprobarSubTipoExplotacionPorSeleccionado = [];
       this.listAprobarSubTipoExplotacionPorSeleccionado = data;

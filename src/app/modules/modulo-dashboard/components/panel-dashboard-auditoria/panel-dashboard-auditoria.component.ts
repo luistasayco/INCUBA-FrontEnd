@@ -106,7 +106,7 @@ export class PanelDashboardAuditoriaComponent implements OnInit {
   //Logica dashboard
   isValueDash: number;
   isDisabled: boolean;
-
+  displayLegend: boolean = false;
   constructor(private breadcrumbService: BreadcrumbService,
               private seguridadService: SeguridadService,
               private dashboardService: DashboardService,
@@ -149,6 +149,16 @@ export class PanelDashboardAuditoriaComponent implements OnInit {
     this.getToObtieneVacunador();
     this.getToObtieneDashboard();
 
+    const width = window.innerWidth;
+
+    if (width > 1024) {
+      this.displayLegend = true;
+    }
+
+    if (width < 1024) {
+      this.displayLegend = false;
+    }
+
     this.barOptions = {
       title: {
         //display: true,
@@ -156,6 +166,7 @@ export class PanelDashboardAuditoriaComponent implements OnInit {
         fontSize: 16
       },
       legend: {
+        display: this.displayLegend,
         position: 'left'
       },
 
@@ -201,6 +212,7 @@ export class PanelDashboardAuditoriaComponent implements OnInit {
         fontSize: 16
       },
       legend: {
+        display: this.displayLegend,
         position: 'top'
       },
 
@@ -243,6 +255,7 @@ export class PanelDashboardAuditoriaComponent implements OnInit {
         fontSize: 16
       },
       legend: {
+        display: this.displayLegend,
         position: 'top'
       },
 
@@ -285,6 +298,7 @@ export class PanelDashboardAuditoriaComponent implements OnInit {
         fontSize: 16
       },
       legend: {
+        display: this.displayLegend,
         position: 'left'
       },
 
@@ -327,6 +341,7 @@ export class PanelDashboardAuditoriaComponent implements OnInit {
         fontSize: 16
       },
       legend: {
+        display: this.displayLegend,
         position: 'left'
       },
 
@@ -369,6 +384,7 @@ export class PanelDashboardAuditoriaComponent implements OnInit {
         fontSize: 16
       },
       legend: {
+        display: this.displayLegend,
         position: 'left'
       },
 
@@ -411,6 +427,7 @@ export class PanelDashboardAuditoriaComponent implements OnInit {
         fontSize: 16
       },
       legend: {
+        display: this.displayLegend,
         position: 'left'
       },
 
@@ -453,6 +470,7 @@ export class PanelDashboardAuditoriaComponent implements OnInit {
         fontSize: 16
       },
       legend: {
+        display: this.displayLegend,
         position: 'left'
       },
 

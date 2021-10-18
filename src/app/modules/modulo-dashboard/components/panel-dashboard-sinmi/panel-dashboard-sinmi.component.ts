@@ -75,7 +75,7 @@ export class PanelDashboardSinmiComponent implements OnInit {
   //Logica dashboard
   isValueDash: number;
   isDisabled: boolean;
-
+  displayLegend: boolean = false;
   //Colores
   ColorArray: string[] = [
     "#3366cc","#dc3912","#ff9900","#109618","#990099",
@@ -129,6 +129,16 @@ export class PanelDashboardSinmiComponent implements OnInit {
     this.getToObtieneResponsablePlanta();
     this.getToObtieneDashboard();
     this.getToObtieneLinea();
+    
+    const width = window.innerWidth;
+
+    if (width > 1024) {
+      this.displayLegend = true;
+    }
+
+    if (width < 1024) {
+      this.displayLegend = false;
+    }
 
     this.barOptions = {
       title: {
@@ -181,6 +191,7 @@ export class PanelDashboardSinmiComponent implements OnInit {
         fontSize: 16
       },
       legend: {
+        display: this.displayLegend,
         position: 'left'
       },
 

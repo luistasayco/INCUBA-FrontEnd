@@ -80,7 +80,12 @@ export class TxSimCreateOfflineComponent implements OnInit, OnDestroy {
                   { label: 'Sis. Integrado de Monitoreo - offline', routerLink: ['module-si/panel-tx-sim-offline'] },
                   { label: 'Nuevo'}
               ]);
-              }
+              window.addEventListener("beforeunload", (event) => {
+                event.preventDefault();
+                event.returnValue = "Unsaved modifications";
+                return event;
+             });
+    }
 
   ngOnDestroy() {
     if (this.subscription$) {

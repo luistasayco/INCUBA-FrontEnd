@@ -99,7 +99,7 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
   // Lista de datos
   listLabel: string[];
   listData: number[];
-
+  displayLegend: boolean = false;
   // 
   isValueDash: number;
   
@@ -136,6 +136,16 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
 
     this.listItemEquipo = [];
 
+    const width = window.innerWidth;
+
+    if (width > 1024) {
+      this.displayLegend = true;
+    }
+
+    if (width < 1024) {
+      this.displayLegend = false;
+    }
+
     this.subscription = new Subscription();
     this.subscription = this.menuDinamicoService.getObtieneOpciones('app-panel-dashboard')
     .subscribe(acces => {
@@ -149,7 +159,8 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
         fontSize: 16
       },
       legend: {
-        position: 'left'
+        display: this.displayLegend,
+        position:  'left'
       },
 
       plugins: {
@@ -166,8 +177,8 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
 
     this.pieOptions = {
       legend: {
-        display: true,
-        position: "left"
+        display: this.displayLegend,
+        position: 'left'
       },
       plugins: {
         labels: {

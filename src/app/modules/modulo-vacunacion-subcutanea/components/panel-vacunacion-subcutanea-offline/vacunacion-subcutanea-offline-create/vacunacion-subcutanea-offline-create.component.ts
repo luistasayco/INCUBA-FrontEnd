@@ -125,6 +125,11 @@ export class VacunacionSubcutaneaOfflineCreateComponent implements OnInit, OnDes
         { label: this.titulo, routerLink: ['module-su/panel-vacunacion-subcutanea-offline'] },
         { label: 'Nuevo'}
     ]);
+    window.addEventListener("beforeunload", (event) => {
+      event.preventDefault();
+      event.returnValue = "Unsaved modifications";
+      return event;
+   });
   }
 
   ngOnInit(): void {
@@ -260,8 +265,9 @@ export class VacunacionSubcutaneaOfflineCreateComponent implements OnInit, OnDes
     this.subscription$ = new Subscription();
     this.subscription$ = this.compartidoLocalService.getPlantaPorEmpresa()
     .subscribe((data: PlantaModel[]) => {
+      let dataFilter = [...data].filter(x => x.codigoEmpresa === value);
       this.listItemPlanta = [];
-      for (let item of data) {
+      for (let item of dataFilter) {
         this.listItemPlanta.push({ label: item.descripcion, value: item.codigoPlanta });
       }
     });
@@ -591,25 +597,32 @@ export class VacunacionSubcutaneaOfflineCreateComponent implements OnInit, OnDes
     this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.map(xFila => {
       //cambio
       if(isNaN(promedioControldeEficiencia.porcentajeEficiencia)) promedioControldeEficiencia.porcentajeEficiencia = 0;
-      //•	+50% y -10% del promedio de Vacunados hora 1punto
-      valorInicio = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.1)
-      valorFin = promedioControldeEficiencia.vacunadoPorHora + (promedioControldeEficiencia.vacunadoPorHora * 0.5)
+      //•	-10% del promedio de Vacunados hora 1punto
+      debugger;
+      valorInicio = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.1);
+      // valorFin = promedioControldeEficiencia.vacunadoPorHora + (promedioControldeEficiencia.vacunadoPorHora * 0.5);
+      // valorFin = promedioControldeEficiencia.vacunadoPorHora + (promedioControldeEficiencia.vacunadoPorHora * 0.5);
 
-      if (xFila.vacunadoPorHora >= valorInicio && xFila.vacunadoPorHora <= valorFin) {
+      // if (xFila.vacunadoPorHora >= valorInicio && xFila.vacunadoPorHora <= valorFin) {
+      //   xFila.puntajeProductividad = 1;
+      // }
+
+      if (xFila.vacunadoPorHora >= valorInicio) {
         xFila.puntajeProductividad = 1;
       }
       //•	Entre -10 a -20% del promedio 0.5 puntos
-      valorInicio = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.2)
-      valorFin = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.1)
+      valorInicio = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.2);
+      valorFin = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.1);
 
       if (xFila.vacunadoPorHora >= valorInicio && xFila.vacunadoPorHora <= valorFin) {
         xFila.puntajeProductividad = 0.5;
       }
       //•	21% a más por debajo de la media 0 puntos
-      valorInicio = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0)
-      valorFin = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.21)
+      // valorInicio = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0);
+      valorInicio = 0;
+      valorFin = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.20);
 
-      if (xFila.vacunadoPorHora >= valorInicio && xFila.vacunadoPorHora <= valorFin) {
+      if (xFila.vacunadoPorHora < valorFin) {
         xFila.puntajeProductividad = 0;
       }
 
@@ -703,6 +716,18 @@ export class VacunacionSubcutaneaOfflineCreateComponent implements OnInit, OnDes
 
     let vclonedIrregularidad = [...this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad];
 
+    // Validar si existe el vacunador
+    let existeVacunador = vclonedIrregularidad.filter(xFila => xFila.nombreVacunador === this.nombreVacunador).length;
+
+    if (existeVacunador > 0) {
+      let existeVacunadorAF = vclonedIrregularidad.filter(xFila => xFila.nombreVacunador === this.nombreVacunador && xFila.codigoEquipo === this.selectNumeroAF.value).length;
+      
+      if (existeVacunadorAF === 0) {
+        this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'No se puede adicionar el mismo Vacunador con dos AF diferentes');
+        return;
+      }
+    }
+    
     if (this.selectIrregularidad.length > 0 ) {
 
       this.selectIrregularidad.forEach(data => {

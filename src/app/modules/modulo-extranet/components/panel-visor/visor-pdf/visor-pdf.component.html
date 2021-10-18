@@ -16,9 +16,18 @@
     <p-button (click)="ultimaPagina()"> Ultima </p-button>
 </div> -->
 
-<div oncontextmenu="return false" onkeydown="return false" *ngIf="this.urlSanitizer">
+<!-- <div oncontextmenu="return false" onkeydown="return false" *ngIf="this.urlSanitizer">
     <div class="containerModal" oncontextmenu="return false;" onkeydown="return false">
         <div id="container"></div>
         <iframe id="visorPdf" [src]="this.urlSanitizer"></iframe>
     </div>
-</div>
+</div> -->
+
+<ng-container>
+    <div id="tabla1" class="verde"></div>
+    <div class="containerModal" oncontextmenu="return false;" onkeydown="return false">
+        <div id="container"></div>
+        <ngx-doc-viewer #visor id="visor" [url]="archivoUrl" viewer="url" style="height:100vh;width: 100%;" [disableContent]="'popout-hide'">
+        </ngx-doc-viewer>
+    </div>
+</ng-container>

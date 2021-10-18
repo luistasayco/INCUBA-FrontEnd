@@ -1,4 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+
 .button-custom {
-  background-color: #4B5092 !important; 
+    background-color: #4B5092 !important;
+}
+
+viewer-download-controls {
+    visibility: hidden !important;
+}
+
+#downloads {
+    visibility: hidden !important;
 }

@@ -72,7 +72,12 @@ export class TxExamenFisicoPollitoCreateComponent implements OnInit, OnDestroy {
                   { label: this.titulo, routerLink: ['module-ef/panel-tx-examen-fisico-pollito'] },
                   { label: 'Nuevo'}
               ]);
-              }
+              window.addEventListener("beforeunload", (event) => {
+                event.preventDefault();
+                event.returnValue = "Unsaved modifications";
+                return event;
+             });
+            }
 
   ngOnInit(): void {
     this.listCalidad = [];

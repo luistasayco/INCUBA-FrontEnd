@@ -190,7 +190,7 @@ export class RegistroEquipoUpdateOffLineComponent implements OnInit, OnDestroy {
   
   onToGrabar() {
     this.subscription$ = new Subscription();
-    this.modeloItem.flgEnModificacion = false;
+    // this.modeloItem.flgEnModificacion = false;
     this.subscription$ = this.registroEquipoLocalService.setUpdateTxRegistroEquipo(this.modeloItem)
     .subscribe(() =>  {
       this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);

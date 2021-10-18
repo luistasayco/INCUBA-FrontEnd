@@ -208,11 +208,11 @@
         <div class="ui-grid ui-fluid">
             <div class="ui-g-12 ui-md-6">
                 <label for="float-input-responsable-invetsa">Responsable Invetsa:</label>
-                <textarea disabled id="float-input-responsable-invetsa" [(ngModel)]="modeloItem.observacionInvetsa" pInputTextarea autoResize="autoResize" placeholder="Ingresar Observación"> </textarea>
+                <textarea disabled id="float-input-responsable-invetsa" [(ngModel)]="modeloItem.observacionInvetsa" pInputTextarea rows="5" cols="30" maxlength="500" placeholder="Ingresar Observación"> </textarea>
             </div>
             <div class="ui-g-12 ui-md-6">
                 <label for="float-input-responsable-planta">Responsable Planta:</label>
-                <textarea disabled id="float-input-responsable-planta" [(ngModel)]="modeloItem.observacionPlanta" pInputTextarea autoResize="autoResize" placeholder="Ingresar Observación"> </textarea>
+                <textarea disabled id="float-input-responsable-planta" [(ngModel)]="modeloItem.observacionPlanta" pInputTextarea rows="5" cols="30" maxlength="500" placeholder="Ingresar Observación"> </textarea>
             </div>
             <div class="ui-g-12 ui-md-6">
                 <img [src]="modeloItem.firmaInvetsa" *ngIf="modeloItem.firmaInvetsa" style="width: 100%; display: block;" />

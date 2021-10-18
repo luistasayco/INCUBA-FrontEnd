@@ -280,7 +280,7 @@ export class PanelRegistroEquipoOffLineComponent implements OnInit, OnDestroy {
   onToUpdate(data: any) {
 
     this.subscription$ = new Subscription();
-    data.flgEnModificacion = true;
+    // data.flgEnModificacion = true;
     this.subscription$ = this.registroEquipoLocalService.setUpdateTxRegistroEquipo(data)
     .subscribe(resp => {
       if (resp) {

@@ -14,6 +14,8 @@ import { TxVacunacionSprayModel } from '../../modulo-vacunacion-spray/models/tx-
 import { TxVacunacionSubCutaneaModel } from '../../modulo-vacunacion-subcutanea/models/tx-vacunacion-subcutanea.model';
 import { TxSIMModel } from '../../modulo-sim/models/tx-sim.model';
 import { SimService } from '../../modulo-sim/services/sim.service';
+import { SinmiService } from '../../modulo-sinmi/services/sinmi.service';
+import { TxSINMIModel } from '../../modulo-sinmi/models/tx-sinmi.model';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +27,9 @@ export class EnviarDatosRemotosService {
     envioTablaTrxExamenFisicoPollito: false,
     envioTablaTrxVacunacionSpray: false,
     envioTablaTrxVacunacionSubCutanea: false,
-    envioTablaTrxSIM: false};
+    envioTablaTrxSIM: false,
+    envioTablaTrxSINMI: false
+  };
 
   constructor(private readonly servicioIndexedDB: NgxIndexedDBService,
               private readonly registroEquipoService: RegistroEquipoService,
@@ -33,6 +37,7 @@ export class EnviarDatosRemotosService {
               private readonly vacunacionSprayService: VacunacionSprayService,
               private readonly vacunacionSubcutaneaService: VacunacionSubcutaneaService,
               private readonly simService: SimService,
+              private readonly sinmiService: SinmiService,
               private userContextService: UserContextService) { }
 
   private ponerEstadoDefecto() {
@@ -41,6 +46,7 @@ export class EnviarDatosRemotosService {
     this.tablasAEnviar.envioTablaTrxVacunacionSpray = false;
     this.tablasAEnviar.envioTablaTrxVacunacionSubCutanea = false;
     this.tablasAEnviar.envioTablaTrxSIM = false;
+    this.tablasAEnviar.envioTablaTrxSINMI = false;
   }
 
   private validarProcesoCompletado(): boolean {
@@ -49,7 +55,8 @@ export class EnviarDatosRemotosService {
       this.tablasAEnviar.envioTablaTrxRegistroEquipo &&
       this.tablasAEnviar.envioTablaTrxVacunacionSpray &&
       this.tablasAEnviar.envioTablaTrxVacunacionSubCutanea &&
-      this.tablasAEnviar.envioTablaTrxSIM
+      this.tablasAEnviar.envioTablaTrxSIM && 
+      this.tablasAEnviar.envioTablaTrxSINMI
     ) {
       return true;
     }
@@ -143,12 +150,22 @@ export class EnviarDatosRemotosService {
             observer.error(error);
           }
           );
+          this.enviarSINMI()
+          .subscribe(resultado => {
+            this.tablasAEnviar.envioTablaTrxSINMI = true;
+            if (this.validarProcesoCompletado()) { observer.next(); }
+          },
+          error => {
+            observer.error(error);
+          }
+          );
         } else {
           this.tablasAEnviar.envioTablaTrxRegistroEquipo = true;
           this.tablasAEnviar.envioTablaTrxExamenFisicoPollito = true;
           this.tablasAEnviar.envioTablaTrxVacunacionSpray = true;
           this.tablasAEnviar.envioTablaTrxVacunacionSubCutanea = true;
           this.tablasAEnviar.envioTablaTrxSIM = true;
+          this.tablasAEnviar.envioTablaTrxSINMI = true;
           if (this.validarProcesoCompletado()) { observer.next(); }
         }
       } else {
@@ -170,7 +187,7 @@ export class EnviarDatosRemotosService {
           registros = registros
           .filter(z => z.flgCerrado === true)
           .filter(x => x.flgMigrado === false)
-          .filter(y => y.flgEnModificacion === false);
+          // .filter(y => y.flgEnModificacion === false);
           if ( registros.length > 0 ) {
             registros.forEach( item => {
               this.registroEquipoService.setInsertTxRegistroEquipo(item)
@@ -339,6 +356,46 @@ export class EnviarDatosRemotosService {
                 item.flgMigrado = true;
                 // console.log('enviarExamenFisicoPollito', `Se migro correctamente: `, item);
                 this.servicioIndexedDB.update(ConstantesTablasIDB._TABLA_TXSIM, item);
+              },
+              errorFor => {
+                // console.log('enviarExamenFisicoPollito', `Error al enviar Datos. Examenes Fisicos de Pollitos: ${errorFor}`, item);
+              }
+              );
+            });
+            observer.next();
+          } else {
+            observer.next();
+          }
+        } else {
+          observer.next();
+        }
+      },
+      error => {
+        // console.log(`Error al enviar Datos. Examenes Fisicos de Pollitos: ${error}`);
+        observer.next();
+      }
+      );
+    });
+    return obsProcesoTerminado;
+  }
+
+  private enviarSINMI() {
+    const obsProcesoTerminado = new Observable (observer => {
+      let registros: TxSINMIModel[] = [];
+      this.servicioIndexedDB.getAll(ConstantesTablasIDB._TABLA_TXSINMI)
+      .subscribe(resultado => {
+        if (resultado) {
+          registros = [...resultado];
+          registros = registros
+          .filter(z => z.flgCerrado === true)
+          .filter(x => x.flgMigrado === false);
+          if ( registros.length > 0 ) {
+            registros.forEach( item => {
+              this.sinmiService.setInsertTxSINMI(item)
+              .subscribe( result => {
+                item.flgMigrado = true;
+                // console.log('enviarExamenFisicoPollito', `Se migro correctamente: `, item);
+                this.servicioIndexedDB.update(ConstantesTablasIDB._TABLA_TXSINMI, item);
               },
               errorFor => {
                 // console.log('enviarExamenFisicoPollito', `Error al enviar Datos. Examenes Fisicos de Pollitos: ${errorFor}`, item);

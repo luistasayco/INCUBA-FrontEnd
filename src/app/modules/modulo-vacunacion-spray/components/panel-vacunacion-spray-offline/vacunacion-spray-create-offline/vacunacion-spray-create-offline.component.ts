@@ -95,6 +95,11 @@ export class VacunacionSprayCreateOfflineComponent implements OnInit, OnDestroy 
         { label: this.titulo, routerLink: ['module-sp/panel-vacunacion-spray-offline'] },
         { label: 'Nuevo'}
     ]);
+    window.addEventListener("beforeunload", (event) => {
+      event.preventDefault();
+      event.returnValue = "Unsaved modifications";
+      return event;
+   });
   }
 
   ngOnInit(): void {

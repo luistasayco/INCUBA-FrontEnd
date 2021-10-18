@@ -97,6 +97,11 @@ export class VacunacionSprayCreateComponent implements OnInit, OnDestroy{
         { label: this.titulo, routerLink: ['module-sp/panel-vacunacion-spray'] },
         { label: 'Nuevo'}
     ]);
+    window.addEventListener("beforeunload", (event) => {
+      event.preventDefault();
+      event.returnValue = "Unsaved modifications";
+      return event;
+   });
   }
 
   ngOnInit(): void {

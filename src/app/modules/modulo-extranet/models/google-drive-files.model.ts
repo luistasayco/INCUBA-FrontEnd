@@ -1,4 +1,5 @@
 export class GoogleDriveFilesModel {
+    codigoEmpresa: string;
     idGoogleDrive: string;
     names: string;
     size: number;
@@ -9,6 +10,7 @@ export class GoogleDriveFilesModel {
     regUsuario?: number;
 
     constructor(){
+        this.codigoEmpresa = '';
         this.idGoogleDrive = '';
         this.names = '';
         this.size = 0;
