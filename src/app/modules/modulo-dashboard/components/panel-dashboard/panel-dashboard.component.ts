@@ -329,7 +329,7 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
   }
 
   getToListado(tipo: number){
-    
+    // Cambiando a filtro multiple
     let filtro: DashboardMantenimientoPorFiltro = new  DashboardMantenimientoPorFiltro();
     filtro.fechaInicio = this.selectedFechaInicio;
     filtro.fechaFin = this.selectedFechaFin;
@@ -341,7 +341,6 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
     filtro.equipo = this.selectedEquipo == null ? '' : this.selectedEquipo.value ;
     filtro.idUsuario = 1;
     
-
     this.subscription = new Subscription();
     this.subscription = this.dashboardMantenimientoService.getDashboardMantenimientoPorFiltro(filtro)
     .subscribe((data: DashboardMantenimiento[]) => {
