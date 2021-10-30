@@ -83,7 +83,7 @@
                         <ng-template pTemplate="rowexpansion" let-rowData let-rowIndex="rowIndex">
                             <tr>
                                 <td>
-                                    <p-checkbox name="group1" value="{{rowData.idRepuestoPorModelo}}" [(ngModel)]="rowData.flgValor" inputId="{{rowData.idRepuestoPorModelo}}" binary="true"></p-checkbox>
+                                    <p-checkbox name="group1" (onChange)="onTabOpen({index:3})" value="{{rowData.idRepuestoPorModelo}}" [(ngModel)]="rowData.flgValor" inputId="{{rowData.idRepuestoPorModelo}}" binary="true"></p-checkbox>
                                 </td>
                                 <td><span class="ui-column-title">Equipo</span>{{rowData.codigoEquipo}}</td>
                                 <td>
@@ -202,12 +202,12 @@
             </p-accordionTab>
 
             <p-accordionTab header="E .-Inventario de consumibles" [selected]="displayControles">
-                <p-table [value]="modeloItem.txRegistroEquipoDetalle6" [columns]="columnasDetalle6" [paginator]="true" [scrollable]="true" [rows]="globalConstants.sizePage" dataKey="codigoRepuesto" editMode="row" autoLayout="true" [responsive]="true">
-                    <ng-template pTemplate="colgroup" let-columns>
+                <p-table [value]="modeloItem.txRegistroEquipoDetalle6" [columns]="columnasDetalle6" [paginator]="true" [rows]="globalConstants.sizePage" dataKey="codigoRepuesto" editMode="row" autoLayout="true" [responsive]="true">
+                    <!-- <ng-template pTemplate="colgroup" let-columns>
                         <colgroup>
                             <col *ngFor="let col of columns" style="width:200px">
                         </colgroup>
-                    </ng-template>
+                    </ng-template> -->
                     <!-- Header -->
                     <ng-template pTemplate="header" let-columns>
                         <tr>
@@ -220,7 +220,7 @@
                     <!-- body -->
                     <ng-template pTemplate="body" let-modelo let-editing="editing" let-ri="rowIndex">
                         <tr [pEditableRow]="modelo">
-                            <td class="action-td-action">
+                            <td class="action-td">
                                 <span class="ui-column-title">Codigo</span> {{modelo.codigoRepuesto}}
                             </td>
                             <td class="ui-fluid">
@@ -241,7 +241,7 @@
                                 <p-cellEditor>
                                     <ng-template pTemplate="input">
                                         <span class="p-float-label">
-                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.stockActual" size="100"> 
+                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.stockActual"style="width:80px" size="100"> 
                                             </span>
                                     </ng-template>
                                     <ng-template pTemplate="output">
@@ -254,7 +254,7 @@
                                 <p-cellEditor>
                                     <ng-template pTemplate="input">
                                         <span class="p-float-label">
-                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.cambioPorMantenimiento" size="100"> 
+                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.cambioPorMantenimiento" style="width:80px"size="100"> 
                                             </span>
                                     </ng-template>
                                     <ng-template pTemplate="output">
@@ -267,7 +267,7 @@
                                 <p-cellEditor>
                                     <ng-template pTemplate="input">
                                         <span class="p-float-label">
-                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.entregado" size="100"> 
+                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.entregado"style="width:80px" size="100"> 
                                             </span>
                                     </ng-template>
                                     <ng-template pTemplate="output">
@@ -300,7 +300,7 @@
                     <!-- body -->
                     <ng-template pTemplate="body" let-modelo let-editing="editing" let-ri="rowIndex">
                         <tr [pEditableRow]="modelo">
-                            <td class="action-td-action">
+                            <td class="action-td">
                                 <span class="ui-column-title">Codigo</span> {{modelo.codigoRepuesto}}
                             </td>
                             <td class="ui-fluid">
@@ -311,7 +311,7 @@
                                 <p-cellEditor>
                                     <ng-template pTemplate="input">
                                         <span class="p-float-label">
-                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.stockActual" size="100"> 
+                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.stockActual" style="width:80px"size="100"> 
                                             </span>
                                     </ng-template>
                                     <ng-template pTemplate="output">
@@ -324,7 +324,7 @@
                                 <p-cellEditor>
                                     <ng-template pTemplate="input">
                                         <span class="p-float-label">
-                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.cambioPorMantenimiento" size="100"> 
+                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.cambioPorMantenimiento" style="width:80px" size="100"> 
                                             </span>
                                     </ng-template>
                                     <ng-template pTemplate="output">
@@ -337,7 +337,7 @@
                                 <p-cellEditor>
                                     <ng-template pTemplate="input">
                                         <span class="p-float-label">
-                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.entregado" size="100"> 
+                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.entregado"style="width:80px" size="100"> 
                                             </span>
                                     </ng-template>
                                     <ng-template pTemplate="output">

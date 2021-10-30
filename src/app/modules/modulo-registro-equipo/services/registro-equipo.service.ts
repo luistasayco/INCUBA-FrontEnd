@@ -189,6 +189,14 @@ export class RegistroEquipoService {
     (`${environment.url_api}Equipo/GetAllPorFiltros/`, { params: parametros });
   }
 
+  getAllXmlPorFiltros(listaEmpresaPlanta: any, listCodigoModelo: any) {
+    let parametros = new HttpParams();
+    parametros = parametros.append('listaEmpresaPlanta', JSON.stringify(listaEmpresaPlanta));
+    parametros = parametros.append('listCodigoModelo', JSON.stringify(listCodigoModelo));
+    return this.http.get<EquipoPorModeloModel[]>
+    (`${environment.url_api}Equipo/GetAllXmlPorFiltros/`, { params: parametros });
+  }
+
   // title:  Metodos de mantenimiento
   // Author: Luis Tasayco
   // Date:   08/09/2020
@@ -245,6 +253,14 @@ export class RegistroEquipoService {
 
     return this.http.get<RepuestoPorModeloModel[]>
     (`${environment.url_api}RepuestoPorModelo/GetAllSeleccionado/`, { params: parametros });
+  }
+
+  getXmlSeleccionado(value: any) {
+    let parametros = new HttpParams();
+    parametros = parametros.append('value', JSON.stringify(value));
+
+    return this.http.get<RepuestoPorModeloModel[]>
+    (`${environment.url_api}RepuestoPorModelo/GetXmlSeleccionado/`, { params: parametros });
   }
 
   getRepuestoPorSeleccionar(value: RepuestoPorModeloModel) {

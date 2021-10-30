@@ -819,18 +819,31 @@ export class VacunacionSubcutaneaOfflineCreateComponent implements OnInit, OnDes
     delete this.modeloclonedControlEficiencia[data.nombreVacunador];
   }
 
-  onToRowSelectDeleteIrregularidad(data: TxVacunacionSubCutaneaIrregularidadModel) {
-    let clonedNombreVacunadorSeleccionado = [...this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad].filter(xFila => xFila.nombreVacunador === data.nombreVacunador);
+  onToRowSelectDeleteIrregularidad(index: number) {
+    // let clonedNombreVacunadorSeleccionado = [...this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad].filter(xFila => xFila.nombreVacunador === data.nombreVacunador);
 
-    let clonedNombreVacunadorSeleccionadoFinal = [...clonedNombreVacunadorSeleccionado].filter(xFila => xFila.idIrregularidad !== data.idIrregularidad);
+    // let clonedNombreVacunadorSeleccionadoFinal = [...clonedNombreVacunadorSeleccionado].filter(xFila => xFila.idIrregularidad !== data.idIrregularidad);
 
-    let clonedDataIrregularidad = [...this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad].filter(xFila => xFila.nombreVacunador !== data.nombreVacunador);
+    // let clonedDataIrregularidad = [...this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad].filter(xFila => xFila.nombreVacunador !== data.nombreVacunador);
 
-    clonedNombreVacunadorSeleccionadoFinal.forEach(xData => {
-      clonedDataIrregularidad.push(xData);
-    });
+    // clonedNombreVacunadorSeleccionadoFinal.forEach(xData => {
+    //   clonedDataIrregularidad.push(xData);
+    // });
 
-    this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad = [...clonedDataIrregularidad];
+    // this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad = [...clonedDataIrregularidad];
+
+    let irregularidad: TxVacunacionSubCutaneaIrregularidadModel = this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad[index];
+
+    this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad.splice(+index, 1);
+
+    // Validamos que no existe registro con el nombre del vacunador
+    let clonedCountNombreVacunador = [...this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad].filter(xFila => xFila.nombreVacunador === irregularidad.nombreVacunador).length;
+
+    if (clonedCountNombreVacunador === 0) {
+      let indexEficiencia = this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.findIndex(xFila => xFila.nombreVacunador === irregularidad.nombreVacunador);
+
+      this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.splice(+indexEficiencia, 1);
+    }
   }
 
   onGrabarControlEficiencia() {

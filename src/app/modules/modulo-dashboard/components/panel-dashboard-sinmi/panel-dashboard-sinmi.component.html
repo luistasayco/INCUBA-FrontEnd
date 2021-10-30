@@ -3,33 +3,39 @@
     <!-- filtros -->
     <p-panel header="Opcion de busqueda de {{titulo}}" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
         <div class="ui-g ui-fluid">
-            <div class="ui-g ui-md-3">
+            <div class="ui-g-12 ui-md-3">
                 <label for="dropdown-empresa" class="label-custom">Empresa: </label>
-                <p-dropdown inputId="dropdown-empresa" class="ui dropdown-item-text" placeholder="Select Empresa" [options]="listItemEmpresa" [(ngModel)]="selectedEmpresa" optionLabel="label" [showClear]="true"></p-dropdown>
+                <!-- <p-dropdown inputId="dropdown-empresa" class="ui dropdown-item-text" placeholder="Select Empresa" [options]="listItemEmpresa" [(ngModel)]="selectedEmpresa" optionLabel="label" [showClear]="true"></p-dropdown> -->
+                <p-multiSelect id="dropdown-empresa" class="ui-multiselect-item" [options]="listItemEmpresa" [(ngModel)]="selectedEmpresa" filterPlaceHolder="Select Empresa" optionLabel="label"></p-multiSelect>
             </div>
-            <div class="ui-g ui-md-3">
+            <div class="ui-g-12 ui-md-3">
                 <label for="dropdown-planta" class="label-custom">Granja: </label>
-                <p-dropdown inputId="dropdown-planta" class="ui dropdown-item-text" placeholder="Select Granja" [options]="listItemGranja" [(ngModel)]="selectedGranja" optionLabel="value" [showClear]="true"></p-dropdown>
+                <!-- <p-dropdown inputId="dropdown-planta" class="ui dropdown-item-text" placeholder="Select Granja" [options]="listItemGranja" [(ngModel)]="selectedGranja" optionLabel="value" [showClear]="true"></p-dropdown> -->
+                <p-multiSelect id="dropdown-planta" class="ui-multiselect-item" [options]="listItemGranja" [(ngModel)]="selectedGranja" filterPlaceHolder="Select Granja" optionLabel="value"></p-multiSelect>
             </div>
-            <div class="ui-g ui-md-3">
+            <div class="ui-g-12 ui-md-3">
                 <label for="dropdown-invetsa" class="label-custom">Responsable Invetsa: </label>
-                <p-dropdown inputId="dropdown-invetsa" class="ui dropdown-item-text" placeholder="Select Responsable" [options]="listItemResponsableInvetsa" [(ngModel)]="selectedResponsableInvetsa" optionLabel="label" optionValue="value" [showClear]="true"></p-dropdown>
+                <!-- <p-dropdown inputId="dropdown-invetsa" class="ui dropdown-item-text" placeholder="Select Responsable" [options]="listItemResponsableInvetsa" [(ngModel)]="selectedResponsableInvetsa" optionLabel="label" optionValue="value" [showClear]="true"></p-dropdown> -->
+                <p-multiSelect id="dropdown-invetsa" class="ui-multiselect-item" [options]="listItemResponsableInvetsa" [(ngModel)]="selectedResponsableInvetsa" filterPlaceHolder="Select Responsable" optionLabel="label"></p-multiSelect>
             </div>
-            <div class="ui-g ui-md-3">
+            <div class="ui-g-12 ui-md-3">
                 <label for="dropdown-incubadora" class="label-custom">Responsable Planta: </label>
-                <p-dropdown inputId="dropdown-incubadora" class="ui dropdown-item-text" placeholder="Select Responsable" [options]="listItemResponsablePlanta" [(ngModel)]="selectedResponsablePlanta" optionLabel="value" optionValue="value" [showClear]="true"></p-dropdown>
+                <!-- <p-dropdown inputId="dropdown-incubadora" class="ui dropdown-item-text" placeholder="Select Responsable" [options]="listItemResponsablePlanta" [(ngModel)]="selectedResponsablePlanta" optionLabel="value" optionValue="value" [showClear]="true"></p-dropdown> -->
+                <p-multiSelect id="dropdown-incubadora" class="ui-multiselect-item" [options]="listItemResponsablePlanta" [(ngModel)]="selectedResponsablePlanta" filterPlaceHolder="Select Responsable" optionLabel="value"></p-multiSelect>
             </div>
-            <div class="ui-g ui-md-3">
+            <div class="ui-g-12 ui-md-3">
                 <label for="dropdown-auditoria" class="label-custom">Tipo Modulo: </label>
                 <p-dropdown inputId="dropdown-auditoria" class="ui dropdown-item-text" [options]="listItemTipoModulo" [(ngModel)]="selectedTipoModulo" optionLabel="label" optionValue="value" [showClear]="true" (onChange)="getOnChangeTipoModulo()"></p-dropdown>
             </div>
-            <div class="ui-g ui-md-3">
+            <div class="ui-g-12 ui-md-3">
                 <label for="dropdown-linea" class="label-custom">Línea: </label>
-                <p-dropdown inputId="dropdown-linea" class="ui dropdown-item-text" placeholder="Select Línea" [options]="listItemLinea" [(ngModel)]="selectedLinea" optionLabel="value" optionValue="value" [showClear]="true"></p-dropdown>
+                <!-- <p-dropdown inputId="dropdown-linea" class="ui dropdown-item-text" placeholder="Select Línea" [options]="listItemLinea" [(ngModel)]="selectedLinea" optionLabel="value" optionValue="value" [showClear]="true"></p-dropdown> -->
+                <p-multiSelect id="dropdown-linea" class="ui-multiselect-item" [options]="listItemLinea" [(ngModel)]="selectedLinea" filterPlaceHolder="Select Línea" optionLabel="value"></p-multiSelect>
             </div>
-            <div class="ui-g ui-md-3">
+            <div class="ui-g-12 ui-md-3">
                 <label for="dropdown-vacunador" class="label-custom">Edad: </label>
-                <p-dropdown inputId="dropdown-vacunador" class="ui dropdown-item-text" placeholder="Select Edad" [options]="listItemEdad" [(ngModel)]="selectedEdad" optionLabel="label" optionValue="value" [showClear]="true"></p-dropdown>
+                <!-- <p-dropdown inputId="dropdown-vacunador" class="ui dropdown-item-text" placeholder="Select Edad" [options]="listItemEdad" [(ngModel)]="selectedEdad" optionLabel="label" optionValue="value" [showClear]="true"></p-dropdown> -->
+                <p-multiSelect id="dropdown-vacunador" class="ui-multiselect-item" [options]="listItemEdad" [(ngModel)]="selectedEdad" filterPlaceHolder="Select Edad" optionLabel="label"></p-multiSelect>
             </div>
             <div class="ui-g ui-md-3">
                 <label for="dropdown-dashboard" class="label-custom">Dashboard: </label>

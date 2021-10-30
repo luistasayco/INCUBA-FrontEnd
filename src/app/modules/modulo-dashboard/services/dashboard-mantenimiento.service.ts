@@ -14,17 +14,17 @@ export class DashboardMantenimientoService {
               private utils: UtilService,
               private userContextService: UserContextService) {}
   
-  getDashboardMantenimientoPorFiltro(value: DashboardMantenimientoPorFiltro){
+  getDashboardMantenimientoPorFiltro(value: any){
     debugger;
     let parametros = new HttpParams();
     parametros = parametros.append('fechaInicio', this.utils.fecha_AAAAMMDD(value.fechaInicio));
     parametros = parametros.append('fechaFin', this.utils.fecha_AAAAMMDD(value.fechaFin));
-    parametros = parametros.append('tecnico', value.tecnico.toString());
+    parametros = parametros.append('tecnico', JSON.stringify(value.tecnico));
     parametros = parametros.append('idDashboard', value.idDashboard.toString());
-    parametros = parametros.append('empresa',value.empresa);
-    parametros = parametros.append('planta',value.planta);
-    parametros = parametros.append('modelo',value.modelo);
-    parametros = parametros.append('equipo',value.equipo);
+    parametros = parametros.append('respuesto',JSON.stringify(value.respuesto));
+    parametros = parametros.append('planta',JSON.stringify(value.planta));
+    parametros = parametros.append('modelo',JSON.stringify(value.modelo));
+    parametros = parametros.append('equipo',JSON.stringify(value.equipo));
     parametros = parametros.append('idUsuario',value.idUsuario.toString());
 
     return this.http.get<DashboardMantenimiento[]>

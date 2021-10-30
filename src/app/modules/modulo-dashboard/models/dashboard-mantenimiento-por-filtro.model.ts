@@ -2,22 +2,21 @@ export class DashboardMantenimientoPorFiltro {
     fechaInicio: Date;
     fechaFin: Date;
     idDashboard: number;
-    tecnico: number;
-    empresa: string;
-    planta: string;
-    modelo: string;
-    equipo: string;
+    tecnico: any[];
+    // empresa: string;
+    planta: any[];
+    modelo: any[];
+    equipo: any[];
     idUsuario: number;
 
     constructor(){
         this.fechaInicio = null;
         this.fechaFin = null;
-        this.tecnico = 0;
+        this.tecnico = [];
         this.idDashboard = 0;
-        this.empresa = '';
-        this.planta = '';
-        this.modelo = '';
-        this.equipo = '';
+        this.planta = [];
+        this.modelo = [];
+        this.equipo = [];
         this.idUsuario = 0;
     }
 }

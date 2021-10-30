@@ -40,7 +40,7 @@ export class HeaderInterceptorService {
     const user = this.userContextService.user$.getValue();
 
     if (user) {
-      const TOKEN = localStorage.getItem('token');
+      const TOKEN = this.sessionService.getItem('token');
       if (req.reportProgress) {
         updateReq = req.clone(
           {

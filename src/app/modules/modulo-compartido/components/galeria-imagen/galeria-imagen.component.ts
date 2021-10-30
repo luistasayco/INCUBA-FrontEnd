@@ -219,6 +219,15 @@ export class GaleriaImagenComponent {
         this.listUpdate.emit(this.carouselCars);
     }
 
+
+    // deleteItem(index: number) {
+
+    //     this.carouselCars.splice(+index, 1);
+
+    //     // this.carouselCars = [...this.carouselCars].filter(x => x.imagen !== data);
+    //     this.listUpdate.emit(this.carouselCars);
+    // }
+
     newImg(data: string) {
         if (!this.carouselCars) { this.carouselCars = []; }
         this.carouselCars.push({imagen: data});

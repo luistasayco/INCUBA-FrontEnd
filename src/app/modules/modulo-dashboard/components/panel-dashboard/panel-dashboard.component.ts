@@ -23,6 +23,7 @@ import { DashboardService } from '../../services/dashboard.service';
 import { DashboardModel, DashboardModelPorCategoria } from '../../models/dashboard-model.model';
 import { RepuestoPorModeloModel } from 'src/app/modules/modulo-registro-equipo/models/repuesto-por-modelo.model';
 import { LanguageService } from '../../../../services/language.service';
+import { CompartidoService } from '../../../modulo-compartido/services/compartido.service';
 
 @Component({
   selector: 'app-panel-dashboard',
@@ -50,14 +51,14 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
   listItemRepuesto: SelectItem[];
   //Variables de dato seleccionado
   selectedEmpresa: any;
-  selectedPlanta: any;
-  selectedModelo: any;
-  selectedEquipo: any;
-  selectedTecnico: any;
+  selectedPlanta: any[];
+  selectedModelo: any[];
+  selectedEquipo: any[];
+  selectedTecnico: any[];
   selectedFechaInicio: any;
   selectedFechaFin: any;
   selectedDashboard: any;
-  selectedRepuesto: any;
+  selectedRepuesto: any[];
   //Colores
   
 
@@ -109,7 +110,8 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
               private registroEquipoService: RegistroEquipoService,
               private dashboardMantenimientoService: DashboardMantenimientoService,
               public languageService: LanguageService,
-              private menuDinamicoService: MenuDinamicoService) {
+              private menuDinamicoService: MenuDinamicoService,
+              private compartidoService: CompartidoService) {
     this.breadcrumbService.setItems([
       {label:'Dashboard' },
       { label: 'Mantenimiento', routerLink: ['/dashboard/panel-dashboard'] }
@@ -118,17 +120,18 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.selectedEmpresa = null;
-    this.selectedPlanta = null;
-    this.selectedModelo = null;
-    this.selectedEquipo = null;
-    this.selectedTecnico = null;
+    this.selectedPlanta = [];
+    this.selectedModelo = [];
+    this.selectedEquipo = [];
+    this.selectedTecnico = [];
     this.selectedDashboard = null;
-    this.selectedRepuesto = null;
+    this.selectedRepuesto = [];
     this.selectedFechaInicio = new Date();
     this.selectedFechaFin = new Date();
     this.isValueDash = 0;
 
-    this.getToObtieneEmpresa();
+    // this.getToObtieneEmpresa();
+    this.getToObtienePlantas();
     this.getToObtieneModelo();
     this.getToObtieneTecnico();
     this.getToObtieneDashboard();
@@ -193,16 +196,16 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
     
   }
 
-  getToObtieneEmpresa(){
-    this.subscription = new Subscription();
-    this.subscription = this.seguridadService.getEmpresaConAccesoPorUsuario()
-    .subscribe((data: EmpresaPorUsuarioModel[]) => {
-      this.listItemEmpresa = [];
-      for (let item of data) {
-        this.listItemEmpresa.push({ label: item.descripcionEmpresa, value: item.codigoEmpresa });
-      }
-    });
-  }
+  // getToObtieneEmpresa(){
+  //   this.subscription = new Subscription();
+  //   this.subscription = this.seguridadService.getEmpresaConAccesoPorUsuario()
+  //   .subscribe((data: EmpresaPorUsuarioModel[]) => {
+  //     this.listItemEmpresa = [];
+  //     for (let item of data) {
+  //       this.listItemEmpresa.push({ label: item.descripcionEmpresa, value: item.codigoEmpresa });
+  //     }
+  //   });
+  // }
 
   getToObtieneDashboard(){
     debugger;
@@ -223,15 +226,20 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
   }
 
   getToObtieneRepuesto(){
-
+  debugger
     if (this.selectedModelo !== null) {
-      this.modeloRepuestoPorModelo =
-      { 
-        codigoModelo: this.selectedModelo.value
-      };
+      // this.modeloRepuestoPorModelo =
+      // { 
+      //   // codigoModelo: this.selectedModelo.value
+      // };
+      let lisModelo: any[] = [];
+
+      this.selectedModelo.forEach(xFila => {
+        lisModelo.push({codigoModelo: xFila.value})
+      });
 
       this.subscription = new Subscription();
-      this.subscription = this.registroEquipoService.getRepuestoSeleccionados(this.modeloRepuestoPorModelo)
+      this.subscription = this.registroEquipoService.getXmlSeleccionado(lisModelo)
       .subscribe((data: RepuestoPorModeloModel[])=>{
         this.listItemRepuesto = [];
         for (let item of data) {
@@ -241,23 +249,33 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  getOnChangeEmpresa() {
-    if (this.selectedEmpresa !== null) {
-      this.getToObtienePlantaPorEmpresa(this.selectedEmpresa.value);
-    }else{
-      this.listItemPlanta = [];
-    }
-  }
+  // getOnChangeEmpresa() {
+  //   if (this.selectedEmpresa !== null) {
+  //     this.getToObtienePlantaPorEmpresa(this.selectedEmpresa.value);
+  //   }else{
+  //     this.listItemPlanta = [];
+  //   }
+  // }
 
-  getToObtienePlantaPorEmpresa(value: string) {
+  // getToObtienePlantaPorEmpresa(value: string) {
+  //   this.subscription = new Subscription();
+  //   this.subscription = this.seguridadService.getPlantaConAccesoPorUsuarioPorEmpresa(value)
+  //   .subscribe((data: PlantaPorUsuarioModel[]) => {
+  //     this.listItemPlanta = [];
+  //     for (let item of data) {
+  //       this.listItemPlanta.push({ label: item.descripcionPlanta, value: item.codigoPlanta });
+  //     }
+  //   });
+  // }
+
+  getToObtienePlantas() {
     this.subscription = new Subscription();
-    this.subscription = this.seguridadService.getPlantaConAccesoPorUsuarioPorEmpresa(value)
-    .subscribe((data: PlantaPorUsuarioModel[]) => {
+    this.subscription = this.compartidoService.getPlantaAll()
+    .subscribe((data: PlantaModel[]) => {
       this.listItemPlanta = [];
       for (let item of data) {
-        this.listItemPlanta.push({ label: item.descripcionPlanta, value: item.codigoPlanta });
+        this.listItemPlanta.push({ label: item.descripcionEmpresa + '/' + item.descripcion, value:{id: item.codigoPlanta , name: item.descripcionEmpresa, code: item.codigoEmpresa, planta: item.descripcion} });
       }
-      
     });
   }
 
@@ -292,16 +310,28 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
   }
 
   getToObtieneEquipo(){
+    // if (this.selectedEmpresa !== null && this.selectedPlanta !== null && (this.selectedModelo !== null) ) {
+    //   this.modeloEquipoPorModelo =
+    //   { codigoEmpresa: this.selectedEmpresa.value,
+    //     codigoPlanta: this.selectedPlanta.value,
+    //     codigoModelo: this.selectedModelo.value
+    //   };
 
-    if (this.selectedEmpresa !== null && this.selectedPlanta !== null && (this.selectedModelo !== null) ) {
-      this.modeloEquipoPorModelo =
-      { codigoEmpresa: this.selectedEmpresa.value,
-        codigoPlanta: this.selectedPlanta.value,
-        codigoModelo: this.selectedModelo.value
-      };
+      if (this.selectedPlanta !== null && (this.selectedModelo !== null) ) {
+        
+        let lisEmpresaPlanta: any[] = [];
+        let lisModelo: any[] = [];
+
+        this.selectedPlanta.forEach(xFila => {
+          lisEmpresaPlanta.push({codigoEmpresa: xFila.value.code, codigoPlanta: xFila.value.id})
+        });
+
+        this.selectedModelo.forEach(xFila => {
+          lisModelo.push({codigoModelo: xFila.value})
+        });
 
       this.subscription = new Subscription();
-      this.subscription = this.registroEquipoService.getEquipoPorFiltros(this.modeloEquipoPorModelo)
+      this.subscription = this.registroEquipoService.getAllXmlPorFiltros(lisEmpresaPlanta, lisModelo)
       .subscribe((data: EquipoPorModeloModel[]) => {
         this.listItemEquipo = [];
         for(let item of data){
@@ -330,17 +360,45 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
 
   getToListado(tipo: number){
     // Cambiando a filtro multiple
-    let filtro: DashboardMantenimientoPorFiltro = new  DashboardMantenimientoPorFiltro();
-    filtro.fechaInicio = this.selectedFechaInicio;
-    filtro.fechaFin = this.selectedFechaFin;
-    filtro.tecnico = this.selectedTecnico == null ? 0 : this.selectedTecnico.value ;
-    filtro.idDashboard = tipo;
-    filtro.empresa = this.selectedEmpresa == null ? '' : this.selectedEmpresa.value ;
-    filtro.planta = this.selectedPlanta == null ? '' : this.selectedPlanta.value ;
-    filtro.modelo = this.selectedModelo == null ? '' : this.selectedModelo.value ;
-    filtro.equipo = this.selectedEquipo == null ? '' : this.selectedEquipo.value ;
-    filtro.idUsuario = 1;
-    
+debugger
+    let lisEmpresaPlanta: any[] = [];
+    let lisModelo: any[] = [];
+    let lisEquipo: any[] = [];
+    let lisTecnico: any[] = [];
+    let lisRespuesto: any[] = [];
+
+    this.selectedPlanta.forEach(xFila => {
+      lisEmpresaPlanta.push({codigoEmpresa: xFila.value.code, codigoPlanta: xFila.value.id})
+    });
+
+    this.selectedModelo.forEach(xFila => {
+      lisModelo.push({codigoModelo: xFila.value})
+    });
+
+    this.selectedEquipo.forEach(xFila => {
+      lisEquipo.push({equipo: xFila.value})
+    });
+
+    this.selectedRepuesto.forEach(xFila => {
+      lisRespuesto.push({respuesto: xFila.value})
+    });
+
+    this.selectedTecnico.forEach(xFila => {
+      lisTecnico.push({tecnico: xFila.value})
+    });
+
+    let filtro: any = {
+      fechaInicio: this.selectedFechaInicio,
+      fechaFin: this.selectedFechaFin,
+      tecnico: lisTecnico ,
+      idDashboard: tipo,
+      respuesto: lisRespuesto,
+      planta: lisEmpresaPlanta,
+      modelo: lisModelo ,
+      equipo: lisEquipo ,
+      idUsuario: 1
+    }
+
     this.subscription = new Subscription();
     this.subscription = this.dashboardMantenimientoService.getDashboardMantenimientoPorFiltro(filtro)
     .subscribe((data: DashboardMantenimiento[]) => {

@@ -1,2 +1,16 @@
-<ng-signature-pad format="base64" (done)="showImage($event)" (cleared)="clearImage()" [doneButtonText]="vFirmaOk" [clearButtonText]="vFirmaClear" [height]="220" [doneButtonClass]="['ui-button']" [clearButtonClass]="['ui-button']">
-</ng-signature-pad>
+<div class="ui-g ui-fluid">
+
+    <div class="ui-g-12">
+        <ng-signature-pad format="base64" (done)="showImage($event)" (cleared)="clearImage()" [doneButtonText]="vFirmaOk" [clearButtonText]="vFirmaClear" [height]="220" [doneButtonClass]="['ui-button']" [clearButtonClass]="['ui-button']">
+        </ng-signature-pad>
+    </div>
+
+    <!-- <div class="ui-g-12">
+        <img [src]="signatureImage" style="width: 220; display: block;" />
+    </div>
+
+    <div class="ui-g-12">
+        <button pButton type="button" label="Limpiar Firma" class="btn btn-block"></button>
+    </div> -->
+
+</div>

@@ -2,7 +2,7 @@
     <div class="ui-g-12 ui-md-6">
         <div class="card">
             <p-carousel [value]="carouselCars" [numVisible]="3" [numScroll]="3" [circular]="false" [responsiveOptions]="responsiveOptions">
-                <ng-template let-data pTemplate="item">
+                <ng-template let-data pTemplate="item" let-rowIndex="rowIndex">
                     <div class="car-details">
                         <div class="p-grid p-nogutter">
                             <div class="p-col-12">

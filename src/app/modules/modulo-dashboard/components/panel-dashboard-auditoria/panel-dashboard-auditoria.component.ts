@@ -19,6 +19,8 @@ import { DashboardService } from '../../services/dashboard.service';
 import { DashboardModel } from '../../models/dashboard-model.model';
 import { DashboardModelPorCategoria } from '../../models/dashboard-model.model';
 import { LanguageService } from '../../../../services/language.service';
+import { PlantaModel } from '../../../modulo-compartido/models/planta.model';
+import { CompartidoService } from '../../../modulo-compartido/services/compartido.service';
 
 @Component({
   selector: 'app-panel-dashboard-auditoria',
@@ -42,15 +44,15 @@ export class PanelDashboardAuditoriaComponent implements OnInit {
   
 
    //Variables de dato seleccionado
-  selectedEmpresa: any;
-  selectedPlanta: any;
-  selectedResponsableInvetsa: any;
-  selectedResponsablePlanta: any;
-  selectedVacunador: any;
+  // selectedEmpresa: any;
+  selectedPlanta: any[];
+  selectedResponsableInvetsa: any[];
+  selectedResponsablePlanta: any[];
+  selectedVacunador: any[];
   selectedFechaInicio: any;
   selectedFechaFin: any;
   selectedTipoAuditoria: any;
-  selectedLineaGenetica: any;
+  selectedLineaGenetica: any[];
   selectedDashboard: any;
 
   //Colores
@@ -113,7 +115,8 @@ export class PanelDashboardAuditoriaComponent implements OnInit {
               private registroEquipoService: RegistroEquipoService,
               private dashboardAuditoriaService: DashboardAuditoriaService,
               public languageService : LanguageService,
-              private dashboardFormularioService: DashboardFormularioService) { 
+              private dashboardFormularioService: DashboardFormularioService,
+              private compartidoService: CompartidoService) { 
     this.breadcrumbService.setItems([
       {label:'Dashboard' },
       { label: 'Auditoria', routerLink: ['/dashboard/panel-dashboard-auditoria'] }
@@ -121,13 +124,13 @@ export class PanelDashboardAuditoriaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.selectedEmpresa = null;
-    this.selectedPlanta = null;
-    this.selectedResponsableInvetsa = null;
-    this.selectedResponsablePlanta = null;
-    this.selectedVacunador = null;
+    // this.selectedEmpresa = null;
+    this.selectedPlanta = [];
+    this.selectedResponsableInvetsa = [];
+    this.selectedResponsablePlanta = [];
+    this.selectedVacunador = [];
     this.selectedTipoAuditoria = null; 
-    this.selectedLineaGenetica = null;
+    this.selectedLineaGenetica = [];
     this.selectedDashboard = null;
     this.selectedFechaInicio = new Date();
     this.selectedFechaFin = new Date();
@@ -143,7 +146,7 @@ export class PanelDashboardAuditoriaComponent implements OnInit {
                                  {label: 'Otros'  , value: 5}];
       
 
-    this.getToObtieneEmpresa();
+    this.getToObtienePlantas();
     this.getToObtieneResponsableInvetsa();
     this.getToObtieneResponsablePlanta();
     this.getToObtieneVacunador();
@@ -517,32 +520,43 @@ export class PanelDashboardAuditoriaComponent implements OnInit {
     
   } 
 
-  getToObtieneEmpresa(){
-    this.subscription = new Subscription();
-    this.subscription = this.seguridadService.getEmpresaConAccesoPorUsuario()
-    .subscribe((data: EmpresaPorUsuarioModel[])=>{
-      this.listItemEmpresa = [];
-      for(let item of data){
-        this.listItemEmpresa.push({ label: item.descripcionEmpresa, value: item.codigoEmpresa });
-      }
-    });
-  }
+  // getToObtieneEmpresa(){
+  //   this.subscription = new Subscription();
+  //   this.subscription = this.seguridadService.getEmpresaConAccesoPorUsuario()
+  //   .subscribe((data: EmpresaPorUsuarioModel[])=>{
+  //     this.listItemEmpresa = [];
+  //     for(let item of data){
+  //       this.listItemEmpresa.push({ label: item.descripcionEmpresa, value: item.codigoEmpresa });
+  //     }
+  //   });
+  // }
 
-  getOnChangeEmpresa(){
-    if (this.selectedEmpresa != null) {
-      this.getToObtienePlantaPorEmpresa(this.selectedEmpresa.value);
-    } else {
-      this.listItemPlanta = [];
-    }
-  }
+  // getOnChangeEmpresa(){
+  //   if (this.selectedEmpresa != null) {
+  //     this.getToObtienePlantaPorEmpresa(this.selectedEmpresa.value);
+  //   } else {
+  //     this.listItemPlanta = [];
+  //   }
+  // }
 
-  getToObtienePlantaPorEmpresa(value: string){
+  // getToObtienePlantaPorEmpresa(value: string){
+  //   this.subscription = new Subscription();
+  //   this.subscription = this.seguridadService.getPlantaConAccesoPorUsuarioPorEmpresa(value)
+  //   .subscribe((data: PlantaPorUsuarioModel[])=>{
+  //     this.listItemPlanta = [];
+  //     for(let item of data){
+  //       this.listItemPlanta.push({ label: item.descripcionPlanta, value: item.codigoPlanta });
+  //     }
+  //   });
+  // }
+
+  getToObtienePlantas() {
     this.subscription = new Subscription();
-    this.subscription = this.seguridadService.getPlantaConAccesoPorUsuarioPorEmpresa(value)
-    .subscribe((data: PlantaPorUsuarioModel[])=>{
+    this.subscription = this.compartidoService.getPlantaAll()
+    .subscribe((data: PlantaModel[]) => {
       this.listItemPlanta = [];
-      for(let item of data){
-        this.listItemPlanta.push({ label: item.descripcionPlanta, value: item.codigoPlanta });
+      for (let item of data) {
+        this.listItemPlanta.push({ label: item.descripcionEmpresa + '/' + item.descripcion, value:{id: item.codigoPlanta , name: item.descripcionEmpresa, code: item.codigoEmpresa, planta: item.descripcion} });
       }
     });
   }
@@ -632,18 +646,47 @@ export class PanelDashboardAuditoriaComponent implements OnInit {
 
   getToFiltrosDashboard(tipo: number){
     debugger;
-    let filtro: ModeloDashboardAuditoriaPorFiltro = new ModeloDashboardAuditoriaPorFiltro();
-    filtro.empresa = this.selectedEmpresa == null ? '' : this.selectedEmpresa.value;
-    filtro.planta = this.selectedPlanta == null  ? '' : this.selectedPlanta.value;
-    filtro.responsableInvetsa = this.selectedResponsableInvetsa == null ? 0 : this.selectedResponsableInvetsa.value;
-    filtro.responsablePlanta = this.selectedResponsablePlanta == null ? '' : this.selectedResponsablePlanta.value;
-    filtro.tipo = this.selectedTipoAuditoria == null ? 1 : this.selectedTipoAuditoria.value;
-    filtro.lineaGenetica = this.selectedLineaGenetica == null ? 0 : this.selectedLineaGenetica.value;
-    filtro.vacunador = this.selectedVacunador == null ? '' : this.selectedVacunador.value;
-    filtro.fechaInicio = this.selectedFechaInicio;
-    filtro.fechaFin = this.selectedFechaFin;
-    filtro.idDashboard = tipo;
-    filtro.idUsuario = 1;
+
+    let lisEmpresaPlanta: any[] = [];
+    let lisResponsableInvetsa: any[] = [];
+    let lisResponsablePlanta: any[] = [];
+    let lisLineaGenetica: any[] = [];
+    let lisVacunador: any[] = [];
+
+    
+
+    this.selectedPlanta.forEach(xFila => {
+      lisEmpresaPlanta.push({codigoEmpresa: xFila.value.code, codigoPlanta: xFila.value.id})
+    });
+
+    this.selectedResponsableInvetsa.forEach(xFila => {
+      lisResponsableInvetsa.push({responsableInvetsa: xFila.value})
+    });
+
+    this.selectedResponsablePlanta.forEach(xFila => {
+      lisResponsablePlanta.push({responsablePlanta: xFila.value})
+    });
+
+    this.selectedLineaGenetica.forEach(xFila => {
+      lisLineaGenetica.push({lineaGenetica: xFila.value})
+    });
+
+    this.selectedVacunador.forEach(xFila => {
+      lisVacunador.push({vacunador: xFila.value})
+    });
+
+    let filtro: any = {
+      planta: lisEmpresaPlanta,
+      responsableInvetsa: lisResponsableInvetsa,
+      responsablePlanta: lisResponsablePlanta,
+      lineaGenetica: lisLineaGenetica,
+      vacunador: lisVacunador,
+      tipo: this.selectedTipoAuditoria == null ? 1 : this.selectedTipoAuditoria.value,
+      fechaInicio: this.selectedFechaInicio,
+      fechaFin: this.selectedFechaFin,
+      idDashboard: tipo,
+      idUsuario: 1
+    }
 
     this.subscription = new Subscription();
     this.subscription = this.dashboardAuditoriaService.getDashboardAuditoriaPorFiltro(filtro)

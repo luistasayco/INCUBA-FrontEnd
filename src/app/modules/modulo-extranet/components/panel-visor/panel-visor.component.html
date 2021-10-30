@@ -1,4 +1,4 @@
-<div *ngIf="isVisible">
+<div *ngIf="isVisible" oncontextmenu="return false" onkeydown="return false">
     <div *ngIf="isdataVisorCustom.type === 'image/png' || isdataVisorCustom.type === 'image/jpeg'">
 
         <app-visor-imagen [isFile]="isdataVisorCustom">

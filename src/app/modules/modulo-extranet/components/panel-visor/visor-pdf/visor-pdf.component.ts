@@ -18,26 +18,28 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
   archivoUrl: string = '';
   fileEnServidor = '';
   urlSanitizer: SafeResourceUrl = null;
-
+  pdfSrc: string;
   pagina: number = 1;
-
+  // pdfSrc = 'https://auditoria.invetsa.com/fileExtranet/Auditoría_Vacunación_Subcutánea_SAN_FERNANDO_SA_20211008_2087.pdf';
+  // pdfSrc = 'https://auditoria.invetsa.com/fileExtranet/Auditoría_Vacunación_Subcutánea_SAN_FERNANDO_SA_20211008_2087.pdf';
   // filePdf = 'data:application/pdf;base64,'
   constructor(private _sanitizer: DomSanitizer, private renderer: Renderer2) { }
 
   ngAfterViewInit(): void {
-    this.inHabilitarClickDerecho();
+    // this.inHabilitarClickDerecho();
   }
 
   inHabilitarClickDerecho() {
     const div = document.getElementById('container');
     div.oncontextmenu = inhabilitar;
     function inhabilitar() {
-      // console.log('CLICK DERECHO INHABILITADO');
       return false;
     }
   }
 
   ngOnInit() {
+debugger
+    this.pdfSrc = `${environment.url_api_pdf}${this.isFile.nameAleatorio}.pdf`;
     // this.origen = `${window.location.origin}/Invetsa`;
     // if (isDevMode()) {
     //   // origen =  'https://auditoria.invetsa.com/Invetsa';
@@ -57,7 +59,8 @@ export class VisorPdfComponent implements OnInit, AfterViewInit {
       // this.fileEnServidor = `${this.origen}/assets/file-pdf/${this.nombrePdf}.pdf?param=${parametro}#toolbar=0&navpanes=0`;
       // console.log('this.fileEnServidor:', this.fileEnServidor);
       // this.urlSanitizer = this._sanitizer.bypassSecurityTrustResourceUrl(this.fileEnServidor);
-      this.handleInputChange(this.isFile);
+      // this.urlSanitizer = this._sanitizer.bypassSecurityTrustResourceUrl(this.pdfSrc);
+      // this.handleInputChange(this.isFile);
 
       // this.renderer.setAttribute(this.myvisor.nativeElement, "disabled", "true");
   }

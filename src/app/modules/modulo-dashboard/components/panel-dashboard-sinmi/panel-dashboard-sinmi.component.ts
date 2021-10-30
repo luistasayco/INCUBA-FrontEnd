@@ -49,14 +49,14 @@ export class PanelDashboardSinmiComponent implements OnInit {
   dashboardModelPorCategoria: DashboardModelPorCategoria = new DashboardModelPorCategoria();
 
   //Variables de dato seleccionado
-  selectedEmpresa: any;
-  selectedGranja: any;
-  selectedResponsableInvetsa: any;
-  selectedResponsablePlanta: any;
+  selectedEmpresa: any[];
+  selectedGranja: any[];
+  selectedResponsableInvetsa: any[];
+  selectedResponsablePlanta: any[];
   selectedDashboard: any;
-  selectedLinea: any;
+  selectedLinea: any[];
   selectedTipoModulo: SelectItem;
-  selectedEdad: any;
+  selectedEdad: any[];
   selectedFechaInicio: any;
   selectedFechaFin: any;
 
@@ -102,14 +102,14 @@ export class PanelDashboardSinmiComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.selectedEmpresa = null;
-    this.selectedGranja = null;
-    this.selectedResponsableInvetsa = null;
-    this.selectedResponsablePlanta = null;
+    this.selectedEmpresa = [];
+    this.selectedGranja = [];
+    this.selectedResponsableInvetsa = [];
+    this.selectedResponsablePlanta = [];
     this.selectedDashboard = null;
-    this.selectedLinea = null;
+    this.selectedLinea = [];
     this.selectedTipoModulo = {label: 'SIM'  , value: 1};
-    this.selectedEdad = null;
+    this.selectedEdad = [];
     this.selectedFechaInicio = new Date();
     this.selectedFechaFin = new Date();
     this.isValueDash = 0;
@@ -372,18 +372,50 @@ export class PanelDashboardSinmiComponent implements OnInit {
 
   getToFiltrosDashboard(tipo: number){
     debugger;
-    let filtro: ModeloDashboardSINMIPorFiltro = new ModeloDashboardSINMIPorFiltro();
-    filtro.empresa = this.selectedEmpresa == null ? '' : this.selectedEmpresa.value;
-    filtro.planta = this.selectedGranja == null  ? '' : this.selectedGranja.value;
-    filtro.responsableInvetsa = this.selectedResponsableInvetsa == null ? 0 : this.selectedResponsableInvetsa.value;
-    filtro.responsableCompañia = this.selectedResponsablePlanta == null ? '' : this.selectedResponsablePlanta.value;
-    filtro.tipoModulo = this.selectedTipoModulo == null ? 1 : this.selectedTipoModulo.value;
-    filtro.linea = this.selectedLinea == null ? '' : this.selectedLinea.value;
-    filtro.edad = this.selectedEdad == null ? 0 : this.selectedEdad.value;
-    filtro.fechaInicio = this.selectedFechaInicio;
-    filtro.fechaFin = this.selectedFechaFin;
-    filtro.idDashboard = tipo;
-    filtro.idUsuario = 1;
+    let lisEmpresaPlanta: any[] = [];
+    let lisResponsableInvetsa: any[] = [];
+    let lisResponsablePlanta: any[] = [];
+    let lisLinea: any[] = [];
+    let lisGranja: any[] = [];
+    let listEdad: any[]=[];
+
+    this.selectedEmpresa.forEach(xFila => {
+      lisEmpresaPlanta.push({empresa: xFila.value})
+    });
+
+    this.selectedResponsableInvetsa.forEach(xFila => {
+      lisResponsableInvetsa.push({responsableInvetsa: xFila.value})
+    });
+
+    this.selectedResponsablePlanta.forEach(xFila => {
+      lisResponsablePlanta.push({responsablePlanta: xFila.value})
+    });
+
+    this.selectedGranja.forEach(xFila => {
+      lisGranja.push({planta: xFila.value})
+    });
+
+    this.selectedLinea.forEach(xFila => {
+      lisLinea.push({linea: xFila.value})
+    });
+
+    this.selectedEdad.forEach(xFila => {
+      listEdad.push({edad: xFila.value})
+    });
+
+    let filtro: any ={
+      empresa: lisEmpresaPlanta,
+      planta: lisGranja,
+      responsableInvetsa: lisResponsableInvetsa,
+      responsableCompania: lisResponsablePlanta,
+      linea: lisLinea,
+      edad: listEdad,
+      tipoModulo: this.selectedTipoModulo == null ? 1 : this.selectedTipoModulo.value,
+      fechaInicio: this.selectedFechaInicio,
+      fechaFin: this.selectedFechaFin,
+      idDashboard: tipo,
+      idUsuario: 1,
+    }
 
     this.subscription = new Subscription();
     this.subscription = this.dashboardSINMIService.getDashboardSINMIPorFiltro(filtro)

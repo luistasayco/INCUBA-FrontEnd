@@ -140,7 +140,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.subscripcion = new Subscription();
     this.subscripcion = this.loginService.autentica(this.modeloLogin)
     .subscribe((res: any) => {
-        localStorage.setItem(VARIABLES_GLOBALES.valorToken, res.token);
+        this.sessionService.setItem(VARIABLES_GLOBALES.valorToken, res.token);
         this.displayMensaje = 'Inicio => Sincronizando Información';
         this.onEncriptaData(res);
         this.onGeneraMenu();

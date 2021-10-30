@@ -54,7 +54,7 @@
     </div>
 </p-dialog> -->
 
-<p-dialog id="panel_extranet" [header]="modeloSeleccionadoVisualizar.names" [(visible)]="displayVisualizarCustom" [modal]="true" [baseZIndex]="10000" [maximizable]="true" [style]="{width: '100vw'}">
+<p-dialog id="panel_extranet" [header]="modeloSeleccionadoVisualizar.names" [(visible)]="displayVisualizarCustom" [modal]="true" [autoZIndex] [maximizable]="true">
     <div class="ui-g ui-fluid">
         <div class="ui-g-12" desactivarClickDerecho>
             <app-panel-visor [isdataVisorCustom]="dataVisorCustom" [isVisible]="displayVisualizarCustom" [isNombreArchivo]="modeloSeleccionadoVisualizar.names">

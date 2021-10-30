@@ -211,8 +211,8 @@ export class PanelExtranetFolderComponent implements OnInit, OnDestroy {
             this.onToVisorCustom(modelo);
           } else {
             // this.onToVisorCustomBase64(modelo);
-            this.onToVisorCustom(modelo);
-            // this.onToVisorCustomSave(modelo);
+            // this.onToVisorCustom(modelo);
+            this.onToVisorCustomSave(modelo);
           }
 
     } else {
@@ -252,6 +252,7 @@ export class PanelExtranetFolderComponent implements OnInit, OnDestroy {
     this.subscription$ = new Subscription();
     this.subscription$ = this.extranetService.getDownloadTxRegistroDocumentoSave(modelo.idGoogleDrive)
     .subscribe((resp: any) => {
+      debugger;
       this.dataVisorCustom = resp;
       this.displayVisualizarCustom = true;
       this.displayVisualizar = false;

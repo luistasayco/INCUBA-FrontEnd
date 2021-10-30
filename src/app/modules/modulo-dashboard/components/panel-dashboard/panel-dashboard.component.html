@@ -3,29 +3,34 @@
     <!-- filtros -->
     <p-panel header="Opcion de busqueda de {{titulo}}" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
         <div class="ui-g ui-fluid">
-            <div class="ui-g-12 ui-md-3">
+            <!-- <div class="ui-g-12 ui-md-3">
                 <label for="dropdown-empresa" class="label-custom">Empresa: </label>
                 <p-dropdown inputId="dropdown-empresa" class="ui dropdown-item-text" [options]="listItemEmpresa" [(ngModel)]="selectedEmpresa" (onChange)="getOnChangeEmpresa()" placeholder="Select Empresa" optionLabel="label" optionValue="value" [showClear]="true"></p-dropdown>
-            </div>
-            <div class="ui-g-12 ui-md-3">
-                <label for="dropdown-planta" class="label-custom">Planta: </label>
-                <p-dropdown inputId="dropdown-planta" class="ui dropdown-item-text" [options]="listItemPlanta" [(ngModel)]="selectedPlanta" (onChange)="getOnChangePlanta()" placeholder="Select Planta" optionLabel="label" [showClear]="true"></p-dropdown>
+            </div> -->
+            <div class="ui-g-12 ui-md-6">
+                <label for="dropdown-planta" class="label-custom">Empresa/Planta: </label>
+                <!-- <p-dropdown inputId="dropdown-planta" class="ui dropdown-item-text" [options]="listItemPlanta" [(ngModel)]="selectedPlanta" (onChange)="getOnChangePlanta()" placeholder="Select Planta" optionLabel="label" [showClear]="true"></p-dropdown> -->
+                <p-multiSelect id="dropdown-planta" class="ui-multiselect-item" [options]="listItemPlanta" [(ngModel)]="selectedPlanta" filterPlaceHolder="Select Empresa/Planta" (onChange)="getOnChangePlanta()" optionLabel="label"></p-multiSelect>
             </div>
             <div class="ui-g-12 ui-md-3">
                 <label for="dropdown-modelo" class="label-custom">Modelo: </label>
-                <p-dropdown inputId="dropdown-modelo" class="ui dropdown-item-text" [options]="listItemModelo" [(ngModel)]="selectedModelo" (onChange)="getOnChangeModelo()" placeholder="Select Modelo" optionLabel="label" [showClear]="true"></p-dropdown>
+                <!-- <p-dropdown inputId="dropdown-modelo" class="ui dropdown-item-text" [options]="listItemModelo" [(ngModel)]="selectedModelo" (onChange)="getOnChangeModelo()" placeholder="Select Modelo" optionLabel="label" [showClear]="true"></p-dropdown> -->
+                <p-multiSelect id="dropdown-modelo" class="ui-multiselect-item" [options]="listItemModelo" [(ngModel)]="selectedModelo" filterPlaceHolder="Select Modelo" (onChange)="getOnChangeModelo()" optionLabel="label"></p-multiSelect>
             </div>
             <div class="ui-g-12 ui-md-3">
                 <label for="dropdown-equipos" class="label-custom">Equipos: </label>
-                <p-dropdown inputId="dropdown-equipos" class="ui dropdown-item-text" [options]="listItemEquipo" [(ngModel)]="selectedEquipo" placeholder="Select Equipo" optionLabel="label" [showClear]="true"></p-dropdown>
+                <!-- <p-dropdown inputId="dropdown-equipos" class="ui dropdown-item-text" [options]="listItemEquipo" [(ngModel)]="selectedEquipo" placeholder="Select Equipo" optionLabel="label" [showClear]="true"></p-dropdown> -->
+                <p-multiSelect id="dropdown-equipos" class="ui-multiselect-item" [options]="listItemEquipo" [(ngModel)]="selectedEquipo" filterPlaceHolder="Select Equipo" optionLabel="label"></p-multiSelect>
             </div>
             <div class="ui-g-12 ui-md-3">
                 <label for="dropdown-componentes" class="label-custom">Componentes: </label>
-                <p-dropdown inputId="dropdown-componentes" class="ui dropdown-item-text" [options]="listItemRepuesto" [(ngModel)]="selectedRepuesto" placeholder="Select Componente" optionLabel="label" [showClear]="true"></p-dropdown>
+                <!-- <p-dropdown inputId="dropdown-componentes" class="ui dropdown-item-text" [options]="listItemRepuesto" [(ngModel)]="selectedRepuesto" placeholder="Select Componente" optionLabel="label" [showClear]="true"></p-dropdown> -->
+                <p-multiSelect id="dropdown-componentes" class="ui-multiselect-item" [options]="listItemRepuesto" [(ngModel)]="selectedRepuesto" filterPlaceHolder="Select Componente" optionLabel="label"></p-multiSelect>
             </div>
             <div class="ui-g-12 ui-md-3">
                 <label for="dropdown-tecnico" class="label-custom">Técnico: </label>
-                <p-dropdown inputId="dropdown-tecnico" class="ui dropdown-item-text" [options]="listItemTecnico" [(ngModel)]="selectedTecnico" placeholder="Select Tecnico" optionLabel="label" optionValue="value" [showClear]="true"></p-dropdown>
+                <!-- <p-dropdown inputId="dropdown-tecnico" class="ui dropdown-item-text" [options]="listItemTecnico" [(ngModel)]="selectedTecnico" placeholder="Select Tecnico" optionLabel="label" optionValue="value" [showClear]="true"></p-dropdown> -->
+                <p-multiSelect id="dropdown-tecnico" class="ui-multiselect-item" [options]="listItemTecnico" [(ngModel)]="selectedTecnico" filterPlaceHolder="Select Técnico" optionLabel="label"></p-multiSelect>
             </div>
             <div class="ui-g-12 ui-md-6">
                 <label for="dropdown-dash" class="label-custom">Tipo de Dashboard: </label>

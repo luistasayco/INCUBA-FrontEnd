@@ -124,7 +124,7 @@ export class PanelExtranetMasivoComponent implements OnInit, OnDestroy {
       }
     });
   }
-
+ 
   myUploader(event: any) {
     this.uploadedFiles = [];
     for (const file of event.files) {

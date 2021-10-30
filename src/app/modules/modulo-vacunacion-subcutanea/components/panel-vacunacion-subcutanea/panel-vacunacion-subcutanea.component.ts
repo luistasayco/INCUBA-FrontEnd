@@ -160,6 +160,7 @@ export class PanelVacunacionSubcutaneaComponent implements OnInit, OnDestroy {
     .subscribe(resp => {
       if (resp) {
           this.listModelo = resp;
+          console.log(this.listModelo );
         }
       },
       (error) => {

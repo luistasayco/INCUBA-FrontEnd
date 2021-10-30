@@ -248,7 +248,7 @@
                                     <th colspan="1">Acciones</th>
                                 </tr>
                             </ng-template>
-                            <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri>
+                            <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri="rowIndex">
                                 <tr>
                                     <td>
                                         <span class="ui-column-title">Nombre del Vacunador</span> {{rowData.nombreVacunador}}
@@ -263,7 +263,7 @@
                                         <span class="ui-column-title">Valor</span> {{rowData.valor}}
                                     </td>
                                     <td>
-                                        <button pButton icon="{{globalConstants.icoEliminar}}" class="ui-button-danger" (click)="onToRowSelectDeleteIrregularidad(rowData)"></button>
+                                        <button pButton icon="{{globalConstants.icoEliminar}}" class="ui-button-danger" (click)="onToRowSelectDeleteIrregularidad(ri)"></button>
                                     </td>
                                 </tr>
                             </ng-template>
@@ -293,7 +293,7 @@
                                     <th *ngFor="let col of columns">
                                         {{col.header}}
                                     </th>
-                                    <th colspan="2">Acciones</th>
+                                    <th colspan="1">Acciones</th>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri let-editing="editing">
@@ -428,9 +428,9 @@
                                         <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="{{globalConstants.icoGrabar}}" class="ui-button-success" (click)="onRowEditSave(rowData)"></button>
                                         <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="{{globalConstants.icoCancelar}}" class="ui-button-danger" style="margin-left: .5em" (click)="onRowEditCancel(rowData, ri)"></button>
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         <button pButton icon="{{globalConstants.icoEliminar}}" class="ui-button-danger" (click)="onToRowSelectDeleteIrregularidad(rowData)"></button>
-                                    </td>
+                                    </td> -->
                                 </tr>
                             </ng-template>
                         </p-table>
