@@ -292,10 +292,10 @@
                                     <th *ngFor="let col of columns">
                                         {{col.header}}
                                     </th>
-                                    <th colspan="1">Acciones</th>
+                                    <th colspan="2">Acciones</th>
                                 </tr>
                             </ng-template>
-                            <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri let-editing="editing">
+                            <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri="rowIndex" let-editing="editing">
                                 <tr [pEditableRow]="rowData">
                                     <td class="ui-fluid">
                                         <span class="ui-column-title">Nombre del Vacunador</span> {{rowData.nombreVacunador}}
@@ -427,9 +427,9 @@
                                         <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="{{globalConstants.icoGrabar}}" class="ui-button-success" (click)="onRowEditSave(rowData)"></button>
                                         <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="{{globalConstants.icoCancelar}}" class="ui-button-danger" style="margin-left: .5em" (click)="onRowEditCancel(rowData, ri)"></button>
                                     </td>
-                                    <!-- <td>
-                                        <button pButton icon="{{globalConstants.icoEliminar}}" class="ui-button-danger" (click)="onToRowSelectDeleteIrregularidad(rowData)"></button>
-                                    </td> -->
+                                    <td class="action-td">
+                                        <button pButton icon="{{globalConstants.icoEliminar}}" class="ui-button-danger" (click)="onToRowSelectDeleteControlIndiceEficiencia(ri)"></button>
+                                    </td>
                                 </tr>
                             </ng-template>
                         </p-table>

@@ -1,8 +1,10 @@
 export class ModeloDashboardFormularioPorFiltro {
     filtro: number;
+    planta?: string;
 
     constructor(){
         this.filtro = 0;
+        this.planta = ''
     }
 }
 

@@ -215,7 +215,13 @@ export class GaleriaImagenComponent {
   }
 
     deleteItem(data: string) {
-        this.carouselCars = [...this.carouselCars].filter(x => x.imagen !== data);
+        debugger;
+
+        var galeria = [...this.carouselCars];
+        var galeriaDepurada = galeria.filter(x => x.imagen !== data);
+
+        // this.carouselCars = [...this.carouselCars].filter(x => x.imagen !== data);
+        this.carouselCars = galeriaDepurada;
         this.listUpdate.emit(this.carouselCars);
     }
 
@@ -229,8 +235,16 @@ export class GaleriaImagenComponent {
     // }
 
     newImg(data: string) {
-        if (!this.carouselCars) { this.carouselCars = []; }
-        this.carouselCars.push({imagen: data});
+
+        if (!this.carouselCars) 
+        { 
+            this.carouselCars = []; 
+        }
+
+        var galeria = [...this.carouselCars];
+        galeria.push({imagen: data})
+
+        this.carouselCars = galeria;
         this.listUpdate.emit(this.carouselCars);
     }
 

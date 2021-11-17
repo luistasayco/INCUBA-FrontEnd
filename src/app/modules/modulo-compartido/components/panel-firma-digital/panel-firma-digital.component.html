@@ -1,16 +1,13 @@
 <div class="ui-g ui-fluid">
-
-    <div class="ui-g-12">
+    <div *ngIf="finalizafirma === false" class="ui-g-12">
         <ng-signature-pad format="base64" (done)="showImage($event)" (cleared)="clearImage()" [doneButtonText]="vFirmaOk" [clearButtonText]="vFirmaClear" [height]="220" [doneButtonClass]="['ui-button']" [clearButtonClass]="['ui-button']">
         </ng-signature-pad>
     </div>
 
-    <!-- <div class="ui-g-12">
-        <img [src]="signatureImage" style="width: 220; display: block;" />
+    <div *ngIf="finalizafirma === true" class="ui-g-12">
+        <!-- <label class="label-custom">{{vFirmaOk}}</label> -->
+        <img [src]="signatureImage" style="width: 185; display: block;" />
+        <button pButton type="button" label="Limpiar {{vFirmaOk}}" (click)="clearImage()" class="btn btn-block"></button>
     </div>
-
-    <div class="ui-g-12">
-        <button pButton type="button" label="Limpiar Firma" class="btn btn-block"></button>
-    </div> -->
 
 </div>

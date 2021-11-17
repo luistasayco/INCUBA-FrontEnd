@@ -13,6 +13,7 @@ export class DashboardFormularioService {
   getDashboardFormularioPorFiltro(value: ModeloDashboardFormularioPorFiltro){
     let parametros = new HttpParams();
     parametros = parametros.append('filtro', value.filtro.toString());
+    parametros = parametros.append('planta', value.planta);
 
     return this.http.get<ModeloDashboardFormulario[]>
     (`${environment.url_api}DashboardFormulario/GetAll/`, { params: parametros }); 

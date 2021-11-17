@@ -5,10 +5,11 @@ import { CarouselModule } from 'primeng/carousel';
 import { GaleriaImagenComponent } from './galeria-imagen.component';
 import { ButtonModule } from 'primeng/button';
 import { CapturarImagenModule } from '../capturar-imagen/capture-imagen.module';
+import {DataViewModule} from 'primeng/dataview';
 
 @NgModule({
     declarations: [GaleriaImagenComponent],
-    imports: [ CommonModule, GalleriaModule, CarouselModule, ButtonModule, CapturarImagenModule ],
+    imports: [ CommonModule, GalleriaModule, CarouselModule, ButtonModule, CapturarImagenModule, DataViewModule ],
     exports: [GaleriaImagenComponent],
     providers: [],
 })

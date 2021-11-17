@@ -10,7 +10,7 @@
             <div class="ui-g-12 ui-md-6">
                 <label for="dropdown-planta" class="label-custom">Planta: </label>
                 <!-- <p-dropdown inputId="dropdown-planta" class="ui dropdown-item-text" placeholder="Select Planta" [options]="listItemPlanta" [(ngModel)]="selectedPlanta" optionLabel="label" [showClear]="true"></p-dropdown> -->
-                <p-multiSelect id="dropdown-planta" class="ui-multiselect-item" [options]="listItemPlanta" [(ngModel)]="selectedPlanta" filterPlaceHolder="Select Empresa/Planta" optionLabel="label"></p-multiSelect>
+                <p-multiSelect id="dropdown-planta" class="ui-multiselect-item" [options]="listItemPlanta" [(ngModel)]="selectedPlanta" filterPlaceHolder="Select Empresa/Planta" (onChange)="getToObtieneVacunador()" optionLabel="label"></p-multiSelect>
             </div>
             <div class="ui-g-12 ui-md-3">
                 <label for="dropdown-invetsa" class="label-custom">Responsable Invetsa: </label>

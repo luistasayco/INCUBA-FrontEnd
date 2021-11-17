@@ -18,19 +18,20 @@ export class PanelFirmaDigitalComponent implements OnInit {
   finalizafirma: boolean;
 
   constructor() {
+    this.finalizafirma = false;
    }
   ngOnInit() {
-    this.finalizafirma = false;
+
   }
 
   showImage(data) {
     this.signatureImage = data;
-    // this.finalizaFirma = true;
+    this.finalizafirma = true;
     this.vDataFirma.emit(this.signatureImage);
   }
 
   clearImage() {
-    // this.finalizaFirma = false;
+    this.finalizafirma = false;
     this.vDataFirmaClear.emit('');
   }
 }

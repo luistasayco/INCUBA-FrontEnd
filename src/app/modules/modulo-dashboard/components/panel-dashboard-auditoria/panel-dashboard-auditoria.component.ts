@@ -149,7 +149,7 @@ export class PanelDashboardAuditoriaComponent implements OnInit {
     this.getToObtienePlantas();
     this.getToObtieneResponsableInvetsa();
     this.getToObtieneResponsablePlanta();
-    this.getToObtieneVacunador();
+    // this.getToObtieneVacunador();
     this.getToObtieneDashboard();
 
     const width = window.innerWidth;
@@ -591,9 +591,16 @@ export class PanelDashboardAuditoriaComponent implements OnInit {
 
   getToObtieneVacunador(){
     
+    let lisEmpresaPlanta: any[] = [];
+
+    this.selectedPlanta.forEach(xFila => {
+      lisEmpresaPlanta.push({codigoEmpresa: xFila.value.code, codigoPlanta: xFila.value.id})
+    });
+
     this.modeloDashboardFormularioPorFiltro = 
     {
-      filtro: 2
+      filtro: 2,
+      planta: JSON.stringify(lisEmpresaPlanta)
     }
 
     this.subscription = new Subscription();

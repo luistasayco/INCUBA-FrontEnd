@@ -840,6 +840,18 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
     }
   }
 
+  onToRowSelectDeleteControlIndiceEficiencia(index: number) {
+    debugger
+    let nombreVacunador = this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia[index].nombreVacunador;
+
+    //Eliminamos al vacunador
+    this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.splice(+index, 1);
+
+    let clonedCountNombreVacunador = [...this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad].filter(xFila => xFila.nombreVacunador !== nombreVacunador);
+
+    this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad = clonedCountNombreVacunador;
+  }
+
   onGrabarControlEficiencia() {
     debugger;
     if (!this.nombreVacunadorControlEficiencia) {
