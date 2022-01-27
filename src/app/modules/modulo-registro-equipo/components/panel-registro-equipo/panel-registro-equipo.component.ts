@@ -277,10 +277,10 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
   }
 
   onConfirmEliminar(data: any) {
-    // if (data.flgCerrado) {
-    //   this.mensajePrimeNgService.onToInfoMsg(null, 'Registro seleccionado se encuentra CERRADO!!!');
-    //   return;
-    // }
+    if (data.flgCerrado) {
+      this.mensajePrimeNgService.onToInfoMsg(null, 'Registro seleccionado se encuentra CERRADO!!!');
+      return;
+    }
     this.confirmationService.confirm({
         message: this.globalConstants.subTitleEliminar,
         header: this.globalConstants.titleEliminar,

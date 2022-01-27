@@ -170,7 +170,7 @@ export class VacunacionSubcutaneaOfflineCreateComponent implements OnInit, OnDes
     this.columnasIrregularidad = [
       { header: 'Descripción'},
       { header: 'Codigo AF'},
-      { header: 'Irregularidad'},
+      { header: 'Ausencia de Irregularidad'},
       { header: 'Valor'}
     ];
 
@@ -848,14 +848,18 @@ export class VacunacionSubcutaneaOfflineCreateComponent implements OnInit, OnDes
 
   onToRowSelectDeleteControlIndiceEficiencia(index: number) {
     debugger
-    let nombreVacunador = this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia[index].nombreVacunador;
 
-    //Eliminamos al vacunador
-    this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.splice(+index, 1);
-
-    let clonedCountNombreVacunador = [...this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad].filter(xFila => xFila.nombreVacunador !== nombreVacunador);
-
-    this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad = clonedCountNombreVacunador;
+    var opcion = confirm("Seguro de eliminar?");//Linea agregada por LUIS
+    if (opcion == true) {
+      let nombreVacunador = this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia[index].nombreVacunador;
+  
+      //Eliminamos al vacunador
+      this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.splice(+index, 1);
+  
+      let clonedCountNombreVacunador = [...this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad].filter(xFila => xFila.nombreVacunador !== nombreVacunador);
+  
+      this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad = clonedCountNombreVacunador;
+    }
   }
   
   onGrabarControlEficiencia() {

@@ -30,16 +30,16 @@ export class SessionService {
    * set session storage item
    */
   setItem(key: string, value: any) {
-    // localStorage.setItem(key, JSON.stringify(value));
-    sessionStorage.setItem(key, JSON.stringify(value));
+     localStorage.setItem(key, JSON.stringify(value));
+    //sessionStorage.setItem(key, JSON.stringify(value));
   }
 
   /**
    * get session storage item
    */
   getItem(key: string): any {
-    // let value = localStorage.getItem(key);
-    let value = sessionStorage.getItem(key);
+     let value = localStorage.getItem(key);
+    //let value = sessionStorage.getItem(key);
     return JSON.parse(value);
   }
 
@@ -47,14 +47,15 @@ export class SessionService {
    * remove session storage item
    */
   removeItem(key: string) {
-    // localStorage.removeItem(key);
-    sessionStorage.removeItem(key);
+    localStorage.removeItem(key);
+    //sessionStorage.removeItem(key);
   }
 
   /**
    * remove all session storage items
    */
   clear() {
-    sessionStorage.clear();
+    //localStorage.clear();
+    //sessionStorage.clear();
   }
 }

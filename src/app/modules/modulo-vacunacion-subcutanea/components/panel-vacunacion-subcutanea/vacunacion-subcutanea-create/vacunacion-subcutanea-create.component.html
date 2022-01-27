@@ -75,7 +75,7 @@
                     <label class="label-custom" for="lote">Pollos/día(promedio): </label>
                 </div>
                 <div class="ui-g-12 ui-md-3">
-                    <input id="promedioPollos" type="number" [(ngModel)]="modeloItem.promedioPollos" pInputText>
+                    <input id="promedioPollos" type="number" onClick="this.select();" [(ngModel)]="modeloItem.promedioPollos" pInputText>
                 </div>
             </div>
         </p-fieldset>
@@ -162,7 +162,7 @@
                             <input id="label-custom-nombre-antibiotico" type="text" [(ngModel)]="modeloItem.nombreAntibiotico" pInputText>
                         </div>
                         <div class="ui-g-12  ui-md-4">
-                            <label class="label-custom" for="dropdown-responsable">Dósis: </label>
+                            <label class="label-custom" for="dropdown-responsable">Dosis: </label>
                             <input id="label-custom-dosis-antibiotico" type="text" [(ngModel)]="modeloItem.dosisAntibiotico" pInputText>
                         </div>
                     </div>
@@ -174,14 +174,15 @@
                         <button pButton type="button" label="Seleccionar Procesos" icon="{{globalConstants.icoNuevo}}" (click)="onVisibleMaquina()"></button>
                     </div>
                     <div class="ui-g-12">
+                        <!-- <p-table [value]="modeloItem.listarTxVacunacionSubCutaneaDetalle" dataKey="descripcionProcesoSubCutanea" [(selection)]="selectEquipo" autoLayout="true" [responsive]="true"> -->
                         <p-table [value]="modeloItem.listarTxVacunacionSubCutaneaDetalle" dataKey="descripcionProcesoSubCutanea">
-
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th style="width: 3em">
                                         ...
                                     </th>
                                     <th style="width: 3em">
+                                        <!-- <p-tableHeaderCheckbox></p-tableHeaderCheckbox> -->
                                         ...
                                     </th>
                                     <th>Equipo</th>
@@ -244,7 +245,7 @@
                                     <th *ngFor="let col of columns">
                                         {{col.header}}
                                     </th>
-                                    <th colspan="1">Acciones</th>
+                                    <!-- <th colspan="1">Acciones</th> LUIS -->
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri="rowIndex">
@@ -261,9 +262,9 @@
                                     <td>
                                         <span class="ui-column-title">Valor</span> {{rowData.valor}}
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         <button pButton icon="{{globalConstants.icoEliminar}}" class="ui-button-danger" (click)="onToRowSelectDeleteIrregularidad(ri)"></button>
-                                    </td>
+                                    </td> LUIS -->
                                 </tr>
                             </ng-template>
                         </p-table>
@@ -305,7 +306,7 @@
                                         <p-cellEditor>
                                             <ng-template pTemplate="input">
                                                 <span class="p-float-label">
-                                                    <input id="float-input" type="number" pInputText [(ngModel)]="rowData.cantidadInicial"> 
+                                                    <input id="float-input" type="number" onClick="this.select();" pInputText [(ngModel)]="rowData.cantidadInicial"> 
                                                 </span>
                                             </ng-template>
                                             <ng-template pTemplate="output">
@@ -318,7 +319,7 @@
                                         <p-cellEditor>
                                             <ng-template pTemplate="input">
                                                 <span class="p-float-label">
-                                                    <input id="float-input" type="number" pInputText [(ngModel)]="rowData.cantidadFinal"> 
+                                                    <input id="float-input" type="number" onClick="this.select();" pInputText [(ngModel)]="rowData.cantidadFinal"> 
                                                 </span>
                                             </ng-template>
                                             <ng-template pTemplate="output">
@@ -345,7 +346,7 @@
                                         <p-cellEditor>
                                             <ng-template pTemplate="input">
                                                 <span class="p-float-label">
-                                                    <input id="float-input" type="number" pInputText [(ngModel)]="rowData.controlados"> 
+                                                    <input id="float-input" type="number" onClick="this.select();" pInputText [(ngModel)]="rowData.controlados"> 
                                                 </span>
                                             </ng-template>
                                             <ng-template pTemplate="output">
@@ -358,7 +359,7 @@
                                         <p-cellEditor>
                                             <ng-template pTemplate="input">
                                                 <span class="p-float-label">
-                                                    <input id="float-input" type="number" pInputText [(ngModel)]="rowData.sinVacunar"> 
+                                                    <input id="float-input" type="number" onClick="this.select();" pInputText [(ngModel)]="rowData.sinVacunar"> 
                                                 </span>
                                             </ng-template>
                                             <ng-template pTemplate="output">
@@ -371,7 +372,7 @@
                                         <p-cellEditor>
                                             <ng-template pTemplate="input">
                                                 <span class="p-float-label">
-                                                    <input id="float-input" type="number" pInputText [(ngModel)]="rowData.heridos"> 
+                                                    <input id="float-input" type="number" onClick="this.select();" pInputText [(ngModel)]="rowData.heridos"> 
                                                 </span>
                                             </ng-template>
                                             <ng-template pTemplate="output">
@@ -384,7 +385,7 @@
                                         <p-cellEditor>
                                             <ng-template pTemplate="input">
                                                 <span class="p-float-label">
-                                                    <input id="float-input" type="number" pInputText [(ngModel)]="rowData.mojados"> 
+                                                    <input id="float-input" type="number" onClick="this.select();" pInputText [(ngModel)]="rowData.mojados"> 
                                                 </span>
                                             </ng-template>
                                             <ng-template pTemplate="output">
@@ -397,7 +398,7 @@
                                         <p-cellEditor>
                                             <ng-template pTemplate="input">
                                                 <span class="p-float-label">
-                                                    <input id="float-input" type="number" pInputText [(ngModel)]="rowData.malaPosicion"> 
+                                                    <input id="float-input" type="number" onClick="this.select();" pInputText [(ngModel)]="rowData.malaPosicion"> 
                                                 </span>
                                             </ng-template>
                                             <ng-template pTemplate="output">

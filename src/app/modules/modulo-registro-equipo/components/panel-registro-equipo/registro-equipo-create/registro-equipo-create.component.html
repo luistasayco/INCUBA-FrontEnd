@@ -153,16 +153,18 @@
                             <td class="action-td">
                                 <span class="ui-column-title">Codigo</span> {{modelo.idRepuestoPorModelo}}
                             </td>
-                            <td class="action-td-action">
+                            <td class="ui-fluid">
                                 <span class="ui-column-title">Repuesto</span>
                                 <p-cellEditor>
                                     <ng-template pTemplate="input">
                                         <span class="p-float-label">
-                                                {{modelo.codigoRepuesto}}
+                                                {{modelo.descripcion}}
+                                                <!-- {{modelo.codigoRepuesto}} -->
                                             </span>
                                     </ng-template>
                                     <ng-template pTemplate="output">
-                                        {{modelo.codigoRepuesto}}
+                                        {{modelo.descripcion}}
+                                        <!-- {{modelo.codigoRepuesto}} -->
                                     </ng-template>
                                 </p-cellEditor>
                             </td>

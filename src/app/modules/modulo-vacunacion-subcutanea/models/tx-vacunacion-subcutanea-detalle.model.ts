@@ -17,7 +17,7 @@ export class TxVacunacionSubCutaneaDetalleModel {
         this.descripcionProcesoDetalleSubCutanea = '';
         this.idProcesoSubCutanea = 0;
         this.descripcionProcesoSubCutanea = '';
-        this.valor  = false;
+        this.valor = true;//Luis Chumpitaz
         this.idProcesoAgrupador = 0;
         this.valorProcesoDetalleSubCutanea = 0;
         this.valorProcesoSubCutanea = 0;
