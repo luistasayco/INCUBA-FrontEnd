@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
 import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
 import { VacunacionSubcutaneaLocalService } from '../../services/vacunacion-subcutanea-local.service';
+import { VacunacionSubcutaneaService } from '../../services/vacunacion-subcutanea.service';
 import { MensajePrimeNgService } from '../../../modulo-compartido/services/mensaje-prime-ng.service';
 import { Router } from '@angular/router';
 import { LanguageService } from '../../../../services/language.service';
@@ -54,6 +55,7 @@ export class PanelVacunacionSubcutaneaOfflineComponent implements OnInit, OnDest
   constructor(private breadcrumbService: BreadcrumbService,
               private menuDinamicoService: MenuDinamicoService,
               private vacunacionSubcutaneaLocalService: VacunacionSubcutaneaLocalService,
+              private vacunacionSubcutaneaService: VacunacionSubcutaneaService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private confirmationService: ConfirmationService,
               private router: Router,
@@ -193,6 +195,19 @@ export class PanelVacunacionSubcutaneaOfflineComponent implements OnInit, OnDest
 
   onToCreate() {
     this.router.navigate(['/main/module-su/vacunacion-subcutanea-offline-create']);
+  }
+
+  onToSync(data: any) {
+    this.subscription$ = new Subscription();
+    this.subscription$ = this.vacunacionSubcutaneaService.setInsertFromSyncTxVacunacionSubCutanea(this.modeloItem)
+    .subscribe(resp => {
+        this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
+        this.onToEliminar(data);
+      },
+      (error) => {
+        this.mensajePrimeNgService.onToErrorMsg(null, error);
+      }
+    );
   }
 
   onToUpdate(data: any) {

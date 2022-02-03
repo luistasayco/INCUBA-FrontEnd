@@ -187,6 +187,17 @@ export class ExamenFisicoPollitoService {
     );
   }
 
+  setInsertFromSyncExamenFisicoPollito(value: TxExamenFisicoPollitoModel) {
+    value.regUsuario = (value.regUsuario || undefined) ?? this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
+    const url = environment.url_api + 'TxExamenFisicoPollito/Create';
+    const param: string = JSON.stringify(value);
+    return this.http.post(
+        url,
+        param
+    );
+  }
+
   setUpdateTxExamenFisicoPollito(value: TxExamenFisicoPollitoModel) {
     value.regUsuario = this.userContextService.getIdUsuario();
     value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;

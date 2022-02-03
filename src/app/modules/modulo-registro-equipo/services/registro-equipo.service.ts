@@ -352,6 +352,17 @@ export class RegistroEquipoService {
     );
   }
 
+  setInsertFromSyncTxRegistroEquipo(value: TxRegistroEquipoModel) {
+    value.regUsuario = (value.regUsuario || undefined) ?? this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
+    const url = environment.url_api + 'TxRegistroEquipo/Create';
+    const param: string = JSON.stringify(value);
+    return this.http.post(
+        url,
+        param
+    );
+  }
+
   setUpdateTxRegistroEquipo(value: TxRegistroEquipoModel) {
     value.regUsuario = this.userContextService.getIdUsuario();
     value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;

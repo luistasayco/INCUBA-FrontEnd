@@ -215,6 +215,17 @@ export class VacunacionSubcutaneaService {
     );
   }
 
+  setInsertFromSyncTxVacunacionSubCutanea(value: TxVacunacionSubCutaneaModel) {
+    value.regUsuario = (value.regUsuario || undefined) ?? this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
+    const url = environment.url_api + 'TxVacunacionSubCutanea/Create';
+    const param: string = JSON.stringify(value);
+    return this.http.post(
+        url,
+        param
+    );
+  }
+
   setUpdateTxVacunacionSubCutanea(value: TxVacunacionSubCutaneaModel) {
     value.regUsuario = this.userContextService.getIdUsuario();
     value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;

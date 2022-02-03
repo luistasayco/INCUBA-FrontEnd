@@ -7,7 +7,6 @@ import { Subscription } from 'rxjs';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
 import { SessionService } from '../../../../services/session.service';
 import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
-import { VacunacionSprayService } from '../../services/vacunacion-spray.service';
 import { MensajePrimeNgService } from '../../../modulo-compartido/services/mensaje-prime-ng.service';
 import { Router } from '@angular/router';
 import { LanguageService } from '../../../../services/language.service';
@@ -16,6 +15,7 @@ import { EmpresaPorUsuarioModel } from '../../../modulo-seguridad/models/empresa
 import { IMensajeResultadoApi } from '../../../modulo-compartido/models/mensaje-resultado-api';
 import { saveAs } from 'file-saver';
 import { VacunacionSprayLocalService } from '../../services/vacunacion-spray-local.service';
+import { VacunacionSprayService } from '../../services/vacunacion-spray.service';
 import { UserContextService } from '../../../../services/user-context.service';
 
 @Component({
@@ -49,12 +49,12 @@ export class PanelVacunacionSprayOfflineComponent implements OnInit, OnDestroy {
   constructor(private breadcrumbService: BreadcrumbService,
               private sessionService: SessionService,
               private menuDinamicoService: MenuDinamicoService,
-              // private vacunacionSprayService: VacunacionSprayService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private confirmationService: ConfirmationService,
               private router: Router,
               public lenguageService: LanguageService,
               private vacunacionSprayLocalService: VacunacionSprayLocalService,
+              private vacunacionSprayService: VacunacionSprayService,
               private userContextService: UserContextService) {
     this.breadcrumbService.setItems([
       { label: 'Módulo Vacunación Spray - Offline' },
@@ -191,6 +191,19 @@ export class PanelVacunacionSprayOfflineComponent implements OnInit, OnDestroy {
 
   onToCreate() {
     this.router.navigate(['/main/module-sp/vacunacion-spray-create-offline']);
+  }
+
+  onToSync(data: any) {
+    this.subscription$ = new Subscription();
+    this.subscription$ = this.vacunacionSprayService.setInsertTxVacunacionSpray(this.modeloItem)
+    .subscribe(resp => {
+        this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
+        this.onToEliminar(data);
+      },
+      (error) => {
+        this.mensajePrimeNgService.onToErrorMsg(null, error);
+      }
+    );
   }
 
   onToUpdate(data: any) {

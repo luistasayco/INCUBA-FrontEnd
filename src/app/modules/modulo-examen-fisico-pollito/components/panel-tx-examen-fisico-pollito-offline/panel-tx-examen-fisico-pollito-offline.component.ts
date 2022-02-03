@@ -7,6 +7,7 @@ import { BreadcrumbService } from '../../../../services/breadcrumb.service';
 import { SessionService } from '../../../../services/session.service';
 import { MenuDinamicoService } from '../../../../services/menu-dinamico.service';
 import { ExamenFisicoPollitoLocalService } from '../../services/examen-fisico-pollito-local.service';
+import { ExamenFisicoPollitoService } from '../../services/examen-fisico-pollito.service';
 import { MensajePrimeNgService } from '../../../modulo-compartido/services/mensaje-prime-ng.service';
 import { ConfirmationService } from 'primeng';
 import { Router } from '@angular/router';
@@ -48,6 +49,7 @@ export class PanelTxExamenFisicoPollitoOfflineComponent implements OnInit, OnDes
               private sessionService: SessionService,
               private menuDinamicoService: MenuDinamicoService,
               private examenFisicoPollitoLocalService: ExamenFisicoPollitoLocalService,
+              private examenFisicoPollitoService: ExamenFisicoPollitoService,
               public mensajePrimeNgService: MensajePrimeNgService,
               private confirmationService: ConfirmationService,
               private router: Router,
@@ -187,6 +189,20 @@ export class PanelTxExamenFisicoPollitoOfflineComponent implements OnInit, OnDes
   onToCreate() {
     this.router.navigate(['/main/module-ef/create-tx-examen-fisico-pollito-offline']);
   }
+
+  onToSync(data: any) {
+    this.subscription$ = new Subscription();
+    this.subscription$ = this.examenFisicoPollitoService.setInsertFromSyncExamenFisicoPollito(data)
+    .subscribe(resp => {
+        this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
+        this.onToEliminar(data);
+      },
+      (error) => {
+        this.mensajePrimeNgService.onToErrorMsg(null, error);
+      }
+    );
+  }
+
 
   onToUpdate(data: any) {
     this.subscription$ = new Subscription();

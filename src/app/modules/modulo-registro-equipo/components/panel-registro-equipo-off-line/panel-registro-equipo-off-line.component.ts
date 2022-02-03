@@ -9,6 +9,7 @@ import { PlantaModel } from '../../../modulo-compartido/models/planta.model';
 import { ModeloModel } from '../../../modulo-compartido/models/modelo.model';
 import { LanguageService } from '../../../../services/language.service';
 import { BreadcrumbService } from '../../../../services/breadcrumb.service';
+import { RegistroEquipoService } from '../../services/registro-equipo.service';
 import { RegistroEquipoLocalService } from '../../services/registro-equipo-local.service';
 import { CompartidoLocalService } from '../../../modulo-compartido/services/compartido-local.service';
 import { Subscription } from 'rxjs';
@@ -62,7 +63,8 @@ export class PanelRegistroEquipoOffLineComponent implements OnInit, OnDestroy {
 
   modeloDatosCierre: TxRegistroEquipoModel  = new TxRegistroEquipoModel();
 
-  constructor(private registroEquipoLocalService: RegistroEquipoLocalService,
+  constructor(private registroEquipoService: RegistroEquipoService,
+              private registroEquipoLocalService: RegistroEquipoLocalService,
               private compartidoLocalService: CompartidoLocalService,
               public mensajePrimeNgService: MensajePrimeNgService,
               public lenguageService: LanguageService,
@@ -275,6 +277,19 @@ export class PanelRegistroEquipoOffLineComponent implements OnInit, OnDestroy {
 
   onToCreate() {
     this.router.navigate(['/main/module-re/create-registro-equipo-offline']);
+  }
+
+  onToSync(data: any) {
+    this.subscription$ = new Subscription();
+    this.subscription$ = this.registroEquipoService.setInsertFromSyncTxRegistroEquipo(data)
+    .subscribe(resp => {
+        this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
+        this.onToEliminar(data);
+      },
+      (error) => {
+        this.mensajePrimeNgService.onToErrorMsg(null, error);
+      }
+    );
   }
 
   onToUpdate(data: any) {

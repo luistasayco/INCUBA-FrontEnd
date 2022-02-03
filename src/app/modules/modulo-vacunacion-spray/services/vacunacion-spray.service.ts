@@ -212,6 +212,17 @@ export class VacunacionSprayService {
     );
   }
 
+  setInsertFromSyncTxVacunacionSpray(value: TxVacunacionSprayModel) {
+    value.regUsuario = (value.regUsuario || undefined) ?? this.userContextService.getIdUsuario();
+    value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
+    const url = environment.url_api + 'TxVacunacionSpray/Create';
+    const param: string = JSON.stringify(value);
+    return this.http.post(
+        url,
+        param
+    );
+  }
+
   setUpdateTxVacunacionSpray(value: TxVacunacionSprayModel) {
     value.regUsuario = this.userContextService.getIdUsuario();
     value.regEstacion = variableGlobal._DISPOSITIVO.nombreDispositivo;
