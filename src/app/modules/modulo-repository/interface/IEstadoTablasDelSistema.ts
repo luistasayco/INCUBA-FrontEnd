@@ -25,5 +25,6 @@ export interface IEstadoTablasDelSistema {
   tablaTrxVacunacionSubCutaneaNew: boolean;
 
   tablaTrxSINMIDetalleNew: boolean;
-
+  //Luis Chumpitaz
+  //tablaMstUsuario: boolean;
 }

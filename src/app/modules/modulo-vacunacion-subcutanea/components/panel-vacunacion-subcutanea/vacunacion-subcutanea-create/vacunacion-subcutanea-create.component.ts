@@ -596,7 +596,7 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
       //cambio
       if(isNaN(promedioControldeEficiencia.porcentajeEficiencia)) promedioControldeEficiencia.porcentajeEficiencia = 0;
       //•	-10% del promedio de Vacunados hora 1punto
-      debugger;
+     //      debugger;
       valorInicio = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.1);
       // valorFin = promedioControldeEficiencia.vacunadoPorHora + (promedioControldeEficiencia.vacunadoPorHora * 0.5);
       // valorFin = promedioControldeEficiencia.vacunadoPorHora + (promedioControldeEficiencia.vacunadoPorHora * 0.5);
@@ -752,7 +752,7 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
   }
 
   onGuardaVacunador() {
-    debugger;
+    //debugger;
     let encontroVacunador = [...this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.filter(xFila => xFila.nombreVacunador === this.nombreVacunador)].length;
 
     let vclonedVacunado = [...this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia];
@@ -841,7 +841,7 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
   }
 
   onToRowSelectDeleteControlIndiceEficiencia(index: number) {
-    debugger
+    //debugger
 
     var opcion = confirm("Seguro de eliminar?");//Linea agregada por LUIS
     if (opcion == true) {
@@ -857,7 +857,7 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
   }
 
   onGrabarControlEficiencia() {
-    debugger;
+    //debugger;
     if (!this.nombreVacunadorControlEficiencia) {
       this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Seleccionar Vacunador');
       return;
@@ -873,7 +873,7 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
   }
 
   onGrabar() {
-    debugger;
+    //debugger;
     if (!this.selectEmpresa) {
       this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Seleccionar Empresa');
       return;

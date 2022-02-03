@@ -260,6 +260,15 @@ export class SeguridadService {
     (`${environment.url_api_seguridad}PlantaPorUsuario/GetPlantaConAccesoPorUsuario/`, { params: parametros });
   }
 
+  //Luis Chumpitaz
+  // getUsuarios() {
+  //   let parametros = new HttpParams();
+  //   parametros = parametros.append('Usuario', 'luis');
+
+  //   return this.http.get<UsuarioModel[]>
+  //   (`${environment.url_api_seguridad}Usuario/GetAll/`, { params: parametros });
+  // }
+
   getSubTipoExplotacionSinAccesoPorUsuario(idUsuario: number) {
     let parametros = new HttpParams();
     parametros = parametros.append('idUsuario', idUsuario.toString());

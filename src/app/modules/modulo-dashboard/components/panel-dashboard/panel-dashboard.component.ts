@@ -208,7 +208,6 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
   // }
 
   getToObtieneDashboard(){
-    debugger;
     this.dashboardModelPorCategoria = 
     {
       dashboardCategory: 'Mantenimiento'
@@ -226,7 +225,6 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
   }
 
   getToObtieneRepuesto(){
-  debugger
     if (this.selectedModelo !== null) {
       // this.modeloRepuestoPorModelo =
       // { 
@@ -276,6 +274,8 @@ export class PanelDashboardComponent implements OnInit, OnDestroy {
       for (let item of data) {
         this.listItemPlanta.push({ label: item.descripcionEmpresa + '/' + item.descripcion, value:{id: item.codigoPlanta , name: item.descripcionEmpresa, code: item.codigoEmpresa, planta: item.descripcion} });
       }
+    }, error => {
+      console.log(error)
     });
   }
 

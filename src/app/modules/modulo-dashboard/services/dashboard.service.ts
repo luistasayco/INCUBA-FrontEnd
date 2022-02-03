@@ -15,7 +15,7 @@ export class DashboardService {
               private userContextService: UserContextService) { }
 
   getDashboardPorCategoria(value: DashboardModelPorCategoria){
-    debugger;
+    //  debugger;
     let parametros = new HttpParams();
     parametros = parametros.append('dashboardCategory',value.dashboardCategory);
 

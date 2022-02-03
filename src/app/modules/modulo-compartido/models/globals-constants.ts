@@ -31,6 +31,7 @@ export class GlobalsConstants {
     icoCerrado: string;
     icoAbierto: string;
     icoVisualizar: string;
+    icoSincronizar: string;
     icoDownload: string;
     icoCalcular: string;
     icoDesplegar: string;
@@ -89,6 +90,7 @@ export class GlobalsConstants {
         this.icoCerrado = 'fa fa-lock';
         this.icoAbierto = 'fa fa-unlock';
         this.icoVisualizar = 'fa fa-eye';
+        this.icoSincronizar = 'fa fa-refresh'
         this.icoDownload = 'fa fa-download';
         this.icoCalcular = 'fa fa-calculator';
         this.icoDesplegar = 'fa fa-list';

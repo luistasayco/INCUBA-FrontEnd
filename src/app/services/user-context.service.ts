@@ -56,7 +56,6 @@ export class UserContextService {
   public logout()
   {
     this.sessionService.clear();
-    // localStorage.removeItem('token');
     this.user$.next(defaultUser);
     this.redirecciona();
   }

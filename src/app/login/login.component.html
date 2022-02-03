@@ -3,10 +3,6 @@
         <div class="ui-g">
             <div class="ui-g-12 ui-lg-6 left-side">
                 <img src="assets/layout/images/logo-invetsa.png" alt="apollo-layout" class="logo" />
-                <!-- <h1>Bienvenido</h1>
-                <p>
-                    Regístrese para iniciar su sesión
-                </p> -->
                 <p style="text-align: center; display: block;">
                     versión: {{ versionSistema }}
                 </p>
@@ -29,7 +25,6 @@
                                     <div class="ui-inputgroup">
                                         <span class="ui-inputgroup-addon"><i class="pi pi-user" style="line-height: 1.25;"></i></span>
                                         <input id="id-usuario" type="text" class="ui-inputtext ui-widget" placeholder="Username" formControlName="login" autocomplete="off">
-
                                     </div>
                                     <div *ngIf="formularioLogin.controls['login'].errors && formularioLogin.controls['login'].dirty">
                                         <p-message severity="error" text="Usuario es requerido" *ngIf="formularioLogin.controls['login'].errors['required']"></p-message>

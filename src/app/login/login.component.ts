@@ -9,7 +9,12 @@ import { SessionService } from '../services/session.service';
 import { MenuDinamicoService } from '../services/menu-dinamico.service';
 import { DataBaseModel } from '../modules/modulo-seguridad/models/data-base';
 import { SelectItem } from 'primeng';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  FormControl,
+  Validators,
+} from '@angular/forms';
 import { TraerDatosRemotosService } from '../modules/modulo-repository/services/traer-datos-remotos.service';
 import { estadoInternetService } from '../modules/modulo-estado-internet/estadoInternet.service';
 import { Subscription } from 'rxjs';
@@ -23,10 +28,9 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit, OnDestroy {
-
   modeloLogin: LoginModel;
 
   listItemDataBase: SelectItem[];
@@ -43,18 +47,20 @@ export class LoginComponent implements OnInit, OnDestroy {
   displayValida: boolean;
   versionSistema: string;
 
-  constructor(private readonly loginService: LoginService,
-              private readonly router: Router,
-              public readonly mensajePrimeNgService: MensajePrimeNgService,
-              private readonly userContextService: UserContextService,
-              private readonly menuDinamicoService: MenuDinamicoService,
-              private readonly sessionService: SessionService,
-              private readonly fb: FormBuilder,
-              private readonly servicioTraerDatos: TraerDatosRemotosService,
-              private readonly servicioInternet: estadoInternetService,
-              private readonly functionDBLocalService: FunctionDBLocalService,
-              private readonly dbService: NgxIndexedDBService,
-              private readonly cifrarDataService: CifrarDataService) { }
+  constructor(
+    private readonly loginService: LoginService,
+    private readonly router: Router,
+    public readonly mensajePrimeNgService: MensajePrimeNgService,
+    private readonly userContextService: UserContextService,
+    private readonly menuDinamicoService: MenuDinamicoService,
+    private readonly sessionService: SessionService,
+    private readonly fb: FormBuilder,
+    private readonly servicioTraerDatos: TraerDatosRemotosService,
+    private readonly servicioInternet: estadoInternetService,
+    private readonly functionDBLocalService: FunctionDBLocalService,
+    private readonly dbService: NgxIndexedDBService,
+    private readonly cifrarDataService: CifrarDataService
+  ) {}
 
   ngOnInit(): void {
     this.sessionService.setItemEncrypt('FLGDATABASESELECCIONADA', false);
@@ -63,83 +69,91 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.iniciarObservableEstadoInternet();
     this.instanciarFormulario();
     this.versionSistema = environment.versionSistema;
-    
   }
 
   iniciarObservableEstadoInternet() {
-    this.subscripcionInternet = this.servicioInternet._ESTADO_INTERNET$.subscribe(
-      estado => {
+    this.subscripcionInternet =
+      this.servicioInternet._ESTADO_INTERNET$.subscribe((estado) => {
         variableGlobal.ESTADO_INTERNET = estado;
         if (variableGlobal.ESTADO_INTERNET) {
           this.onObtieneDataBase();
         } else {
           this.onObtieneDataBaseLocal();
         }
-      }
-    );
+      });
   }
 
   onObtieneDataBase() {
     this.subscripcion = new Subscription();
-    this.subscripcion = this.loginService.getDataBaseAll()
-    .subscribe((resultado: DataBaseModel[]) => {
-      this.setRegistrosListaDataBase(resultado);
-    });
+    this.subscripcion = this.loginService
+      .getDataBaseAll()
+      .subscribe((resultado: DataBaseModel[]) => {
+        this.setRegistrosListaDataBase(resultado);
+        this.functionDBLocalService.createEnDBLocalDesdeServidor(
+          ConstantesTablasIDB._TABLA_SOCIEDAD,
+          resultado
+        );
+      });
   }
 
   onObtieneDataBaseLocal() {
     this.subscripcion = new Subscription();
-    this.subscripcion = this.dbService.getAll(ConstantesTablasIDB._TABLA_SOCIEDAD)
-    .subscribe((resultado: DataBaseModel[]) => {
-      this.setRegistrosListaDataBase(resultado);
-    });
+    this.subscripcion = this.dbService
+      .getAll(ConstantesTablasIDB._TABLA_SOCIEDAD)
+      .subscribe((resultado: DataBaseModel[]) => {
+        this.setRegistrosListaDataBase(resultado);
+      });
   }
 
   setRegistrosListaDataBase(data: DataBaseModel[]) {
     this.listItemDataBase = [];
     for (let item of data) {
-      this.listItemDataBase.push({ label: item.descripcionDataBase, value: item.idDataBase });
+      this.listItemDataBase.push({
+        label: item.descripcionDataBase,
+        value: item.idDataBase,
+      });
     }
   }
 
   instanciarFormulario() {
     this.formularioLogin = this.fb.group({
-      dataBase: new FormControl('', [
-        Validators.required
-      ]),
+      dataBase: new FormControl('', [Validators.required]),
       login: new FormControl('', [
         Validators.minLength(4),
-        Validators.required
+        Validators.required,
       ]),
       password: new FormControl('', [
         Validators.minLength(6),
-        Validators.required
-      ])
+        Validators.required,
+      ]),
     });
   }
 
   onChangeDataBase() {
     this.sessionService.setItemEncrypt('FLGDATABASESELECCIONADA', true);
-    this.sessionService.setItemEncrypt('DATABASESELECCIONADA', this.formularioLogin.value.dataBase.value);
+    this.sessionService.setItemEncrypt(
+      'DATABASESELECCIONADA',
+      this.formularioLogin.value.dataBase.value
+    );
   }
 
-  onClickLogin()
-  {
+  onClickLogin() {
     this.modeloLogin.usuario = this.formularioLogin.value.login;
-    this.modeloLogin.clave = this.cifrarDataService.encrypt(this.formularioLogin.value.password);
+    this.modeloLogin.clave = this.cifrarDataService.encrypt(
+      this.formularioLogin.value.password
+    );
     if (variableGlobal.ESTADO_INTERNET) {
       this.onLoginOnline();
-    } else  {
+    } else {
       this.onLoginOffline();
     }
-    
   }
 
-  onLoginOnline () {
+  onLoginOnline() {
     this.displayTraeData = true;
     this.subscripcion = new Subscription();
-    this.subscripcion = this.loginService.autentica(this.modeloLogin)
-    .subscribe((res: any) => {
+    this.subscripcion = this.loginService.autentica(this.modeloLogin).subscribe(
+      (res: any) => {
         this.sessionService.setItem(VARIABLES_GLOBALES.valorToken, res.token);
         this.displayMensaje = 'Inicio => Sincronizando Información';
         this.onEncriptaData(res);
@@ -154,12 +168,27 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   onLoginOffline() {
-    let usuOffline = this.formularioLogin.value.login;
-    let usuLocal = this.sessionService.getItemDecrypt('usuario');
-    let claveOffline = this.cifrarDataService.encrypt(this.formularioLogin.value.password);
-    let claveLocal = this.sessionService.getItem('pass');
+    let databaseSelected = this.sessionService.getItem('DATABASESELECCIONADA');
+    let res = JSON.parse(
+      this.cifrarDataService.decrypt(localStorage.getItem('lastLogin'))
+    );
 
-    if (usuOffline.toLowerCase() === usuLocal.toLowerCase() && claveOffline === claveLocal) {
+    if (
+      databaseSelected === res['databaseSelected'] &&
+      this.modeloLogin.usuario === res['usuario'] &&
+      this.modeloLogin.clave === res['pass']
+    ) {
+      this.sessionService.setItem('menu', res['menu']);
+      this.sessionService.setItemEncrypt('idUsuario', res['idUsuario']);
+      this.sessionService.setItemEncrypt('imagen', res['imagen']);
+      this.sessionService.setItemEncrypt('nombre', res['nombre']);
+      this.sessionService.setItemEncrypt('usuario', res['usuario']);
+      this.sessionService.setItemEncrypt('email', res['email']);
+      this.sessionService.setItem('pass', res['pass']);
+      this.sessionService.setItem(VARIABLES_GLOBALES.valorToken, res['token']);
+      this.userContextService.setUser(res['usuario']);
+      this.onGeneraMenu();
+
       this.router.navigate(['/main/dashboard']);
     } else {
       this.mensajePrimeNgService.onToInfoMsg(null, 'Credenciales incorrectos.');
@@ -172,8 +201,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   onEncriptaData(res: any) {
-
-    this.functionDBLocalService.createEnDBLocalDesdeServidor(ConstantesTablasIDB._TABLA_SEGMENU, res.listaAccesoMenu);
+    this.functionDBLocalService.createEnDBLocalDesdeServidor(
+      ConstantesTablasIDB._TABLA_SEGMENU,
+      res.listaAccesoMenu
+    );
 
     this.sessionService.setItem('menu', res.listaAccesoMenu);
     this.sessionService.setItemEncrypt('idUsuario', res.idUsuario);
@@ -183,6 +214,23 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.sessionService.setItemEncrypt('email', res.email);
     this.sessionService.setItem('pass', this.modeloLogin.clave);
     this.userContextService.setUser(res.usuario);
+
+    localStorage.setItem(
+      'lastLogin',
+      this.cifrarDataService.encrypt(
+        JSON.stringify({
+          databaseSelected: this.sessionService.getItem('DATABASESELECCIONADA'),
+          menu: res.listaAccesoMenu,
+          idUsuario: res.idUsuario,
+          imagen: res.imagen,
+          nombre: res.nombre,
+          usuario: res.usuario,
+          email: res.email,
+          pass: this.modeloLogin.clave,
+          token: res.token,
+        })
+      )
+    );
   }
 
   onGeneraMenu() {
@@ -192,24 +240,22 @@ export class LoginComponent implements OnInit, OnDestroy {
   onSetDataLocal(resp: any) {
     this.servicioTraerDatos.obtenerDatosDesdeServidor(resp);
     this.subscripcion = new Subscription();
-    this.subscripcion = this.servicioTraerDatos.datosCargadosTotalmente.subscribe(
-      resultado => {
-        if (resultado) {
+    this.subscripcion =
+      this.servicioTraerDatos.datosCargadosTotalmente.subscribe(
+        (resultado) => {
+          if (resultado) {
+            this.displayTraeData = false;
+            this.onFinalizaProceso();
+            this.displayMensaje = 'Fin => Sincronizando Información';
+          } else {
+            // console.log('AUN NO TERMINA LA SINCRONIZACION');
+          }
+        },
+        (error) => {
           this.displayTraeData = false;
-          this.onFinalizaProceso();
-          this.displayMensaje = 'Fin => Sincronizando Información';
-
-          // console.log('Datos obtenidos desde el Servidor. Completado: ' );
-        } else {
-          // console.log('AUN NO TERMINA LA SINCRONIZACION');
+          this.userContextService.logout();
         }
-      },
-      error => {
-        this.displayTraeData = false;
-        this.userContextService.logout();
-        // console.log('Error en mostrarSiguienteVista()' + error);
-      }
-    );
+      );
   }
 
   onRecuperarContrasena() {
@@ -227,22 +273,27 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
     this.modeloLogin.usuario = this.formularioLogin.value.login;
     this.subscripcion = new Subscription();
-    this.subscripcion = this.loginService.RecuperarPassword(this.modeloLogin)
-    .subscribe((res: any) => {
-      this.displayValida = false;
-      this.mensajePrimeNgService.onToExitoMsg('Mensaje de Éxito : ', 'Se envio email con su nueva contraseña...!!!');
-      },
-      (err) => {
-        this.displayValida = false;
-        this.mensajePrimeNgService.onToErrorMsg('Login', err.error);
-      }
-    );
+    this.subscripcion = this.loginService
+      .RecuperarPassword(this.modeloLogin)
+      .subscribe(
+        (res: any) => {
+          this.displayValida = false;
+          this.mensajePrimeNgService.onToExitoMsg(
+            'Mensaje de Éxito : ',
+            'Se envio email con su nueva contraseña...!!!'
+          );
+        },
+        (err) => {
+          this.displayValida = false;
+          this.mensajePrimeNgService.onToErrorMsg('Login', err.error);
+        }
+      );
   }
 
   ngOnDestroy() {
     this.subscripcionInternet.unsubscribe();
     if (this.subscripcion) {
       this.subscripcion.unsubscribe();
-  }
+    }
   }
 }

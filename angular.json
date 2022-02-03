@@ -21,7 +21,11 @@
                         "aot": true,
                         "assets": [
                             "src/favicon.ico",
-                            "src/assets",
+                            {
+                                "glob": "**/*",
+                                "input": "src/assets",
+                                "output": "assets"
+                            },
                             "src/manifest.webmanifest",
                             "src/web.config"
                         ],
@@ -110,7 +114,8 @@
                         "styles": [
                             "src/styles.css"
                         ],
-                        "scripts": []
+                        "scripts": [],
+                        "disableHostCheck": true
                     }
                 },
                 "lint": {

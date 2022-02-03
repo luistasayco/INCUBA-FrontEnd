@@ -25,7 +25,7 @@ export class FunctionDBLocalService {
           observer.next();
           observer.complete();
         }
-      });
+      } );
     });
 
     observadorBorrar.subscribe(respBorrado => {
@@ -34,7 +34,8 @@ export class FunctionDBLocalService {
         .subscribe( (data) => {
         },
         error => {
-          // console.log(`error ${nameTabla}`, item);
+          console.log(`error ${nameTabla}`);
+          console.log(error);
         });
       });
     });
@@ -66,7 +67,8 @@ export class FunctionDBLocalService {
         .subscribe( (data) => {
         },
         error => {
-          // console.log(`error ${nameTabla}`, registro);
+          console.log(`error ${nameTabla}`);
+          console.log(error);
         });
     });
   }

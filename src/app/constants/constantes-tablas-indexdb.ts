@@ -21,7 +21,7 @@ export class ConstantesTablasIDB {
 
     // Tablas de seguridad
     public static _TABLA_SEGMENU = 'segMenu';
-    public static _TABLA_SOCIEDAD = 'segSociedad'
+    public static _TABLA_SOCIEDAD = 'segSociedad';
 
     // Tablas Maestras Modulo Vacunacion Spray
     public static _TABLA_MSBOQUILLA = 'mstBoquilla';

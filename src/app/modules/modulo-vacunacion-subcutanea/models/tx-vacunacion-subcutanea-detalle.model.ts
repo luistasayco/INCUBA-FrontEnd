@@ -11,13 +11,14 @@ export class TxVacunacionSubCutaneaDetalleModel {
     valorProcesoSubCutanea: number;
 
     constructor() {
+        //SP INC_GetTxVacunacionSubCutaneaDetallePorIdNew
         this.idVacunacionSubCutaneaDetalle = 0;
         this.idVacunacionSubCutanea = 0;
         this.idProcesoDetalleSubCutanea = 0;
         this.descripcionProcesoDetalleSubCutanea = '';
         this.idProcesoSubCutanea = 0;
         this.descripcionProcesoSubCutanea = '';
-        this.valor = true;//Luis Chumpitaz
+        this.valor = false;
         this.idProcesoAgrupador = 0;
         this.valorProcesoDetalleSubCutanea = 0;
         this.valorProcesoSubCutanea = 0;

@@ -215,8 +215,6 @@ export class GaleriaImagenComponent {
   }
 
     deleteItem(data: string) {
-        debugger;
-
         var galeria = [...this.carouselCars];
         var galeriaDepurada = galeria.filter(x => x.imagen !== data);
 
