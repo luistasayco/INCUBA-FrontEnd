@@ -107,7 +107,7 @@
                 </p-panel>
             </p-accordionTab>
 
-            <p-accordionTab header="C .- Requerimientos para los equipos y condiciones de limpieza" [selected]="displayControles">
+            <p-accordionTab header="C .- Requerimientos para los equipos y condiciones de limpieza" [selected]="displayControles" *ngIf="!selectedModeloIsSolovac">
                 <div class="ui-g dashboard">
                     <div class="ui-g-12 ui-md-6 ui-lg-6 task-list">
                         <p-panel header="Limpieza y esterilización">
@@ -156,11 +156,13 @@
                                 <p-cellEditor>
                                     <ng-template pTemplate="input">
                                         <span class="p-float-label">
-                                                {{modelo.codigoRepuesto}}
+                                                {{modelo.descripcion}}
+                                                <!-- {{modelo.codigoRepuesto}} -->
                                             </span>
                                     </ng-template>
                                     <ng-template pTemplate="output">
-                                        {{modelo.codigoRepuesto}}
+                                        {{modelo.descripcion}}
+                                        <!-- {{modelo.codigoRepuesto}} -->
                                     </ng-template>
                                 </p-cellEditor>
                             </td>

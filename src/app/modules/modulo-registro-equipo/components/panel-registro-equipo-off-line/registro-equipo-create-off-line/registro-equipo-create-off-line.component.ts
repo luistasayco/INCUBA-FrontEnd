@@ -49,6 +49,7 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
   selectedEmpresa: any;
   selectedPlanta: any;
   selectedModelo: any;
+  selectedModeloIsSolovac: boolean;
 
   modeloEmpresa: EmpresaModel = new EmpresaModel();
   modeloPlanta: PlantaModel = new PlantaModel();
@@ -198,9 +199,11 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
   }
 
   getOnRepuestoPorModelo() {
+    this.selectedModeloIsSolovac = false;
     let codigoModelo: string = this.selectedModelo === null ? '' : this.selectedModelo.value;
     
     if (codigoModelo !== '') {
+      this.selectedModeloIsSolovac = this.selectedModelo.label == 'SOLOVAC';
       this.subscription$ = new Subscription();
       this.subscription$ = this.registroEquipoLocalService.getRepuestoPorModelo()
       .subscribe((data: RepuestoPorModeloModel[]) => {
