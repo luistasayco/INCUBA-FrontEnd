@@ -107,12 +107,8 @@ export class TraerDatosRemotosService {
   // USUARIO
   // ***********************************************
   private getUsuario(usuario: any) {
-    // const password: string = usuario.password;
-    // const recordarUsuario: number = usuario.recordarUsuario;
-    // this.createUsuario(usuario);
     this.obtenerDatosRemotos();
     this.procesoFinalizado('getUsuario');
-    // this.tablasCompletas.tablaUsuarios = true;
     this.emitDatosCargados();
   }
 
@@ -158,14 +154,14 @@ export class TraerDatosRemotosService {
 
   }
 
-  private getSociedades(nameProcedimiento: string, etiqueta: string) {
+  public getSociedades(nameProcedimiento: string, etiqueta: string) {
     var tablaSociedades: DataBaseModel[] = [];
     this.informacionDelProceso(`Inicio de ${nameProcedimiento}`);
     this.loginService.getDataBaseAll()
     .subscribe(
         result => {
           tablaSociedades = result;
-          this.createDataIndexDB( ConstantesTablasIDB._TABLA_SOCIEDAD, tablaSociedades, etiqueta);
+          this.createDataIndexDB(ConstantesTablasIDB._TABLA_SOCIEDAD, tablaSociedades, etiqueta);
           this.procesoFinalizado(nameProcedimiento);
           this.tablasCompletas.tablaMsSociedades = true;
           this.emitDatosCargados();
@@ -494,8 +490,10 @@ export class TraerDatosRemotosService {
 
   emitDatosCargados() {
     let resultado = false;
-    if (this.tablasCompletas.tablaMstEmpresa && this.tablasCompletas.tablaMstPlanta &&
-        this.tablasCompletas.tablaMstModelo && this.tablasCompletas.tablaMstCondicionLimpieza &&
+    if (this.tablasCompletas.tablaMstEmpresa && 
+        this.tablasCompletas.tablaMstPlanta &&
+        this.tablasCompletas.tablaMstModelo && 
+        this.tablasCompletas.tablaMstCondicionLimpieza &&
         this.tablasCompletas.tablaMstRequerimientoEquipo &&
         this.tablasCompletas.tablaMstEquipo &&
         this.tablasCompletas.tablaMstMantenimientoPorModelo &&

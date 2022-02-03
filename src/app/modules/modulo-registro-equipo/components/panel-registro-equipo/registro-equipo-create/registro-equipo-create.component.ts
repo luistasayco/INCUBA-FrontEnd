@@ -47,6 +47,7 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
   selectedEmpresa: any;
   selectedPlanta: any;
   selectedModelo: any;
+  selectedModeloIsSolovac: boolean;
 
   modeloPlanta: PlantaModel = new PlantaModel();
   modeloModelo: ModeloModel = new ModeloModel();
@@ -219,9 +220,10 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
   }
 
   getOnRepuestoPorModelo() {
-
+    this.selectedModeloIsSolovac = false;
     let codigoModelo: string = this.selectedModelo === null ? '' : this.selectedModelo.value;
     if (codigoModelo !=='') {
+      this.selectedModeloIsSolovac = this.selectedModelo.label == 'SOLOVAC';
       let vModelo: RepuestoPorModeloModel = {codigoModelo: codigoModelo}
       this.subscription$ = new Subscription();
       this.subscription$ = this.registroEquipoService.getRepuestoSeleccionados(vModelo)

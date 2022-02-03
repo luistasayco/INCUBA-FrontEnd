@@ -94,7 +94,7 @@
                 </p-table>
             </p-accordionTab>
 
-            <p-accordionTab header="C .- Requerimientos para los equipos y condiciones de limpieza" [selected]="displayControles">
+            <p-accordionTab header="C .- Requerimientos para los equipos y condiciones de limpieza" [selected]="displayControles" *ngIf="!(modeloItem.descripcionModelo == 'SOLOVAC')">
                 <div class="ui-g dashboard">
                     <div class="ui-g-12 ui-md-6 ui-lg-6 task-list">
                         <p-panel header="Limpieza y esterilización">

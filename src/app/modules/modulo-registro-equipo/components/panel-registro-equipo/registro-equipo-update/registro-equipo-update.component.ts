@@ -36,6 +36,7 @@ export class RegistroEquipoUpdateComponent implements OnInit, OnDestroy {
   selectedEmpresa: any;
   selectedPlanta: any;
   selectedModelo: any;
+  selectedModeloIsSolovac: boolean;
 
   modeloEmpresa: EmpresaModel = new EmpresaModel();
   modeloPlanta: PlantaModel = new PlantaModel();
