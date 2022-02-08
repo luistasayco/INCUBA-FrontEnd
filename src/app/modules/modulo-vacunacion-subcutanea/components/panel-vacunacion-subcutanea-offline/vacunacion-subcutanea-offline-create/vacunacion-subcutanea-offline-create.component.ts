@@ -54,6 +54,7 @@ export class VacunacionSubcutaneaOfflineCreateComponent implements OnInit, OnDes
   listItemVacuna: SelectItem[];
   listItemAguja: SelectItem[];
   listItemEquipo: SelectItem[];
+  listItemEquipoTemp: SelectItem[];
 
   modeloItem: TxVacunacionSubCutaneaModel = new TxVacunacionSubCutaneaModel();
   modeloEmpresa: EmpresaModel = new EmpresaModel();
@@ -359,6 +360,8 @@ export class VacunacionSubcutaneaOfflineCreateComponent implements OnInit, OnDes
       for (let item of clonedData) {
         this.listItemEquipo.push({ label: item.codigoEquipo, value: item.codigoEquipo });
       }
+
+      this.listItemEquipoTemp = this.listItemEquipo;
     });
   }
 
@@ -757,6 +760,31 @@ export class VacunacionSubcutaneaOfflineCreateComponent implements OnInit, OnDes
     this.displayIrregularidad = false;
   }
 
+  validaAF() {
+    this.listItemEquipo = [];
+
+    this.listItemEquipoTemp.forEach(
+      (item) => {
+        let exists = false;
+
+        for (let selected of this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad) {
+          if (selected.codigoEquipo == item.value) {
+            exists = true;
+            break;
+          }
+        }
+
+        if (!exists)
+          this.listItemEquipo.push({
+            label: item.label,
+            value: item.value,
+          });
+      }
+    );
+
+    this.listItemEquipo = this.listItemEquipo.sort((a, b) => a.value > b.value ? 1 : -1);
+  }
+
   onGuardaVacunador() {
 
     let encontroVacunador = [...this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.filter(xFila => xFila.nombreVacunador === this.nombreVacunador)].length;
@@ -860,6 +888,8 @@ export class VacunacionSubcutaneaOfflineCreateComponent implements OnInit, OnDes
   
       this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad = clonedCountNombreVacunador;
     }
+
+    this.validaAF();
   }
   
   onGrabarControlEficiencia() {

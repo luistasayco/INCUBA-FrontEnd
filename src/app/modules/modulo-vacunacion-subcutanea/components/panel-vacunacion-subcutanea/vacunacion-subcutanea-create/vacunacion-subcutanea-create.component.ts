@@ -35,7 +35,7 @@ import { PlantaPorUsuarioModel } from '../../../../modulo-seguridad/models/plant
 @Component({
   selector: 'app-vacunacion-subcutanea-create',
   templateUrl: './vacunacion-subcutanea-create.component.html',
-  styleUrls: ['./vacunacion-subcutanea-create.component.css']
+  styleUrls: ['./vacunacion-subcutanea-create.component.css'],
 })
 export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
   titulo = 'Vacunación SubCutánea';
@@ -50,6 +50,7 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
   listItemVacuna: SelectItem[];
   listItemAguja: SelectItem[];
   listItemEquipo: SelectItem[];
+  listItemEquipoTemp: SelectItem[];
 
   modeloItem: TxVacunacionSubCutaneaModel = new TxVacunacionSubCutaneaModel();
   modeloEmpresa: EmpresaModel = new EmpresaModel();
@@ -93,38 +94,45 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
   nombreVacunador: string;
   nombreVacunadorControlEficiencia: any;
 
-  modeloControlEficiencia: TxVacunacionSubCutaneaControlEficienciaModel = new TxVacunacionSubCutaneaControlEficienciaModel();
+  modeloControlEficiencia: TxVacunacionSubCutaneaControlEficienciaModel =
+    new TxVacunacionSubCutaneaControlEficienciaModel();
   listControlEficienciaPromedio: TxVacunacionSubCutaneaControlEficienciaModel[];
-  
 
-  clonedVacuna: { [s: string]: TxVacunacionSubCutaneayVacunaModel; } = {};
+  clonedVacuna: { [s: string]: TxVacunacionSubCutaneayVacunaModel } = {};
   clonedProcesoDetalle: TxVacunacionSubCutaneaDetalleModel[] = [];
 
   displaySeleccionProceso: boolean;
   displayControlEficiencia: boolean;
 
-  modeloclonedControlEficiencia: { [s: string]: TxVacunacionSubCutaneaControlEficienciaModel; } = {};
+  modeloclonedControlEficiencia: {
+    [s: string]: TxVacunacionSubCutaneaControlEficienciaModel;
+  } = {};
   displayControles: boolean;
-  constructor(public mensajePrimeNgService: MensajePrimeNgService,
-              private breadcrumbService: BreadcrumbService,
-              private vacunacionSubcutaneaService: VacunacionSubcutaneaService,
-              private vacunacionSprayService: VacunacionSprayService,
-              private router: Router,
-              private seguridadService: SeguridadService,
-              private userContextService: UserContextService,
-              private compartidoService: CompartidoService,
-              private registroEquipoService: RegistroEquipoService,
-              private utilService: UtilService) {
-      this.breadcrumbService.setItems([
-        { label: 'Módulo Vacunación Subcutánea' },
-        { label: this.titulo, routerLink: ['module-su/panel-vacunacion-subcutanea'] },
-        { label: 'Nuevo'}
+  constructor(
+    public mensajePrimeNgService: MensajePrimeNgService,
+    private breadcrumbService: BreadcrumbService,
+    private vacunacionSubcutaneaService: VacunacionSubcutaneaService,
+    private vacunacionSprayService: VacunacionSprayService,
+    private router: Router,
+    private seguridadService: SeguridadService,
+    private userContextService: UserContextService,
+    private compartidoService: CompartidoService,
+    private registroEquipoService: RegistroEquipoService,
+    private utilService: UtilService
+  ) {
+    this.breadcrumbService.setItems([
+      { label: 'Módulo Vacunación Subcutánea' },
+      {
+        label: this.titulo,
+        routerLink: ['module-su/panel-vacunacion-subcutanea'],
+      },
+      { label: 'Nuevo' },
     ]);
-    window.addEventListener("beforeunload", (event) => {
+    window.addEventListener('beforeunload', (event) => {
       event.preventDefault();
-      event.returnValue = "Unsaved modifications";
+      event.returnValue = 'Unsaved modifications';
       return event;
-   });
+    });
   }
 
   ngOnInit(): void {
@@ -144,64 +152,61 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
       { header: 'Aguja' },
       { header: 'N° máquinas' },
       { header: 'Modelo/Marca' },
-      { header: 'Codigo AF' }
+      { header: 'Codigo AF' },
     ];
-    this.columnasVacuna = [
-      { header: 'Vacuna' },
-      { header: 'Nombre Vacuna' }
-    ];
+    this.columnasVacuna = [{ header: 'Vacuna' }, { header: 'Nombre Vacuna' }];
 
     this.columnasSeleccionarMaquina = [
-      {header: 'Codigo', field: 'idProcesoSubCutanea'},
-      {header: 'Descripción', field: 'descripcionProcesoSubCutanea'}
-    ]
+      { header: 'Codigo', field: 'idProcesoSubCutanea' },
+      { header: 'Descripción', field: 'descripcionProcesoSubCutanea' },
+    ];
 
     this.columnasResultado = [
       { header: 'Descripción' },
       { header: 'Valor Esperado' },
-      { header: 'Valor Obtenido' }
+      { header: 'Valor Obtenido' },
     ];
 
     this.columnasIrregularidad = [
-      { header: 'Descripción'},
-      { header: 'Codigo AF'},
-      { header: 'Ausencia de Irregularidad'},
-      { header: 'Valor'}
+      { header: 'Descripción' },
+      { header: 'Codigo AF' },
+      { header: 'Ausencia de Irregularidad' },
+      { header: 'Valor' },
     ];
 
     this.columnasNuevoIrregularidad = [
-      {header: 'Codigo', field: 'idIrregularidad'},
-      {header: 'Descripción', field: 'descripcionIrregularidad'}
+      { header: 'Codigo', field: 'idIrregularidad' },
+      { header: 'Descripción', field: 'descripcionIrregularidad' },
     ];
 
     this.columnasControlEficiencia = [
-      { header: 'Vacunador'},
-      { header: 'Cantidad Inicial'},
-      { header: 'Cantidad Final'},
-      { header: 'Vac./Hora'},
-      { header: 'Puntaje Productividad'},
-      { header: 'Controlados'},
-      { header: 'Sin Vacunar'},
-      { header: 'Heridos'},
-      { header: 'Mojados'},
-      { header: 'Mala Posición'},
-      { header: 'Vac. Correctamente'},
-      { header: '% de Eficiencia'},
-      { header: 'Puntaje de Eficiencia'}
+      { header: 'Vacunador' },
+      { header: 'Cantidad Inicial' },
+      { header: 'Cantidad Final' },
+      { header: 'Vac./Hora' },
+      { header: 'Puntaje Productividad' },
+      { header: 'Controlados' },
+      { header: 'Sin Vacunar' },
+      { header: 'Heridos' },
+      { header: 'Mojados' },
+      { header: 'Mala Posición' },
+      { header: 'Vac. Correctamente' },
+      { header: '% de Eficiencia' },
+      { header: 'Puntaje de Eficiencia' },
     ];
 
     this.columnasPromedio = [
-      { header: 'Vacunador'},
-      { header: 'Vac./Hora'},
-      { header: 'Puntaje Productividad'},
-      { header: 'Controlados'},
-      { header: 'Sin Vacunar'},
-      { header: 'Heridos'},
-      { header: 'Mojados'},
-      { header: 'Mala Posición'},
-      { header: 'Vac. Correctamente'},
-      { header: '% de Eficiencia'},
-      { header: 'Puntaje de Eficiencia'}
+      { header: 'Vacunador' },
+      { header: 'Vac./Hora' },
+      { header: 'Puntaje Productividad' },
+      { header: 'Controlados' },
+      { header: 'Sin Vacunar' },
+      { header: 'Heridos' },
+      { header: 'Mojados' },
+      { header: 'Mala Posición' },
+      { header: 'Vac. Correctamente' },
+      { header: '% de Eficiencia' },
+      { header: 'Puntaje de Eficiencia' },
     ];
 
     this.getToObtieneEmpresa();
@@ -213,22 +218,24 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
     this.getToObtieneIndiceEficiencia();
 
     this.subscription$ = new Subscription();
-    this.subscription$ = this.vacunacionSubcutaneaService.getTxVacunacionSubCutaneaPorIdNew()
-    .subscribe((data: TxVacunacionSubCutaneaModel) => {
-      
-      this.modeloItem = data;
-      this.modeloItem.responsableInvetsa = this.userContextService.getNombreCompletoUsuario();
-      this.modeloItem.emailFrom = this.userContextService.getEmail();
-      this.modeloItem.listarTxVacunacionSubCutaneaVacuna = [];
-      this.modeloItem.listarTxVacunacionSubCutaneaMaquina = [];
-      this.modeloItem.listarTxVacunacionSubCutaneaFotos = [];
-      this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia = [];
-      this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad = [];
-      this.modeloItem.listarTxVacunacionSubCutaneaPromedio = [];
-      this.clonedProcesoDetalle = [...this.modeloItem.listarTxVacunacionSubCutaneaDetalle];
-      this.updateRowGroupMetaData();
-    });
-
+    this.subscription$ = this.vacunacionSubcutaneaService
+      .getTxVacunacionSubCutaneaPorIdNew()
+      .subscribe((data: TxVacunacionSubCutaneaModel) => {
+        this.modeloItem = data;
+        this.modeloItem.responsableInvetsa =
+          this.userContextService.getNombreCompletoUsuario();
+        this.modeloItem.emailFrom = this.userContextService.getEmail();
+        this.modeloItem.listarTxVacunacionSubCutaneaVacuna = [];
+        this.modeloItem.listarTxVacunacionSubCutaneaMaquina = [];
+        this.modeloItem.listarTxVacunacionSubCutaneaFotos = [];
+        this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia = [];
+        this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad = [];
+        this.modeloItem.listarTxVacunacionSubCutaneaPromedio = [];
+        this.clonedProcesoDetalle = [
+          ...this.modeloItem.listarTxVacunacionSubCutaneaDetalle,
+        ];
+        this.updateRowGroupMetaData();
+      });
   }
 
   ngOnDestroy() {
@@ -239,12 +246,16 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
 
   getToObtieneEmpresa() {
     this.subscription$ = new Subscription();
-    this.subscription$ = this.seguridadService.getEmpresaConAccesoPorUsuario()
-    .subscribe((data: EmpresaPorUsuarioModel[]) => {
-      this.listItemEmpresa = [];
-      for (let item of data) {
-        this.listItemEmpresa.push({ label: item.descripcionEmpresa, value: item.codigoEmpresa });
-      }
+    this.subscription$ = this.seguridadService
+      .getEmpresaConAccesoPorUsuario()
+      .subscribe((data: EmpresaPorUsuarioModel[]) => {
+        this.listItemEmpresa = [];
+        for (let item of data) {
+          this.listItemEmpresa.push({
+            label: item.descripcionEmpresa,
+            value: item.codigoEmpresa,
+          });
+        }
       });
   }
 
@@ -258,77 +269,99 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
 
   getToObtienePlantaPorEmpresa(value: string) {
     this.subscription$ = new Subscription();
-    this.subscription$ = this.seguridadService.getPlantaConAccesoPorUsuarioPorEmpresa(value)
-    .subscribe((data: PlantaPorUsuarioModel[]) => {
-      this.listItemPlanta = [];
-      for (let item of data) {
-        this.listItemPlanta.push({ label: item.descripcionPlanta, value: item.codigoPlanta });
-      }
-    });
+    this.subscription$ = this.seguridadService
+      .getPlantaConAccesoPorUsuarioPorEmpresa(value)
+      .subscribe((data: PlantaPorUsuarioModel[]) => {
+        this.listItemPlanta = [];
+        for (let item of data) {
+          this.listItemPlanta.push({
+            label: item.descripcionPlanta,
+            value: item.codigoPlanta,
+          });
+        }
+      });
   }
 
   getToObtieneVacuna() {
-    let modeloVacuna: VacunaModel = {descripcionVacuna: ''}
+    let modeloVacuna: VacunaModel = { descripcionVacuna: '' };
     this.subscription$ = new Subscription();
-    this.subscription$ = this.vacunacionSprayService.getVacuna(modeloVacuna)
-    .subscribe((data: VacunaModel[]) => {
-      this.listItemVacuna = [];
-      for (let item of data) {
-        this.listItemVacuna.push({ label: item.descripcionVacuna, value: item.idVacuna });
-      }
+    this.subscription$ = this.vacunacionSprayService
+      .getVacuna(modeloVacuna)
+      .subscribe((data: VacunaModel[]) => {
+        this.listItemVacuna = [];
+        for (let item of data) {
+          this.listItemVacuna.push({
+            label: item.descripcionVacuna,
+            value: item.idVacuna,
+          });
+        }
       });
   }
 
   getToObtieneAguja() {
     let modeloAguja: AgujaModel = new AgujaModel();
     this.subscription$ = new Subscription();
-    this.subscription$ = this.vacunacionSubcutaneaService.getAguja(modeloAguja)
-    .subscribe((data: AgujaModel[]) => {
-      this.listItemAguja = [];
-      for (let item of data) {
-        this.listItemAguja.push({ label: item.descripcionAguja, value: item.idAguja });
-      }
-    });
+    this.subscription$ = this.vacunacionSubcutaneaService
+      .getAguja(modeloAguja)
+      .subscribe((data: AgujaModel[]) => {
+        this.listItemAguja = [];
+        for (let item of data) {
+          this.listItemAguja.push({
+            label: item.descripcionAguja,
+            value: item.idAguja,
+          });
+        }
+      });
   }
 
   getToObtieneIndiceEficiencia() {
-    let modeloIndiceEficiencia: IndiceEficienciaModel = new IndiceEficienciaModel();
+    let modeloIndiceEficiencia: IndiceEficienciaModel =
+      new IndiceEficienciaModel();
     this.subscription$ = new Subscription();
-    this.subscription$ = this.vacunacionSubcutaneaService.getIndiceEficiencia(modeloIndiceEficiencia)
-    .subscribe((data: IndiceEficienciaModel[]) => {
-      this.listIndiceEficiencia = [];
-      this.listIndiceEficiencia = data;
-    });
+    this.subscription$ = this.vacunacionSubcutaneaService
+      .getIndiceEficiencia(modeloIndiceEficiencia)
+      .subscribe((data: IndiceEficienciaModel[]) => {
+        this.listIndiceEficiencia = [];
+        this.listIndiceEficiencia = data;
+      });
   }
 
   getToObtieneProceso() {
-    let modeloProcesoSubCutanea: ProcesoSubCutaneaModel = new ProcesoSubCutaneaModel();
+    let modeloProcesoSubCutanea: ProcesoSubCutaneaModel =
+      new ProcesoSubCutaneaModel();
     this.subscription$ = new Subscription();
-    this.subscription$ = this.vacunacionSubcutaneaService.getProcesoSubCutanea(modeloProcesoSubCutanea)
-    .subscribe((data: ProcesoSubCutaneaModel[]) => {
-      this.listProceso = [];
-      this.listProceso = [...data].filter(x => x.valor > 0);
-    });
+    this.subscription$ = this.vacunacionSubcutaneaService
+      .getProcesoSubCutanea(modeloProcesoSubCutanea)
+      .subscribe((data: ProcesoSubCutaneaModel[]) => {
+        this.listProceso = [];
+        this.listProceso = [...data].filter((x) => x.valor > 0);
+      });
   }
 
   getToObtieneIrregularidad() {
     let modeloIrregularidad: IrregularidadModel = new IrregularidadModel();
     this.subscription$ = new Subscription();
-    this.subscription$ = this.vacunacionSubcutaneaService.getIrregularidad(modeloIrregularidad)
-    .subscribe((data: IrregularidadModel[]) => {
-      this.listIrregularidad = [];
-      this.listIrregularidad = [...data];
-    });
+    this.subscription$ = this.vacunacionSubcutaneaService
+      .getIrregularidad(modeloIrregularidad)
+      .subscribe((data: IrregularidadModel[]) => {
+        this.listIrregularidad = [];
+        this.listIrregularidad = [...data];
+      });
   }
 
   getToObtieneAF() {
-
     if (!this.selectEmpresa) {
-      this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Seleccionar Empresa');
+      this.mensajePrimeNgService.onToInfoMsg(
+        this.globalConstants.msgInfoSummary,
+        'Seleccionar Empresa'
+      );
       return;
     }
     if (!this.selectedPlanta) {
-      this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Ingresar Planta');
+      this.mensajePrimeNgService.onToInfoMsg(
+        this.globalConstants.msgInfoSummary,
+        'Ingresar Planta'
+      );
       return;
     }
 
@@ -336,52 +369,71 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let modeloEquipoPorModelo: EquipoPorModeloModel = new EquipoPorModeloModel();
-    modeloEquipoPorModelo.codigoEmpresa = this.selectEmpresa === null ? '' : this.selectEmpresa.value;
-    modeloEquipoPorModelo.codigoPlanta = this.selectedPlanta === null ? '' : this.selectedPlanta.value;
-    modeloEquipoPorModelo.codigoModelo = this.selectModelo === null ? '' : this.selectModelo.value;
+    let modeloEquipoPorModelo: EquipoPorModeloModel =
+      new EquipoPorModeloModel();
+    modeloEquipoPorModelo.codigoEmpresa =
+      this.selectEmpresa === null ? '' : this.selectEmpresa.value;
+    modeloEquipoPorModelo.codigoPlanta =
+      this.selectedPlanta === null ? '' : this.selectedPlanta.value;
+    modeloEquipoPorModelo.codigoModelo =
+      this.selectModelo === null ? '' : this.selectModelo.value;
 
-    if (modeloEquipoPorModelo.codigoEmpresa === '' && modeloEquipoPorModelo.codigoPlanta === '' && modeloEquipoPorModelo.codigoModelo === '') {
+    if (
+      modeloEquipoPorModelo.codigoEmpresa === '' &&
+      modeloEquipoPorModelo.codigoPlanta === '' &&
+      modeloEquipoPorModelo.codigoModelo === ''
+    ) {
       return;
     }
     this.subscription$ = new Subscription();
-    this.subscription$ = this.registroEquipoService.getEquipoPorFiltros(modeloEquipoPorModelo)
-    .subscribe((data: EquipoPorModeloModel[]) => {
-      this.listItemEquipo = [];
-      for (let item of data) {
-        this.listItemEquipo.push({ label: item.codigoEquipo, value: item.codigoEquipo });
-      }
-    });
+    this.subscription$ = this.registroEquipoService
+      .getEquipoPorFiltros(modeloEquipoPorModelo)
+      .subscribe((data: EquipoPorModeloModel[]) => {
+        this.listItemEquipo = [];
+        for (let item of data) {
+          this.listItemEquipo.push({
+            label: item.codigoEquipo,
+            value: item.codigoEquipo,
+          });
+        }
+        this.listItemEquipoTemp = this.listItemEquipo;
+      });
   }
 
   getToObtieneModelo() {
     let modeloModelo: ModeloModel = new ModeloModel();
     this.subscription$ = new Subscription();
-    this.subscription$ = this.registroEquipoService.getModelo(modeloModelo)
-    .subscribe((data: ModeloModel[]) => {
-      this.listItemModelo = [];
-      for (let item of data) {
-        this.listItemModelo.push({ label: item.descripcion, value: item.codigoModelo });
-      }
-    });
+    this.subscription$ = this.registroEquipoService
+      .getModelo(modeloModelo)
+      .subscribe((data: ModeloModel[]) => {
+        this.listItemModelo = [];
+        for (let item of data) {
+          this.listItemModelo.push({
+            label: item.descripcion,
+            value: item.codigoModelo,
+          });
+        }
+      });
   }
 
   updateRowGroupMetaData() {
     this.rowGroupMetadata = {};
     if (this.modeloItem.listarTxVacunacionSubCutaneaDetalle) {
-      for (let i = 0; i < this.modeloItem.listarTxVacunacionSubCutaneaDetalle.length; i++) {
+      for (
+        let i = 0;
+        i < this.modeloItem.listarTxVacunacionSubCutaneaDetalle.length;
+        i++
+      ) {
         let rowData = this.modeloItem.listarTxVacunacionSubCutaneaDetalle[i];
         let brand = rowData.descripcionProcesoSubCutanea;
         if (i === 0) {
-            this.rowGroupMetadata[brand] = { index: 0, size: 1 };
-        }
-        else {
-          let previousRowData = this.modeloItem.listarTxVacunacionSubCutaneaDetalle[i - 1];
+          this.rowGroupMetadata[brand] = { index: 0, size: 1 };
+        } else {
+          let previousRowData =
+            this.modeloItem.listarTxVacunacionSubCutaneaDetalle[i - 1];
           let previousRowGroup = previousRowData.descripcionProcesoSubCutanea;
-          if ( brand === previousRowGroup )
-            this.rowGroupMetadata[brand].size++;
-          else
-            this.rowGroupMetadata[brand] = { index: i, size: 1 };
+          if (brand === previousRowGroup) this.rowGroupMetadata[brand].size++;
+          else this.rowGroupMetadata[brand] = { index: i, size: 1 };
         }
       }
     }
@@ -389,29 +441,28 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
 
   listUpdate(event: any[]) {
     this.modeloItem.listarTxVacunacionSubCutaneaFotos = [];
-    event.forEach(x => {
+    event.forEach((x) => {
       this.modeloItem.listarTxVacunacionSubCutaneaFotos.push({
         idVacunacionSubCutaneaDetalle: 0,
         idVacunacionSubCutanea: 0,
-        foto: x.imagen
+        foto: x.imagen,
       });
     });
   }
 
   onGrabarMaquina() {
-    if (this.selectEquipo.length > 0 ) {
-      this.selectEquipo.forEach(data => {
-        this.modeloItem.listarTxVacunacionSubCutaneaMaquina.push(
-          {
-            idVacunacionSubCutaneaMaquina: 0,
-            idVacunacionSubCutanea:0,
-            idAguja: this.selectAguja.value,
-            descripcionAguja: this.selectAguja.label,
-            nroMaquinas: this.selectEquipo.length,
-            codigoModelo: this.selectModelo.value,
-            descripcionModelo: this.selectModelo.label,
-            codigoEquipo: data
-          });
+    if (this.selectEquipo.length > 0) {
+      this.selectEquipo.forEach((data) => {
+        this.modeloItem.listarTxVacunacionSubCutaneaMaquina.push({
+          idVacunacionSubCutaneaMaquina: 0,
+          idVacunacionSubCutanea: 0,
+          idAguja: this.selectAguja.value,
+          descripcionAguja: this.selectAguja.label,
+          nroMaquinas: this.selectEquipo.length,
+          codigoModelo: this.selectModelo.value,
+          descripcionModelo: this.selectModelo.label,
+          codigoEquipo: data,
+        });
       });
     }
     this.selectModelo = null;
@@ -427,338 +478,484 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
 
   onGrabarVacuna() {
     if (this.selectVacuna !== null) {
-      this.modeloItem.listarTxVacunacionSubCutaneaVacuna.push(
-        {
-          idVacunacionSubCutaneaVacuna: 0,
-          idVacunacionSubCutanea:0,
-          idVacuna: this.selectVacuna.value,
-          descripcionVacuna: this.selectVacuna.label,
-          nombreVacuna: this.nombreVacuna
-        });
+      this.modeloItem.listarTxVacunacionSubCutaneaVacuna.push({
+        idVacunacionSubCutaneaVacuna: 0,
+        idVacunacionSubCutanea: 0,
+        idVacuna: this.selectVacuna.value,
+        descripcionVacuna: this.selectVacuna.label,
+        nombreVacuna: this.nombreVacuna,
+      });
     }
     this.selectVacuna = null;
     this.nombreVacuna = '';
     this.displayVacuna = false;
   }
   onGrabarSeleccionMaquina() {
-
     let cloneDataDetalleOriginal = [...this.clonedProcesoDetalle];
-    let clonedDataResultado = [...this.modeloItem.listarTxVacunacionSubCutaneaResultado];
+    let clonedDataResultado = [
+      ...this.modeloItem.listarTxVacunacionSubCutaneaResultado,
+    ];
     let clonedListProcesoOriginal = [...this.listProceso];
-    
 
-    clonedDataResultado.forEach(x => {
+    clonedDataResultado.forEach((x) => {
       x.nroProcesoAcumulado = 0;
     });
 
     // console.log('clonedDataResultado', clonedDataResultado);
     if (this.selectSeleccionMaquina.length === 0) {
       let cloneDataDetalle2 = [...cloneDataDetalleOriginal];
-      this.listProceso.forEach(x => {
-        cloneDataDetalle2 = [...cloneDataDetalle2].filter(y => y.idProcesoSubCutanea !== x.idProcesoSubCutanea)
+      this.listProceso.forEach((x) => {
+        cloneDataDetalle2 = [...cloneDataDetalle2].filter(
+          (y) => y.idProcesoSubCutanea !== x.idProcesoSubCutanea
+        );
       });
-      this.modeloItem.listarTxVacunacionSubCutaneaDetalle = [...cloneDataDetalle2];
-      this.modeloItem.listarTxVacunacionSubCutaneaResultado = clonedDataResultado;
+      this.modeloItem.listarTxVacunacionSubCutaneaDetalle = [
+        ...cloneDataDetalle2,
+      ];
+      this.modeloItem.listarTxVacunacionSubCutaneaResultado =
+        clonedDataResultado;
       this.updateRowGroupMetaData();
     } else {
+      this.selectSeleccionMaquina.forEach((x) => {
+        clonedListProcesoOriginal = [...clonedListProcesoOriginal].filter(
+          (xx) => xx.idProcesoSubCutanea !== x.idProcesoSubCutanea
+        );
 
-      this.selectSeleccionMaquina.forEach(x => {
-        clonedListProcesoOriginal = [...clonedListProcesoOriginal].filter(xx => xx.idProcesoSubCutanea !== x.idProcesoSubCutanea);
+        let existeRegistroResultado = [...clonedDataResultado].filter(
+          (xFilaResultado) =>
+            xFilaResultado.idProcesoAgrupador === x.idProcesoAgrupador
+        ).length;
 
-        let existeRegistroResultado = [...clonedDataResultado].filter(xFilaResultado => xFilaResultado.idProcesoAgrupador === x.idProcesoAgrupador).length;
-
-        if (existeRegistroResultado>0) {
-          clonedDataResultado.find(xFilaResultado => xFilaResultado.idProcesoAgrupador === x.idProcesoAgrupador).nroProcesoAcumulado += 1;
+        if (existeRegistroResultado > 0) {
+          clonedDataResultado.find(
+            (xFilaResultado) =>
+              xFilaResultado.idProcesoAgrupador === x.idProcesoAgrupador
+          ).nroProcesoAcumulado += 1;
         }
-        
       });
 
-      this.modeloItem.listarTxVacunacionSubCutaneaResultado = clonedDataResultado;
+      this.modeloItem.listarTxVacunacionSubCutaneaResultado =
+        clonedDataResultado;
       let cloneDataDetalleSeleccionado = [...cloneDataDetalleOriginal];
 
-      clonedListProcesoOriginal.forEach(x => {
-        cloneDataDetalleSeleccionado = [...cloneDataDetalleSeleccionado].filter(y => y.idProcesoSubCutanea !== x.idProcesoSubCutanea)
+      clonedListProcesoOriginal.forEach((x) => {
+        cloneDataDetalleSeleccionado = [...cloneDataDetalleSeleccionado].filter(
+          (y) => y.idProcesoSubCutanea !== x.idProcesoSubCutanea
+        );
       });
 
-      this.modeloItem.listarTxVacunacionSubCutaneaDetalle = [...cloneDataDetalleSeleccionado];
+      this.modeloItem.listarTxVacunacionSubCutaneaDetalle = [
+        ...cloneDataDetalleSeleccionado,
+      ];
       this.updateRowGroupMetaData();
     }
-    
+
     this.displaySeleccionProceso = false;
   }
 
   onCalcularPuntaje() {
-
     this.listControlEficienciaPromedio = [];
     this.modeloItem.listarTxVacunacionSubCutaneaPromedio = [];
-    let clonedDetalleCalcular = [...this.modeloItem.listarTxVacunacionSubCutaneaDetalle];
-    let clonedResultadoCalcular = [...this.modeloItem.listarTxVacunacionSubCutaneaResultado];
-    let valorAsumar = 0.00;
+    let clonedDetalleCalcular = [
+      ...this.modeloItem.listarTxVacunacionSubCutaneaDetalle,
+    ];
+    let clonedResultadoCalcular = [
+      ...this.modeloItem.listarTxVacunacionSubCutaneaResultado,
+    ];
+    let valorAsumar = 0.0;
 
-    clonedResultadoCalcular.map(z => z.valorObtenido = 0);
+    clonedResultadoCalcular.map((z) => (z.valorObtenido = 0));
 
-    clonedDetalleCalcular.forEach( xfila => {
+    clonedDetalleCalcular.forEach((xfila) => {
       valorAsumar = xfila.valorProcesoDetalleSubCutanea;
       if (xfila.valorProcesoSubCutanea > 0) {
         if (xfila.valor) {
-          clonedResultadoCalcular.find(xitem => xitem.idProcesoAgrupador === xfila.idProcesoAgrupador).valorObtenido += valorAsumar;
+          clonedResultadoCalcular.find(
+            (xitem) => xitem.idProcesoAgrupador === xfila.idProcesoAgrupador
+          ).valorObtenido += valorAsumar;
         }
       }
     });
-    this.modeloItem.listarTxVacunacionSubCutaneaResultado = [...clonedResultadoCalcular];
+    this.modeloItem.listarTxVacunacionSubCutaneaResultado = [
+      ...clonedResultadoCalcular,
+    ];
 
-    let clonedResultadoFilanCalcular = [...this.modeloItem.listarTxVacunacionSubCutaneaResultado];
-    clonedResultadoFilanCalcular.forEach(xFila => {
-      if (xFila.nroProcesoAcumulado > 0 ) {
-        clonedResultadoFilanCalcular.find(xitem => xitem.idProcesoAgrupador === xFila.idProcesoAgrupador).valorObtenido = this.utilService.onRedondearDecimal(xFila.valorObtenido/ xFila.nroProcesoAcumulado,2);
+    let clonedResultadoFilanCalcular = [
+      ...this.modeloItem.listarTxVacunacionSubCutaneaResultado,
+    ];
+    clonedResultadoFilanCalcular.forEach((xFila) => {
+      if (xFila.nroProcesoAcumulado > 0) {
+        clonedResultadoFilanCalcular.find(
+          (xitem) => xitem.idProcesoAgrupador === xFila.idProcesoAgrupador
+        ).valorObtenido = this.utilService.onRedondearDecimal(
+          xFila.valorObtenido / xFila.nroProcesoAcumulado,
+          2
+        );
       } else {
-        clonedResultadoFilanCalcular.find(xitem => xitem.idProcesoAgrupador === xFila.idProcesoAgrupador).valorObtenido = 0;
+        clonedResultadoFilanCalcular.find(
+          (xitem) => xitem.idProcesoAgrupador === xFila.idProcesoAgrupador
+        ).valorObtenido = 0;
       }
     });
 
-    this.modeloItem.listarTxVacunacionSubCutaneaResultado = [...clonedResultadoFilanCalcular];
+    this.modeloItem.listarTxVacunacionSubCutaneaResultado = [
+      ...clonedResultadoFilanCalcular,
+    ];
 
     if (this.modeloItem.flgPorcentajeViabilidad) {
-      this.modeloItem.listarTxVacunacionSubCutaneaResultado.find(xFila => xFila.idProcesoAgrupador ===2).valorObtenido = 0.5;
+      this.modeloItem.listarTxVacunacionSubCutaneaResultado.find(
+        (xFila) => xFila.idProcesoAgrupador === 2
+      ).valorObtenido = 0.5;
     }
 
     // Calculamos puntaje Final de Irregularidad
 
-    let IrregularidadPuntajeFinal: any[]
-    IrregularidadPuntajeFinal =[];
+    let IrregularidadPuntajeFinal: any[];
+    IrregularidadPuntajeFinal = [];
 
-    this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.forEach(xFila => {
-      let dataIrregularidad = [...this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad].filter(yFila => yFila.nombreVacunador === xFila.nombreVacunador);
-      let puntejaPorVacunador = 0;
-      dataIrregularidad.forEach(zFila => {
-        puntejaPorVacunador += zFila.valor
-      });
-        
-      IrregularidadPuntajeFinal.push({nombreVacunado: xFila.nombreVacunador, puntaje: puntejaPorVacunador});
-    });
+    this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.forEach(
+      (xFila) => {
+        let dataIrregularidad = [
+          ...this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad,
+        ].filter((yFila) => yFila.nombreVacunador === xFila.nombreVacunador);
+        let puntejaPorVacunador = 0;
+        dataIrregularidad.forEach((zFila) => {
+          puntejaPorVacunador += zFila.valor;
+        });
+
+        IrregularidadPuntajeFinal.push({
+          nombreVacunado: xFila.nombreVacunador,
+          puntaje: puntejaPorVacunador,
+        });
+      }
+    );
 
     let counIrregularidadPorVacunado = IrregularidadPuntajeFinal.length;
     let totalIrregularidadPorVacunador = 0;
     if (IrregularidadPuntajeFinal.length > 0) {
-      IrregularidadPuntajeFinal.forEach(xFila => {
+      IrregularidadPuntajeFinal.forEach((xFila) => {
         totalIrregularidadPorVacunador += xFila.puntaje;
       });
 
-      this.modeloItem.listarTxVacunacionSubCutaneaResultado.find(xFila => xFila.idProcesoAgrupador === 3).valorObtenido = totalIrregularidadPorVacunador/ counIrregularidadPorVacunado;
-
+      this.modeloItem.listarTxVacunacionSubCutaneaResultado.find(
+        (xFila) => xFila.idProcesoAgrupador === 3
+      ).valorObtenido =
+        totalIrregularidadPorVacunador / counIrregularidadPorVacunado;
     } else {
-      this.modeloItem.listarTxVacunacionSubCutaneaResultado.find(xFila => xFila.idProcesoAgrupador === 3).valorObtenido = 0;
+      this.modeloItem.listarTxVacunacionSubCutaneaResultado.find(
+        (xFila) => xFila.idProcesoAgrupador === 3
+      ).valorObtenido = 0;
     }
 
+    let sumarControldeEficiencia: TxVacunacionSubCutaneaControlEficienciaModel =
+      new TxVacunacionSubCutaneaControlEficienciaModel();
+    let promedioControldeEficiencia: TxVacunacionSubCutaneaControlEficienciaModel =
+      new TxVacunacionSubCutaneaControlEficienciaModel();
 
-    
-
-    let sumarControldeEficiencia: TxVacunacionSubCutaneaControlEficienciaModel = new TxVacunacionSubCutaneaControlEficienciaModel();
-    let promedioControldeEficiencia: TxVacunacionSubCutaneaControlEficienciaModel = new TxVacunacionSubCutaneaControlEficienciaModel();
-
-    this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.forEach(xFila => {
-      sumarControldeEficiencia.idVacunacionSubCutaneaDetalle = 0,
-      sumarControldeEficiencia.idVacunacionSubCutanea = 0,
-      sumarControldeEficiencia.nombreVacunador = 'Sumatoria',
-      sumarControldeEficiencia.vacunadoPorHora += xFila.vacunadoPorHora;
-      sumarControldeEficiencia.puntajeProductividad += xFila.puntajeProductividad;
-      sumarControldeEficiencia.controlados += xFila.controlados;
-      sumarControldeEficiencia.sinVacunar += xFila.sinVacunar;
-      sumarControldeEficiencia.heridos += xFila.heridos;
-      sumarControldeEficiencia.mojados += xFila.mojados;
-      sumarControldeEficiencia.malaPosicion += xFila.malaPosicion;
-      sumarControldeEficiencia.vacunadoCorrectos += xFila.vacunadoCorrectos;
-      sumarControldeEficiencia.porcentajeEficiencia += xFila.porcentajeEficiencia;
-      sumarControldeEficiencia.puntajeEficiencia += xFila.puntajeEficiencia;
-    });
+    this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.forEach(
+      (xFila) => {
+        (sumarControldeEficiencia.idVacunacionSubCutaneaDetalle = 0),
+          (sumarControldeEficiencia.idVacunacionSubCutanea = 0),
+          (sumarControldeEficiencia.nombreVacunador = 'Sumatoria'),
+          (sumarControldeEficiencia.vacunadoPorHora += xFila.vacunadoPorHora);
+        sumarControldeEficiencia.puntajeProductividad +=
+          xFila.puntajeProductividad;
+        sumarControldeEficiencia.controlados += xFila.controlados;
+        sumarControldeEficiencia.sinVacunar += xFila.sinVacunar;
+        sumarControldeEficiencia.heridos += xFila.heridos;
+        sumarControldeEficiencia.mojados += xFila.mojados;
+        sumarControldeEficiencia.malaPosicion += xFila.malaPosicion;
+        sumarControldeEficiencia.vacunadoCorrectos += xFila.vacunadoCorrectos;
+        sumarControldeEficiencia.porcentajeEficiencia +=
+          xFila.porcentajeEficiencia;
+        sumarControldeEficiencia.puntajeEficiencia += xFila.puntajeEficiencia;
+      }
+    );
 
     let countLineasControlEficiencia: number = 0;
-    countLineasControlEficiencia = this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.length;
+    countLineasControlEficiencia =
+      this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.length;
 
     promedioControldeEficiencia.idVacunacionSubCutaneaDetalle = 0;
     promedioControldeEficiencia.idVacunacionSubCutanea = 0;
     promedioControldeEficiencia.nombreVacunador = 'Promedio';
-    promedioControldeEficiencia.vacunadoPorHora = sumarControldeEficiencia.vacunadoPorHora / countLineasControlEficiencia;
-    promedioControldeEficiencia.puntajeProductividad = sumarControldeEficiencia.puntajeProductividad / countLineasControlEficiencia;
-    promedioControldeEficiencia.controlados = sumarControldeEficiencia.controlados / countLineasControlEficiencia;
-    promedioControldeEficiencia.sinVacunar = sumarControldeEficiencia.sinVacunar / countLineasControlEficiencia;
-    promedioControldeEficiencia.heridos = sumarControldeEficiencia.heridos / countLineasControlEficiencia;
-    promedioControldeEficiencia.mojados = sumarControldeEficiencia.mojados / countLineasControlEficiencia;
-    promedioControldeEficiencia.malaPosicion = sumarControldeEficiencia.malaPosicion / countLineasControlEficiencia;
-    promedioControldeEficiencia.vacunadoCorrectos = sumarControldeEficiencia.vacunadoCorrectos / countLineasControlEficiencia;
-    promedioControldeEficiencia.porcentajeEficiencia = sumarControldeEficiencia.porcentajeEficiencia / countLineasControlEficiencia;
-    promedioControldeEficiencia.puntajeEficiencia = sumarControldeEficiencia.puntajeEficiencia / countLineasControlEficiencia;
-    
+    promedioControldeEficiencia.vacunadoPorHora =
+      sumarControldeEficiencia.vacunadoPorHora / countLineasControlEficiencia;
+    promedioControldeEficiencia.puntajeProductividad =
+      sumarControldeEficiencia.puntajeProductividad /
+      countLineasControlEficiencia;
+    promedioControldeEficiencia.controlados =
+      sumarControldeEficiencia.controlados / countLineasControlEficiencia;
+    promedioControldeEficiencia.sinVacunar =
+      sumarControldeEficiencia.sinVacunar / countLineasControlEficiencia;
+    promedioControldeEficiencia.heridos =
+      sumarControldeEficiencia.heridos / countLineasControlEficiencia;
+    promedioControldeEficiencia.mojados =
+      sumarControldeEficiencia.mojados / countLineasControlEficiencia;
+    promedioControldeEficiencia.malaPosicion =
+      sumarControldeEficiencia.malaPosicion / countLineasControlEficiencia;
+    promedioControldeEficiencia.vacunadoCorrectos =
+      sumarControldeEficiencia.vacunadoCorrectos / countLineasControlEficiencia;
+    promedioControldeEficiencia.porcentajeEficiencia =
+      sumarControldeEficiencia.porcentajeEficiencia /
+      countLineasControlEficiencia;
+    promedioControldeEficiencia.puntajeEficiencia =
+      sumarControldeEficiencia.puntajeEficiencia / countLineasControlEficiencia;
+
     let valorInicio = 0;
     let valorFin = 0;
 
-    this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.map(xFila => {
-      //cambio
-      if(isNaN(promedioControldeEficiencia.porcentajeEficiencia)) promedioControldeEficiencia.porcentajeEficiencia = 0;
-      //•	-10% del promedio de Vacunados hora 1punto
-     //      debugger;
-      valorInicio = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.1);
-      // valorFin = promedioControldeEficiencia.vacunadoPorHora + (promedioControldeEficiencia.vacunadoPorHora * 0.5);
-      // valorFin = promedioControldeEficiencia.vacunadoPorHora + (promedioControldeEficiencia.vacunadoPorHora * 0.5);
+    this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.map(
+      (xFila) => {
+        //cambio
+        if (isNaN(promedioControldeEficiencia.porcentajeEficiencia))
+          promedioControldeEficiencia.porcentajeEficiencia = 0;
+        //•	-10% del promedio de Vacunados hora 1punto
+        //      debugger;
+        valorInicio =
+          promedioControldeEficiencia.vacunadoPorHora -
+          promedioControldeEficiencia.vacunadoPorHora * 0.1;
+        // valorFin = promedioControldeEficiencia.vacunadoPorHora + (promedioControldeEficiencia.vacunadoPorHora * 0.5);
+        // valorFin = promedioControldeEficiencia.vacunadoPorHora + (promedioControldeEficiencia.vacunadoPorHora * 0.5);
 
-      // if (xFila.vacunadoPorHora >= valorInicio && xFila.vacunadoPorHora <= valorFin) {
-      //   xFila.puntajeProductividad = 1;
-      // }
+        // if (xFila.vacunadoPorHora >= valorInicio && xFila.vacunadoPorHora <= valorFin) {
+        //   xFila.puntajeProductividad = 1;
+        // }
 
-      if (xFila.vacunadoPorHora >= valorInicio) {
-        xFila.puntajeProductividad = 1;
+        if (xFila.vacunadoPorHora >= valorInicio) {
+          xFila.puntajeProductividad = 1;
+        }
+        //•	Entre -10 a -20% del promedio 0.5 puntos
+        valorInicio =
+          promedioControldeEficiencia.vacunadoPorHora -
+          promedioControldeEficiencia.vacunadoPorHora * 0.2;
+        valorFin =
+          promedioControldeEficiencia.vacunadoPorHora -
+          promedioControldeEficiencia.vacunadoPorHora * 0.1;
+
+        if (
+          xFila.vacunadoPorHora >= valorInicio &&
+          xFila.vacunadoPorHora <= valorFin
+        ) {
+          xFila.puntajeProductividad = 0.5;
+        }
+        //•	21% a más por debajo de la media 0 puntos
+        // valorInicio = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0);
+        valorInicio = 0;
+        valorFin =
+          promedioControldeEficiencia.vacunadoPorHora -
+          promedioControldeEficiencia.vacunadoPorHora * 0.2;
+
+        if (xFila.vacunadoPorHora < valorFin) {
+          xFila.puntajeProductividad = 0;
+        }
       }
-      //•	Entre -10 a -20% del promedio 0.5 puntos
-      valorInicio = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.2);
-      valorFin = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.1);
-
-      if (xFila.vacunadoPorHora >= valorInicio && xFila.vacunadoPorHora <= valorFin) {
-        xFila.puntajeProductividad = 0.5;
-      }
-      //•	21% a más por debajo de la media 0 puntos
-      // valorInicio = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0);
-      valorInicio = 0;
-      valorFin = promedioControldeEficiencia.vacunadoPorHora - (promedioControldeEficiencia.vacunadoPorHora * 0.20);
-
-      if (xFila.vacunadoPorHora < valorFin) {
-        xFila.puntajeProductividad = 0;
-      }
-
-    });
+    );
 
     sumarControldeEficiencia.puntajeProductividad = 0;
 
-    this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.forEach(xFila => {
-      sumarControldeEficiencia.puntajeProductividad += xFila.puntajeProductividad;
-    });
+    this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.forEach(
+      (xFila) => {
+        sumarControldeEficiencia.puntajeProductividad +=
+          xFila.puntajeProductividad;
+      }
+    );
 
     promedioControldeEficiencia.puntajeProductividad = 0;
 
     this.listControlEficienciaPromedio.push(sumarControldeEficiencia);
-    promedioControldeEficiencia.puntajeProductividad = sumarControldeEficiencia.puntajeProductividad / countLineasControlEficiencia;
+    promedioControldeEficiencia.puntajeProductividad =
+      sumarControldeEficiencia.puntajeProductividad /
+      countLineasControlEficiencia;
     this.listControlEficienciaPromedio.push(promedioControldeEficiencia);
 
     promedioControldeEficiencia.puntajeEficiencia = 0;
 
-    this.listIndiceEficiencia.forEach(xFilaEficiencia => {
-      if (promedioControldeEficiencia.porcentajeEficiencia >= xFilaEficiencia.rangoInicial && promedioControldeEficiencia.porcentajeEficiencia <= xFilaEficiencia.rangoFinal) {
-        promedioControldeEficiencia.puntajeEficiencia = sumarControldeEficiencia.puntajeEficiencia / countLineasControlEficiencia;
+    this.listIndiceEficiencia.forEach((xFilaEficiencia) => {
+      if (
+        promedioControldeEficiencia.porcentajeEficiencia >=
+          xFilaEficiencia.rangoInicial &&
+        promedioControldeEficiencia.porcentajeEficiencia <=
+          xFilaEficiencia.rangoFinal
+      ) {
+        promedioControldeEficiencia.puntajeEficiencia =
+          sumarControldeEficiencia.puntajeEficiencia /
+          countLineasControlEficiencia;
       }
     });
 
-    this.listControlEficienciaPromedio.forEach(xFila => {
+    this.listControlEficienciaPromedio.forEach((xFila) => {
       this.modeloItem.listarTxVacunacionSubCutaneaPromedio.push({
         idVacunacionSubCutaneaDetalle: 0,
         idVacunacionSubCutanea: 0,
         nombreVacunador: xFila.nombreVacunador,
-        vacunadoPorHora: this.onConvertDecimales(xFila.vacunadoPorHora,1),
-        puntajeProductividad: this.onConvertDecimales(xFila.puntajeProductividad,2),
-        controlados: this.onConvertDecimales(xFila.controlados,1),
-        sinVacunar: this.onConvertDecimales(xFila.sinVacunar,1),
-        heridos: this.onConvertDecimales(xFila.heridos,1),
-        mojados: this.onConvertDecimales(xFila.mojados,1),
-        malaPosicion: this.onConvertDecimales(xFila.malaPosicion,1),
-        vacunadoCorrectos: this.onConvertDecimales(xFila.vacunadoCorrectos,1),
-        porcentajeEficiencia:this.onConvertDecimales( xFila.porcentajeEficiencia,1),
-        puntajeEficiencia: this.onConvertDecimales(xFila.puntajeEficiencia,1)
+        vacunadoPorHora: this.onConvertDecimales(xFila.vacunadoPorHora, 1),
+        puntajeProductividad: this.onConvertDecimales(
+          xFila.puntajeProductividad,
+          2
+        ),
+        controlados: this.onConvertDecimales(xFila.controlados, 1),
+        sinVacunar: this.onConvertDecimales(xFila.sinVacunar, 1),
+        heridos: this.onConvertDecimales(xFila.heridos, 1),
+        mojados: this.onConvertDecimales(xFila.mojados, 1),
+        malaPosicion: this.onConvertDecimales(xFila.malaPosicion, 1),
+        vacunadoCorrectos: this.onConvertDecimales(xFila.vacunadoCorrectos, 1),
+        porcentajeEficiencia: this.onConvertDecimales(
+          xFila.porcentajeEficiencia,
+          1
+        ),
+        puntajeEficiencia: this.onConvertDecimales(xFila.puntajeEficiencia, 1),
       });
     });
 
-    this.modeloItem.listarTxVacunacionSubCutaneaResultado.find(xFila => xFila.idProcesoAgrupador === 4).valorObtenido = this.onConvertDecimales(promedioControldeEficiencia.puntajeEficiencia,1);
-    this.modeloItem.listarTxVacunacionSubCutaneaResultado.find(xFila => xFila.idProcesoAgrupador === 5).valorObtenido = this.onConvertDecimales(promedioControldeEficiencia.puntajeProductividad,1);
-
+    this.modeloItem.listarTxVacunacionSubCutaneaResultado.find(
+      (xFila) => xFila.idProcesoAgrupador === 4
+    ).valorObtenido = this.onConvertDecimales(
+      promedioControldeEficiencia.puntajeEficiencia,
+      1
+    );
+    this.modeloItem.listarTxVacunacionSubCutaneaResultado.find(
+      (xFila) => xFila.idProcesoAgrupador === 5
+    ).valorObtenido = this.onConvertDecimales(
+      promedioControldeEficiencia.puntajeProductividad,
+      1
+    );
   }
 
-  onConvertDecimales(valor: number, decimales: number) : number {
+  onConvertDecimales(valor: number, decimales: number): number {
     let dato = Number(valor.toFixed(decimales));
 
     return dato;
   }
 
-  onToRowSelectDeleteVacunaMaquina(data : TxVacunacionSubCutaneaMaquinaModel) {
+  onToRowSelectDeleteVacunaMaquina(data: TxVacunacionSubCutaneaMaquinaModel) {
     // clonar los equipo del la boquilla seleccionada
-    let clonedListMaquina = [...this.modeloItem.listarTxVacunacionSubCutaneaMaquina]
-    .filter(filter => filter.idAguja === data.idAguja )
-    .filter(filter => filter.codigoEquipo !== data.codigoEquipo);
+    let clonedListMaquina = [
+      ...this.modeloItem.listarTxVacunacionSubCutaneaMaquina,
+    ]
+      .filter((filter) => filter.idAguja === data.idAguja)
+      .filter((filter) => filter.codigoEquipo !== data.codigoEquipo);
 
-    let clonedListBoquillaNoseleccionado = [...this.modeloItem.listarTxVacunacionSubCutaneaMaquina]
-    .filter(filter => filter.idAguja !== data.idAguja )
+    let clonedListBoquillaNoseleccionado = [
+      ...this.modeloItem.listarTxVacunacionSubCutaneaMaquina,
+    ].filter((filter) => filter.idAguja !== data.idAguja);
 
-    this.modeloItem.listarTxVacunacionSubCutaneaMaquina = clonedListBoquillaNoseleccionado;
+    this.modeloItem.listarTxVacunacionSubCutaneaMaquina =
+      clonedListBoquillaNoseleccionado;
 
-    clonedListMaquina.forEach (adds => {
+    clonedListMaquina.forEach((adds) => {
       this.modeloItem.listarTxVacunacionSubCutaneaMaquina.push(adds);
     });
   }
 
   onToRowSelectDeleteVacuna(data: TxVacunacionSubCutaneayVacunaModel) {
-    let clonedListVacuna = [...this.modeloItem.listarTxVacunacionSubCutaneaVacuna]
-    .filter(filter => filter.nombreVacuna !== data.nombreVacuna );
+    let clonedListVacuna = [
+      ...this.modeloItem.listarTxVacunacionSubCutaneaVacuna,
+    ].filter((filter) => filter.nombreVacuna !== data.nombreVacuna);
 
     this.modeloItem.listarTxVacunacionSubCutaneaVacuna = clonedListVacuna;
   }
 
   onDisplayIrregularidad() {
-    this.displayIrregularidad =!this.displayIrregularidad;
+    this.displayIrregularidad = !this.displayIrregularidad;
     this.selectIrregularidad = this.listIrregularidad;
     this.nombreVacunador = '';
     this.selectNumeroAF = null;
   }
 
   onGrabarIrregularidad() {
-
-
-    let vclonedIrregularidad = [...this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad];
+    let vclonedIrregularidad = [
+      ...this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad,
+    ];
 
     // Validar si existe el vacunador
-    let existeVacunador = vclonedIrregularidad.filter(xFila => xFila.nombreVacunador === this.nombreVacunador).length;
+    let existeVacunador = vclonedIrregularidad.filter(
+      (xFila) => xFila.nombreVacunador === this.nombreVacunador
+    ).length;
 
     if (existeVacunador > 0) {
-      let existeVacunadorAF = vclonedIrregularidad.filter(xFila => xFila.nombreVacunador === this.nombreVacunador && xFila.codigoEquipo === this.selectNumeroAF.value).length;
-      
+      let existeVacunadorAF = vclonedIrregularidad.filter(
+        (xFila) =>
+          xFila.nombreVacunador === this.nombreVacunador &&
+          xFila.codigoEquipo === this.selectNumeroAF.value
+      ).length;
+
       if (existeVacunadorAF === 0) {
-        this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'No se puede adicionar el mismo Vacunador con dos AF diferentes');
+        this.mensajePrimeNgService.onToInfoMsg(
+          this.globalConstants.msgInfoSummary,
+          'No se puede adicionar el mismo Vacunador con dos AF diferentes'
+        );
         return;
       }
     }
 
-    if (this.selectIrregularidad.length > 0 ) {
-
-      this.selectIrregularidad.forEach(data => {
-        
-        vclonedIrregularidad.push(
-          {
-            idVacunacionSubCutaneaDetalle: 0,
-            idVacunacionSubCutanea:0,
-            nombreVacunador: this.nombreVacunador,
-            codigoEquipo: this.selectNumeroAF.value,
-            idIrregularidad: data.idIrregularidad,
-            descripcionIrregularidad: data.descripcionIrregularidad,
-            valor: data.valor,
-            id:  `ID ${data.idIrregularidad} - ${this.nombreVacunador}` 
-          });
+    if (this.selectIrregularidad.length > 0) {
+      this.selectIrregularidad.forEach((data) => {
+        vclonedIrregularidad.push({
+          idVacunacionSubCutaneaDetalle: 0,
+          idVacunacionSubCutanea: 0,
+          nombreVacunador: this.nombreVacunador,
+          codigoEquipo: this.selectNumeroAF.value,
+          idIrregularidad: data.idIrregularidad,
+          descripcionIrregularidad: data.descripcionIrregularidad,
+          valor: data.valor,
+          id: `ID ${data.idIrregularidad} - ${this.nombreVacunador}`,
+        });
       });
 
-      this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad = [...vclonedIrregularidad];
+      this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad = [
+        ...vclonedIrregularidad,
+      ];
 
       this.onGuardaVacunador();
-
     }
 
     this.selectIrregularidad = null;
     this.nombreVacunador = '';
     this.selectNumeroAF = null;
     this.displayIrregularidad = false;
+
+    this.validaAF();
+  }
+
+  validaAF() {
+    this.listItemEquipo = [];
+
+    this.listItemEquipoTemp.forEach(
+      (item) => {
+        let exists = false;
+
+        for (let selected of this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad) {
+          if (selected.codigoEquipo == item.value) {
+            exists = true;
+            break;
+          }
+        }
+
+        if (!exists)
+          this.listItemEquipo.push({
+            label: item.label,
+            value: item.value,
+          });
+      }
+    );
+
+    this.listItemEquipo = this.listItemEquipo.sort((a, b) => a.value > b.value ? 1 : -1);
   }
 
   onGuardaVacunador() {
     //debugger;
-    let encontroVacunador = [...this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.filter(xFila => xFila.nombreVacunador === this.nombreVacunador)].length;
+    let encontroVacunador = [
+      ...this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.filter(
+        (xFila) => xFila.nombreVacunador === this.nombreVacunador
+      ),
+    ].length;
 
-    let vclonedVacunado = [...this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia];
+    let vclonedVacunado = [
+      ...this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia,
+    ];
 
     if (encontroVacunador === 0) {
-
       vclonedVacunado.push({
         idVacunacionSubCutaneaDetalle: 0,
         idVacunacionSubCutanea: 0,
@@ -775,41 +972,53 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
         vacunadoCorrectos: 0,
         //Cambios
         porcentajeEficiencia: 0,
-        puntajeEficiencia: 0
+        puntajeEficiencia: 0,
       });
 
-      this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia = [...vclonedVacunado];
-
+      this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia = [
+        ...vclonedVacunado,
+      ];
     }
-
-
   }
 
   onRowEditInit(data: TxVacunacionSubCutaneaControlEficienciaModel) {
-    this.modeloclonedControlEficiencia[data.nombreVacunador] = {...data};
+    this.modeloclonedControlEficiencia[data.nombreVacunador] = { ...data };
   }
 
   onRowEditSave(data: TxVacunacionSubCutaneaControlEficienciaModel) {
+    this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.map(
+      (xFila) => {
+        xFila.vacunadoPorHora = xFila.cantidadFinal - xFila.cantidadInicial;
+        xFila.vacunadoCorrectos =
+          xFila.controlados -
+          (xFila.sinVacunar +
+            xFila.heridos +
+            xFila.mojados +
+            xFila.malaPosicion);
+        xFila.porcentajeEficiencia =
+          (xFila.vacunadoCorrectos / xFila.controlados) * 100;
 
-    this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.map(xFila => {
-      xFila.vacunadoPorHora = xFila.cantidadFinal - xFila.cantidadInicial;
-      xFila.vacunadoCorrectos = xFila.controlados - (xFila.sinVacunar + xFila.heridos + xFila.mojados + xFila.malaPosicion);
-      xFila.porcentajeEficiencia = (xFila.vacunadoCorrectos / xFila.controlados) *100;
+        //cambio
+        if (isNaN(xFila.porcentajeEficiencia)) xFila.porcentajeEficiencia = 0;
 
-      //cambio
-      if(isNaN(xFila.porcentajeEficiencia)) xFila.porcentajeEficiencia = 0;
-
-      this.listIndiceEficiencia.forEach(xFilaEficiencia => {
-        if (xFila.porcentajeEficiencia >= xFilaEficiencia.rangoInicial && xFila.porcentajeEficiencia <= xFilaEficiencia.rangoFinal) {
-          xFila.puntajeEficiencia = xFilaEficiencia.puntaje;
-        }
-      });
-    }); 
-
+        this.listIndiceEficiencia.forEach((xFilaEficiencia) => {
+          if (
+            xFila.porcentajeEficiencia >= xFilaEficiencia.rangoInicial &&
+            xFila.porcentajeEficiencia <= xFilaEficiencia.rangoFinal
+          ) {
+            xFila.puntajeEficiencia = xFilaEficiencia.puntaje;
+          }
+        });
+      }
+    );
   }
 
-  onRowEditCancel(data: TxVacunacionSubCutaneaControlEficienciaModel, i: number) {
-    this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia[i] = this.modeloclonedControlEficiencia[data.nombreVacunador];
+  onRowEditCancel(
+    data: TxVacunacionSubCutaneaControlEficienciaModel,
+    i: number
+  ) {
+    this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia[i] =
+      this.modeloclonedControlEficiencia[data.nombreVacunador];
     delete this.modeloclonedControlEficiencia[data.nombreVacunador];
   }
 
@@ -826,88 +1035,140 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
 
     // this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad = [...clonedDataIrregularidad];
 
-    let irregularidad: TxVacunacionSubCutaneaIrregularidadModel = this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad[index];
+    let irregularidad: TxVacunacionSubCutaneaIrregularidadModel =
+      this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad[index];
 
     this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad.splice(+index, 1);
 
     // Validamos que no existe registro con el nombre del vacunador
-    let clonedCountNombreVacunador = [...this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad].filter(xFila => xFila.nombreVacunador === irregularidad.nombreVacunador).length;
+    let clonedCountNombreVacunador = [
+      ...this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad,
+    ].filter(
+      (xFila) => xFila.nombreVacunador === irregularidad.nombreVacunador
+    ).length;
 
     if (clonedCountNombreVacunador === 0) {
-      let indexEficiencia = this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.findIndex(xFila => xFila.nombreVacunador === irregularidad.nombreVacunador);
+      let indexEficiencia =
+        this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.findIndex(
+          (xFila) => xFila.nombreVacunador === irregularidad.nombreVacunador
+        );
 
-      this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.splice(+indexEficiencia, 1);
+      this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.splice(
+        +indexEficiencia,
+        1
+      );
     }
   }
 
   onToRowSelectDeleteControlIndiceEficiencia(index: number) {
     //debugger
 
-    var opcion = confirm("Seguro de eliminar?");//Linea agregada por LUIS
+    var opcion = confirm('Seguro de eliminar?'); //Linea agregada por LUIS
     if (opcion == true) {
-      let nombreVacunador = this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia[index].nombreVacunador;
+      let nombreVacunador =
+        this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia[index]
+          .nombreVacunador;
 
       //Eliminamos al vacunador
-      this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.splice(+index, 1);
-  
-      let clonedCountNombreVacunador = [...this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad].filter(xFila => xFila.nombreVacunador !== nombreVacunador);
-  
-      this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad = clonedCountNombreVacunador;  
+      this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.splice(
+        +index,
+        1
+      );
+
+      let clonedCountNombreVacunador = [
+        ...this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad,
+      ].filter((xFila) => xFila.nombreVacunador !== nombreVacunador);
+
+      this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad =
+        clonedCountNombreVacunador;
     }
+    
+    this.validaAF();
   }
 
   onGrabarControlEficiencia() {
     //debugger;
     if (!this.nombreVacunadorControlEficiencia) {
-      this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Seleccionar Vacunador');
+      this.mensajePrimeNgService.onToInfoMsg(
+        this.globalConstants.msgInfoSummary,
+        'Seleccionar Vacunador'
+      );
       return;
     }
 
-    this.modeloControlEficiencia.nombreVacunador = this.nombreVacunadorControlEficiencia.value;
+    this.modeloControlEficiencia.nombreVacunador =
+      this.nombreVacunadorControlEficiencia.value;
 
-    this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.push(this.modeloControlEficiencia);
+    this.modeloItem.listarTxVacunacionSubCutaneaControlEficiencia.push(
+      this.modeloControlEficiencia
+    );
 
     this.nombreVacunadorControlEficiencia = null;
-    this.modeloControlEficiencia = new TxVacunacionSubCutaneaControlEficienciaModel();
+    this.modeloControlEficiencia =
+      new TxVacunacionSubCutaneaControlEficienciaModel();
     this.displayControlEficiencia = false;
   }
 
   onGrabar() {
     //debugger;
     if (!this.selectEmpresa) {
-      this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Seleccionar Empresa');
+      this.mensajePrimeNgService.onToInfoMsg(
+        this.globalConstants.msgInfoSummary,
+        'Seleccionar Empresa'
+      );
       return;
     }
     this.modeloItem.codigoEmpresa = this.selectEmpresa.value;
     this.modeloItem.descripcionEmpresa = this.selectEmpresa.label;
     if (!this.selectedPlanta) {
-      this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Ingresar Planta');
+      this.mensajePrimeNgService.onToInfoMsg(
+        this.globalConstants.msgInfoSummary,
+        'Ingresar Planta'
+      );
       return;
     }
     this.modeloItem.codigoPlanta = this.selectedPlanta.value;
     this.modeloItem.descripcionPlanta = this.selectedPlanta.label;
     if (!this.modeloItem.firmaInvetsa) {
-      this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Ingresar Firma Invetsa');
+      this.mensajePrimeNgService.onToInfoMsg(
+        this.globalConstants.msgInfoSummary,
+        'Ingresar Firma Invetsa'
+      );
       return;
     }
     if (!this.modeloItem.firmaPlanta) {
-      this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Ingresar Firma Planta');
+      this.mensajePrimeNgService.onToInfoMsg(
+        this.globalConstants.msgInfoSummary,
+        'Ingresar Firma Planta'
+      );
       return;
     }
     if (!this.modeloItem.responsableIncubadora) {
-      this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Ingresar Responsable Incubación');
+      this.mensajePrimeNgService.onToInfoMsg(
+        this.globalConstants.msgInfoSummary,
+        'Ingresar Responsable Incubación'
+      );
       return;
     }
     if (!this.modeloItem.responsableInvetsa) {
-      this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Ingresar Responsable Invetsa');
+      this.mensajePrimeNgService.onToInfoMsg(
+        this.globalConstants.msgInfoSummary,
+        'Ingresar Responsable Invetsa'
+      );
       return;
     }
     if (!this.modeloItem.responsablePlanta) {
-      this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Ingresar Responsable Planta');
+      this.mensajePrimeNgService.onToInfoMsg(
+        this.globalConstants.msgInfoSummary,
+        'Ingresar Responsable Planta'
+      );
       return;
     }
     if (!this.modeloItem.emailFrom) {
-      this.mensajePrimeNgService.onToInfoMsg(this.globalConstants.msgInfoSummary, 'Ingresar Email Responsable Planta');
+      this.mensajePrimeNgService.onToInfoMsg(
+        this.globalConstants.msgInfoSummary,
+        'Ingresar Email Responsable Planta'
+      );
       return;
     }
     this.displaySave = true;
@@ -922,23 +1183,31 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
 
     this.onCalcularPuntaje();
     this.subscription$ = new Subscription();
-    this.subscription$ = this.vacunacionSubcutaneaService.setInsertTxVacunacionSubCutanea(this.modeloItem)
-    .subscribe(() =>  {
-      this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
-      this.displaySave = false;
-      this.onBack();
-    },
-      (error) => {
-        this.displaySave = false;
-        this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, error);
-    });
-
+    this.subscription$ = this.vacunacionSubcutaneaService
+      .setInsertTxVacunacionSubCutanea(this.modeloItem)
+      .subscribe(
+        () => {
+          this.mensajePrimeNgService.onToExitoMsg(
+            this.globalConstants.msgExitoSummary,
+            this.globalConstants.msgExitoDetail
+          );
+          this.displaySave = false;
+          this.onBack();
+        },
+        (error) => {
+          this.displaySave = false;
+          this.mensajePrimeNgService.onToErrorMsg(
+            this.globalConstants.msgExitoSummary,
+            error
+          );
+        }
+      );
   }
 
   onBack() {
     this.router.navigate(['/main/module-su/panel-vacunacion-subcutanea']);
   }
   goDisplayControles() {
-    this.displayControles = ! this.displayControles;
+    this.displayControles = !this.displayControles;
   }
 }
