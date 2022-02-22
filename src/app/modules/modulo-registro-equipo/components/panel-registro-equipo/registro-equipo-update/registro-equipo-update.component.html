@@ -20,6 +20,20 @@
                 <label class="label-custom" for="text-jefe-planta">Jefe Planta</label>
                 <input disabled id="text-jefe-planta" type="text" [(ngModel)]="modeloItem.jefePlanta" pInputText>
             </div>
+            <div class="ui-g-12 ui-md-3">
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom" for="tipo-mantenimiento">Tipo de mantenimiento</label>
+                <input id="tipo-mantenimiento" type="text" pInputText [(ngModel)]="modeloItem.tipoMantenimiento" disabled="true" />
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom" for="text-hora-ingreso">Hora de Ingreso</label>
+                <input id="text-hora-ingreso" type="time" [(ngModel)]="modeloItem.horaIngreso" pInputText disabled="true">
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom" for="text-hora-salida">Hora de Salida</label>
+                <input id="text-hora-salida" type="time" [(ngModel)]="modeloItem.horaSalida" pInputText disabled="true">
+            </div>
         </div>
     </p-panel>
 

@@ -203,7 +203,6 @@ export class VacunacionSubcutaneaOfflineUpdateComponent implements OnInit, OnDes
 
 
   onGrabar() {
-    
     this.displaySave = true;
     this.subscription$ = new Subscription();
     this.subscription$ = this.vacunacionSubcutaneaLocalService.setUpdateTxVacunacionSubcutanea(this.modeloItem)

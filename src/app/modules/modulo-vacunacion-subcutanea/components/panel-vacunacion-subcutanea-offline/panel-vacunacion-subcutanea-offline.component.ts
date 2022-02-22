@@ -199,7 +199,7 @@ export class PanelVacunacionSubcutaneaOfflineComponent implements OnInit, OnDest
 
   onToSync(data: any) {
     this.subscription$ = new Subscription();
-    this.subscription$ = this.vacunacionSubcutaneaService.setInsertFromSyncTxVacunacionSubCutanea(this.modeloItem)
+    this.subscription$ = this.vacunacionSubcutaneaService.setInsertFromSyncTxVacunacionSubCutanea(data)
     .subscribe(resp => {
         this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
         this.onToEliminar(data);

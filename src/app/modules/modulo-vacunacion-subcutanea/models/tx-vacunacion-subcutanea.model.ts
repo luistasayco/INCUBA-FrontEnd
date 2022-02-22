@@ -6,6 +6,7 @@ import { TxVacunacionSubCutaneaFotosModel } from './tx-vacunacion-subcutanea-fot
 import { TxVacunacionSubCutaneaDetalleModel } from './tx-vacunacion-subcutanea-detalle.model';
 import { TxVacunacionSubCutaneaResultadoModel } from './tx-vacunacion-subcutanea-resultado.model';
 import { TxVacunacionSubCutaneaPromedioModel } from './tx-vacunacion-subcutanea-promedio.model';
+import * as moment from 'moment';
 
 export class TxVacunacionSubCutaneaModel {
     idVacunacionSubCutanea: number;
@@ -18,6 +19,8 @@ export class TxVacunacionSubCutaneaModel {
     fecHoraRegistro: Date;
     responsableInvetsa: string;
     responsableIncubadora: string;
+    horaIngreso: string;
+    horaSalida: string;
     flgHyLine: boolean;
     flgLohman: boolean;
     flgRoss: boolean;
@@ -75,6 +78,8 @@ export class TxVacunacionSubCutaneaModel {
         this.fecHoraRegistro = null;
         this.responsableInvetsa = '';
         this.responsableIncubadora = '';
+        this.horaIngreso = moment().format("HH:mm");
+        this.horaSalida = null;
         this.flgHyLine = false;
         this.flgLohman = false;
         this.flgRoss = false;

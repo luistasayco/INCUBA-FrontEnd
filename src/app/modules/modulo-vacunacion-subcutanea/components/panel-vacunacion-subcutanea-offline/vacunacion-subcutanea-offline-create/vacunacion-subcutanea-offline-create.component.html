@@ -2,21 +2,29 @@
     <h1><strong>{{titulo}}</strong></h1>
     <p-panel header="Datos Principales" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
         <div class="ui-g ui-fluid">
-            <div class="ui-g-12 ui-md-3">
+            <div class="ui-g-12 ui-md-4">
                 <label class="label-custom" for="dropdown-empresa">Empresa: </label>
                 <p-dropdown id="dropdown-empresa" class="ui dropdown-item-text" [(ngModel)]="selectEmpresa" [options]="listItemEmpresa" placeholder="Select Compañia" optionLabel="label" (onChange)="getOnChangeEmpresa()" [showClear]="true"></p-dropdown>
             </div>
-            <div class="ui-g-12 ui-md-3">
+            <div class="ui-g-12 ui-md-4">
                 <label class="label-custom" for="dropdown-planta">Planta: </label>
                 <p-dropdown id="dropdown-planta" class="ui dropdown-item-text" [options]="listItemPlanta" [(ngModel)]="selectedPlanta" placeholder="Select Planta" optionLabel="label" [showClear]="true"></p-dropdown>
             </div>
-            <div class="ui-g-12 ui-md-3">
+            <div class="ui-g-12 ui-md-4">
                 <label class="label-custom-unidad" for="dropdown-unidad">Unidad: </label>
                 <input id="label-custom-unidad" type="text" [(ngModel)]="modeloItem.unidad" pInputText>
             </div>
-            <div class="ui-g-12 ui-md-3">
+            <div class="ui-g-12 ui-md-4">
                 <label class="label-custom-responsable-incubadora" for="dropdown-responsable">Responsable Incubadora: </label>
                 <input id="label-custom-responsable-incubadora" type="text" [(ngModel)]="modeloItem.responsableIncubadora" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-4">
+                <label class="label-custom" for="text-hora-ingreso">Hora de Ingreso</label>
+                <input id="text-hora-ingreso" type="time" [(ngModel)]="modeloItem.horaIngreso" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-4">
+                <label class="label-custom" for="text-hora-salida">Hora de Salida</label>
+                <input id="text-hora-salida" type="time" [(ngModel)]="modeloItem.horaSalida" pInputText>
             </div>
         </div>
     </p-panel>

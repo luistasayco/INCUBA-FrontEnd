@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import { TxRegistroEquipoDetalle1Model } from './tx-registro-equipo-detalle1.model';
 import { TxRegistroEquipoDetalle2Model } from './tx-registro-equipo-detalle2.model';
 import { TxRegistroEquipoDetalle3Model } from './tx-registro-equipo-detalle3.model';
@@ -29,6 +30,11 @@ export class TxRegistroEquipoModel {
     jefePlanta?: string;
     observacionesInvetsa?: string;
     observacionesPlanta?: string;
+
+    tipoMantenimiento?: string;
+    horaIngreso?: string;
+    horaSalida?: string;
+
     // Varibles para el filtro
     fecRegistroInicio?: Date;
     fecRegistroFin?: Date;
@@ -72,6 +78,9 @@ export class TxRegistroEquipoModel {
         this.usuarioCierre = '';
         this.idUsuarioCierre = 0;
         this.fecCierre = null;
+        this.tipoMantenimiento = null;
+        this.horaIngreso = moment().format("HH:mm");
+        this.horaSalida = null;
         this.usuarioCreacion = '';
         this.nombreArchivo = '';
         this.jefePlanta = '';

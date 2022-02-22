@@ -26,20 +26,6 @@ export class RegistroEquipoUpdateOffLineComponent implements OnInit, OnDestroy {
   // Name de los botones de accion
   globalConstants: GlobalsConstants = new GlobalsConstants();
 
-  // Opciones de busqueda
-  listItemEmpresa: SelectItem[];
-  listItemPlanta: SelectItem[];
-  listItemModelo: SelectItem[];
-
-  // Variables de dato seleccionado
-  selectedEmpresa: any;
-  selectedPlanta: any;
-  selectedModelo: any;
-
-  modeloEmpresa: EmpresaModel = new EmpresaModel();
-  modeloPlanta: PlantaModel = new PlantaModel();
-  modeloModelo: ModeloModel = new ModeloModel();
-
   modeloItem: TxRegistroEquipoModel = new TxRegistroEquipoModel();
 
   rowGroupMetadata: any;

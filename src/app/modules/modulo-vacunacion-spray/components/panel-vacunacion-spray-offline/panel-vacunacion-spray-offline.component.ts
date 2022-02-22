@@ -195,7 +195,7 @@ export class PanelVacunacionSprayOfflineComponent implements OnInit, OnDestroy {
 
   onToSync(data: any) {
     this.subscription$ = new Subscription();
-    this.subscription$ = this.vacunacionSprayService.setInsertFromSyncTxVacunacionSpray(this.modeloItem)
+    this.subscription$ = this.vacunacionSprayService.setInsertFromSyncTxVacunacionSpray(data)
     .subscribe(resp => {
         this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
         this.onToEliminar(data);

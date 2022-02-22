@@ -185,7 +185,7 @@ export class EnviarDatosRemotosService {
         if (resultado) {
           registros = [...resultado];
           registros = registros
-          .filter(z => z.flgCerrado === true)
+          //.filter(z => z.flgCerrado === true)
           .filter(x => x.flgMigrado === false)
           // .filter(y => y.flgEnModificacion === false);
           if ( registros.length > 0 ) {
@@ -226,7 +226,7 @@ export class EnviarDatosRemotosService {
         if (resultado) {
           registros = [...resultado];
           registros = registros
-          .filter(z => z.flgCerrado === true)
+          //.filter(z => z.flgCerrado === true)
           .filter(x => x.flgMigrado === false)
           .filter(y => y.flgEnModificacion === false);
           if ( registros.length > 0 ) {
@@ -267,7 +267,7 @@ export class EnviarDatosRemotosService {
         if (resultado) {
           registros = [...resultado];
           registros = registros
-          .filter(z => z.flgCerrado === true)
+          //.filter(z => z.flgCerrado === true)
           .filter(x => x.flgMigrado === false);
           if ( registros.length > 0 ) {
             registros.forEach( item => {
@@ -307,7 +307,7 @@ export class EnviarDatosRemotosService {
         if (resultado) {
           registros = [...resultado];
           registros = registros
-          .filter(z => z.flgCerrado === true)
+          //.filter(z => z.flgCerrado === true)
           .filter(x => x.flgMigrado === false);
           if ( registros.length > 0 ) {
             registros.forEach( item => {
@@ -347,7 +347,7 @@ export class EnviarDatosRemotosService {
         if (resultado) {
           registros = [...resultado];
           registros = registros
-          .filter(z => z.flgCerrado === true)
+          //.filter(z => z.flgCerrado === true)
           .filter(x => x.flgMigrado === false);
           if ( registros.length > 0 ) {
             registros.forEach( item => {
@@ -387,7 +387,7 @@ export class EnviarDatosRemotosService {
         if (resultado) {
           registros = [...resultado];
           registros = registros
-          .filter(z => z.flgCerrado === true)
+          //.filter(z => z.flgCerrado === true)
           .filter(x => x.flgMigrado === false);
           if ( registros.length > 0 ) {
             registros.forEach( item => {

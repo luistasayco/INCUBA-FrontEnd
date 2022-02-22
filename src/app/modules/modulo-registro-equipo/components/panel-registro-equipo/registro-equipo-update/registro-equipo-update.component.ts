@@ -31,12 +31,14 @@ export class RegistroEquipoUpdateComponent implements OnInit, OnDestroy {
   listItemEmpresa: SelectItem[];
   listItemPlanta: SelectItem[];
   listItemModelo: SelectItem[];
+  listItemTipoMantenimiento: SelectItem[];
 
   // Variables de dato seleccionado
   selectedEmpresa: any;
   selectedPlanta: any;
   selectedModelo: any;
   selectedModeloIsSolovac: boolean;
+  selectedTipoMantenimiento: any;  
 
   modeloEmpresa: EmpresaModel = new EmpresaModel();
   modeloPlanta: PlantaModel = new PlantaModel();

@@ -153,7 +153,7 @@ export class IndiceCrear {
             indice = { tabla: ConstantesTablasIDB._TABLA_TXSINMI_DETALLE_NEW,
                 nombreIndice: 'idySINMIDetalle', campoIndice: 'idSINMIDetalle', unico: false  };
         }
-
+        
         return this.indices;
     }
 }

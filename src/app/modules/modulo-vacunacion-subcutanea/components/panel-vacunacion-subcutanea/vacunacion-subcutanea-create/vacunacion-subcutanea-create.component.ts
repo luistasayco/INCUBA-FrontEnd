@@ -221,7 +221,14 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
     this.subscription$ = this.vacunacionSubcutaneaService
       .getTxVacunacionSubCutaneaPorIdNew()
       .subscribe((data: TxVacunacionSubCutaneaModel) => {
+        let horaIngreso = this.modeloItem.horaIngreso;
+        let horaSalida = this.modeloItem.horaSalida;
+        
         this.modeloItem = data;
+        
+        this.modeloItem.horaIngreso = horaIngreso;
+        this.modeloItem.horaSalida = horaSalida;
+
         this.modeloItem.responsableInvetsa =
           this.userContextService.getNombreCompletoUsuario();
         this.modeloItem.emailFrom = this.userContextService.getEmail();
@@ -921,26 +928,27 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
   validaAF() {
     this.listItemEquipo = [];
 
-    this.listItemEquipoTemp.forEach(
-      (item) => {
-        let exists = false;
+    this.listItemEquipoTemp.forEach((item) => {
+      let exists = false;
 
-        for (let selected of this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad) {
-          if (selected.codigoEquipo == item.value) {
-            exists = true;
-            break;
-          }
+      for (let selected of this.modeloItem
+        .listarTxVacunacionSubCutaneaIrregularidad) {
+        if (selected.codigoEquipo == item.value) {
+          exists = true;
+          break;
         }
-
-        if (!exists)
-          this.listItemEquipo.push({
-            label: item.label,
-            value: item.value,
-          });
       }
-    );
 
-    this.listItemEquipo = this.listItemEquipo.sort((a, b) => a.value > b.value ? 1 : -1);
+      if (!exists)
+        this.listItemEquipo.push({
+          label: item.label,
+          value: item.value,
+        });
+    });
+
+    this.listItemEquipo = this.listItemEquipo.sort((a, b) =>
+      a.value > b.value ? 1 : -1
+    );
   }
 
   onGuardaVacunador() {
@@ -1082,7 +1090,7 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
       this.modeloItem.listarTxVacunacionSubCutaneaIrregularidad =
         clonedCountNombreVacunador;
     }
-    
+
     this.validaAF();
   }
 
@@ -1110,7 +1118,6 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
   }
 
   onGrabar() {
-    //debugger;
     if (!this.selectEmpresa) {
       this.mensajePrimeNgService.onToInfoMsg(
         this.globalConstants.msgInfoSummary,
@@ -1147,6 +1154,13 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
       this.mensajePrimeNgService.onToInfoMsg(
         this.globalConstants.msgInfoSummary,
         'Ingresar Responsable Incubación'
+      );
+      return;
+    }
+    if (this.modeloItem.horaSalida === null) {
+      this.mensajePrimeNgService.onToErrorMsg(
+        this.globalConstants.msgExitoSummary,
+        `Ingresar Hora de Salida`
       );
       return;
     }

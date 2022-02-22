@@ -20,6 +20,20 @@
                 <label class="label-custom" for="text-jefe-planta">Jefe Planta</label>
                 <input id="text-jefe-planta" type="text" [(ngModel)]="modeloItem.jefePlanta" pInputText>
             </div>
+            <div class="ui-g-12 ui-md-3">
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom" for="dropdown-tipo-mantenimiento">Tipo de mantenimiento</label>
+                <p-dropdown id="dropdown-tipo-mantenimiento" class="ui dropdown-item-text" [options]="listItemTipoMantenimiento" [(ngModel)]="selectedTipoMantenimiento" optionLabel="label"></p-dropdown>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom" for="text-hora-ingreso">Hora de Ingreso</label>
+                <input id="text-hora-ingreso" type="time" [(ngModel)]="modeloItem.horaIngreso" pInputText>
+            </div>
+            <div class="ui-g-12 ui-md-3">
+                <label class="label-custom" for="text-hora-salida">Hora de Salida</label>
+                <input id="text-hora-salida" type="time" [(ngModel)]="modeloItem.horaSalida" pInputText required>
+            </div>
         </div>
     </p-panel>
 
@@ -51,7 +65,7 @@
                     <ng-template pTemplate="rowexpansion" let-rowData let-rowIndex="rowIndex">
                         <tr>
                             <td>
-                                <p-checkbox name="group1" value="{{rowData.idMantenimientoPorModelo}}" [(ngModel)]="rowData.flgValor" inputId="{{rowData.idMantenimientoPorModelo}}" binary="true"></p-checkbox>
+                                <p-checkbox name="group1" value="{{rowData.idMantenimientoPorModelo}}" [(ngModel)]="rowData.flgValor" inputId="{{rowData.idMantenimientoPorModelo}}" binary="true" (onChange)="getOnChangeflgValor(rowData)"></p-checkbox>
                             </td>
                             <td>{{rowData.codigoEquipo}}</td>
                         </tr>
@@ -287,7 +301,13 @@
                         </tr>
                     </ng-template>
                 </p-table>
-
+                <p-footer>
+                    <div class="ui-grid ui-fluid">
+                        <div class="ui-g-12 ui-md-3">
+                            <button pButton type="button" label="{{globalConstants.cNuevo}}" icon="{{globalConstants.icoNuevo}}" (click)="displayNuevoRepuesto = true"></button>
+                        </div>
+                    </div>
+                </p-footer>
             </p-accordionTab>
 
             <p-accordionTab header="F .-Inventario de repuestos" [selected]="displayControles">
