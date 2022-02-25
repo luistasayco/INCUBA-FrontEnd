@@ -20,6 +20,7 @@ import { SessionService } from '../../../../../services/session.service';
 import { ConstantesTablasIDB } from '../../../../../constants/constantes-tablas-indexdb';
 import { UserContextService } from '../../../../../services/user-context.service';
 import { RepuestoPorModeloModel } from '../../../models/repuesto-por-modelo.model';
+import { TxRegistroEquipoDetalle1Model } from '../../../models/tx-registro-equipo-detalle1.model';
 
 @Component({
   selector: 'app-registro-equipo-create-off-line',
@@ -73,10 +74,13 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
   selectedRFC: any;
 
   displayNuevoRepuesto = false;
+  displayNuevoRepuestoE: boolean = false;
 
   repuestosNoPredeterminado: SelectItem[];
+  repuestosNoPredeterminadoE: SelectItem[];
 
   selectedRepuesto: string[];
+  selectedRepuestoE: string[];
 
   listImagen: any[];
 
@@ -141,7 +145,6 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
     this.columnasDetalle6 = [
       { header: 'Repuesto' },
       { header: 'Descripción' },
-      { header: 'Stock Actual' },
       { header: 'Cambio por mtto.' },
       { header: 'Entrego' },
     ];
@@ -195,6 +198,13 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
     } else {
       this.listItemPlanta = [];
     }
+  }
+
+  getOnChangeflgValor(value: TxRegistroEquipoDetalle1Model) {
+    if (value.descripcion == 'Calibración de los equipos')
+      for (let item of this.modeloItem.txRegistroEquipoDetalle1)
+        if (item.codigoEquipo == value.codigoEquipo)
+          item.flgValor = value.flgValor;
   }
 
   getToObtienePlantaPorEmpresa(value: string) {
@@ -344,6 +354,10 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
                 this.modeloItem.txRegistroEquipoDetalle7 = [];
                 this.updateRowGroupMetaData();
                 this.updateRowGroupMetaDataDetalle2();
+
+                this.modeloItem.txRegistroEquipoDetalle6NoPredeterminado =
+                  this.modeloItem.txRegistroEquipoDetalle2NoPredeterminado;
+
                 this.onLlenarRepuestoNoPredeterminado();
                 break;
               }
@@ -420,6 +434,25 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
         });
       }
     });
+
+    this.onLlenarRepuestoNoPredeterminadoE();
+  }
+
+  onLlenarRepuestoNoPredeterminadoE() {
+    this.repuestosNoPredeterminadoE = [];
+
+    this.modeloItem.txRegistroEquipoDetalle6NoPredeterminado.forEach((repu) => {
+      if (
+        !this.repuestosNoPredeterminadoE.find(
+          (r) => r.value === repu.codigoRepuesto
+        )
+      ) {
+        this.repuestosNoPredeterminadoE.push({
+          label: repu.codigoRepuesto + '-' + repu.descripcion,
+          value: repu.codigoRepuesto,
+        });
+      }
+    });
   }
 
   onInsertarRepuesto() {
@@ -439,6 +472,41 @@ export class RegistroEquipoCreateOffLineComponent implements OnInit, OnDestroy {
     this.onLlenarRepuestoNoPredeterminado();
     this.updateRowGroupMetaDataDetalle2();
     this.displayNuevoRepuesto = false;
+  }
+
+  onInsertarRepuestoE() {
+    this.selectedRepuestoE.forEach((sel: any) => {
+      for (let item of this.modeloItem.txRegistroEquipoDetalle6NoPredeterminado.filter(
+        (x) => x.codigoRepuesto === sel.value
+      )) {
+        let detalle6Repuesto: TxRegistroEquipoDetalle6Model = {
+          idRegistroEquipoDetalle: item.idRegistroEquipoDetalle,
+          idRegistroEquipo: item.idRegistroEquipo,
+          codigoRepuesto: item.codigoRepuesto,
+          descripcion: item.descripcion,
+          stockActual: 0,
+          cambioPorMantenimiento: 0,
+          entregado: 0,
+        };
+
+        this.modeloItem.txRegistroEquipoDetalle6.push(detalle6Repuesto);
+        break;
+      }
+
+      this.modeloItem.txRegistroEquipoDetalle6NoPredeterminado = [
+        ...this.modeloItem.txRegistroEquipoDetalle6NoPredeterminado.filter(
+          (y) => y.codigoRepuesto !== sel.value
+        ),
+      ];
+    });
+
+    this.modeloItem.txRegistroEquipoDetalle6 =
+      this.modeloItem.txRegistroEquipoDetalle6.sort((a, b) =>
+        a.descripcion > b.descripcion ? 1 : -1
+      );
+
+    this.onLlenarRepuestoNoPredeterminadoE();
+    this.displayNuevoRepuestoE = false;
   }
 
   onTabOpen(event: any) {

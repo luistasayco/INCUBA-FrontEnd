@@ -18,7 +18,7 @@
             </div>
             <div class="ui-g-12 ui-md-3">
                 <label class="label-custom" for="text-jefe-planta">Jefe Planta</label>
-                <input disabled id="text-jefe-planta" type="text" [(ngModel)]="modeloItem.jefePlanta" pInputText>
+                <input disabled id="text-jefe-planta" type="text" [(ngModel)]="modeloItem.jefePlanta" pInputText disabled="true">
             </div>
             <div class="ui-g-12 ui-md-3">
             </div>
@@ -185,9 +185,6 @@
                                 <span class="ui-column-title">Repuesto</span> {{modelo.descripcion}}
                             </td>
                             <td class="action-td-action">
-                                <span class="ui-column-title">Stock Actual</span> {{modelo.stockActual}}
-                            </td>
-                            <td class="action-td-action">
                                 <span class="ui-column-title">Cambio por mtto.</span> {{modelo.cambioPorMantenimiento}}
                             </td>
                             <td class="action-td-action">
@@ -216,9 +213,6 @@
                             </td>
                             <td class="ui-fluid">
                                 <span class="ui-column-title">Repuesto</span> {{modelo.descripcion}}
-                            </td>
-                            <td class="action-td-action">
-                                <span class="ui-column-title">Stock Actual</span> {{modelo.stockActual}}
                             </td>
                             <td class="action-td-action">
                                 <span class="ui-column-title">Cambio por mtto.</span> {{modelo.cambioPorMantenimiento}}

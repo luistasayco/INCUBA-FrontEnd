@@ -46,6 +46,7 @@ export class TxRegistroEquipoModel {
     txRegistroEquipoDetalle4: TxRegistroEquipoDetalle4Model[];
     txRegistroEquipoDetalle5: TxRegistroEquipoDetalle5Model[];
     txRegistroEquipoDetalle6: TxRegistroEquipoDetalle6Model[];
+    txRegistroEquipoDetalle6NoPredeterminado: TxRegistroEquipoDetalle2Model[];
     txRegistroEquipoDetalle6Repuestos: TxRegistroEquipoDetalle6Model[];
     txRegistroEquipoDetalle7: TxRegistroEquipoDetalle7Model[];
     flgMigrado: boolean;
@@ -91,6 +92,7 @@ export class TxRegistroEquipoModel {
         this.txRegistroEquipoDetalle4 = [];
         this.txRegistroEquipoDetalle5 = [];
         this.txRegistroEquipoDetalle6 = [];
+        this.txRegistroEquipoDetalle6NoPredeterminado = [];
         this.txRegistroEquipoDetalle6Repuestos = [];
         this.txRegistroEquipoDetalle7 = [];
         this.flgMigrado = false;

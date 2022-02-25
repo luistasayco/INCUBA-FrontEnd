@@ -32,7 +32,7 @@
             </div>
             <div class="ui-g-12 ui-md-3">
                 <label class="label-custom" for="text-hora-salida">Hora de Salida</label>
-                <input id="text-hora-salida" type="time" [(ngModel)]="modeloItem.horaSalida" pInputText required>
+                <input id="text-hora-salida" type="time" [(ngModel)]="modeloItem.horaSalida" pInputText>
             </div>
         </div>
     </p-panel>
@@ -63,7 +63,7 @@
                     <ng-template pTemplate="rowexpansion" let-rowData let-rowIndex="rowIndex">
                         <tr>
                             <td>
-                                <p-checkbox name="group1" value="{{rowData.idMantenimientoPorModelo}}" [(ngModel)]="rowData.flgValor" inputId="{{rowData.idMantenimientoPorModelo}}" binary="true"></p-checkbox>
+                                <p-checkbox name="group1" value="{{rowData.idMantenimientoPorModelo}}" [(ngModel)]="rowData.flgValor" inputId="{{rowData.idMantenimientoPorModelo}}" binary="true" (onChange)="getOnChangeflgValor(rowData)"></p-checkbox>
                             </td>
                             <td>{{rowData.codigoEquipo}}</td>
                         </tr>
@@ -219,12 +219,6 @@
 
             <p-accordionTab header="E .-Inventario de consumibles" [selected]="displayControles">
                 <p-table [value]="modeloItem.txRegistroEquipoDetalle6" [columns]="columnasDetalle6" [paginator]="true" [rows]="globalConstants.sizePage" dataKey="codigoRepuesto" editMode="row" autoLayout="true" [responsive]="true">
-                    <!-- <ng-template pTemplate="colgroup" let-columns>
-                        <colgroup>
-                            <col *ngFor="let col of columns" style="width:200px">
-                        </colgroup>
-                    </ng-template> -->
-                    <!-- Header -->
                     <ng-template pTemplate="header" let-columns>
                         <tr>
                             <th *ngFor="let col of columns">
@@ -249,19 +243,6 @@
                                     </ng-template>
                                     <ng-template pTemplate="output">
                                         {{modelo.descripcion}}
-                                    </ng-template>
-                                </p-cellEditor>
-                            </td>
-                            <td class="action-td-action">
-                                <span class="ui-column-title">Stock Actual</span>
-                                <p-cellEditor>
-                                    <ng-template pTemplate="input">
-                                        <span class="p-float-label">
-                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.stockActual"style="width:80px" size="100"> 
-                                            </span>
-                                    </ng-template>
-                                    <ng-template pTemplate="output">
-                                        {{modelo.stockActual}}
                                     </ng-template>
                                 </p-cellEditor>
                             </td>
@@ -299,7 +280,13 @@
                         </tr>
                     </ng-template>
                 </p-table>
-
+                <p-footer>
+                    <div class="ui-grid ui-fluid">
+                        <div class="ui-g-12 ui-md-3">
+                            <button pButton type="button" label="{{globalConstants.cNuevo}}" icon="{{globalConstants.icoNuevo}}" (click)="displayNuevoRepuestoE = true"></button>
+                        </div>
+                    </div>
+                </p-footer>
             </p-accordionTab>
 
             <p-accordionTab header="F .-Inventario de repuestos" [selected]="displayControles">
@@ -321,19 +308,6 @@
                             </td>
                             <td class="ui-fluid">
                                 <span class="ui-column-title">Repuesto</span> {{modelo.descripcion}}
-                            </td>
-                            <td class="action-td-action">
-                                <span class="ui-column-title">Stock Actual</span>
-                                <p-cellEditor>
-                                    <ng-template pTemplate="input">
-                                        <span class="p-float-label">
-                                                <input id="float-input" type="number" pInputText [(ngModel)]="modelo.stockActual" style="width:80px"size="100"> 
-                                            </span>
-                                    </ng-template>
-                                    <ng-template pTemplate="output">
-                                        {{modelo.stockActual}}
-                                    </ng-template>
-                                </p-cellEditor>
                             </td>
                             <td class="action-td-action">
                                 <span class="ui-column-title">Cambio por mtto.</span>
@@ -449,6 +423,24 @@
     <p-footer>
         <button type="button" pButton icon="pi pi-check" (click)="onInsertarRepuesto()" label="Añadir"></button>
         <button type="button" pButton icon="pi pi-times" (click)="displayNuevoRepuesto=false" label="Cancelar" class="ui-button-secondary"></button>
+    </p-footer>
+</p-dialog>
+
+<p-dialog header="E .-Inventario de consumibles: Lista de Repuesto" [(visible)]="displayNuevoRepuestoE" [modal]="true" [baseZIndex]="10000" [draggable]="false" [resizable]="false">
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <p-listbox [options]="repuestosNoPredeterminadoE" [(ngModel)]="selectedRepuestoE" [multiple]="true" [checkbox]="true" [filter]="true" optionLabel="label" [listStyle]="{'max-height':'250px'}">
+                <p-header>
+                    Repuestos
+                </p-header>
+            </p-listbox>
+        </div>
+    </div>
+
+
+    <p-footer>
+        <button type="button" pButton icon="pi pi-check" (click)="onInsertarRepuestoE()" label="Añadir"></button>
+        <button type="button" pButton icon="pi pi-times" (click)="displayNuevoRepuestoE=false" label="Cancelar" class="ui-button-secondary"></button>
     </p-footer>
 </p-dialog>
 

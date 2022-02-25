@@ -80,7 +80,6 @@ export class RegistroEquipoUpdateOffLineComponent implements OnInit, OnDestroy {
     this.columnasDetalle6 = [
       { header: 'Repuesto' },
       { header: 'Descripción' },
-      { header: 'Stock Actual' },
       { header: 'Cambio por mtto.' },
       { header: 'Entrego' }
     ];

@@ -83,12 +83,16 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
   selectedRFC: any;
 
   displayNuevoRepuesto: boolean = false;
+  displayNuevoRepuestoE: boolean = false;
   displayNuevoInventarioRepuesto: boolean;
+  displayNuevoInventarioRepuestoE: boolean;
 
   repuestosNoPredeterminado: SelectItem[];
+  repuestosNoPredeterminadoE: SelectItem[];
   nuevoRepuestosNoPredeterminado: SelectItem[];
 
   selectedRepuesto: string[];
+  selectedRepuestoE: string[];
 
   selectedNuveoRepuesto: any[];
 
@@ -160,7 +164,6 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
     this.columnasDetalle6 = [
       { header: 'Repuesto' },
       { header: 'Descripción' },
-      { header: 'Stock Actual' },
       { header: 'Cambio por mtto.' },
       { header: 'Entrego' },
     ];
@@ -317,6 +320,10 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
               this.mensajeGenerandoInformacion =
                 'Generando Informacion - B.- Check List de componentes...!!!';
               this.updateRowGroupMetaDataDetalle2();
+
+              this.modeloItem.txRegistroEquipoDetalle6NoPredeterminado =
+                this.modeloItem.txRegistroEquipoDetalle2NoPredeterminado;
+
               this.onLlenarRepuestoNoPredeterminado();
               this.listClonedDetalle6Repuesto =
                 this.modeloItem.txRegistroEquipoDetalle6Repuestos;
@@ -395,6 +402,25 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
         });
       }
     });
+
+    this.onLlenarRepuestoNoPredeterminadoE();
+  }
+
+  onLlenarRepuestoNoPredeterminadoE() {
+    this.repuestosNoPredeterminadoE = [];
+
+    this.modeloItem.txRegistroEquipoDetalle6NoPredeterminado.forEach((repu) => {
+      if (
+        !this.repuestosNoPredeterminadoE.find(
+          (r) => r.value === repu.codigoRepuesto
+        )
+      ) {
+        this.repuestosNoPredeterminadoE.push({
+          label: repu.codigoRepuesto + '-' + repu.descripcion,
+          value: repu.codigoRepuesto,
+        });
+      }
+    });
   }
 
   onLlenarInventarioRepuestoNoPredeterminado() {
@@ -431,6 +457,41 @@ export class RegistroEquipoCreateComponent implements OnInit, OnDestroy {
     this.onLlenarRepuestoNoPredeterminado();
     this.updateRowGroupMetaDataDetalle2();
     this.displayNuevoRepuesto = false;
+  }
+
+  onInsertarRepuestoE() {
+    this.selectedRepuestoE.forEach((sel: any) => {
+      for (let item of this.modeloItem.txRegistroEquipoDetalle6NoPredeterminado.filter(
+        (x) => x.codigoRepuesto === sel.value
+      )) {
+        let detalle6Repuesto: TxRegistroEquipoDetalle6Model = {
+          idRegistroEquipoDetalle: item.idRegistroEquipoDetalle,
+          idRegistroEquipo: item.idRegistroEquipo,
+          codigoRepuesto: item.codigoRepuesto,
+          descripcion: item.descripcion,
+          stockActual: 0,
+          cambioPorMantenimiento: 0,
+          entregado: 0,
+        };
+
+        this.modeloItem.txRegistroEquipoDetalle6.push(detalle6Repuesto);
+        break;
+      }
+
+      this.modeloItem.txRegistroEquipoDetalle6NoPredeterminado = [
+        ...this.modeloItem.txRegistroEquipoDetalle6NoPredeterminado.filter(
+          (y) => y.codigoRepuesto !== sel.value
+        ),
+      ];
+    });
+
+    this.modeloItem.txRegistroEquipoDetalle6 =
+      this.modeloItem.txRegistroEquipoDetalle6.sort((a, b) =>
+        a.descripcion > b.descripcion ? 1 : -1
+      );
+
+    this.onLlenarRepuestoNoPredeterminadoE();
+    this.displayNuevoRepuestoE = false;
   }
 
   onInsertarInventarioRepuesto() {

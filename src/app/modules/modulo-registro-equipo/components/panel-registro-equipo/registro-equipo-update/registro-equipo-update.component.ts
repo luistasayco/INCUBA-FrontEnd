@@ -17,10 +17,9 @@ import { TxRegistroEquipoDetalle7Model } from '../../../models/tx-registro-equip
 @Component({
   selector: 'app-registro-equipo-update',
   templateUrl: './registro-equipo-update.component.html',
-  styleUrls: ['./registro-equipo-update.component.css']
+  styleUrls: ['./registro-equipo-update.component.css'],
 })
 export class RegistroEquipoUpdateComponent implements OnInit, OnDestroy {
-
   // Titulo del componente
   titulo = 'Registro de Equipo Nro:';
 
@@ -38,7 +37,7 @@ export class RegistroEquipoUpdateComponent implements OnInit, OnDestroy {
   selectedPlanta: any;
   selectedModelo: any;
   selectedModeloIsSolovac: boolean;
-  selectedTipoMantenimiento: any;  
+  selectedTipoMantenimiento: any;
 
   modeloEmpresa: EmpresaModel = new EmpresaModel();
   modeloPlanta: PlantaModel = new PlantaModel();
@@ -53,8 +52,8 @@ export class RegistroEquipoUpdateComponent implements OnInit, OnDestroy {
   columnasDetalle6: any[];
 
   // Opcion Editar
-  modelocloned: { [s: string]: TxRegistroEquipoDetalle5Model; } = {};
-  modeloclonedDetalle6: { [s: string]: TxRegistroEquipoDetalle6Model; } = {};
+  modelocloned: { [s: string]: TxRegistroEquipoDetalle5Model } = {};
+  modeloclonedDetalle6: { [s: string]: TxRegistroEquipoDetalle6Model } = {};
 
   // Obtenemos el ID si modificamos el registro
   idRegistroEquipo: number;
@@ -67,15 +66,20 @@ export class RegistroEquipoUpdateComponent implements OnInit, OnDestroy {
 
   displaySave: boolean;
   displayControles: boolean;
-  constructor(private registroEquipoService: RegistroEquipoService,
-              public mensajePrimeNgService: MensajePrimeNgService,
-              private router: Router,
-              private readonly route: ActivatedRoute,
-              private breadcrumbService: BreadcrumbService) {
+  constructor(
+    private registroEquipoService: RegistroEquipoService,
+    public mensajePrimeNgService: MensajePrimeNgService,
+    private router: Router,
+    private readonly route: ActivatedRoute,
+    private breadcrumbService: BreadcrumbService
+  ) {
     this.breadcrumbService.setItems([
-        { label: 'Módulo Registro Equipo' },
-        { label: 'Registro de Equipo', routerLink: ['module-re/panel-registro-equipo'] },
-        { label: 'Actualizar'}
+      { label: 'Módulo Registro Equipo' },
+      {
+        label: 'Registro de Equipo',
+        routerLink: ['module-re/panel-registro-equipo'],
+      },
+      { label: 'Actualizar' },
     ]);
   }
 
@@ -91,32 +95,50 @@ export class RegistroEquipoUpdateComponent implements OnInit, OnDestroy {
       { header: 'Codigo' },
       { header: 'Repuesto' },
       { header: 'Activo Fijo' },
-      { header: 'Observación' }
+      { header: 'Observación' },
     ];
 
     this.columnasDetalle6 = [
       { header: 'Repuesto' },
       { header: 'Descripción' },
-      { header: 'Stock Actual' },
       { header: 'Cambio por mtto.' },
-      { header: 'Entrego' }
+      { header: 'Entrego' },
     ];
+
+    this.getToObtieneTipoMantenimiento();
+  }
+
+  getToObtieneTipoMantenimiento() {
+    this.listItemTipoMantenimiento = [];
+    this.listItemTipoMantenimiento.push({
+      label: 'PREVENTIVO',
+      value: 'PREVENTIVO',
+    });
+    this.listItemTipoMantenimiento.push({
+      label: 'CORRECTIVO',
+      value: 'CORRECTIVO',
+    });
+    this.selectedTipoMantenimiento = this.listItemTipoMantenimiento[0];
   }
 
   onListar() {
     this.subscription$ = new Subscription();
-    this.subscription$ = this.registroEquipoService.getTxRegistroEquipoPorId(this.idRegistroEquipo)
-    .subscribe(resp => {
-      if (resp) {
-        this.modeloItem = resp;
-        this.cloneListImagen = [...this.modeloItem.txRegistroEquipoDetalle7];
-        this.onUpdateRow();
+    this.subscription$ = this.registroEquipoService
+      .getTxRegistroEquipoPorId(this.idRegistroEquipo)
+      .subscribe(
+        (resp) => {
+          if (resp) {
+            this.modeloItem = resp;
+            this.cloneListImagen = [
+              ...this.modeloItem.txRegistroEquipoDetalle7,
+            ];
+            this.onUpdateRow();
+          }
+        },
+        (error) => {
+          this.mensajePrimeNgService.onToErrorMsg(null, error);
         }
-      },
-      (error) => {
-        this.mensajePrimeNgService.onToErrorMsg(null, error);
-      }
-    );
+      );
   }
 
   onUpdateRow() {
@@ -128,58 +150,63 @@ export class RegistroEquipoUpdateComponent implements OnInit, OnDestroy {
   updateRowGroupMetaData() {
     this.rowGroupMetadata = {};
     if (this.modeloItem.txRegistroEquipoDetalle1) {
-        for (let i = 0; i < this.modeloItem.txRegistroEquipoDetalle1.length; i++) {
-            let rowData = this.modeloItem.txRegistroEquipoDetalle1[i];
-            let brand = rowData.descripcion;
-            if (i == 0) {
-                this.rowGroupMetadata[brand] = { index: 0, size: 1 };
-            }
-            else {
-                let previousRowData = this.modeloItem.txRegistroEquipoDetalle1[i - 1];
-                let previousRowGroup = previousRowData.descripcion;
-                if (brand === previousRowGroup)
-                    this.rowGroupMetadata[brand].size++;
-                else
-                    this.rowGroupMetadata[brand] = { index: i, size: 1 };
-            }
+      for (
+        let i = 0;
+        i < this.modeloItem.txRegistroEquipoDetalle1.length;
+        i++
+      ) {
+        let rowData = this.modeloItem.txRegistroEquipoDetalle1[i];
+        let brand = rowData.descripcion;
+        if (i == 0) {
+          this.rowGroupMetadata[brand] = { index: 0, size: 1 };
+        } else {
+          let previousRowData = this.modeloItem.txRegistroEquipoDetalle1[i - 1];
+          let previousRowGroup = previousRowData.descripcion;
+          if (brand === previousRowGroup) this.rowGroupMetadata[brand].size++;
+          else this.rowGroupMetadata[brand] = { index: i, size: 1 };
         }
+      }
     }
   }
 
   updateRowGroupMetaDataDetalle2() {
     this.rowGroupMetadataDetalle2 = {};
     if (this.modeloItem.txRegistroEquipoDetalle2) {
-        for (let i = 0; i < this.modeloItem.txRegistroEquipoDetalle2.length; i++) {
-            let rowData = this.modeloItem.txRegistroEquipoDetalle2[i];
-            let brand = rowData.codigoRepuesto;
-            if (i == 0) {
-                this.rowGroupMetadataDetalle2[brand] = { index: 0, size: 1 };
-            }
-            else {
-                let previousRowData = this.modeloItem.txRegistroEquipoDetalle2[i - 1];
-                let previousRowGroup = previousRowData.codigoRepuesto;
-                if (brand === previousRowGroup)
-                    this.rowGroupMetadataDetalle2[brand].size++;
-                else
-                    this.rowGroupMetadataDetalle2[brand] = { index: i, size: 1 };
-            }
+      for (
+        let i = 0;
+        i < this.modeloItem.txRegistroEquipoDetalle2.length;
+        i++
+      ) {
+        let rowData = this.modeloItem.txRegistroEquipoDetalle2[i];
+        let brand = rowData.codigoRepuesto;
+        if (i == 0) {
+          this.rowGroupMetadataDetalle2[brand] = { index: 0, size: 1 };
+        } else {
+          let previousRowData = this.modeloItem.txRegistroEquipoDetalle2[i - 1];
+          let previousRowGroup = previousRowData.codigoRepuesto;
+          if (brand === previousRowGroup)
+            this.rowGroupMetadataDetalle2[brand].size++;
+          else this.rowGroupMetadataDetalle2[brand] = { index: i, size: 1 };
         }
+      }
     }
   }
 
   listImagen() {
-    if (this.modeloItem.txRegistroEquipoDetalle7.length > 0 ) {
-      this.modeloItem.txRegistroEquipoDetalle7.forEach(x => {
-        this.listIma.push({imagen: x.foto});
+    if (this.modeloItem.txRegistroEquipoDetalle7.length > 0) {
+      this.modeloItem.txRegistroEquipoDetalle7.forEach((x) => {
+        this.listIma.push({ imagen: x.foto });
       });
     }
   }
 
   listUpdate(event: any[]) {
     this.modeloItem.txRegistroEquipoDetalle7 = [];
-    event.forEach(x => {
+    event.forEach((x) => {
       if (this.cloneListImagen) {
-        let itemImagen = this.cloneListImagen.find(xFind => xFind.foto === x.imagen);
+        let itemImagen = this.cloneListImagen.find(
+          (xFind) => xFind.foto === x.imagen
+        );
         if (itemImagen) {
           this.modeloItem.txRegistroEquipoDetalle7.push(itemImagen);
         } else {
@@ -187,7 +214,7 @@ export class RegistroEquipoUpdateComponent implements OnInit, OnDestroy {
             idRegistroEquipoDetalle: 0,
             idRegistroEquipo: 0,
             foto: x.imagen,
-            orden: 0
+            orden: 0,
           });
         }
       } else {
@@ -195,26 +222,43 @@ export class RegistroEquipoUpdateComponent implements OnInit, OnDestroy {
           idRegistroEquipoDetalle: 0,
           idRegistroEquipo: 0,
           foto: x.imagen,
-          orden: 0
+          orden: 0,
         });
       }
     });
   }
 
   onToGrabar() {
-    
+    if (this.modeloItem.horaSalida === null) {
+      this.mensajePrimeNgService.onToErrorMsg(
+        this.globalConstants.msgExitoSummary,
+        `Ingresar Hora de Salida`
+      );
+      return;
+    }
+
     this.displaySave = true;
+    this.modeloItem.tipoMantenimiento = this.selectedTipoMantenimiento.value;
     this.subscription$ = new Subscription();
-    this.subscription$ = this.registroEquipoService.setUpdateTxRegistroEquipo(this.modeloItem)
-    .subscribe(() =>  {
-      this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
-      this.displaySave = false;
-      this.back();
-    },
-      (error) => {
-        this.displaySave = false;
-        this.mensajePrimeNgService.onToErrorMsg(this.globalConstants.msgExitoSummary, error);
-    });
+    this.subscription$ = this.registroEquipoService
+      .setUpdateTxRegistroEquipo(this.modeloItem)
+      .subscribe(
+        () => {
+          this.mensajePrimeNgService.onToExitoMsg(
+            this.globalConstants.msgExitoSummary,
+            this.globalConstants.msgExitoDetail
+          );
+          this.displaySave = false;
+          this.back();
+        },
+        (error) => {
+          this.displaySave = false;
+          this.mensajePrimeNgService.onToErrorMsg(
+            this.globalConstants.msgExitoSummary,
+            error
+          );
+        }
+      );
   }
 
   back() {
@@ -228,6 +272,6 @@ export class RegistroEquipoUpdateComponent implements OnInit, OnDestroy {
   }
 
   goDisplayControles() {
-    this.displayControles = ! this.displayControles;
+    this.displayControles = !this.displayControles;
   }
 }
