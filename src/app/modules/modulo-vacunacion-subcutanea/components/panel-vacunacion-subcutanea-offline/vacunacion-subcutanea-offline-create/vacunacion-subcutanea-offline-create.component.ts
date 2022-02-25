@@ -247,7 +247,8 @@ export class VacunacionSubcutaneaOfflineCreateComponent
         this.clonedProcesoDetalle = [
           ...this.modeloItem.listarTxVacunacionSubCutaneaDetalle,
         ];
-        this.updateRowGroupMetaData();
+        //this.updateRowGroupMetaData();
+        this.onGrabarSeleccionMaquina();
       });
   }
 
@@ -500,7 +501,38 @@ export class VacunacionSubcutaneaOfflineCreateComponent
     this.nombreVacuna = '';
     this.displayVacuna = false;
   }
+
+  onChangeListProceso() {
+    let any_nitrogenada =
+      this.modeloItem.listarTxVacunacionSubCutaneaVacuna.some(
+        (e) => e.descripcionVacuna == 'NITROGENADAS'
+      );
+    let any_liofilizada =
+      this.modeloItem.listarTxVacunacionSubCutaneaVacuna.some(
+        (e) => e.descripcionVacuna == 'LIOFILIZADAS'
+      );
+
+    this.selectSeleccionMaquina = [];
+    this.listProceso.forEach((element) => {
+      if (
+        any_nitrogenada &&
+        element.descripcionProcesoSubCutanea.includes('NITROGENADA')
+      ) {
+        this.selectSeleccionMaquina.push(element);
+      }
+
+      if (
+        any_liofilizada &&
+        element.descripcionProcesoSubCutanea.includes('LIOFILIZADA')
+      ) {
+        this.selectSeleccionMaquina.push(element);
+      }
+    });
+  }
+
   onGrabarSeleccionMaquina() {
+    this.onChangeListProceso();
+
     let cloneDataDetalleOriginal = [...this.clonedProcesoDetalle];
     let clonedDataResultado = [
       ...this.modeloItem.listarTxVacunacionSubCutaneaResultado,
@@ -862,6 +894,8 @@ export class VacunacionSubcutaneaOfflineCreateComponent
     ].filter((filter) => filter.nombreVacuna !== data.nombreVacuna);
 
     this.modeloItem.listarTxVacunacionSubCutaneaVacuna = clonedListVacuna;
+
+    this.onGrabarSeleccionMaquina();
   }
 
   onVisibleMaquina() {

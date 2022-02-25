@@ -179,10 +179,6 @@
             <p-accordionTab header="Detalle" [selected]="displayControles">
                 <div class="ui-grid ui-fluid">
                     <div class="ui-g-12">
-                        <button pButton type="button" label="Seleccionar Procesos" icon="{{globalConstants.icoNuevo}}" (click)="onVisibleMaquina()"></button>
-                    </div>
-                    <div class="ui-g-12">
-                        <!-- <p-table [value]="modeloItem.listarTxVacunacionSubCutaneaDetalle" dataKey="descripcionProcesoSubCutanea" [(selection)]="selectEquipo" autoLayout="true" [responsive]="true"> -->
                         <p-table [value]="modeloItem.listarTxVacunacionSubCutaneaDetalle" dataKey="descripcionProcesoSubCutanea">
                             <ng-template pTemplate="header">
                                 <tr>

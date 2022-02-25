@@ -223,9 +223,9 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
       .subscribe((data: TxVacunacionSubCutaneaModel) => {
         let horaIngreso = this.modeloItem.horaIngreso;
         let horaSalida = this.modeloItem.horaSalida;
-        
+
         this.modeloItem = data;
-        
+
         this.modeloItem.horaIngreso = horaIngreso;
         this.modeloItem.horaSalida = horaSalida;
 
@@ -241,7 +241,8 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
         this.clonedProcesoDetalle = [
           ...this.modeloItem.listarTxVacunacionSubCutaneaDetalle,
         ];
-        this.updateRowGroupMetaData();
+        //this.updateRowGroupMetaData();
+        this.onGrabarSeleccionMaquina();
       });
   }
 
@@ -493,11 +494,45 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
         nombreVacuna: this.nombreVacuna,
       });
     }
+
+    this.onGrabarSeleccionMaquina();
+
     this.selectVacuna = null;
     this.nombreVacuna = '';
     this.displayVacuna = false;
   }
+
+  onChangeListProceso() {
+    let any_nitrogenada =
+      this.modeloItem.listarTxVacunacionSubCutaneaVacuna.some(
+        (e) => e.descripcionVacuna == 'NITROGENADAS'
+      );
+    let any_liofilizada =
+      this.modeloItem.listarTxVacunacionSubCutaneaVacuna.some(
+        (e) => e.descripcionVacuna == 'LIOFILIZADAS'
+      );
+
+    this.selectSeleccionMaquina = [];
+    this.listProceso.forEach((element) => {
+      if (
+        any_nitrogenada &&
+        element.descripcionProcesoSubCutanea.includes('NITROGENADA')
+      ) {
+        this.selectSeleccionMaquina.push(element);
+      }
+
+      if (
+        any_liofilizada &&
+        element.descripcionProcesoSubCutanea.includes('LIOFILIZADA')
+      ) {
+        this.selectSeleccionMaquina.push(element);
+      }
+    });
+  }
+
   onGrabarSeleccionMaquina() {
+    this.onChangeListProceso();
+
     let cloneDataDetalleOriginal = [...this.clonedProcesoDetalle];
     let clonedDataResultado = [
       ...this.modeloItem.listarTxVacunacionSubCutaneaResultado,
@@ -508,7 +543,6 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
       x.nroProcesoAcumulado = 0;
     });
 
-    // console.log('clonedDataResultado', clonedDataResultado);
     if (this.selectSeleccionMaquina.length === 0) {
       let cloneDataDetalle2 = [...cloneDataDetalleOriginal];
       this.listProceso.forEach((x) => {
@@ -861,6 +895,8 @@ export class VacunacionSubcutaneaCreateComponent implements OnInit, OnDestroy {
     ].filter((filter) => filter.nombreVacuna !== data.nombreVacuna);
 
     this.modeloItem.listarTxVacunacionSubCutaneaVacuna = clonedListVacuna;
+
+    this.onGrabarSeleccionMaquina();
   }
 
   onDisplayIrregularidad() {
