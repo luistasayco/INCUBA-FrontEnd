@@ -20,11 +20,13 @@ import { MenuDinamicoService } from '../../../../services/menu-dinamico.service'
 import { SeguridadService } from '../../../modulo-seguridad/services/seguridad.service';
 import { EmpresaPorUsuarioModel } from '../../../modulo-seguridad/models/empresa-por-usuario';
 import { PlantaPorUsuarioModel } from '../../../modulo-seguridad/models/planta-por-usuario';
+import * as XLSX from 'xlsx';
+import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-panel-registro-equipo',
   templateUrl: './panel-registro-equipo.component.html',
-  styleUrls: ['./panel-registro-equipo.component.css']
+  styleUrls: ['./panel-registro-equipo.component.css'],
 })
 export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
   // Titulo del componente
@@ -61,26 +63,31 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
   displayCierre: boolean;
   displayDescarga: boolean;
 
-  modeloDatosCierre: TxRegistroEquipoModel  = new TxRegistroEquipoModel();
-  
+  modeloDatosCierre: TxRegistroEquipoModel = new TxRegistroEquipoModel();
+
   saveFiltros: any[];
 
-  constructor(private registroEquipoService: RegistroEquipoService,
-              private compartidoService: CompartidoService,
-              public mensajePrimeNgService: MensajePrimeNgService,
-              public lenguageService: LanguageService,
-              private router: Router,
-              private breadcrumbService: BreadcrumbService,
-              private confirmationService: ConfirmationService,
-              private sessionService: SessionService,
-              private menuDinamicoService: MenuDinamicoService,
-              private seguridadService: SeguridadService) {
+  constructor(
+    private registroEquipoService: RegistroEquipoService,
+    private compartidoService: CompartidoService,
+    public mensajePrimeNgService: MensajePrimeNgService,
+    public lenguageService: LanguageService,
+    private router: Router,
+    private breadcrumbService: BreadcrumbService,
+    private confirmationService: ConfirmationService,
+    private sessionService: SessionService,
+    private menuDinamicoService: MenuDinamicoService,
+    private seguridadService: SeguridadService
+  ) {
     this.breadcrumbService.setItems([
-        { label: 'Módulo Registro Equipo' },
-        { label: 'Registro de Equipo', routerLink: ['module-re/panel-registro-equipo'] }
+      { label: 'Módulo Registro Equipo' },
+      {
+        label: 'Registro de Equipo',
+        routerLink: ['module-re/panel-registro-equipo'],
+      },
     ]);
   }
-  
+
   ngOnDestroy() {
     if (this.subscription$) {
       this.subscription$.unsubscribe();
@@ -88,20 +95,19 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
 
     // Guardar los filtros en la session
     this.saveFiltros = [];
-    this.saveFiltros.push(
-      { idRegistroEquipo: this.modeloFind.idRegistroEquipo,
-        fecRegistroInicio: this.modeloFind.fecRegistroInicio,
-        fecRegistroFin: this.modeloFind.fecRegistroFin,
-        selectedEmpresa: this.selectedEmpresa,
-        selectedPlanta: this.selectedPlanta,
-        selectedModelo: this.selectedModelo
+    this.saveFiltros.push({
+      idRegistroEquipo: this.modeloFind.idRegistroEquipo,
+      fecRegistroInicio: this.modeloFind.fecRegistroInicio,
+      fecRegistroFin: this.modeloFind.fecRegistroFin,
+      selectedEmpresa: this.selectedEmpresa,
+      selectedPlanta: this.selectedPlanta,
+      selectedModelo: this.selectedModelo,
     });
 
     this.sessionService.setItem('filter-re', this.saveFiltros);
   }
 
   ngOnInit() {
-    
     this.getToObtieneEmpresa();
     this.getToObtieneModelo();
 
@@ -115,14 +121,27 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
     if (this.sessionService.getItem('filter-re')) {
       this.saveFiltros = this.sessionService.getItem('filter-re');
       this.modeloFind.idRegistroEquipo = this.saveFiltros[0].idRegistroEquipo;
-      this.modeloFind.fecRegistroInicio = new Date(this.saveFiltros[0].fecRegistroInicio);
-      this.modeloFind.fecRegistroFin = new Date(this.saveFiltros[0].fecRegistroFin);
-      this.selectedEmpresa = this.saveFiltros[0].selectedEmpresa === undefined ? null : this.saveFiltros[0].selectedEmpresa ;
-      this.selectedModelo = this.saveFiltros[0].selectedModelo === undefined ? null : this.saveFiltros[0].selectedModelo ;
+      this.modeloFind.fecRegistroInicio = new Date(
+        this.saveFiltros[0].fecRegistroInicio
+      );
+      this.modeloFind.fecRegistroFin = new Date(
+        this.saveFiltros[0].fecRegistroFin
+      );
+      this.selectedEmpresa =
+        this.saveFiltros[0].selectedEmpresa === undefined
+          ? null
+          : this.saveFiltros[0].selectedEmpresa;
+      this.selectedModelo =
+        this.saveFiltros[0].selectedModelo === undefined
+          ? null
+          : this.saveFiltros[0].selectedModelo;
       if (this.selectedEmpresa !== null) {
         this.getOnChangeEmpresa();
       } else {
-        this.selectedPlanta = this.saveFiltros[0].selectedPlanta === undefined ? null : this.saveFiltros[0].selectedPlanta ;
+        this.selectedPlanta =
+          this.saveFiltros[0].selectedPlanta === undefined
+            ? null
+            : this.saveFiltros[0].selectedPlanta;
       }
 
       this.onListar();
@@ -134,26 +153,27 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
       { field: 'codigoEmpresa', header: 'Empresa' },
       { field: 'codigoPlanta', header: 'Planta' },
       { field: 'idModelo', header: 'Modelo' },
-      { field: 'UsuarioCreacion', header: 'Usuario' }
+      { field: 'UsuarioCreacion', header: 'Usuario' },
     ];
 
     this.subscription$ = new Subscription();
-    this.subscription$ = this.menuDinamicoService.getObtieneOpciones('app-panel-registro-equipo')
-    .subscribe(acces => {
-      this.buttonAcces = acces;
-    });
+    this.subscription$ = this.menuDinamicoService
+      .getObtieneOpciones('app-panel-registro-equipo')
+      .subscribe((acces) => {
+        this.buttonAcces = acces;
+      });
 
     this.onListar();
   }
 
-  onLimpiarFiltros () {
-      this.sessionService.removeItem('filter-re');
-      this.modeloFind.idRegistroEquipo = 0;
-      this.modeloFind.fecRegistroInicio = new Date();
-      this.modeloFind.fecRegistroFin = new Date();
-      this.selectedEmpresa = null ;
-      this.selectedModelo = null ;
-      this.selectedPlanta = null;
+  onLimpiarFiltros() {
+    this.sessionService.removeItem('filter-re');
+    this.modeloFind.idRegistroEquipo = 0;
+    this.modeloFind.fecRegistroInicio = new Date();
+    this.modeloFind.fecRegistroFin = new Date();
+    this.selectedEmpresa = null;
+    this.selectedModelo = null;
+    this.selectedPlanta = null;
   }
 
   onToBuscar() {
@@ -162,13 +182,17 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
 
   getToObtieneEmpresa() {
     this.subscription$ = new Subscription();
-    this.subscription$ = this.seguridadService.getEmpresaConAccesoPorUsuario()
-    .subscribe((data: EmpresaPorUsuarioModel[]) => {
-      this.listItemEmpresa = [];
-      for (let item of data) {
-        this.listItemEmpresa.push({ label: item.descripcionEmpresa, value: item.codigoEmpresa });
-      }
-    });
+    this.subscription$ = this.seguridadService
+      .getEmpresaConAccesoPorUsuario()
+      .subscribe((data: EmpresaPorUsuarioModel[]) => {
+        this.listItemEmpresa = [];
+        for (let item of data) {
+          this.listItemEmpresa.push({
+            label: item.descripcionEmpresa,
+            value: item.codigoEmpresa,
+          });
+        }
+      });
   }
 
   getOnChangeEmpresa() {
@@ -182,73 +206,94 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
 
   getToObtienePlantaPorEmpresa(value: string) {
     this.subscription$ = new Subscription();
-    this.subscription$ = this.seguridadService.getPlantaConAccesoPorUsuarioPorEmpresa(value)
-    .subscribe((data: PlantaPorUsuarioModel[]) => {
-      this.listItemPlanta = [];
-      for (let item of data) {
-        this.listItemPlanta.push({ label: item.descripcionPlanta, value: item.codigoPlanta });
-      }
-      if (this.saveFiltros.length > 0) {
-
-        this.selectedPlanta = this.saveFiltros[0].selectedPlanta === undefined ? null : this.saveFiltros[0].selectedPlanta ;
-      }
-    });
+    this.subscription$ = this.seguridadService
+      .getPlantaConAccesoPorUsuarioPorEmpresa(value)
+      .subscribe((data: PlantaPorUsuarioModel[]) => {
+        this.listItemPlanta = [];
+        for (let item of data) {
+          this.listItemPlanta.push({
+            label: item.descripcionPlanta,
+            value: item.codigoPlanta,
+          });
+        }
+        if (this.saveFiltros.length > 0) {
+          this.selectedPlanta =
+            this.saveFiltros[0].selectedPlanta === undefined
+              ? null
+              : this.saveFiltros[0].selectedPlanta;
+        }
+      });
   }
 
   getToObtieneModelo() {
     this.subscription$ = new Subscription();
-    this.subscription$ = this.registroEquipoService.getModelo(this.modeloModelo)
-    .subscribe((data: ModeloModel[]) => {
-      this.listItemModelo = [];
-      for (let item of data) {
-        this.listItemModelo.push({ label: item.descripcion, value: item.codigoModelo });
-      }
-    });
+    this.subscription$ = this.registroEquipoService
+      .getModelo(this.modeloModelo)
+      .subscribe((data: ModeloModel[]) => {
+        this.listItemModelo = [];
+        for (let item of data) {
+          this.listItemModelo.push({
+            label: item.descripcion,
+            value: item.codigoModelo,
+          });
+        }
+      });
   }
 
-  getOnChangeModelo() {
-  }
+  getOnChangeModelo() {}
 
-  getOnChangePlanta(){
-  }
+  getOnChangePlanta() {}
 
   onListar() {
-    this.modeloFind.idRegistroEquipo = this.modeloFind.idRegistroEquipo === null ? 0 : this.modeloFind.idRegistroEquipo;
-    this.modeloFind.codigoEmpresa = this.selectedEmpresa === null ? '' : this.selectedEmpresa.value;
-    this.modeloFind.codigoPlanta = this.selectedPlanta === null ? '' : this.selectedPlanta.value;
-    this.modeloFind.codigoModelo = this.selectedModelo === null ? '' : this.selectedModelo.value;
+    this.modeloFind.idRegistroEquipo =
+      this.modeloFind.idRegistroEquipo === null
+        ? 0
+        : this.modeloFind.idRegistroEquipo;
+    this.modeloFind.codigoEmpresa =
+      this.selectedEmpresa === null ? '' : this.selectedEmpresa.value;
+    this.modeloFind.codigoPlanta =
+      this.selectedPlanta === null ? '' : this.selectedPlanta.value;
+    this.modeloFind.codigoModelo =
+      this.selectedModelo === null ? '' : this.selectedModelo.value;
     this.subscription$ = new Subscription();
-    this.subscription$ = this.registroEquipoService.getTxRegistroEquipo(this.modeloFind)
-    .subscribe(resp => {
-      if (resp) {
-          this.listModelo = resp;
+    this.subscription$ = this.registroEquipoService
+      .getTxRegistroEquipo(this.modeloFind)
+      .subscribe(
+        (resp) => {
+          if (resp) {
+            this.listModelo = resp;
+          }
+        },
+        (error) => {
+          this.mensajePrimeNgService.onToErrorMsg(null, error);
         }
-      },
-      (error) => {
-        this.mensajePrimeNgService.onToErrorMsg(null, error);
-      }
-    );
+      );
   }
 
   onConfirmCerrar(data: TxRegistroEquipoModel) {
-
     if (data.flgCerrado) {
-      this.mensajePrimeNgService.onToInfoMsg(null, 'Registro seleccionado se encuentra CERRADO!!!');
+      this.mensajePrimeNgService.onToInfoMsg(
+        null,
+        'Registro seleccionado se encuentra CERRADO!!!'
+      );
       return;
     }
 
     this.confirmationService.confirm({
-        message: this.globalConstants.subTitleCierre,
-        header: this.globalConstants.titleCierre,
-        icon: 'pi pi-info-circle',
-        acceptLabel: 'Si',
-        rejectLabel: 'No',
-        accept: () => {
-          this.onToCerrar(data);
-        },
-        reject: () => {
-          this.mensajePrimeNgService.onToCancelMsg(this.globalConstants.msgCancelSummary, this.globalConstants.msgCancelDetail);
-        }
+      message: this.globalConstants.subTitleCierre,
+      header: this.globalConstants.titleCierre,
+      icon: 'pi pi-info-circle',
+      acceptLabel: 'Si',
+      rejectLabel: 'No',
+      accept: () => {
+        this.onToCerrar(data);
+      },
+      reject: () => {
+        this.mensajePrimeNgService.onToCancelMsg(
+          this.globalConstants.msgCancelSummary,
+          this.globalConstants.msgCancelDetail
+        );
+      },
     });
   }
 
@@ -256,72 +301,150 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
     this.displayCierre = true;
     this.subscription$ = new Subscription();
     data.flgCerrado = true;
-    this.subscription$ = this.registroEquipoService.setUpdateStatusTxRegistroEquipo(data)
-    .subscribe((resp: IMensajeResultadoApi) => {
-        this.listModelo.find(x => x.idRegistroEquipo === data.idRegistroEquipo).flgCerrado = true;
-        this.listModelo.find(x => x.idRegistroEquipo === data.idRegistroEquipo).fecCierre = new Date();
-        this.listModelo
-        .find(x => x.idRegistroEquipo === data.idRegistroEquipo)
-        .usuarioCierre = this.sessionService.getItemDecrypt('usuario');
-        this.displayCierre = false;
-        this.mensajePrimeNgService.onToExitoMsg(null, resp);
-      },
-      (error) => {
-        this.displayCierre = false;
-        this.listModelo.find(x => x.idRegistroEquipo === data.idRegistroEquipo).flgCerrado = false;
-        this.listModelo.find(x => x.idRegistroEquipo === data.idRegistroEquipo).fecCierre = null;
-        this.listModelo.find(x => x.idRegistroEquipo === data.idRegistroEquipo).usuarioCierre = '';
-        this.mensajePrimeNgService.onToErrorMsg(null, error);
-      }
-    );
+    this.subscription$ = this.registroEquipoService
+      .setUpdateStatusTxRegistroEquipo(data)
+      .subscribe(
+        (resp: IMensajeResultadoApi) => {
+          this.listModelo.find(
+            (x) => x.idRegistroEquipo === data.idRegistroEquipo
+          ).flgCerrado = true;
+          this.listModelo.find(
+            (x) => x.idRegistroEquipo === data.idRegistroEquipo
+          ).fecCierre = new Date();
+          this.listModelo.find(
+            (x) => x.idRegistroEquipo === data.idRegistroEquipo
+          ).usuarioCierre = this.sessionService.getItemDecrypt('usuario');
+          this.displayCierre = false;
+          this.mensajePrimeNgService.onToExitoMsg(null, resp);
+        },
+        (error) => {
+          this.displayCierre = false;
+          this.listModelo.find(
+            (x) => x.idRegistroEquipo === data.idRegistroEquipo
+          ).flgCerrado = false;
+          this.listModelo.find(
+            (x) => x.idRegistroEquipo === data.idRegistroEquipo
+          ).fecCierre = null;
+          this.listModelo.find(
+            (x) => x.idRegistroEquipo === data.idRegistroEquipo
+          ).usuarioCierre = '';
+          this.mensajePrimeNgService.onToErrorMsg(null, error);
+        }
+      );
   }
 
   onConfirmEliminar(data: any) {
     if (data.flgCerrado) {
-      this.mensajePrimeNgService.onToInfoMsg(null, 'Registro seleccionado se encuentra CERRADO!!!');
+      this.mensajePrimeNgService.onToInfoMsg(
+        null,
+        'Registro seleccionado se encuentra CERRADO!!!'
+      );
       return;
     }
     this.confirmationService.confirm({
-        message: this.globalConstants.subTitleEliminar,
-        header: this.globalConstants.titleEliminar,
-        icon: 'pi pi-info-circle',
-        acceptLabel: 'Si',
-        rejectLabel: 'No',
-        accept: () => {
-          this.onToEliminar(data);
-        },
-        reject: () => {
-          this.mensajePrimeNgService.onToCancelMsg(this.globalConstants.msgCancelSummary, this.globalConstants.msgCancelDetail);
-        }
+      message: this.globalConstants.subTitleEliminar,
+      header: this.globalConstants.titleEliminar,
+      icon: 'pi pi-info-circle',
+      acceptLabel: 'Si',
+      rejectLabel: 'No',
+      accept: () => {
+        this.onToEliminar(data);
+      },
+      reject: () => {
+        this.mensajePrimeNgService.onToCancelMsg(
+          this.globalConstants.msgCancelSummary,
+          this.globalConstants.msgCancelDetail
+        );
+      },
     });
   }
 
   onToEliminar(data: TxRegistroEquipoModel) {
     this.subscription$ = new Subscription();
-    this.subscription$ = this.registroEquipoService.setDeleteTxRegistroEquipo(data)
-    .subscribe((resp: IMensajeResultadoApi) => {
-      this.listModelo = [...this.listModelo].filter(x => x.idRegistroEquipo !== data.idRegistroEquipo);
+    this.subscription$ = this.registroEquipoService
+      .setDeleteTxRegistroEquipo(data)
+      .subscribe(
+        (resp: IMensajeResultadoApi) => {
+          this.listModelo = [...this.listModelo].filter(
+            (x) => x.idRegistroEquipo !== data.idRegistroEquipo
+          );
 
-      this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, resp);
-      },
-      (error) => {
-        this.mensajePrimeNgService.onToErrorMsg(null, error);
-      }
-    );
+          this.mensajePrimeNgService.onToExitoMsg(
+            this.globalConstants.msgExitoSummary,
+            resp
+          );
+        },
+        (error) => {
+          this.mensajePrimeNgService.onToErrorMsg(null, error);
+        }
+      );
   }
 
   onToRowSelectPDF(modelo: TxRegistroEquipoModel) {
     this.displayDescarga = true;
     this.subscription$ = new Subscription();
-    this.subscription$ = this.registroEquipoService.setPDFTxRegistroEquipo(modelo.idRegistroEquipo)
-    .subscribe((resp: any) => {
-      saveAs(new Blob([resp], {type: 'application/pdf'}), modelo.nombreArchivo);
-      this.displayDescarga = false;
-    },
-      (error) => {
-        this.displayDescarga = false;
-        this.mensajePrimeNgService.onToErrorMsg(null, error);
-      });
+    this.subscription$ = this.registroEquipoService
+      .setPDFTxRegistroEquipo(modelo.idRegistroEquipo)
+      .subscribe(
+        (resp: any) => {
+          saveAs(
+            new Blob([resp], { type: 'application/pdf' }),
+            modelo.nombreArchivo
+          );
+          this.displayDescarga = false;
+        },
+        (error) => {
+          this.displayDescarga = false;
+          this.mensajePrimeNgService.onToErrorMsg(null, error);
+        }
+      );
+  }
+
+  onToRowSelectXLSX(modelo: TxRegistroEquipoModel) {
+    this.subscription$ = new Subscription();
+    this.subscription$ = this.registroEquipoService
+      .getTxRegistroEquipoPorId(modelo.idRegistroEquipo)
+      .subscribe(
+        (resp) => {
+          var json_data = [];
+
+          if (resp) {
+            resp.txRegistroEquipoDetalle6.forEach((element) => {
+              json_data.push({
+                Tipo: 'CONSUMIBLE',
+                Repuesto: element.codigoRepuesto,
+                Descripción: element.descripcion,
+                'Cambio por mtto.': element.cambioPorMantenimiento,
+                Entrego: element.entregado,
+              });
+            });
+
+            resp.txRegistroEquipoDetalle6Repuestos.forEach((element) => {
+              json_data.push({
+                Tipo: 'REPUESTOS',
+                Repuesto: element.codigoRepuesto,
+                Descripción: element.descripcion,
+                'Cambio por mtto.': element.cambioPorMantenimiento,
+                Entrego: element.entregado,
+              });
+            });
+
+            const worksheet: XLSX.WorkSheet =
+              XLSX.utils.json_to_sheet(json_data);
+            const workbook: XLSX.WorkBook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Informe');
+            XLSX.writeFile(
+              workbook,
+              'Inventario de consumibles y repuestos - Nro ' +
+                modelo.idRegistroEquipo +
+                '.xlsx'
+            );
+          }
+        },
+        (error) => {
+          this.mensajePrimeNgService.onToErrorMsg(null, error);
+        }
+      );
   }
 
   onToCreate() {
@@ -329,7 +452,10 @@ export class PanelRegistroEquipoComponent implements OnInit, OnDestroy {
   }
 
   onToUpdate(data: any) {
-    this.router.navigate(['/main/module-re/update-registro-equipo', data.idRegistroEquipo]);
+    this.router.navigate([
+      '/main/module-re/update-registro-equipo',
+      data.idRegistroEquipo,
+    ]);
   }
 
   onDatosCierre(data: TxRegistroEquipoModel) {

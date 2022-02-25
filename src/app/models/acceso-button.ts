@@ -5,6 +5,7 @@ export class ButtonAcces {
     btnGrabar: boolean;
     btnCerrar: boolean;
     btnPDF: boolean;
+    btnXLSX: boolean;
     btnDownload: boolean;
     btnVisualizar: boolean;
     btnSincronizar: boolean;
@@ -26,6 +27,7 @@ export class ButtonAcces {
         this.btnGrabar = true;
         this.btnCerrar = true;
         this.btnPDF = true;
+        this.btnXLSX = true;
         this.btnDownload = true;
         this.btnVisualizar = true;
         this.btnSincronizar = true;

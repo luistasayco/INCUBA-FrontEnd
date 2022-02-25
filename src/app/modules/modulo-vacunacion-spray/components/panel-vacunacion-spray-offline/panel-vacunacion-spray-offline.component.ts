@@ -41,6 +41,7 @@ export class PanelVacunacionSprayOfflineComponent implements OnInit, OnDestroy {
   subscription$: Subscription;
 
   // Variables para eliminar
+  displaySave: boolean;
   displayDatosCierre: boolean;
   displayCierre: boolean;
 
@@ -194,13 +195,22 @@ export class PanelVacunacionSprayOfflineComponent implements OnInit, OnDestroy {
   }
 
   onToSync(data: any) {
+    if (this.displaySave)
+    {
+      this.mensajePrimeNgService.onToErrorMsg(null, "Sincronización en curso...");
+      return;
+    }
+    
+    this.displaySave = true;
     this.subscription$ = new Subscription();
     this.subscription$ = this.vacunacionSprayService.setInsertFromSyncTxVacunacionSpray(data)
     .subscribe(resp => {
         this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
         this.onToEliminar(data);
+        this.displaySave = false;
       },
       (error) => {
+        this.displaySave = false;
         this.mensajePrimeNgService.onToErrorMsg(null, error);
       }
     );

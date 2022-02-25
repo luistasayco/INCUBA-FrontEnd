@@ -39,6 +39,7 @@ export class PanelTxExamenFisicoPollitoOfflineComponent implements OnInit, OnDes
   subscription$: Subscription;
 
   // Variables para eliminar
+  displaySave: boolean;
   displayDatosCierre: boolean;
 
   modeloDatosCierre: TxExamenFisicoPollitoModel = new TxExamenFisicoPollitoModel();
@@ -191,13 +192,22 @@ export class PanelTxExamenFisicoPollitoOfflineComponent implements OnInit, OnDes
   }
 
   onToSync(data: any) {
+    if (this.displaySave)
+    {
+      this.mensajePrimeNgService.onToErrorMsg(null, "Sincronización en curso...");
+      return;
+    }
+    
+    this.displaySave = true;
     this.subscription$ = new Subscription();
     this.subscription$ = this.examenFisicoPollitoService.setInsertFromSyncExamenFisicoPollito(data)
     .subscribe(resp => {
         this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
         this.onToEliminar(data);
+        this.displaySave = false;
       },
       (error) => {
+        this.displaySave = false;
         this.mensajePrimeNgService.onToErrorMsg(null, error);
       }
     );

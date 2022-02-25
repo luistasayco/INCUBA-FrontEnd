@@ -45,6 +45,7 @@ export class PanelVacunacionSubcutaneaOfflineComponent implements OnInit, OnDest
   subscription$: Subscription;
 
   // Variables para eliminar
+  displaySave: boolean;
   displayDatosCierre: boolean;
   displayCierre: boolean;
   displayDescarga: boolean;
@@ -198,13 +199,22 @@ export class PanelVacunacionSubcutaneaOfflineComponent implements OnInit, OnDest
   }
 
   onToSync(data: any) {
+    if (this.displaySave)
+    {
+      this.mensajePrimeNgService.onToErrorMsg(null, "Sincronización en curso...");
+      return;
+    }
+    
+    this.displaySave = true;
     this.subscription$ = new Subscription();
     this.subscription$ = this.vacunacionSubcutaneaService.setInsertFromSyncTxVacunacionSubCutanea(data)
     .subscribe(resp => {
         this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
         this.onToEliminar(data);
+        this.displaySave = false;
       },
       (error) => {
+        this.displaySave = false;
         this.mensajePrimeNgService.onToErrorMsg(null, error);
       }
     );

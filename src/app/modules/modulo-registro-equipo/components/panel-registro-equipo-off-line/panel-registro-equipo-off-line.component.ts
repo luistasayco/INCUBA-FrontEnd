@@ -59,6 +59,7 @@ export class PanelRegistroEquipoOffLineComponent implements OnInit, OnDestroy {
   isNetwork: boolean;
   interval;
 
+  displaySave: boolean;
   displayDatosCierre: boolean;
 
   modeloDatosCierre: TxRegistroEquipoModel  = new TxRegistroEquipoModel();
@@ -280,13 +281,22 @@ export class PanelRegistroEquipoOffLineComponent implements OnInit, OnDestroy {
   }
 
   onToSync(data: any) {
+    if (this.displaySave)
+    {
+      this.mensajePrimeNgService.onToErrorMsg(null, "Sincronización en curso...");
+      return;
+    }
+    
+    this.displaySave = true;
     this.subscription$ = new Subscription();
     this.subscription$ = this.registroEquipoService.setInsertFromSyncTxRegistroEquipo(data)
     .subscribe(resp => {
         this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
         this.onToEliminar(data);
+        this.displaySave = false;
       },
       (error) => {
+        this.displaySave = false;
         this.mensajePrimeNgService.onToErrorMsg(null, error);
       }
     );

@@ -28,6 +28,7 @@ export class GlobalsConstants {
     icoCancelar: string;
     icoRegresar: string;
     icoPDF: string;
+    icoXLSX: string;
     icoCerrado: string;
     icoAbierto: string;
     icoVisualizar: string;
@@ -87,6 +88,7 @@ export class GlobalsConstants {
         this.icoCancelar = 'pi pi-times';
         this.icoRegresar = 'pi pi-sign-out';
         this.icoPDF = 'fa fa-file-pdf-o';
+        this.icoXLSX = 'fa fa-file-excel-o'
         this.icoCerrado = 'fa fa-lock';
         this.icoAbierto = 'fa fa-unlock';
         this.icoVisualizar = 'fa fa-eye';
