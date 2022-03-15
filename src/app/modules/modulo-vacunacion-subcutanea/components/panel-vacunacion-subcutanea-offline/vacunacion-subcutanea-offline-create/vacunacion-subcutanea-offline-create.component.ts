@@ -497,6 +497,9 @@ export class VacunacionSubcutaneaOfflineCreateComponent
         nombreVacuna: this.nombreVacuna,
       });
     }
+    
+    this.onGrabarSeleccionMaquina();
+
     this.selectVacuna = null;
     this.nombreVacuna = '';
     this.displayVacuna = false;
