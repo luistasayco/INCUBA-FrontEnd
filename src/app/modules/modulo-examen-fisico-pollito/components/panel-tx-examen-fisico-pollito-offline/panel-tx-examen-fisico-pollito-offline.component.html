@@ -58,6 +58,9 @@
                 <div class="ui-g-12 ui-md-3">
                     <button [disabled]="buttonAcces.btnNuevo" pButton type="button" label="{{globalConstants.cNuevo}}" icon="{{globalConstants.icoNuevo}}" (click)="onToCreate()"></button>
                 </div>
+                <div class="ui-g-6 ui-md-3">
+                    <button pButton icon="{{globalConstants.icoSincronizar}}" (click)="onToSyncAll()"></button>
+                </div>
             </div>
         </p-footer>
     </p-panel>
@@ -86,7 +89,7 @@
 
     Guardando Informacion...!!!
     <div class="ui-g ui-fluid">
-        <div class="ui-g-12">
+        <div class="ui-g-6">
             <p-progressBar mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>
         </div>
     </div>

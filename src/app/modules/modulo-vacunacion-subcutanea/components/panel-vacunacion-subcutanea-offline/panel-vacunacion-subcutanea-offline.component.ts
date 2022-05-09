@@ -12,14 +12,16 @@ import { MensajePrimeNgService } from '../../../modulo-compartido/services/mensa
 import { Router } from '@angular/router';
 import { LanguageService } from '../../../../services/language.service';
 import { UserContextService } from '../../../../services/user-context.service';
+import { variableGlobal } from 'src/app/interface/variable-global.interface';
 
 @Component({
   selector: 'app-panel-vacunacion-subcutanea-offline',
   templateUrl: './panel-vacunacion-subcutanea-offline.component.html',
-  styleUrls: ['./panel-vacunacion-subcutanea-offline.component.css']
+  styleUrls: ['./panel-vacunacion-subcutanea-offline.component.css'],
 })
-export class PanelVacunacionSubcutaneaOfflineComponent implements OnInit, OnDestroy {
-
+export class PanelVacunacionSubcutaneaOfflineComponent
+  implements OnInit, OnDestroy
+{
   // Titulo del componente
   titulo = 'Vacunación SubCutánea - Offline';
   // Acceso de botones
@@ -49,23 +51,29 @@ export class PanelVacunacionSubcutaneaOfflineComponent implements OnInit, OnDest
   displayDatosCierre: boolean;
   displayCierre: boolean;
   displayDescarga: boolean;
-  modeloDatosCierre: TxVacunacionSubCutaneaModel = new TxVacunacionSubCutaneaModel();
+  modeloDatosCierre: TxVacunacionSubCutaneaModel =
+    new TxVacunacionSubCutaneaModel();
 
   saveFiltros: any[];
   interval;
-  constructor(private breadcrumbService: BreadcrumbService,
-              private menuDinamicoService: MenuDinamicoService,
-              private vacunacionSubcutaneaLocalService: VacunacionSubcutaneaLocalService,
-              private vacunacionSubcutaneaService: VacunacionSubcutaneaService,
-              public mensajePrimeNgService: MensajePrimeNgService,
-              private confirmationService: ConfirmationService,
-              private router: Router,
-              public lenguageService: LanguageService,
-              private userContextService: UserContextService) {
+  constructor(
+    private breadcrumbService: BreadcrumbService,
+    private menuDinamicoService: MenuDinamicoService,
+    private vacunacionSubcutaneaLocalService: VacunacionSubcutaneaLocalService,
+    private vacunacionSubcutaneaService: VacunacionSubcutaneaService,
+    public mensajePrimeNgService: MensajePrimeNgService,
+    private confirmationService: ConfirmationService,
+    private router: Router,
+    public lenguageService: LanguageService,
+    private userContextService: UserContextService
+  ) {
     this.breadcrumbService.setItems([
       { label: 'Módulo Vacunación SubCutánea - Offline' },
-      { label: 'Vacunación SubCutánea - Offline', routerLink: ['module-su/panel-vacunacion-subcutanea-offline'] }
-  ]);
+      {
+        label: 'Vacunación SubCutánea - Offline',
+        routerLink: ['module-su/panel-vacunacion-subcutanea-offline'],
+      },
+    ]);
   }
 
   ngOnDestroy(): void {
@@ -76,7 +84,6 @@ export class PanelVacunacionSubcutaneaOfflineComponent implements OnInit, OnDest
   }
 
   ngOnInit(): void {
-
     this.modeloItem = new TxVacunacionSubCutaneaModel();
 
     this.columnas = [
@@ -85,14 +92,15 @@ export class PanelVacunacionSubcutaneaOfflineComponent implements OnInit, OnDest
       { header: 'Empresa' },
       { header: 'Planta' },
       { header: 'Unidad' },
-      { header: 'Usuario' }
+      { header: 'Usuario' },
     ];
 
     this.subscription$ = new Subscription();
-    this.subscription$ = this.menuDinamicoService.getObtieneOpciones('app-panel-vacunacion-subcutanea-offline')
-    .subscribe(acces => {
-      this.buttonAcces = acces;
-    });
+    this.subscription$ = this.menuDinamicoService
+      .getObtieneOpciones('app-panel-vacunacion-subcutanea-offline')
+      .subscribe((acces) => {
+        this.buttonAcces = acces;
+      });
 
     this.onListar();
     this.onUpdateDataVistaUsuario();
@@ -101,37 +109,43 @@ export class PanelVacunacionSubcutaneaOfflineComponent implements OnInit, OnDest
   onListar() {
     this.subscription$ = new Subscription();
     this.subscription$ = this.vacunacionSubcutaneaLocalService
-    .getTxVacunacionSubcutanea()
-    .subscribe(resp => {
-      if (resp) {
-          this.listModelo = resp;
+      .getTxVacunacionSubcutanea()
+      .subscribe(
+        (resp) => {
+          if (resp) {
+            this.listModelo = resp;
+          }
+        },
+        (error) => {
+          this.mensajePrimeNgService.onToErrorMsg(null, error);
         }
-      },
-      (error) => {
-        this.mensajePrimeNgService.onToErrorMsg(null, error);
-      }
-    );
+      );
   }
 
   onConfirmCerrar(data: TxVacunacionSubCutaneaModel) {
-
     if (data.flgCerrado) {
-      this.mensajePrimeNgService.onToInfoMsg(null, 'Registro seleccionado se encuentra CERRADO!!!');
+      this.mensajePrimeNgService.onToInfoMsg(
+        null,
+        'Registro seleccionado se encuentra CERRADO!!!'
+      );
       return;
     }
 
     this.confirmationService.confirm({
-        message: this.globalConstants.subTitleCierre,
-        header: this.globalConstants.titleCierre,
-        icon: 'pi pi-info-circle',
-        acceptLabel: 'Si',
-        rejectLabel: 'No',
-        accept: () => {
-          this.onToCerrar(data);
-        },
-        reject: () => {
-          this.mensajePrimeNgService.onToCancelMsg(this.globalConstants.msgCancelSummary, this.globalConstants.msgCancelDetail);
-        }
+      message: this.globalConstants.subTitleCierre,
+      header: this.globalConstants.titleCierre,
+      icon: 'pi pi-info-circle',
+      acceptLabel: 'Si',
+      rejectLabel: 'No',
+      accept: () => {
+        this.onToCerrar(data);
+      },
+      reject: () => {
+        this.mensajePrimeNgService.onToCancelMsg(
+          this.globalConstants.msgCancelSummary,
+          this.globalConstants.msgCancelDetail
+        );
+      },
     });
   }
 
@@ -142,86 +156,171 @@ export class PanelVacunacionSubcutaneaOfflineComponent implements OnInit, OnDest
     data.fecCierre = new Date();
     data.idUsuarioCierre = this.userContextService.getIdUsuario();
     data.usuarioCierre = this.userContextService.getUsuario();
-    this.subscription$ = this.vacunacionSubcutaneaLocalService.setUpdateTxVacunacionSubcutanea(data)
-    .subscribe(resp => {
-      if(resp) {
-        this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
-        this.displayCierre = false;
+    this.subscription$ = this.vacunacionSubcutaneaLocalService
+      .setUpdateTxVacunacionSubcutanea(data)
+      .subscribe(
+        (resp) => {
+          if (resp) {
+            this.mensajePrimeNgService.onToExitoMsg(
+              this.globalConstants.msgExitoSummary,
+              this.globalConstants.msgExitoDetail
+            );
+            this.displayCierre = false;
+          }
+        },
+        (error) => {
+          this.displayCierre = false;
+          this.listModelo.find((x) => x.id === data.id).flgCerrado = false;
+          this.listModelo.find((x) => x.id === data.id).fecCierre = null;
+          this.listModelo.find((x) => x.id === data.id).usuarioCierre = '';
+          this.listModelo.find((x) => x.id === data.id).idUsuarioCierre = 0;
+          this.mensajePrimeNgService.onToErrorMsg(null, error);
         }
-      },
-      (error) => {
-        this.displayCierre = false;
-        this.listModelo.find(x => x.id === data.id).flgCerrado = false;
-        this.listModelo.find(x => x.id === data.id).fecCierre = null;
-        this.listModelo.find(x => x.id === data.id).usuarioCierre = '';
-        this.listModelo.find(x => x.id === data.id).idUsuarioCierre = 0;
-        this.mensajePrimeNgService.onToErrorMsg(null, error);
-      }
-    );
+      );
   }
 
   onConfirmEliminar(data: TxVacunacionSubCutaneaModel) {
     if (data.flgCerrado) {
-      this.mensajePrimeNgService.onToInfoMsg(null, 'Registro seleccionado se encuentra CERRADO!!!');
+      this.mensajePrimeNgService.onToInfoMsg(
+        null,
+        'Registro seleccionado se encuentra CERRADO!!!'
+      );
       return;
     }
     this.confirmationService.confirm({
-        message: this.globalConstants.subTitleEliminar,
-        header: this.globalConstants.titleEliminar,
-        icon: 'pi pi-info-circle',
-        acceptLabel: 'Si',
-        rejectLabel: 'No',
-        accept: () => {
-          this.onToEliminar(data);
-        },
-        reject: () => {
-          this.mensajePrimeNgService.onToCancelMsg(this.globalConstants.msgCancelSummary, this.globalConstants.msgCancelDetail);
-        }
+      message: this.globalConstants.subTitleEliminar,
+      header: this.globalConstants.titleEliminar,
+      icon: 'pi pi-info-circle',
+      acceptLabel: 'Si',
+      rejectLabel: 'No',
+      accept: () => {
+        this.onToEliminar(data);
+      },
+      reject: () => {
+        this.mensajePrimeNgService.onToCancelMsg(
+          this.globalConstants.msgCancelSummary,
+          this.globalConstants.msgCancelDetail
+        );
+      },
     });
   }
 
   onToEliminar(data: any) {
     this.subscription$ = new Subscription();
-    this.subscription$ = this.vacunacionSubcutaneaLocalService.setDeleteTxVacunacionSubcutanea(data.id)
-    .subscribe(resp => {
-      if (resp) {
-        this.listModelo = [...this.listModelo].filter(x => x.id !== data.id);
-        this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
-      }},
-      (error) => {
-        this.mensajePrimeNgService.onToErrorMsg(null, error);
-      }
-    );
+    this.subscription$ = this.vacunacionSubcutaneaLocalService
+      .setDeleteTxVacunacionSubcutanea(data.id)
+      .subscribe(
+        (resp) => {
+          if (resp) {
+            this.listModelo = [...this.listModelo].filter(
+              (x) => x.id !== data.id
+            );
+            this.mensajePrimeNgService.onToExitoMsg(
+              this.globalConstants.msgExitoSummary,
+              this.globalConstants.msgExitoDetail
+            );
+          }
+        },
+        (error) => {
+          this.mensajePrimeNgService.onToErrorMsg(null, error);
+        }
+      );
   }
 
   onToCreate() {
-    this.router.navigate(['/main/module-su/vacunacion-subcutanea-offline-create']);
+    this.router.navigate([
+      '/main/module-su/vacunacion-subcutanea-offline-create',
+    ]);
   }
 
   onToSync(data: any) {
-    if (this.displaySave)
-    {
-      this.mensajePrimeNgService.onToErrorMsg(null, "Sincronización en curso...");
+    if (this.displaySave) {
+      this.mensajePrimeNgService.onToErrorMsg(
+        null,
+        'Sincronización en curso...'
+      );
       return;
     }
-    
+
     this.displaySave = true;
     this.subscription$ = new Subscription();
-    this.subscription$ = this.vacunacionSubcutaneaService.setInsertFromSyncTxVacunacionSubCutanea(data)
-    .subscribe(resp => {
-        this.mensajePrimeNgService.onToExitoMsg(this.globalConstants.msgExitoSummary, this.globalConstants.msgExitoDetail);
-        this.onToEliminar(data);
-        this.displaySave = false;
-      },
-      (error) => {
-        this.displaySave = false;
-        this.mensajePrimeNgService.onToErrorMsg(null, error);
+    this.subscription$ = this.vacunacionSubcutaneaService
+      .setInsertFromSyncTxVacunacionSubCutanea(data)
+      .subscribe(
+        (resp) => {
+          this.mensajePrimeNgService.onToExitoMsg(
+            this.globalConstants.msgExitoSummary,
+            this.globalConstants.msgExitoDetail
+          );
+          this.onToEliminar(data);
+          this.displaySave = false;
+        },
+        (error) => {
+          this.displaySave = false;
+          this.mensajePrimeNgService.onToErrorMsg(null, error);
+        }
+      );
+  }
+
+  async onToSyncAll() {
+    if (this.displaySave) {
+      this.mensajePrimeNgService.onToErrorMsg(
+        null,
+        'Sincronización en curso...'
+      );
+      return;
+    }
+
+    this.displaySave = true;
+    if (variableGlobal.ESTADO_INTERNET) {
+      if (this.listModelo) {
+        if (this.listModelo.length > 0) {
+          for (var _i = 0; _i < this.listModelo.length; _i++) {
+            var item: any = this.listModelo[_i];
+            await this.vacunacionSubcutaneaService
+              .setInsertFromSyncTxVacunacionSubCutanea(item)
+              .toPromise()
+              .then(async (result: any) => {
+                if (result && 'resultadoCodigo' in result) {
+                  if (result.resultadoCodigo === 0) {
+                    await this.vacunacionSubcutaneaLocalService
+                      .setDeleteTxVacunacionSubcutanea(item.id)
+                      .toPromise();
+                  }
+                }
+              })
+              .catch((error) => {
+                console.log(
+                  'setInsertFromSyncExamenFisicoPollito',
+                  item,
+                  error
+                );
+              });
+          }
+          this.mensajePrimeNgService.onToExitoMsg(
+            this.globalConstants.msgExitoSummary,
+            this.globalConstants.msgExitoDetail
+          );
+        }
       }
-    );
+
+      this.displaySave = false;
+    } else {
+      this.displaySave = false;
+      this.mensajePrimeNgService.onToErrorMsg(
+        null,
+        'No hay conexion a internet!'
+      );
+    }
+
+    this.onListar();
   }
 
   onToUpdate(data: any) {
-    this.router.navigate(['/main/module-su/vacunacion-subcutanea-offline-update', data.id]);
+    this.router.navigate([
+      '/main/module-su/vacunacion-subcutanea-offline-update',
+      data.id,
+    ]);
   }
 
   onDatosCierre(data: TxVacunacionSubCutaneaModel) {

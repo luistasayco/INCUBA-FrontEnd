@@ -30,10 +30,13 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getDatosDispositivo();
+
+    /*
     setTimeout(() => {
       this.iniciarTimerEnvioDataAServidor();
       this.limpiarDataMigrada();
     }, 30000);
+    */
 
     //this.preload('assets/layout/images/logo_invetsa_blanco.png')
   }
